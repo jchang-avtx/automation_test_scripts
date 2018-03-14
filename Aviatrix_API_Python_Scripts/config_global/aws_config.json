@@ -1,0 +1,228 @@
+{
+  "AWS": {
+    "Accounts": {
+      "root": {
+        "aws_access_key_id"    : "xxxxxxxxxxxx",
+        "aws_secret_access_key": "xxxxxxxxxxxx"
+      }
+    },
+    "AMI": {
+      "us-east-1": {
+        "name":         "N. Virginia",
+        "BYOL":         "ami-db9bb9a1",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "us-east-2": {
+        "name":         "Ohio",
+        "BYOL":         "ami-b40228d1",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "us-west-1": {
+        "name":         "N. California",
+        "BYOL":         "ami-2a7e7c4a",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "us-west-2": {
+        "name":         "Oregon",
+        "BYOL":         "ami-fd48f885",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxx",
+        "my_ami":       "ami-xxxxxxxx"
+      },
+      "us-gov-west-1": {
+        "name":         "US GovCloud West",
+        "BYOL":         "ami-30890051",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "us-gov-east-1": {
+        "name":         "US GovCloud East",
+        "BYOL":         "ami-xxxxxx",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "ca-central-1": {
+        "name":         "Canada ",
+        "BYOL":         "ami-de4bceba",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxxx"
+      },
+      "sa-east-1": {
+        "name":         "Sao Paulo",
+        "BYOL":         "ami-404c012c",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxxx"
+      },
+      "eu-west-1": {
+        "name":         "Ireland",
+        "BYOL":         "ami-830d93fa",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "eu-west-2": {
+        "name":         "London",
+        "BYOL":         "ami-bc253ed8",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxxx"
+      },
+      "eu-west-3": {
+        "name":         "Paris",
+        "BYOL":         "ami-f8e35585",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "eu-central-1": {
+        "name":         "Frankfurt",
+        "BYOL":         "ami-a025b9cf",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxxx"
+      },
+      "ap-northeast-1": {
+        "name":         "Tokyo",
+        "BYOL":         "ami-2a43244c",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "ap-northeast-2": {
+        "name":         "Seoul",
+        "BYOL":         "ami-d902a2b7",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxxx"
+      },
+      "ap-northeast-3": {
+        "name":         "Osaka",
+        "BYOL":         "ami-xxxxxxxx",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxxx"
+      },
+      "ap-southeast-1": {
+        "name":         "Singapore",
+        "BYOL":         "ami-0484f878",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "ap-southeast-2": {
+        "name":         "Sydney",
+        "BYOL":         "ami-34728e56",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxxx"
+      },"ap-south-1": {
+        "name":         "Mumbai",
+        "BYOL":         "ami-e7560088",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "cn-north-1": {
+        "name":         "Bejing",
+        "BYOL":         "ami-xxxxxx",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "cn-northwest-1": {
+        "name":         "Ningxia",
+        "BYOL":         "ami-xxxxxxxx",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxxx"
+      },
+      "xxxxxxxxxxx": {
+        "name":         "Hong Kong",
+        "BYOL":         "ami-xxxxxxxx",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxxx"
+      },
+      "xxxxxxxxxxxx": {
+        "name":         "Bahrain",
+        "BYOL":         "ami-xxxxxx",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+
+      "xxxxxxx": {
+        "name":         "Stockholm",
+        "BYOL":         "ami-xxxxxx",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      },
+      "xxxxxxxxxxxxxxxxx": {
+        "name":         "SAR",
+        "BYOL":         "ami-xxxxxx",
+        "utility":      "ami-xxxxxx",
+        "metering":     "ami-xxxxxx",
+        "ubuntu_16_04": "ami-xxxxxxxxxxxx",
+        "ubuntu_14_04": "ami-xxxxxxxxxxx",
+        "my_ami":       "ami-xxxxxxx"
+      }
+    }
+  }
+}
