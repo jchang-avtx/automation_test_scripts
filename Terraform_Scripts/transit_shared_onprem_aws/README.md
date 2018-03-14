@@ -2,6 +2,10 @@ Description
 -----------
 Terraform configuration files to deploy transit network, shared services and simulated OnPrem network.
 
+What is Transit Network
+-----------------------
+http://docs.aviatrix.com/HowTos/transitvpc_workflow.html
+
 What is Shared Services VPC
 ---------------------------
 It is specific VPC where an aviatrix gateway been deployed and with direct connection via encrypteed tunnel to all spoke gateways.  It is meant tobe accessible to all users for the entire transit network topology. Shared services like (i.e. database, web, jenkins, puppet, chef, saltstack, etc.) are consolidated for network simplicity.
