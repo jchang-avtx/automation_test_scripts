@@ -1,10 +1,10 @@
 Description
 -----------
-Terraform configuration files to deploy transit network, shared services and simulated OnPrem Network.
+Terraform configuration files to deploy transit network, shared services and simulated OnPrem network.
 
 What is Shared Services VPC
 ---------------------------
-This VPC is where we deployed aviatrix gateway and with direct connection via encrypteed tunnel to all spoke gateways.  It is meant to deploy all shared services (i.e. database, web, jenkins, puppet, chef, saltstack, etc.).
+It is specific VPC where an aviatrix gateway been deployed and with direct connection via encrypteed tunnel to all spoke gateways.  It is meant tobe accessible to all users for the entire transit network topology. Shared services like (i.e. database, web, jenkins, puppet, chef, saltstack, etc.) are consolidated for network simplicity.
 
 What is simulated OnPrem Network
 --------------------------------
@@ -19,9 +19,9 @@ Pre-Requisites
 Default configuration
 ---------------------
     1 - Transit Gateway
-    1 - Spoke Gateway
-    1 - Shared Gateway
-    1 - OnPrem Gateway
+    1 - Spoke Gateway  + Linux VM
+    1 - Shared Gateway + Linux VM
+    1 - OnPrem Gateway + Linux VM
 
 Notes:
 1. To advertise the onprem network from site2cloud, user needs to manually add the onprem CIDR
