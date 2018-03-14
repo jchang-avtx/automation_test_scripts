@@ -1,6 +1,6 @@
 Description
 -----------
-Terraform configuration files to create transit network VPC, shared services VPC and simulated OnPrem Network
+Terraform configuration files to deploy transit network, shared services and simulated OnPrem Network.
 
 What is Shared Services VPC
 ---------------------------

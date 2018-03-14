@@ -1,13 +1,13 @@
-# -Sample Aviatrix terraform configuration to create complete transit VPC solution
-# This configuration creates a cloud account on Aviatrix controller, launches transit VPC, creates VGW connection
-# with transit VPC
-# Launches a spoke GW, and attach with transit VPC.
- 
- 
- 
-#resource "aviatrix_upgrade" "upgrade31" {
-#  version = "3.1"
-#}
+# Aviatrix Systems
+# 14March2018 - edsel@aviatrix.com
+# ----------------------------------------
+# Auto deploy the following:
+# 1. create temporary aviatrix account for AWS.
+# 2. create AWS transit, spoke, onprem VPCs.
+# 3. create Aviatrix transit gateway, spoke gateway, and onprem gateway.
+# 4. create Aviatrix site2cloud connection to VGW
+# 5. create AWS linux instance per spoke and onprem VPCs.
+#
  
 # Create account with IAM roles
 resource "aviatrix_account" "temp_account" {
@@ -91,6 +91,7 @@ resource "aviatrix_gateway" "OnPrem-GW" {
   vpc_reg = "${var.region1}"
   vpc_size = "${var.t2instance}"
   vpc_net = "${aws_subnet.OnPrem-VPC-public.cidr_block}"
+  depends_on = ["aviatrix_spoke_vpc.test_spoke"]
 }
 
 # Encrypteed peering from shared-services GWs to spoke GWs
