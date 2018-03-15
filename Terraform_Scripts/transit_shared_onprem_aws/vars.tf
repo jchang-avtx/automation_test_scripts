@@ -17,6 +17,8 @@ variable "region3" {}
 variable "transit" {}
 variable "spoke_gateways" {}
 variable "shared_gateways" {}
+variable "onprem_cidr" {}
+
 
 #AWS
 #variable "AWS_REGION" {}

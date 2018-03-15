@@ -17,8 +17,15 @@ to establish an IPSec tunnel to a third party device in this case AWS VGW.
 
 Pre-Requisites
 --------------
-    * AWS Account and credentials
-    # Aviatrix Controller credentials
+    * Active AWS account and credentials
+    * Up and running Aviatrix controller and credentials
+    * Update file named "terraform.tfvars" to input all credentials
+
+How to run terraform
+--------------------
+    * terraform plan                = to check and review all parameters
+    * terraform apply auto-approve  = to kickoff the run
+    * terraform destroy -force      = to cleanup everything 
 
 Default configuration
 ---------------------
@@ -27,12 +34,39 @@ Default configuration
     1 - Shared Gateway + Linux VM
     1 - OnPrem Gateway + Linux VM
 
+Check transit network via End-to-End test
+-----------------------------------------
+    1. After successful terraform run, it will display output with all Linux VM private and public IPs.
+    2. Do ssh to any Linux VM public IP and ping to other Linux VMs private IPs. 
+       Example: 
+               ssh -i mykey ubuntu@Linux_VM_Public_IP
+               ping destination_Linux_VM_Private_IP
+               
 Notes:
-1. To advertise the onprem network from site2cloud, user needs to manually add the onprem CIDR
-   from AWS Console > VGW Connection > Static Routes tab.
+1. From terraform.tfvar file, user can modify [spoke_gateways = 1] in order to increase spoke gateways.
+2. For large transit network deployment, sometimes need to invoke again "terraform destroy -force" .
 
-2. Edit spoke_gateways =<N> under terraform.tfvar file in order to increase spoke gateways.
-
-For more information you can visit this link: http://docs.aviatrix.com/HowTos/transitvpc_workflow.html
-
+How to debug transit network
+----------------------------
+1. Use Aviatrix controller portal to monitor and control all gateway deployments.  [ https://controller_elastic_ip ]
+   Example: controller_elastic_ip = 13.57.130.71
+2. Check all the transit, spoke and onprem gateways and MUST be in green "UP" state. [ https://13.57.130.71/#/gateway ]
+   If gateway state in "waiting", give at least 2 minutes sync between controller and gateway. 
+   If gateway state in "down", go to diagnostics 
+      * Troubleshoot > Diagnostics > Gateway > [gateway-name] > click Run
+3. Check all the encrypted peering in green "UP" state. [ https://13.57.133.71/#/peering ]
+4. Check if transit network able to see OnPrem network. Go to transitive peering page and make sure each spoke has its own entry. 
+   * Peering > Transitive Peering
+5. Check all VGW connectivity and status MUST be in green "UP" state. 
+   * Go to Site2Cloud > Site2Cloud 
+   If status is "down", use Diagnostics feature. Site2Cloud > Diagnostics
+6. To verify advertise and learned routes from BGP and VGW point of view. 
+   * Go to Advance Config > BGP > click "vgw_bgp_s2c_conn"    
+   * advertise routes means "all the SPOKE aviatrix gateway cidrs advertise to VGW"
+   * learned routes means "all the routes aviatrix transit gateway learned from VGW" via BGP 
+   * BGP means "BGP connection over IPSec tunnel" to AWS VGW
+7. For more aviatrix technical support, send email to support@aviatrix.com. Our aviatrix subject matter expert is just one phone call away. 
+  
+For more information you can visit Aviatrix FAQ: http://docs.aviatrix.com/HowTos/FAQ.html
+Aviatrix Overview: http://docs.aviatrix.com/StartUpGuides/aviatrix_overview.html
 

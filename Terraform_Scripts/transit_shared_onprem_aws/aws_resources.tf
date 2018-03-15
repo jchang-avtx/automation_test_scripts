@@ -398,4 +398,14 @@ resource "aws_vpn_connection" "onprem" {
        Name = "site2cloud-to-vgw"
     }
 }
+# original onprem CIDR block
+resource "aws_vpn_connection_route" "onprem1" {
+    destination_cidr_block = "${aws_subnet.OnPrem-VPC-public.cidr_block}"
+    vpn_connection_id = "${aws_vpn_connection.onprem.id}"
+}
+# 2nd static route from onprem 
+resource "aws_vpn_connection_route" "onprem2" {
+    destination_cidr_block = "100.100.100.0/24"
+    vpn_connection_id = "${aws_vpn_connection.onprem.id}"
+}
 ## END -------------------------------

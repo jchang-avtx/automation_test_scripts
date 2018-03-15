@@ -23,3 +23,5 @@ region2 = "us-east-2"
 region3 = "ca-central-1"
 transit = 1
 shared_gateways = 1
+onprem_cidr = "172.16.0.0/16"
+
