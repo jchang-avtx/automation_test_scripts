@@ -65,7 +65,9 @@ How to debug transit network
    * advertise routes means "all the SPOKE aviatrix gateway cidrs advertise to VGW"
    * learned routes means "all the routes aviatrix transit gateway learned from VGW" via BGP 
    * BGP means "BGP connection over IPSec tunnel" to AWS VGW
-7. For more aviatrix technical support, send email to support@aviatrix.com. Our aviatrix subject matter expert is just one phone call away. 
+7. For more aviatrix technical support, send email to support@aviatrix.com. 
+
+Our aviatrix subject matter expert is just one phone call away. 
   
 For more information you can visit Aviatrix FAQ: http://docs.aviatrix.com/HowTos/FAQ.html
 Aviatrix Overview: http://docs.aviatrix.com/StartUpGuides/aviatrix_overview.html
