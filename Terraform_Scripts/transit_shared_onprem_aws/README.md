@@ -1,6 +1,6 @@
 Description
 -----------
-Terraform configuration files to deploy transit network, shared services and simulated OnPrem network.
+Terraform configuration files to deploy non-HA transit network, shared services and simulated OnPrem network.
 
 What is Transit Network
 -----------------------
@@ -74,8 +74,8 @@ How to debug transit network
 
     Our aviatrix subject matter expert is just one phone call away! 
   
-For more information you can visit Aviatrix FAQ
------------------------------------------------
+For more information you can visit our Aviatrix FAQ
+---------------------------------------------------
     http://docs.aviatrix.com/HowTos/FAQ.html
 
 Aviatrix Overview
