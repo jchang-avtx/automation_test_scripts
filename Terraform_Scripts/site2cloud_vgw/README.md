@@ -1,7 +1,7 @@
 Description
 -----------
     Terraform configuration files to site2cloud connection between Aviatrix Gateway and AWS VGW.
-    Site2Cloud FAQs [here](http://docs.aviatrix.com/HowTos/site2cloud_faq.html?highlight=what%20site2cloud).
+    Site2Cloud FAQs [here](http://docs.aviatrix.com/HowTos/site2cloud_faq.html).
 
 Pre-Requisites
 --------------
