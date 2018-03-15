@@ -42,30 +42,31 @@ Check transit network via End-to-End test
                ssh -i mykey ubuntu@Linux_VM_Public_IP
                ping destination_Linux_VM_Private_IP
                
-Notes:
-1. From terraform.tfvar file, user can modify [spoke_gateways = 1] in order to increase spoke gateways.
-2. For large transit network deployment, sometimes need to invoke again "terraform destroy -force" .
+Notes
+-----
+    1. From terraform.tfvar file, user can modify [spoke_gateways = 1] in order to increase spoke gateways.
+    2. For large transit network deployment, sometimes need to invoke again "terraform destroy -force" .
 
 How to debug transit network
 ----------------------------
-1. Use Aviatrix controller portal to monitor and control all gateway deployments.  [ https://controller_elastic_ip ]
-   Example: controller_elastic_ip = 13.57.130.71
-2. Check all the transit, spoke and onprem gateways and MUST be in green "UP" state. [ https://13.57.130.71/#/gateway ]
-   If gateway state in "waiting", give at least 2 minutes sync between controller and gateway. 
-   If gateway state in "down", go to diagnostics 
-      * Troubleshoot > Diagnostics > Gateway > [gateway-name] > click Run
-3. Check all the encrypted peering in green "UP" state. [ https://13.57.133.71/#/peering ]
-4. Check if transit network able to see OnPrem network. Go to transitive peering page and make sure each spoke has its own entry. 
-   * Peering > Transitive Peering
-5. Check all VGW connectivity and status MUST be in green "UP" state. 
-   * Go to Site2Cloud > Site2Cloud 
-   If status is "down", use Diagnostics feature. Site2Cloud > Diagnostics
-6. To verify advertise and learned routes from BGP and VGW point of view. 
-   * Go to Advance Config > BGP > click "vgw_bgp_s2c_conn"    
-   * advertise routes means "all the SPOKE aviatrix gateway cidrs advertise to VGW"
-   * learned routes means "all the routes aviatrix transit gateway learned from VGW" via BGP 
-   * BGP means "BGP connection over IPSec tunnel" to AWS VGW
-7. For more aviatrix technical support, send email to support@aviatrix.com. 
+    1. Use Aviatrix controller portal to monitor and control all gateway deployments.  [ https://controller_elastic_ip ]
+       Example: controller_elastic_ip = 13.57.130.71
+    2. Check all the transit, spoke and onprem gateways and MUST be in green "UP" state. [ https://13.57.130.71/#/gateway ]
+       If gateway state in "waiting", give at least 2 minutes sync between controller and gateway. 
+       If gateway state in "down", go to diagnostics 
+          * Troubleshoot > Diagnostics > Gateway > [gateway-name] > click Run
+    3. Check all the encrypted peering in green "UP" state. [ https://13.57.133.71/#/peering ]
+    4. Check if transit network able to see OnPrem network. Go to transitive peering page and make sure each spoke has its own entry. 
+           * Peering > Transitive Peering
+    5. Check all VGW connectivity and status MUST be in green "UP" state. 
+           * Go to Site2Cloud > Site2Cloud 
+       If status is "down", use Diagnostics feature. Site2Cloud > Diagnostics
+    6. To verify advertise and learned routes from BGP and VGW point of view. 
+           * Go to Advance Config > BGP > click "vgw_bgp_s2c_conn"    
+           * advertise routes means "all the SPOKE aviatrix gateway cidrs advertise to VGW"
+           * learned routes means "all the routes aviatrix transit gateway learned from VGW" via BGP 
+           * BGP means "BGP connection over IPSec tunnel" to AWS VGW
+    7. For more aviatrix technical support, send email to support@aviatrix.com. 
 
 Our aviatrix subject matter expert is just one phone call away. 
   
