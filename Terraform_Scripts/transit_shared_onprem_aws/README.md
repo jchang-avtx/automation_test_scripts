@@ -21,6 +21,10 @@ Pre-Requisites
     * Up and running Aviatrix controller and credentials
     * Update file named "terraform.tfvars" to input all credentials
 
+Launch new Controller with CloudFormation Template
+--------------------------------------------------
+   New Aviatrix Controller guide [here](http://docs.aviatrix.com/StartUpGuides/aviatrix-cloud-controller-startup-guide.html#launch-the-controller-with-cloudformation-template).
+
 How to run terraform
 --------------------
     * terraform plan                = to check and review all parameters
