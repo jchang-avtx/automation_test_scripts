@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7ca29556-a921-4c31-8f63-3eefc09f84ae" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file leaf-file-name="account.py" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/lib/aws/account.py">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="329">
+                    <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="50" />
+                    <folding>
+                      <element signature="e#45#57#0" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="user_config.json" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/config/user_config.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="857">
+              <caret line="260" column="1" lean-forward="false" selection-start-line="260" selection-start-column="1" selection-end-line="260" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create_aviatrix_cloud_controller.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/create_aviatrix_cloud_controller.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="297">
+              <caret line="157" column="68" lean-forward="true" selection-start-line="157" selection-start-column="68" selection-end-line="157" selection-end-column="68" />
+              <folding>
+                <element signature="e#742#754#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="example_config.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/config/example_config.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="437">
+              <caret line="23" column="35" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="260" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="delete_aviatrix_cloud_controller.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/delete_aviatrix_cloud_controller.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-630">
+              <caret line="120" column="42" lean-forward="false" selection-start-line="120" selection-start-column="41" selection-end-line="120" selection-end-column="42" />
+              <folding>
+                <element signature="e#234#246#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="log_history.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/result/log_history.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="855">
+              <caret line="45" column="0" lean-forward="false" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ec2.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/aws/ec2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="439">
+              <caret line="1341" column="0" lean-forward="true" selection-start-line="1341" selection-start-column="0" selection-end-line="1341" selection-end-column="0" />
+              <folding>
+                <element signature="e#45#57#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>instance</find>
+      <find>IAM Role</find>
+      <find>run_in</find>
+      <find>run_instance</find>
+      <find>run_n</find>
+      <find>run_</find>
+      <find>Step 02: Get Role-Policy-Document from local</find>
+      <find>IAM Policy Creation Step 03: Create IAM Policy</find>
+      <find>http</find>
+      <find>Link IAM Role &amp; IAM Policy</find>
+      <find>Instance Profile Creation: Step 01: Create Instance Profile</find>
+      <find>add_role_to_instance_profile</find>
+      <find>VP</find>
+      <find>ip</find>
+      <find>EIP</find>
+      <find>0bae4085922aa1cbf</find>
+      <find>iam role</find>
+      <find>ef2</find>
+      <find>association_id</find>
+      <find>rol_already_exists</find>
+      <find>os</find>
+      <find>START: Describe Instance Status</find>
+      <find>key</find>
+      <find>time.sle</find>
+      <find>logger = logger,</find>
+      <find>(</find>
+      <find>print</find>
+      <find>,</find>
+      <find>private</find>
+      <find>return</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>role_already_exists</replace>
+    </replaceStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/projects/aviatrix_quick_start/z.py" />
+        <option value="$PROJECT_DIR$/ryan_tools/z.json" />
+        <option value="$PROJECT_DIR$/ryan_tools/zz.py" />
+        <option value="$PROJECT_DIR$/ryan_tools/z_no_eip.json" />
+        <option value="$PROJECT_DIR$/ryan_tools/z1.py" />
+        <option value="$PROJECT_DIR$/projects/aviatrix_quick_start/teardown.py" />
+        <option value="$PROJECT_DIR$/projects/aviatrix_quick_start/create_ucc.py" />
+        <option value="$PROJECT_DIR$/projects/aviatrix_quick_start/config/user_config.json" />
+        <option value="$PROJECT_DIR$/projects/aviatrix_quick_start/result/result.json" />
+        <option value="$PROJECT_DIR$/lib/aviatrix_api/accounts.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix_sdk.py" />
+        <option value="$PROJECT_DIR$/lib/util.py" />
+        <option value="$PROJECT_DIR$/lib/aws_api.py" />
+        <option value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start/create_ucc.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix_api/aviatrix_util.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix_api/account.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix_api/controller.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix_api/gateway.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix_api/initial_setup.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix_api/transit_network.py" />
+        <option value="$PROJECT_DIR$/lib/aws_api/account.py" />
+        <option value="$PROJECT_DIR$/lib/aws_api/aws_api_template.py" />
+        <option value="$PROJECT_DIR$/lib/aws_api/ec2.py" />
+        <option value="$PROJECT_DIR$/lib/aws_api/iam.py" />
+        <option value="$PROJECT_DIR$/projects/demo_transit_network/ryan_will_implement.py" />
+        <option value="$PROJECT_DIR$/ryan_tools/aws_api_template.py" />
+        <option value="$PROJECT_DIR$/developers_tools/aws_api_template.py" />
+        <option value="$PROJECT_DIR$/developers_tools/aviatrix_api_template.py" />
+        <option value="$PROJECT_DIR$/developers_tools/example_new_aws_api_template.py" />
+        <option value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start/teardown.py" />
+        <option value="$PROJECT_DIR$/developers_tools/example_new_aviatrix_api_template.py" />
+        <option value="$PROJECT_DIR$/config/aws_config.json" />
+        <option value="$PROJECT_DIR$/config/README.md" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start/README.md" />
+        <option value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start/config/example_config.json" />
+        <option value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start/result/log_history.txt" />
+        <option value="$PROJECT_DIR$/lib/util/util.py" />
+        <option value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start/result/result.json" />
+        <option value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start/delete_aviatrix_cloud_controller.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix/account.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix/aviatrix_util.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix/controller.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix/gateway.py" />
+        <option value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start/create_aviatrix_cloud_controller.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix/initial_setup.py" />
+        <option value="$PROJECT_DIR$/lib/aviatrix/transit_network.py" />
+        <option value="$PROJECT_DIR$/lib/aws/iam.py" />
+        <option value="$PROJECT_DIR$/lib/aws/account.py" />
+        <option value="$PROJECT_DIR$/lib/aws/ec2.py" />
+        <option value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start/config/user_config.json" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Aviatrix_API_Python_Scripts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Aviatrix_API_Python_Scripts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Aviatrix_API_Python_Scripts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Aviatrix_API_Python_Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="config_global" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Aviatrix_API_Python_Scripts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Aviatrix_API_Python_Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Aviatrix_API_Python_Scripts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Aviatrix_API_Python_Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="aviatrix" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Aviatrix_API_Python_Scripts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Aviatrix_API_Python_Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="aws" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Aviatrix_API_Python_Scripts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Aviatrix_API_Python_Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Aviatrix_API_Python_Scripts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Aviatrix_API_Python_Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="projects" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Aviatrix_API_Python_Scripts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Aviatrix_API_Python_Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="projects" type="462c0819:PsiDirectoryNode" />
+              <item name="demo_aviatrix_quick_start" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Aviatrix_API_Python_Scripts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Aviatrix_API_Python_Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="projects" type="462c0819:PsiDirectoryNode" />
+              <item name="demo_aviatrix_quick_start" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Aviatrix_API_Python_Scripts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Aviatrix_API_Python_Scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="projects" type="462c0819:PsiDirectoryNode" />
+              <item name="demo_aviatrix_quick_start" type="462c0819:PsiDirectoryNode" />
+              <item name="result" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\workspace_python\aviatrix-api-python-examples\projects\demo_fqdn_end_to_end_testing" />
+      <recent name="D:\workspace_python\aviatrix-api-python-examples\developers_tools" />
+      <recent name="D:\workspace_python\aviatrix-api-python-examples\ryan_tools" />
+      <recent name="D:\workspace_python\aviatrix-api-python-examples\lib\aws_api" />
+      <recent name="D:\workspace_python\aviatrix-api-python-examples\lib\util" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workspace_python\aviatrix-api-python-examples\projects\demo_encrypted_peering" />
+      <recent name="D:\workspace_python\aviatrix-api-python-examples\projects\aviatrix_quick_start\config" />
+      <recent name="D:\workspace_python\aviatrix-api-python-examples\config" />
+      <recent name="D:\workspace_python\aviatrix-api-python-examples\projects\aviatrix_quick_start\result" />
+      <recent name="D:\workspace_python\aviatrix-api-python-examples\ryan_tools" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.delete_aviatrix_cloud_controller">
+    <configuration name="create_aviatrix_cloud_controller" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="aviatrix-api-python-examples" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start/create_aviatrix_cloud_controller.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration name="create_ucc" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/aviatrix_quick_start" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="aviatrix-api-python-examples" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/aviatrix_quick_start/create_ucc.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration name="delete_aviatrix_cloud_controller" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="aviatrix-api-python-examples" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/demo_aviatrix_quick_start/delete_aviatrix_cloud_controller.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration name="iam" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/lib/aws" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="aviatrix-api-python-examples" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lib/aws/iam.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration name="teardown" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/projects/aviatrix_quick_start" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="aviatrix-api-python-examples" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/projects/aviatrix_quick_start/teardown.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Python.create_ucc" />
+      <item index="1" class="java.lang.String" itemvalue="Python.teardown" />
+      <item index="2" class="java.lang.String" itemvalue="Python.create_aviatrix_cloud_controller" />
+      <item index="3" class="java.lang.String" itemvalue="Python.delete_aviatrix_cloud_controller" />
+      <item index="4" class="java.lang.String" itemvalue="Python.iam" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.delete_aviatrix_cloud_controller" />
+        <item index="1" class="java.lang.String" itemvalue="Python.create_aviatrix_cloud_controller" />
+        <item index="2" class="java.lang.String" itemvalue="Python.iam" />
+        <item index="3" class="java.lang.String" itemvalue="Python.teardown" />
+        <item index="4" class="java.lang.String" itemvalue="Python.create_ucc" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7ca29556-a921-4c31-8f63-3eefc09f84ae" name="Default" comment="" />
+      <created>1520486901237</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1520486901237</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.215625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="true" show_stripe_button="true" weight="0.32919955" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="318" y="94" width="1539" height="911" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32979852" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32767764" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="2" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://C:/Program Files (x86)/Python36-32/Lib/site-packages/wmi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="77" column="35" lean-forward="true" selection-start-line="77" selection-start-column="35" selection-end-line="77" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files (x86)/Python36-32/Lib/site-packages/botocore/validate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="594">
+          <caret line="290" column="0" lean-forward="false" selection-start-line="290" selection-start-column="0" selection-end-line="290" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/aviatrix_quick_start/config/advanced_config.json" />
+    <entry file="file://$PROJECT_DIR$/ryan_tools/aviatrix-app-policy.txt" />
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/result/aviatrix-app-policy.txt" />
+    <entry file="file://$PROJECT_DIR$/config/assume_role_policy_document_for_app_role.txt" />
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/config/assume_role_policy_document_for_ec2_role.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/config/assume_role_policy_document_for_app_role.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/aviatrix_quick_start/result/ryan-ec2-policy.txt" />
+    <entry file="file://$PROJECT_DIR$/ryan_tools/z1.py" />
+    <entry file="file://$PROJECT_DIR$/ryan_tools/z_no_eip.json" />
+    <entry file="file://$PROJECT_DIR$/ryan_tools/z.py" />
+    <entry file="file://$PROJECT_DIR$/projects/aviatrix_quick_start/result/get_upgrade_path.py" />
+    <entry file="file://$PROJECT_DIR$/projects/aviatrix_quick_start/result/temp.json" />
+    <entry file="file://$PROJECT_DIR$/projects/aviatrix_quick_start/aviatrix-app-policy.txt" />
+    <entry file="file://$PROJECT_DIR$/ryan_tools/zz.py" />
+    <entry file="file://$PROJECT_DIR$/ryan_tools/z.json" />
+    <entry file="file://$PROJECT_DIR$/ryan_tools/ryan_notes" />
+    <entry file="file://$PROJECT_DIR$/lib/aviatrix_sdk.py" />
+    <entry file="file://$PROJECT_DIR$/projects/demo_encrypted_peering/ryan_will_implement.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ryan_tools/UCC_version.txt" />
+    <entry file="file://$PROJECT_DIR$/ryan_tools/template_lib_aws.py" />
+    <entry file="file://$PROJECT_DIR$/developers_tools/example_new_aviatrix_api_template.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/developers_tools/example_new_aws_api_template.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="5" column="14" lean-forward="false" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_transit_network/ryan_will_implement.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/aws/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/result/key-2018-03-13_14-49-50.pem" />
+    <entry file="file://$PROJECT_DIR$/config_global/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="38">
+            <caret line="2" column="82" lean-forward="false" selection-start-line="2" selection-start-column="82" selection-end-line="2" selection-end-column="82" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="57">
+            <caret line="3" column="77" lean-forward="false" selection-start-line="3" selection-start-column="77" selection-end-line="3" selection-end-column="77" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="342">
+            <caret line="18" column="11" lean-forward="false" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/result/my_example_new_RSA_key_file_created_by_script.pem">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/aviatrix/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/result/key-2018-03-14_03-27-07.pem">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/result/result.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/util/util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="175" column="18" lean-forward="false" selection-start-line="175" selection-start-column="4" selection-end-line="175" selection-end-column="18" />
+          <folding>
+            <element signature="e#45#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/result/log_history.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="855">
+          <caret line="45" column="0" lean-forward="false" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/aviatrix/account.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="401">
+          <caret line="32" column="31" lean-forward="false" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
+          <folding>
+            <element signature="e#45#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/aviatrix/aviatrix_util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="458">
+          <caret line="41" column="15" lean-forward="false" selection-start-line="41" selection-start-column="15" selection-end-line="41" selection-end-column="15" />
+          <folding>
+            <element signature="e#45#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/aviatrix/controller.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="29" column="19" lean-forward="false" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+          <folding>
+            <element signature="e#45#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/aviatrix/gateway.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="644">
+          <caret line="39" column="19" lean-forward="false" selection-start-line="39" selection-start-column="19" selection-end-line="39" selection-end-column="19" />
+          <folding>
+            <element signature="e#45#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/aviatrix/initial_setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="606">
+          <caret line="268" column="83" lean-forward="false" selection-start-line="268" selection-start-column="83" selection-end-line="268" selection-end-column="83" />
+          <folding>
+            <element signature="e#45#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/aviatrix/transit_network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="724">
+          <caret line="193" column="11" lean-forward="false" selection-start-line="193" selection-start-column="11" selection-end-line="193" selection-end-column="11" />
+          <folding>
+            <element signature="e#45#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/delete_aviatrix_cloud_controller.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-630">
+          <caret line="120" column="42" lean-forward="false" selection-start-line="120" selection-start-column="41" selection-end-line="120" selection-end-column="42" />
+          <folding>
+            <element signature="e#234#246#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/aws/iam.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="648">
+          <caret line="477" column="8" lean-forward="false" selection-start-line="477" selection-start-column="8" selection-end-line="477" selection-end-column="8" />
+          <folding>
+            <element signature="e#45#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/create_aviatrix_cloud_controller.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="157" column="68" lean-forward="true" selection-start-line="157" selection-start-column="68" selection-end-line="157" selection-end-column="68" />
+          <folding>
+            <element signature="e#742#754#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/aws/account.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="329">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="50" />
+          <folding>
+            <element signature="e#45#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/aws/ec2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="439">
+          <caret line="1341" column="0" lean-forward="true" selection-start-line="1341" selection-start-column="0" selection-end-line="1341" selection-end-column="0" />
+          <folding>
+            <element signature="e#45#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/config/example_config.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="23" column="35" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="260" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config_global/aws_config.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="7" lean-forward="false" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config_global/aviatrix_config">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="14" lean-forward="true" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projects/demo_aviatrix_quick_start/config/user_config.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="857">
+          <caret line="260" column="1" lean-forward="false" selection-start-line="260" selection-start-column="1" selection-end-line="260" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
