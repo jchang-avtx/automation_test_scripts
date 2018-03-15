@@ -10,7 +10,7 @@ Pre-Requisites
 
 Launch new Controller with CloudFormation Template
 --------------------------------------------------
-    New Aviatrix Controller guide [here](http://docs.aviatrix.com/StartUpGuides/aviatrix-cloud-controller-startup-guide.html#launch-the-controller-with-cloudformation-template).
+New Aviatrix Controller guide [here](http://docs.aviatrix.com/StartUpGuides/aviatrix-cloud-controller-startup-guide.html#launch-the-controller-with-cloudformation-template).
 
 How to run terraform
 --------------------
@@ -28,10 +28,10 @@ How to debug site2cloud connection
 
 For more information you can visit our Aviatrix FAQs
 ----------------------------------------------------
-    Aviatrix FAQs [here](http://docs.aviatrix.com/HowTos/FAQ.html).
-    Site2Cloud FAQs [here](http://docs.aviatrix.com/HowTos/site2cloud_faq.html).
+Aviatrix FAQs [here](http://docs.aviatrix.com/HowTos/FAQ.html).
+Site2Cloud FAQs [here](http://docs.aviatrix.com/HowTos/site2cloud_faq.html).
 
 Aviatrix Overview
 -----------------
-    Aviatrix Overview [here](http://docs.aviatrix.com/StartUpGuides/aviatrix_overview.html).
+Aviatrix Overview [here](http://docs.aviatrix.com/StartUpGuides/aviatrix_overview.html).
 
