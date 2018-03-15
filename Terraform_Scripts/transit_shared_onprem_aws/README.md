@@ -68,8 +68,12 @@ How to debug transit network
            * BGP means "BGP connection over IPSec tunnel" to AWS VGW
     7. For more aviatrix technical support, send email to support@aviatrix.com. 
 
-Our aviatrix subject matter expert is just one phone call away. 
+    Our aviatrix subject matter expert is just one phone call away! 
   
-For more information you can visit Aviatrix FAQ: http://docs.aviatrix.com/HowTos/FAQ.html
-Aviatrix Overview: http://docs.aviatrix.com/StartUpGuides/aviatrix_overview.html
+For more information you can visit Aviatrix FAQ
+-----------------------------------------------
+    http://docs.aviatrix.com/HowTos/FAQ.html
 
+Aviatrix Overview
+-----------------
+    http://docs.aviatrix.com/StartUpGuides/aviatrix_overview.html
