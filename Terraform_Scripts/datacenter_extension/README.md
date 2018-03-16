@@ -1,7 +1,8 @@
 Description
 -----------
   Terraform configuration files to create aviatrix datacenter extension gateways from Virtual Appliance CloudN
-  Virtual Appliance CloudN guide [here](http://docs.aviatrix.com/StartUpGuides/CloudN-Startup-Guide.html).
+
+  CloudN guide [here](http://docs.aviatrix.com/StartUpGuides/CloudN-Startup-Guide.html).
 
 Pre-Requisites
 --------------
