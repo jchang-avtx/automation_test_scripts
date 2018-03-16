@@ -1,10 +1,5 @@
 #
 account_name ="Temporary-AWS-account"
-aws_iam = "true"
-vgw_connection_name = "vgw_bgp_s2c_conn"
-bgp_local_as = 6505
-
-account_name ="Temporary-AWS-account"
 account_password = "xxxxxxxxx"
 account_email = "name@aviatrix.com"
 aws_account_number = "123456788888888"

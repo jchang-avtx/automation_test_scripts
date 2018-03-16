@@ -1,0 +1,16 @@
+#
+account_name ="Temporary-AWS-account"
+account_password = "xxxxxxxxx"
+account_email = "name@aviatrix.com"
+aws_account_number = "123456788888888"
+aws_access_key = "xxxxxxxxxxxxxxxxxxx"
+aws_secret_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+aws_iam = "false"
+cloudn_controller_ip = "a.b.c.d"
+cloudn_controller_username = "admin"
+cloudn_controller_password = "xxxxxxxxxxxx"
+region1 = "us-west-2"
+t2instance = "t2.micro"
+subnet_cidr1 = "192.168.16.128/26"
+subnet_cidr2 = "192.168.16.192/26"
+

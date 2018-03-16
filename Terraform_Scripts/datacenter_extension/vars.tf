@@ -1,0 +1,13 @@
+variable "account_name" {}
+variable "account_password" {}
+variable "account_email" {}
+variable "aws_account_number" {}
+variable "aws_access_key" {}
+variable "aws_secret_key" {}
+variable "cloudn_controller_ip" {}
+variable "cloudn_controller_username" {}
+variable "cloudn_controller_password" {}
+variable "region1" {}
+variable "t2instance" {}
+variable "subnet_cidr1" {}
+variable "subnet_cidr2" {}
