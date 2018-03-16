@@ -4,7 +4,7 @@ Terraform configuration files to deploy non-HA transit network, shared services 
 
 What is Transit Network
 -----------------------
-http://docs.aviatrix.com/HowTos/transitvpc_workflow.html
+   Transit Network Workflow [here](http://docs.aviatrix.com/HowTos/transitvpc_workflow.html).
 
 What is Shared Services VPC
 ---------------------------
@@ -74,10 +74,10 @@ How to debug transit network
 
     Our aviatrix subject matter expert is just one phone call away! 
   
-For more information you can visit our Aviatrix FAQ
----------------------------------------------------
-    http://docs.aviatrix.com/HowTos/FAQ.html
+For more information you can visit our Aviatrix FAQs
+----------------------------------------------------
+   Aviatrix FAQs [here](http://docs.aviatrix.com/HowTos/FAQ.html).
 
 Aviatrix Overview
 -----------------
-    http://docs.aviatrix.com/StartUpGuides/aviatrix_overview.html
+   Aviatrix Overview [here](http://docs.aviatrix.com/StartUpGuides/aviatrix_overview.html).
