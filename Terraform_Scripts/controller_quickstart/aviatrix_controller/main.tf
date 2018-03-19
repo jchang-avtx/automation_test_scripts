@@ -55,7 +55,7 @@ resource "aws_instance" "aviatrix_controller_ec2" {
       VPC-RouteTable-Association-ID = "${element(module.create_controller_vpc.vpc_ra_id, 0)}"
   }
   provisioner "local-exec" {
-    command = "sleep 1m"
+    command = "sleep 90s"
   }
   depends_on = ["aws_security_group_rule.allow_https_inbound","aws_security_group_rule.allow_all_outbound"]
 }
