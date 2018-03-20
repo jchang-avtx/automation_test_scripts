@@ -6,20 +6,11 @@ What is Transit Network
 -----------------------
    Transit Network Workflow [here](http://docs.aviatrix.com/HowTos/transitvpc_workflow.html).
 
-What is Shared Services VPC
----------------------------
-It is specific VPC where an aviatrix gateway been deployed and with direct connection via encrypteed tunnel to all spoke gateways.  It is meant tobe accessible to all users for the entire transit network topology. Shared services like (i.e. database, web, jenkins, puppet, chef, saltstack, etc.) are consolidated for network simplicity.
-
-What is simulated OnPrem Network
---------------------------------
-It is Aviatrix gateway connected to VGW using static IPSec tunnel. Aviatrix feature called "Site2Cloud" where user is able
-to establish an IPSec tunnel to a third party device in this case AWS VGW.   
-
 Pre-Requisites
 --------------
     * Active AWS account and credentials
-    * Up and running Aviatrix controller and credentials
-    * Update file named "terraform.tfvars" to input all credentials
+    * Aviatrix controller with username/password access
+    * Update file named "terraform.tfvars" to input all parameters
 
 Launch new Controller with CloudFormation Template
 --------------------------------------------------
@@ -27,6 +18,7 @@ Launch new Controller with CloudFormation Template
 
 How to run terraform
 --------------------
+    * terraform init                = initialize working directorty and provider plugins, done only once 
     * terraform plan                = to check and review all parameters
     * terraform apply auto-approve  = to kickoff the run
     * terraform destroy -force      = to cleanup everything 
@@ -54,12 +46,12 @@ Notes
 How to debug transit network
 ----------------------------
     1. Use Aviatrix controller portal to monitor and control all gateway deployments.  [ https://controller_elastic_ip ]
-       Example: controller_elastic_ip = 13.57.130.71
-    2. Check all the transit, spoke and onprem gateways and MUST be in green "UP" state. [ https://13.57.130.71/#/gateway ]
+       Example: controller_elastic_ip = 13.80.130.82
+    2. Check all the transit, spoke and onprem gateways and MUST be in green "UP" state. [ https://controller_elastic_ip/#/gateway ]
        If gateway state in "waiting", give at least 2 minutes sync between controller and gateway. 
        If gateway state in "down", go to diagnostics 
           * Troubleshoot > Diagnostics > Gateway > [gateway-name] > click Run
-    3. Check all the encrypted peering in green "UP" state. [ https://13.57.133.71/#/peering ]
+    3. Check all the encrypted peering in green "UP" state. [ https://controller_elastic_ip/#/peering ]
     4. Check if transit network able to see OnPrem network. Go to transitive peering page and make sure each spoke has its own entry. 
            * Peering > Transitive Peering
     5. Check all VGW connectivity and status MUST be in green "UP" state. 
@@ -73,6 +65,15 @@ How to debug transit network
     7. For more aviatrix technical support, send email to support@aviatrix.com. 
 
     Our aviatrix subject matter expert is just one phone call away! 
+
+What is Shared Services VPC
+---------------------------
+It is specific VPC where an aviatrix gateway been deployed and with direct connection via encrypteed tunnel to all spoke gateways.  It is meant tobe accessible to all users for the entire transit network topology. Shared services like (i.e. database, web, jenkins, puppet, chef, saltstack, etc.) are consolidated for network simplicity.
+
+What is simulated OnPrem Network
+--------------------------------
+It is Aviatrix gateway connected to VGW using static IPSec tunnel. Aviatrix feature called "Site2Cloud" where user is able
+to establish an IPSec tunnel to a third party device in this case AWS VGW.   
   
 For more information you can visit our Aviatrix FAQs
 ----------------------------------------------------
