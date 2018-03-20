@@ -45,14 +45,16 @@ Notes
 
 How to debug transit network
 ----------------------------
-    1. Use Aviatrix controller portal to monitor and control all gateway deployments.  [ https://controller_elastic_ip ]
-       Example: controller_elastic_ip = 13.80.130.82
-    2. Check all the transit, spoke and onprem gateways and MUST be in green "UP" state. [ https://controller_elastic_ip/#/gateway ]
+    1. Use Aviatrix controller portal to monitor and control all gateway deployments.  
+       [ https://controller_elastic_ip ] where controller_elastic_ip = 13.80.130.82
+    2. Check all the transit, spoke and onprem gateways and MUST be in green "UP" state.
+       [ https://controller_elastic_ip/#/gateway ]
        If gateway state in "waiting", give at least 2 minutes sync between controller and gateway. 
        If gateway state in "down", go to diagnostics 
           * Troubleshoot > Diagnostics > Gateway > [gateway-name] > click Run
     3. Check all the encrypted peering in green "UP" state. [ https://controller_elastic_ip/#/peering ]
-    4. Check if transit network able to see OnPrem network. Go to transitive peering page and make sure each spoke has its own entry. 
+    4. Check if transit network able to see OnPrem network. Go to transitive peering page 
+       and make sure each spoke has its own entry. 
            * Peering > Transitive Peering
     5. Check all VGW connectivity and status MUST be in green "UP" state. 
            * Go to Site2Cloud > Site2Cloud 
