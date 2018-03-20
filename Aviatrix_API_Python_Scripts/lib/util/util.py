@@ -11,8 +11,6 @@ import paramiko
 import requests
 import traceback
 import time
-import winsound
-import wmi
 
 from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
@@ -50,7 +48,7 @@ def set_logger(logger_name="main",
 
     if log_file_enabled:
         ### Step xx : Create a FileHandler, for writing output to a txt file
-        file_handler = logging.handlers.RotatingFileHandler(path_to_log_file, maxBytes=500000, backupCount=20)
+        file_handler = logging.FileHandler(filename=path_to_log_file, mode=log_file_mode, encoding="utf-8")
         file_handler.setLevel(logging_level)
 
         ### Step xx: Add Formatter to StreamHandler
@@ -154,19 +152,6 @@ def check_requirements(logger=None, config=None, log_indentation=""):
         return True
 
 
-
-"""
-For Windows
-"""
-def run_completion_notification(logger=None, log_indentation=""):
-    winsound.Beep(200, 100)
-    winsound.Beep(300, 200)
-
-    brightness = 50  # Vaild Value: 0 ~ 100
-    wmi.WMI(namespace='wmi').WmiMonitorBrightnessMethods()[0].WmiSetBrightness(brightness, 0)
-    time.sleep(0.25)
-    wmi.WMI(namespace='wmi').WmiMonitorBrightnessMethods()[0].WmiSetBrightness(100, 0)
-    return True
 
 
 
