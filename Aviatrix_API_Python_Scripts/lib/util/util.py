@@ -38,8 +38,8 @@ def set_logger(logger_name="main",
     logger.setLevel(logging.INFO)
 
     ### Step 02 : Setup format for log output
-    formatter = logging.Formatter(
-        "%(asctime)s    %(filename)35s    [line:%(lineno)4d]    %(levelname)8s    %(message)s")
+    format_string = "%(asctime)s %(levelname)s %(module)s %(funcName)s %(lineno)d %(message)s"
+    formatter = logging.Formatter(format_string)
 
     ### Step 03 : Create a StreamHandler, for to writing output to stdout
     stream_handler = logging.StreamHandler()
@@ -50,7 +50,7 @@ def set_logger(logger_name="main",
 
     if log_file_enabled:
         ### Step xx : Create a FileHandler, for writing output to a txt file
-        file_handler = logging.FileHandler(filename=path_to_log_file, mode=log_file_mode, encoding="utf-8")
+        file_handler = logging.handlers.RotatingFileHandler(path_to_log_file, maxBytes=500000, backupCount=20)
         file_handler.setLevel(logging_level)
 
         ### Step xx: Add Formatter to StreamHandler
