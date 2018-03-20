@@ -1,4 +1,4 @@
 Description
 ================================================================================
 
-* This directory is the superset of all Python examples of Aviatrix REST API.
+* This directory is the superset of all Python examples for Aviatrix REST API.

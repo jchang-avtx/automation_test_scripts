@@ -42,9 +42,10 @@ def XXXXX_do_something_XXXXX(logger=None,
                              param2="", 
                              param3="",
                              aws_access_key_id="",
-                             aws_secret_access_key=""
+                             aws_secret_access_key="",
+                             log_indentation=""
                              ):
-    print("\nSTART: XXXXX_do_something_XXXXX")
+    logger.info(log_indentation + "START: XXXXX_do_something_XXXXX")
 
     ec2_client   = boto3.client(service_name='ec2', 
                                 region_name=region, 
@@ -64,14 +65,14 @@ def XXXXX_do_something_XXXXX(logger=None,
             DryRun=False
         )
 
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
+
         ##### Step 02: Get XXXXX_somthing_XXXXX
-        print("    Succeed")
-        print(response)  ########################################################################################################
         object_id = response["Object"]["ObjectId"]
-        print("    XXXXX_something_XXXXX: " + object_id)
+        logger.info(log_indentation + "    XXXXX_something_XXXXX: " + object_id)
 
 
-        print("ENDED: XXXXX_do_something_XXXXX\n")
 
         return object_id
 
@@ -81,5 +82,6 @@ def XXXXX_do_something_XXXXX(logger=None,
         logger(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: XXXXX_do_something_XXXXX\n")
+
 
