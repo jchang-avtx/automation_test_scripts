@@ -21,7 +21,7 @@ from requests.exceptions import ConnectionError
 #########################################    Transit Network    #######################################################
 #######################################################################################################################
 
-def list_transit_gw_supported_sizes(logger=None, url=None, CID=None):
+def list_transit_gw_supported_sizes(logger=None, url=None, CID=None, max_retry=10):
     """
     This function invokes Aviatrix API "list_transit_gw_supported_sizes" and return a list of sizes (string)
     """
@@ -31,13 +31,31 @@ def list_transit_gw_supported_sizes(logger=None, url=None, CID=None):
         "CID": CID
     }
 
-    response = requests.get(url=url, params=params, verify=False)
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.get(url=url, params=params, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+            # END try-except
+    # END for
     return response
 
 
 
-def create_transit_gw(logger=None, url=None, CID=None, account_name=None, cloud_type=None, region=None, vpc_id=None,
-                      public_subnet=None, gateway_name=None, gateway_size=None, dns_server_ip=None, tags=None):
+def create_transit_gw(logger=None, url=None, CID=None,
+                      account_name=None, cloud_type=None,
+                      region=None, vpc_id=None, public_subnet=None,
+                      gateway_name=None, gateway_size=None,
+                      dns_server_ip=None, tags=None,
+                      max_retry=10):
     data = {
         "action": "create_transit_gw",
         "CID": CID,
@@ -55,12 +73,32 @@ def create_transit_gw(logger=None, url=None, CID=None, account_name=None, cloud_
     if tags is not None:
         data["tags"] = tags
 
-    response = requests.post(url=url, data=data, verify=False)
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.post(url=url, data=data, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+            # END try-except
+    # END for
     return response
 
 
 
-def enable_transit_ha(logger=None, url=None, CID=None, gateway_name=None, public_subnet=None, new_zone=None):
+def enable_transit_ha(logger=None,
+                      url=None,
+                      CID=None,
+                      gateway_name=None,
+                      public_subnet=None,
+                      new_zone=None,
+                      max_retry=10):
     """
     :param new_zone: This field is for GCloud ONLY
     """
@@ -74,14 +112,28 @@ def enable_transit_ha(logger=None, url=None, CID=None, gateway_name=None, public
     if new_zone is not None:
         data["new_zone"] = new_zone
 
-    response = requests.post(url=url, data=data, verify=False)
+        ### Call Aviatrix API (with max retry)
+        for i in range(max_retry):
+            try:
+                # Send the GET/POST RESTful API request
+                response = requests.post(url=url, data=data, verify=False)
+
+                if response.status_code == 200:
+                    # IF status_code is 200 meaning server has responded, then break out of retry loop
+                    break
+
+            except Exception as e:
+                tracekback_msg = traceback.format_exc()
+                logger.error(tracekback_msg)
+                # END try-except
+        # END for
     return response
 
 
 
 def connect_transit_gw_to_vgw(logger=None, url=None, CID=None, connection_name=None,
                               transit_vpc_id=None, transit_gateway_name=None, bgp_local_as_number=None,
-                              vgw_account_name=None, vgw_region=None, vgw_id=None):
+                              vgw_account_name=None, vgw_region=None, vgw_id=None, max_retry=10):
     data = {
         "action": "connect_transit_gw_to_vgw",
         "CID": CID,
@@ -94,14 +146,28 @@ def connect_transit_gw_to_vgw(logger=None, url=None, CID=None, connection_name=N
         "vgw_id": vgw_id
     }
 
-    response = requests.post(logger=None, url=url, data=data, verify=False)
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.post(url=url, data=data, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+            # END try-except
+            # END for
     return response
 
 
 
 def create_spoke_gw(logger=None, url=None, CID=None, account_name=None, cloud_type=None, region=None, vpc_id=None,
                     public_subnet=None, gateway_name=None, gateway_size=None,
-                    nat_enabled=None, dns_server_ip=None, tags=None):
+                    nat_enabled=None, dns_server_ip=None, tags=None, max_retry=10):
     data = {
         "action": "create_spoke_gw",
         "CID": CID,
@@ -121,12 +187,26 @@ def create_spoke_gw(logger=None, url=None, CID=None, account_name=None, cloud_ty
     if tags is not None:
         data["tags"] = tags
 
-    response = requests.post(url=url, data=data, verify=False)
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.post(url=url, data=data, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+            # END try-except
+    # END for
     return response
 
 
 
-def enable_spoke_ha(logger=None, url=None, CID=None, gateway_name=None, public_subnet=None, new_zone=None):
+def enable_spoke_ha(logger=None, url=None, CID=None, gateway_name=None, public_subnet=None, new_zone=None, max_retry=10):
     """
     :param new_zone: This field is for GCloud ONLY
     """
@@ -140,12 +220,26 @@ def enable_spoke_ha(logger=None, url=None, CID=None, gateway_name=None, public_s
     if new_zone is not None:
         data["new_zone"] = new_zone
 
-    response = requests.post(url=url, data=data, verify=False)
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.post(url=url, data=data, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+            # END try-except
+    # END for
     return response
 
 
 
-def attach_spoke_to_transit_gw(logger=None, url=None, CID=None, spoke_gateway=None, transit_gateway=None):
+def attach_spoke_to_transit_gw(logger=None, url=None, CID=None, spoke_gateway=None, transit_gateway=None, max_retry=10):
     data = {
         "action": "attach_spoke_to_transit_gw",
         "CID": CID,
@@ -153,24 +247,57 @@ def attach_spoke_to_transit_gw(logger=None, url=None, CID=None, spoke_gateway=No
         "transit_gw": transit_gateway
     }
 
-    response = requests.post(url=url, data=data, verify=False)
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.post(url=url, data=data, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+            # END try-except
+    # END for
     return response
 
 
 
-def detach_spoke_from_transit_gw(logger=None, url=None, CID=None, spoke_gateway_name=None):
+def detach_spoke_from_transit_gw(logger=None, url=None, CID=None, spoke_gateway_name=None, max_retry=10):
     data = {
         "action": "detach_spoke_from_transit_gw",
         "CID": CID,
         "spoke_gw": spoke_gateway_name
     }
 
-    response = requests.post(url=url, data=data, verify=False)
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.post(url=url, data=data, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+            # END try-except
+    # END for
     return response
 
 
 
-def disconnect_transit_gw_from_vgw(logger=None, url=None, CID=None, connection_name=None, transit_vpc_id=None):
+def disconnect_transit_gw_from_vgw(logger=None,
+                                   url=None,
+                                   CID=None,
+                                   connection_name=None,
+                                   transit_vpc_id=None,
+                                   max_retry=10):
     data = {
         "action": "disconnect_transit_gw_from_vgw",
         "CID": CID,
@@ -178,19 +305,47 @@ def disconnect_transit_gw_from_vgw(logger=None, url=None, CID=None, connection_n
         "vpc_id": transit_vpc_id
     }
 
-    response = requests.post(url=url, data=data, verify=False)
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.post(url=url, data=data, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+            # END try-except
+    # END for
     return response
 
 
 
-def delete_gateway(logger=None, url=None, CID=None, cloud_type=None, gateway_name=None):
+def delete_gateway(logger=None, url=None, CID=None, cloud_type=None, gateway_name=None, max_retry=10):
     data = {
         "action": "delete_container",
         "CID": CID,
         "cloud_type": cloud_type,
         "gw_name": gateway_name
     }
-    response = requests.post(url=url, data=data, verify=False)
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.post(url=url, data=data, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+            # END try-except
+    # END for
     return response
 
 

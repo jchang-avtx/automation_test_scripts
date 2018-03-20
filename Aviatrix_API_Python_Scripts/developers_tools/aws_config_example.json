@@ -1,48 +1,12 @@
 {
-  "Script_Control": {
-    "project_code": "avx",
-    "script_log_file_enabled": true,
-    "keep_aviatrix_iam_roles_policies": true,
-    "notification_enabled": true
-  },
   "AWS": {
-    "region": "us-west-2",
-    "ami_id": "ami-fd48f885",
-    "is_BYOL": true,
-    "create_new_key": true,
-    "existing_key_pair_name": "",
-    "vpc_cidr": "10.88.0.0/16",
-    "subnet_cidr": "10.88.0.0/24",
-    "subnet_availability_zone": "",
-    "instance_type": "t2.large"
-  },
-  "UCC": {
-    "admin_password": "Aviatrix123!",
-    "customer_id": "xxxxxxxxxx",
-    "admin_email": "test@aviatrix.com",
-    "Account_Users": [
-      {
-        "username": "aws-roles",
-        "password": "Aviatrix123!",
-        "email": "test@aviatrix.com",
-        "cloud_type": "aws",
-        "aviatrix-role-app-arn": "arn:aws:iam::AWS_ACCOUNT_ID:role/aviatrix-role-app",
-        "iam_role_based": true,
-        "aviatrix-role-ec2-arn": "arn:aws:iam::AWS_ACCOUNT_ID:role/aviatrix-role-ec2"
-      },
-      {
-        "username": "aws-keys",
-        "password": "Aviatrix123!",
-        "email": "test@aviatrix.com",
-        "cloud_type": "aws",
-        "iam_role_based": false,
-        "aws_access_key_id": "xxxxxxxxxx",
-        "aws_secret_access_key": "xxxxxxxxxx"
+    "Accounts": {
+      "root": {
+        "aws_access_key_id"    : "xxxxxxxxxxxx",
+        "aws_secret_access_key": "xxxxxxxxxxxx"
       }
-    ]
-  },
-  "AMI": {
-      "Aviatrix-Robot": "This section is just for you to reference and it won't be used by the scripts.",
+    },
+    "AMI": {
       "us-east-1": {
         "name":         "N. Virginia",
         "BYOL":         "ami-db9bb9a1",
@@ -260,4 +224,5 @@
         "my_ami":       "ami-xxxxxxx"
       }
     }
+  }
 }

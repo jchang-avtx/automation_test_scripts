@@ -21,13 +21,37 @@ from requests.exceptions import ConnectionError
 ###########################################    Controller    ##########################################################
 #######################################################################################################################
 
-def get_controller_version(logger=None, url=None, CID=None):
+def get_controller_version(
+        logger=None,
+        url=None,
+        CID=None,
+        max_retry=10
+        ):
     params = {
         "action": "list_version_info",
         "CID": CID
     }
-    response = requests.get(url=url, params=params, verify=False)
+
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.get(url=url, params=params, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+        # END try-except
+    # END for
+
+    # logger.info("END: Aviatrix API: " + api_name)
     return response
+
+
 
 
 

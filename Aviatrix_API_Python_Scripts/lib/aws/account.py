@@ -20,20 +20,9 @@ from requests.exceptions import ConnectionError
 #######################################################################################################################
 ############################################    Account     ##########################################################
 #######################################################################################################################
-logger=None,
-, aws_access_key_id="", aws_secret_access_key=""):
 
-,
-    aws_access_key_id=aws_access_key_id,
-    aws_secret_access_key=aws_secret_access_key
-    ):
-
-logger.info
-logger.error
-
-
-def get_aws_account_id(logger=None, aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Get AWS Account ID")
+def get_aws_account_id(logger=None, aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
+    logger.info(log_indentation + "START: Get AWS Account ID Number")
 
     sts_client = boto3.client(
         "sts",
@@ -42,10 +31,12 @@ def get_aws_account_id(logger=None, aws_access_key_id="", aws_secret_access_key=
     )
 
     try:
+
         ##### Step 01: Get AWS Account ID
+        logger.info(log_indentation + "    " + str(sts_client.get_caller_identity()))
+        logger.info(log_indentation + "    Succeed")
         aws_account_id = sts_client.get_caller_identity()["Account"]
-        logger.info("    Succeed")
-        logger.info("ENDED: Get AWS Account ID\n")
+        logger.info(log_indentation + "    AWS ID Number is: " + str(aws_account_id))
 
         return aws_account_id
 
@@ -54,5 +45,6 @@ def get_aws_account_id(logger=None, aws_access_key_id="", aws_secret_access_key=
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Get AWS Account ID Number\n")
+
 

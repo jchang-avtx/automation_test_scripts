@@ -16,25 +16,29 @@ from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
 from requests.exceptions import ConnectionError
 
-from lib.aviatrix.aviatrix_util import *
-from lib.aviatrix.account import *
-from lib.aviatrix.initial_setup import *
-from lib.aviatrix.gateway import *
-from lib.aviatrix.transit_network import *
-from lib.aviatrix.transit_network import *
 
+'''
 from lib.aws.account import *
 from lib.aws.iam import *
 
 from lib.util.util import *
+'''
 
 
 #######################################################################################################################
 #################################################    Tag     ##########################################################
 #######################################################################################################################
 
-def create_name_tag(logger=None, region="", resource="", name="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Create Name Tag")
+def create_name_tag(logger=None,
+                    region="",
+                    resource="",
+                    name="",
+                    aws_access_key_id="",
+                    aws_secret_access_key="",
+                    max_retry=5,
+                    log_indentation=""
+                    ):
+    # logger.info(log_indentation + "START: Create Name Tag")
 
     resources = list()
     resources.append(resource)
@@ -54,25 +58,32 @@ def create_name_tag(logger=None, region="", resource="", name="", aws_access_key
     )
 
     try:
-        ##### Step 01: Create Name Tag
-        response = ec2_client.create_tags(
-            Resources=resources,
-            Tags=tags,
-            DryRun=False
-        )
+        for i in range(max_retry):
+            try:
+                ##### Step 01: Create Name Tag
+                response = ec2_client.create_tags(
+                    Resources=resources,
+                    Tags=tags,
+                    DryRun=False
+                )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Create Name Tag\n")
+            except Exception as e:
+                tracekback_msg = traceback.format_exc()
+                logger.error(tracekback_msg)
+        # END for
 
+        # logger.info(log_indentation + "    Succeed")
+        # logger.info(log_indentation + "    " + str(response))
         return True
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        # logger.info(log_indentation + "ENDED: Create Name Tag\n")
+        pass
+
 
 
 
@@ -80,8 +91,8 @@ def create_name_tag(logger=None, region="", resource="", name="", aws_access_key
 #################################################    VPC     ##########################################################
 #######################################################################################################################
 
-def create_vpc(logger=None, region="", cidr="", aws_access_key_id="", aws_secret_access_key="", ):
-    logger.info("\nSTART: Create VPC")
+def create_vpc(logger=None, region="", cidr="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
+    logger.info(log_indentation + "START: Create VPC")
     instance_tenancy = "default"  # Valid Value: "default" || "dedicated" || "host"
 
     ec2_client = boto3.client(
@@ -106,19 +117,27 @@ def create_vpc(logger=None, region="", cidr="", aws_access_key_id="", aws_secret
             DryRun=False,
             InstanceTenancy=instance_tenancy
         )
+        logger.info(log_indentation + "    " + str(response))
 
         ##### Step 02: Get VPC ID
-        logger.info("    Successfully created a VPC.")
+        logger.info(log_indentation + "    Successfully created a VPC.")
         vpc_id = response["Vpc"]["VpcId"]
-        logger.info("    VPC ID: " + vpc_id)
+        logger.info(log_indentation + "    VPC ID: " + vpc_id)
 
         ##### Step 03: Wait until VPC is available
-        logger.info("    Wait until VPC is available")
-        vpc = ec2_resource.Vpc(vpc_id)  # Get VPC object
+        logger.info(log_indentation + "    Wait until VPC is available")
+        vpc = None
+        # The for loop is to Wait for the newly created VPC to be ready/visible to "vpc = ec2_resource.Vpc(vpc_id)", so the "vpc" value is NOT None
+        for i in range(5):
+            vpc = ec2_resource.Vpc(vpc_id)  # Get VPC object
+            if vpc is not None:
+                break
+        # END for
+
         vpc.wait_until_available()
 
         ##### Step 04: Modify VPC Attributes to set "DNS hostnames" to "yes"
-        logger.info("    Modify VPC Attributes to set \"DNS hostnames\" to \"yes\"")
+        logger.info(log_indentation + "    Modify VPC Attributes and set \"DNS hostnames\" to \"yes\"")
 
         response = ec2_client.modify_vpc_attribute(
             EnableDnsHostnames={
@@ -127,9 +146,8 @@ def create_vpc(logger=None, region="", cidr="", aws_access_key_id="", aws_secret
             VpcId=vpc_id
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Create VPC\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return vpc_id
 
 
@@ -138,14 +156,15 @@ def create_vpc(logger=None, region="", cidr="", aws_access_key_id="", aws_secret
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Create VPC\n")
 
 
 
 
 
-def delete_vpc(logger=None, region="", vpc_id="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Delete VPC")
+
+def delete_vpc(logger=None, region="", vpc_id="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
+    logger.info(log_indentation + "START: Delete VPC")
     region = region
 
     try:
@@ -161,8 +180,8 @@ def delete_vpc(logger=None, region="", vpc_id="", aws_access_key_id="", aws_secr
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Delete VPC\n")
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
 
     except Exception as e:
@@ -170,7 +189,7 @@ def delete_vpc(logger=None, region="", vpc_id="", aws_access_key_id="", aws_secr
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Delete VPC\n")
 
 
 
@@ -186,17 +205,12 @@ def create_subnet(logger=None,
                   availability_zone="",
                   cidr="",
                   aws_access_key_id="",
-                  aws_secret_access_key=""
+                  aws_secret_access_key="",
+                  log_indentation=""
                   ):
-    logger.info("\nSTART: Create Subnet")
+    logger.info(log_indentation + "START: Create Subnet")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -213,17 +227,18 @@ def create_subnet(logger=None,
             DryRun=False
         )
 
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
+
         ##### Step 02: Get Subnet ID
-        logger.info("    Successfully created a Subnet.")
+        logger.info(log_indentation + "    Successfully created a Subnet.")
         subnet_id = response["Subnet"]["SubnetId"]
-        logger.info("    Subnet ID: " + subnet_id)
+        logger.info(log_indentation + "    Subnet ID: " + subnet_id)
 
         ##### Step 03: Wait until Subnet is available
-        # logger.info("\n    Wait until Subnet is available\n")
+        # logger.info("    Wait until Subnet is available\n")
         # subnet = ec2_resource.Subnet(subnet_id)  # Get VPC object
         # subnet.wait_until_available()
-
-        logger.info("ENDED: Create Subnet\n")
 
         return subnet_id
 
@@ -233,12 +248,19 @@ def create_subnet(logger=None,
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Create Subnet\n")
 
 
 
-def delete_subnet(logger=None, region="", subnet_id="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Delete Subnet")
+
+def delete_subnet(logger=None, 
+                  region="", 
+                  subnet_id="", 
+                  aws_access_key_id="", 
+                  aws_secret_access_key="", 
+                  log_indentation=""
+                  ):
+    logger.info(log_indentation + "START: Delete Subnet")
 
     ec2_client = boto3.client(
         service_name='ec2',
@@ -253,18 +275,18 @@ def delete_subnet(logger=None, region="", subnet_id="", aws_access_key_id="", aw
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Delete Subnet\n")
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
 
         return True
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Delete Subnet\n")
+
 
 
 
@@ -272,16 +294,10 @@ def delete_subnet(logger=None, region="", subnet_id="", aws_access_key_id="", aw
 ###################################################    IGW     ########################################################
 #######################################################################################################################
 
-def create_igw(logger=None, region="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Create IGW")
+def create_igw(logger=None, region="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
+    logger.info(log_indentation + "START: Create IGW")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -294,35 +310,29 @@ def create_igw(logger=None, region="", aws_access_key_id="", aws_secret_access_k
             DryRun=False
         )
 
-        ##### Step 02: Get IGW ID
-        logger.info("    Succeed")
-        igw_id = response["InternetGateway"]["InternetGatewayId"]
-        logger.info("    IGW ID: " + igw_id)
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
 
-        logger.info("ENDED: Create IGW\n")
+        ##### Step 02: Get IGW ID
+        igw_id = response["InternetGateway"]["InternetGatewayId"]
+        logger.info(log_indentation + "    IGW ID: " + igw_id)
 
         return igw_id
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Create IGW\n")
 
 
 
-def delete_igw(logger=None, region="", igw_id="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Delete IGW")
+
+def delete_igw(logger=None, region="", igw_id="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
+    logger.info(log_indentation + "START: Delete IGW")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -336,9 +346,8 @@ def delete_igw(logger=None, region="", igw_id="", aws_access_key_id="", aws_secr
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Delete IGW\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return igw_id
 
 
@@ -347,20 +356,22 @@ def delete_igw(logger=None, region="", igw_id="", aws_access_key_id="", aws_secr
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Delete IGW\n")
 
 
 
-def attach_igw_to_vpc(logger=None, region="", igw_id="", vpc_id="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Attach IGW")
+
+def attach_igw_to_vpc(logger=None, 
+                      region="", 
+                      igw_id="", 
+                      vpc_id="", 
+                      aws_access_key_id="", 
+                      aws_secret_access_key="",
+                      log_indentation=""
+                      ):
+    logger.info(log_indentation + "START: Attach IGW " + igw_id + " to VPC " + vpc_id)
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -375,8 +386,8 @@ def attach_igw_to_vpc(logger=None, region="", igw_id="", vpc_id="", aws_access_k
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Attach IGW\n")
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
 
         return True
 
@@ -386,12 +397,20 @@ def attach_igw_to_vpc(logger=None, region="", igw_id="", vpc_id="", aws_access_k
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Attach IGW " + igw_id + " to VPC " + vpc_id)
 
 
 
-def detach_igw_from_vpc(logger=None, region="", igw_id="", vpc_id="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Detach IGW")
+
+def detach_igw_from_vpc(logger=None, 
+                        region="", 
+                        igw_id="", 
+                        vpc_id="", 
+                        aws_access_key_id="", 
+                        aws_secret_access_key="",
+                        log_indentation=""
+                        ):
+    logger.info(log_indentation + "START: Detach IGW from VPC")
 
     ec2_client = boto3.client(
         service_name='ec2',
@@ -399,24 +418,17 @@ def detach_igw_from_vpc(logger=None, region="", igw_id="", vpc_id="", aws_access
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key
     )
-    ec2_resource = boto3.resource(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
 
     try:
-        ##### Step 01: Detach IGW
+        ##### Step 01: Detach IGW from VPC
         response = ec2_client.detach_internet_gateway(
             InternetGatewayId=igw_id,
             VpcId=vpc_id,
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Detach IGW\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
 
 
@@ -425,7 +437,8 @@ def detach_igw_from_vpc(logger=None, region="", igw_id="", vpc_id="", aws_access
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Detach IGW\n")
+
 
 
 
@@ -435,16 +448,16 @@ def detach_igw_from_vpc(logger=None, region="", igw_id="", vpc_id="", aws_access
 #######################################################################################################################
 
 
-def create_route_table(logger=None, region="", vpc_id="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Create Route-Table")
+def create_route_table(logger=None, 
+                       region="", 
+                       vpc_id="", 
+                       aws_access_key_id="", 
+                       aws_secret_access_key="",
+                       log_indentation=""
+                       ):
+    logger.info(log_indentation + "START: Create Route-Table")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -458,12 +471,12 @@ def create_route_table(logger=None, region="", vpc_id="", aws_access_key_id="", 
             DryRun=False
         )
 
-        ##### Step 02: Get route table ID
-        logger.info("    Succeed")
-        route_table_id = response["RouteTable"]["RouteTableId"]
-        logger.info("    Route-Table ID: " + route_table_id)
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
 
-        logger.info("ENDED: Create Route-Table\n")
+        ##### Step 02: Get route table ID
+        route_table_id = response["RouteTable"]["RouteTableId"]
+        logger.info(log_indentation + "    Route-Table ID: " + route_table_id)
 
         return route_table_id
 
@@ -473,20 +486,21 @@ def create_route_table(logger=None, region="", vpc_id="", aws_access_key_id="", 
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Create Route-Table\n")
 
 
 
-def delete_route_table(logger=None, region="", route_table_id="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Delete route table: " + route_table_id)
+
+def delete_route_table(logger=None, 
+                       region="", 
+                       route_table_id="", 
+                       aws_access_key_id="", 
+                       aws_secret_access_key="",
+                       log_indentation=""
+                       ):
+    logger.info(log_indentation + "START: Delete route table: " + route_table_id)
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -500,9 +514,8 @@ def delete_route_table(logger=None, region="", route_table_id="", aws_access_key
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Delete route table: " + route_table_id + "\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
 
 
@@ -511,7 +524,8 @@ def delete_route_table(logger=None, region="", route_table_id="", aws_access_key
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Delete route table: " + route_table_id + "\n")
+
 
 
 
@@ -520,17 +534,12 @@ def associate_route_table_to_subnet(logger=None,
                                     route_table_id="",
                                     subnet_id="",
                                     aws_access_key_id="",
-                                    aws_secret_access_key=""
+                                    aws_secret_access_key="",
+                                    log_indentation=""
                                     ):
-    logger.info("\nSTART: Associate route table to subnet")
+    logger.info(log_indentation + "START: Associate route table to subnet")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -545,11 +554,11 @@ def associate_route_table_to_subnet(logger=None,
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        route_table_association_id = response["AssociationId"]
-        logger.info("AssociationId: " + route_table_association_id)
-        logger.info("ENDED: Associate route table to subnet\n")
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
 
+        route_table_association_id = response["AssociationId"]
+        logger.info(log_indentation + "AssociationId: " + route_table_association_id)
         return route_table_association_id
 
 
@@ -558,7 +567,8 @@ def associate_route_table_to_subnet(logger=None,
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Associate route table to subnet\n")
+
 
 
 
@@ -566,9 +576,10 @@ def disassociate_route_table(logger=None,
                              region="",
                              route_table_association_id="",
                              aws_access_key_id="",
-                             aws_secret_access_key=""
+                             aws_secret_access_key="",
+                             log_indentation=""
                              ):
-    logger.info("\nSTART: Disassociate route table from subnet")
+    logger.info(log_indentation + "START: Disassociate route table from subnet")
 
     ec2_client = boto3.client(
         service_name='ec2',
@@ -576,33 +587,26 @@ def disassociate_route_table(logger=None,
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key
     )
-    ec2_resource = boto3.resource(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
 
     try:
-        ##### Step 01:     logger.info("\nSTART: Disassociate route table from subnet")
+        ##### Step 01:     logger.info("START: Disassociate route table from subnet")
 
         response = ec2_client.disassociate_route_table(
             AssociationId=route_table_association_id,
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Disassociate route table from subnet\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Disassociate route table from subnet\n")
+
 
 
 
@@ -613,9 +617,10 @@ def create_route(logger=None,
                  igw_id="",
                  network_interface_id="",
                  aws_access_key_id="",
-                 aws_secret_access_key=""
+                 aws_secret_access_key="",
+                 log_indentation=""
                  ):
-    logger.info("\nSTART: Create route to route-table: " + route_table_id)
+    logger.info(log_indentation + "START: Create route to route-table: " + route_table_id)
 
     ec2_resource = boto3.resource(
         service_name='ec2',
@@ -639,18 +644,16 @@ def create_route(logger=None,
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Create route to route-table: " + route_table_id + "\n")
-
+        logger.info(log_indentation + "    Succeed")
         return True
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Create route to route-table: " + route_table_id + "\n")
+
 
 
 
@@ -659,17 +662,12 @@ def delete_route(logger=None,
                  route_table_id="",
                  destnation_cidr="",
                  aws_access_key_id="",
-                 aws_secret_access_key=""
+                 aws_secret_access_key="",
+                 log_indentation=""
                  ):
-    logger.info("\nSTART: Delete Route")
+    logger.info(log_indentation + "START: Delete Route")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -685,9 +683,8 @@ def delete_route(logger=None,
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Delete Route\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
 
 
@@ -696,7 +693,7 @@ def delete_route(logger=None,
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Delete Route\n")
 
 
 
@@ -704,17 +701,12 @@ def get_route_table_id_from_subnet(logger=None,
                                    region="",
                                    subnet_id="",
                                    aws_access_key_id="",
-                                   aws_secret_access_key=""
+                                   aws_secret_access_key="",
+                                   log_indentation=""
                                    ):
-    logger.info("\nSTART: Get route table ID from subnet: " + subnet_id)
+    logger.info(log_indentation + "START: Get route table ID from subnet: " + subnet_id)
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -734,12 +726,12 @@ def get_route_table_id_from_subnet(logger=None,
             ]
         )
 
-        ##### Step 02: Get Get route table ID from response
-        logger.info("    Succeed")
-        route_table_id = response['RouteTables'][0]['Associations'][0]['RouteTableId']
-        logger.info("    Route table ID: " + route_table_id)
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
 
-        logger.info("ENDED: Get route table ID from subnet: " + subnet_id + "\n")
+        ##### Step 02: Get Get route table ID from response
+        route_table_id = response['RouteTables'][0]['Associations'][0]['RouteTableId']
+        logger.info(log_indentation + "    Route table ID: " + route_table_id)
 
         return route_table_id
 
@@ -749,7 +741,8 @@ def get_route_table_id_from_subnet(logger=None,
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Get route table ID from subnet: " + subnet_id + "\n")
+
 
 
 
@@ -765,17 +758,12 @@ def create_security_group(logger=None,
                           security_group_name="",
                           description="",
                           aws_access_key_id="",
-                          aws_secret_access_key=""
+                          aws_secret_access_key="",
+                          log_indentation=""
                           ):
-    logger.info("\nSTART: Create Security-Group")
+    logger.info(log_indentation + "START: Create Security-Group for VPC: " + vpc_id)
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -791,12 +779,12 @@ def create_security_group(logger=None,
             DryRun=False
         )
 
-        ##### Step 02: Get Security-Group ID
-        logger.info("    Succeed")
-        security_group_id = response["GroupId"]
-        logger.info("    Security-Group ID: " + security_group_id)
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
 
-        logger.info("ENDED: Create Security-Group\n")
+        ##### Step 02: Get Security-Group ID
+        security_group_id = response["GroupId"]
+        logger.info(log_indentation + "    Security-Group ID: " + security_group_id)
 
         return security_group_id
 
@@ -806,7 +794,7 @@ def create_security_group(logger=None,
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Create Security-Group for VPC: " + vpc_id + "\n")
 
 
 
@@ -815,17 +803,12 @@ def delete_security_group(logger=None,
                           security_group_id="",
                           security_group_name="",
                           aws_access_key_id="",
-                          aws_secret_access_key=""
+                          aws_secret_access_key="",
+                          log_indentation=""
                           ):
-    logger.info("\nSTART: Delete Security-Group")
+    logger.info(log_indentation + "START: Delete Security-Group")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -840,9 +823,8 @@ def delete_security_group(logger=None,
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Delete Security-Group\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
 
 
@@ -851,7 +833,8 @@ def delete_security_group(logger=None,
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Delete Security-Group\n")
+
 
 
 
@@ -867,18 +850,13 @@ def authorize_security_group_ingress(logger=None,
                                      port_range_from="",
                                      port_range_to="",
                                      source_ip_cidr="",
-                                     aws_access_key_id=aws_access_key_id,
-                                     aws_secret_access_key=aws_secret_access_key
+                                     aws_access_key_id="",
+                                     aws_secret_access_key="",
+                                     log_indentation=""
                                      ):
-    logger.info("\nSTART: Create a rule for Security Group: " + security_group_id)
+    logger.info(log_indentation + "START: Create a rule for Security Group: " + security_group_id)
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -936,9 +914,8 @@ def authorize_security_group_ingress(logger=None,
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Create a rule for Security Group\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
 
 
@@ -947,7 +924,8 @@ def authorize_security_group_ingress(logger=None,
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Create a rule for Security Group\n")
+
 
 
 
@@ -961,18 +939,13 @@ def create_network_interface(logger=None,
                              subnet_id="",
                              security_group_id_list="",
                              description="",
-                             aws_access_key_id=aws_access_key_id,
-                             aws_secret_access_key=aws_secret_access_key
+                             aws_access_key_id="",
+                             aws_secret_access_key="",
+                             log_indentation=""
                              ):
-    logger.info("\nSTART: Create Network-Interface")
+    logger.info(log_indentation + "START: Create Network-Interface")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1002,14 +975,12 @@ def create_network_interface(logger=None,
             DryRun=False,
         )
 
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
+
         ##### Step 02: Get Network-Interface ID
-        logger.info("    Succeed")
         network_interface_id = response["NetworkInterface"]["NetworkInterfaceId"]
-        logger.info("    Network-Interface ID: " + network_interface_id)
-
-
-        logger.info("ENDED: Create Network-Interface\n")
-
+        logger.info(log_indentation + "    Network-Interface ID: " + network_interface_id)
         return network_interface_id
 
 
@@ -1018,7 +989,8 @@ def create_network_interface(logger=None,
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Create Network-Interface\n")
+
 
 
 
@@ -1026,17 +998,12 @@ def delete_network_interface(logger=None,
                              region="",
                              network_interface_id="",
                              aws_access_key_id="",
-                             aws_secret_access_key=""
+                             aws_secret_access_key="",
+                             log_indentation=""
                              ):
-    logger.info("\nSTART: Delete Network-Interface")
+    logger.info(log_indentation + "START: Delete Network-Interface")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1050,18 +1017,17 @@ def delete_network_interface(logger=None,
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Delete Network-Interface\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return network_interface_id
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Delete Network-Interface\n")
+
 
 
 
@@ -1075,16 +1041,12 @@ def create_volume(logger=None,
                   availability_zone="",
                   size="",
                   aws_access_key_id="",
-                  aws_secret_access_key=""):
-    logger.info("\nSTART: Create Volume")
+                  aws_secret_access_key="",
+                  log_indentation=""
+                  ):
+    logger.info(log_indentation + "START: Create Volume")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1115,13 +1077,12 @@ def create_volume(logger=None,
             DryRun=False
         )
 
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
+
         ##### Step 02: Get Volume ID
-        logger.info("    Succeed")
         volume_id = response["VolumeId"]
-        logger.info("    Volume ID: " + volume_id)
-
-        logger.info("ENDED: Create Volume\n")
-
+        logger.info(log_indentation + "    Volume ID: " + volume_id)
         return volume_id
 
 
@@ -1130,20 +1091,21 @@ def create_volume(logger=None,
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Create Volume\n")
 
 
 
-def delete_volume(logger=None, region="", volume_id="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Delete Volume")
+
+def delete_volume(logger=None, 
+                  region="", 
+                  volume_id="", 
+                  aws_access_key_id="", 
+                  aws_secret_access_key="",
+                  log_indentation=""
+                  ):
+    logger.info(log_indentation + "START: Delete Volume")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1157,9 +1119,8 @@ def delete_volume(logger=None, region="", volume_id="", aws_access_key_id="", aw
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Delete Volume\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
 
 
@@ -1168,7 +1129,8 @@ def delete_volume(logger=None, region="", volume_id="", aws_access_key_id="", aw
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Delete Volume\n")
+
 
 
 
@@ -1177,16 +1139,16 @@ def delete_volume(logger=None, region="", volume_id="", aws_access_key_id="", aw
 #######################################################################################################################
 
 
-def create_key_pair(logger=None, region="", key_pair_name="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Create Key-Pair")
+def create_key_pair(logger=None, 
+                    region="", 
+                    key_pair_name="", 
+                    aws_access_key_id="", 
+                    aws_secret_access_key="",
+                    log_indentation=""
+                    ):
+    logger.info(log_indentation + "START: Create Key-Pair")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1200,32 +1162,31 @@ def create_key_pair(logger=None, region="", key_pair_name="", aws_access_key_id=
             DryRun=False
         )
 
-        logger.info("    Succeed")
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         private_key = response["KeyMaterial"]
-        logger.info("ENDED: Create Key-Pair\n")
-
         return private_key
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Create Key-Pair\n")
 
 
 
-def delete_key_pair(logger=None, region="", key_pair_name="", aws_access_key_id="", aws_secret_access_key=""):
-    logger.info("\nSTART: Delete Key-Pair")
+
+def delete_key_pair(logger=None, 
+                    region="", 
+                    key_pair_name="", 
+                    aws_access_key_id="", 
+                    aws_secret_access_key="",
+                    log_indentation=""
+                    ):
+    logger.info(log_indentation + "START: Delete Key-Pair")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1239,9 +1200,8 @@ def delete_key_pair(logger=None, region="", key_pair_name="", aws_access_key_id=
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Delete Key-Pair\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
 
 
@@ -1250,7 +1210,8 @@ def delete_key_pair(logger=None, region="", key_pair_name="", aws_access_key_id=
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Delete Key-Pair\n")
+
 
 
 
@@ -1271,14 +1232,12 @@ def associate_iam_instance_profile_to_ec2_instance(
         iam_instance_profile_arn="",
         ec2_instance_id="",
         aws_access_key_id="",
-        aws_secret_access_key=""):
-    logger.info("\nSTART: Associate IAM-Instance-Profile to a EC2 Instance")
+        aws_secret_access_key="",
+        log_indentation=""
+        ):
+    logger.info(log_indentation + "START: Associate IAM-Instance-Profile to a EC2 Instance")
 
-    ec2_client   = boto3.client(service_name='ec2',
-                                region_name=region,
-                                aws_access_key_id=aws_access_key_id,
-                                aws_secret_access_key=aws_secret_access_key)
-    ec2_resource = boto3.resource(
+    ec2_client = boto3.client(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1295,13 +1254,13 @@ def associate_iam_instance_profile_to_ec2_instance(
             InstanceId=ec2_instance_id
         )
 
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
+
         ##### Step 02: Get Association ID (for disassociation)
-        logger.info("    Succeed")
         association_id_for_instance_profile_and_ec2_instance = response["IamInstanceProfileAssociation"][
             "AssociationId"]
-        logger.info("    Association ID: " + association_id_for_instance_profile_and_ec2_instance)
-
-        logger.info("ENDED: Associate IAM-Instance-Profile to a EC2 Instance\n")
+        logger.info(log_indentation + "    Association ID: " + association_id_for_instance_profile_and_ec2_instance)
 
         return association_id_for_instance_profile_and_ec2_instance
 
@@ -1310,22 +1269,22 @@ def associate_iam_instance_profile_to_ec2_instance(
         logger.error(tracekback_msg)
 
     finally:
-        return False
+        logger.info(log_indentation + "ENDED: Associate IAM-Instance-Profile to a EC2 Instance\n")
+
 
 
 
 def disassociate_iam_instance_profile_from_ec2_instance(
+        logger=None,
         region="",
         association_id_for_instance_profile_and_ec2_instance="",
         aws_access_key_id="",
-        aws_secret_access_key=""):
-    logger.info("\nSTART: Disassociate IAM-Instance-Profile from an EC2 Instance")
+        aws_secret_access_key="",
+        log_indentation=""
+        ):
+    logger.info(log_indentation + "START: Disassociate IAM-Instance-Profile from an EC2 Instance")
 
-    ec2_client   = boto3.client(service_name='ec2',
-                                region_name=region,
-                                aws_access_key_id=aws_access_key_id,
-                                aws_secret_access_key=aws_secret_access_key)
-    ec2_resource = boto3.resource(
+    ec2_client = boto3.client(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1337,9 +1296,9 @@ def disassociate_iam_instance_profile_from_ec2_instance(
         response = ec2_client.disassociate_iam_instance_profile(
             AssociationId=association_id_for_instance_profile_and_ec2_instance
         )
-        logger.info("    Succeed")
-        logger.info("ENDED: Disassociate IAM-Instance-Profile from an EC2 Instance\n")
 
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
 
     except Exception as e:
@@ -1347,13 +1306,16 @@ def disassociate_iam_instance_profile_from_ec2_instance(
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Disassociate IAM-Instance-Profile from an EC2 Instance\n")
+
+
 
 
 '''
 Create EC2 Instance/VM
 '''
-def run_instance(region="",
+def run_instance(logger=None,
+                 region="",
                  ami_id="",
                  subnet_id="",
                  instance_type="",
@@ -1362,17 +1324,14 @@ def run_instance(region="",
                  security_group_id="",
                  iam_instance_profile_name="",
                  iam_instance_profile_arn="",
-                 network_interface_id=""
+                 network_interface_id="",
+                 aws_access_key_id="",
+                 aws_secret_access_key="",
+                 log_indentation=""
                  ):
-    logger.info("\nSTART: Create EC2 Instance/VM")
+    logger.info(log_indentation + "START: Create EC2 Instance/VM")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1506,36 +1465,37 @@ def run_instance(region="",
             DryRun=False
         )
 
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
+
         ##### Step 02: Get Instance ID
-        logger.info("    Succeed")
         instance_id         = response["Instances"][0]["InstanceId"]
         instance_private_ip = response["Instances"][0]["PrivateIpAddress"]
-        logger.info("    Instance ID: " + instance_id)
+        logger.info(log_indentation + "    Instance ID: " + instance_id)
 
-        logger.info("ENDED: Create EC2 Instance/VM\n")
 
         return instance_id, instance_private_ip
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Create EC2 Instance/VM\n")
 
 
 
-def terminate_instances(region="", instance_id_list=""):
-    logger.info("\nSTART: Terminate Instances")
+
+def terminate_instances(logger=None,
+                        region="",
+                        instance_id_list="",
+                        aws_access_key_id="",
+                        aws_secret_access_key="",
+                        log_indentation=""
+                        ):
+    logger.info(log_indentation + "START: Terminate Instances")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1549,31 +1509,30 @@ def terminate_instances(region="", instance_id_list=""):
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Terminate Instances\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Terminate Instances\n")
 
 
 
-def describe_instance_status(region="", instance_id_list=""):
-    logger.info("\nSTART: Describe Instance Status")
+
+def describe_instance_status(logger=None, 
+                             region="", 
+                             instance_id_list="", 
+                             aws_access_key_id="", 
+                             aws_secret_access_key="",
+                             log_indentation=""
+                             ):
+    logger.info(log_indentation + "START: Describe EC2 Instance Status")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1598,42 +1557,40 @@ def describe_instance_status(region="", instance_id_list=""):
             DryRun=False
         )
 
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))  # logger.info(response)  -->>  {'InstanceStatuses': [{'AvailabilityZone': 'ca-central-1b', 'InstanceId': 'i-0bae4085922aa1cbf', 'InstanceState': {'Code': 16, 'Name': 'running'}, 'InstanceStatus': {'Details': [{'Name': 'reachability', 'Status': 'passed'}], 'Status': 'ok'}, 'SystemStatus': {'Details': [{'Name': 'reachability', 'Status': 'passed'}], 'Status': 'ok'}}], 'ResponseMetadata': {'RequestId': '06aee78b-a6b6-4bdd-9328-3d4979d22824', 'HTTPStatusCode': 200, 'HTTPHeaders': {'content-type': 'text/xml;charset=UTF-8', 'transfer-encoding': 'chunked', 'vary': 'Accept-Encoding', 'date': 'Mon, 12 Mar 2018 18:28:02 GMT', 'server': 'AmazonEC2'}, 'RetryAttempts': 0}}
+
         ##### Step 02: Get Status
-        logger.info("    Succeed")
-        # logger.info(response)  # logger.info(response)  -->>  {'InstanceStatuses': [{'AvailabilityZone': 'ca-central-1b', 'InstanceId': 'i-0bae4085922aa1cbf', 'InstanceState': {'Code': 16, 'Name': 'running'}, 'InstanceStatus': {'Details': [{'Name': 'reachability', 'Status': 'passed'}], 'Status': 'ok'}, 'SystemStatus': {'Details': [{'Name': 'reachability', 'Status': 'passed'}], 'Status': 'ok'}}], 'ResponseMetadata': {'RequestId': '06aee78b-a6b6-4bdd-9328-3d4979d22824', 'HTTPStatusCode': 200, 'HTTPHeaders': {'content-type': 'text/xml;charset=UTF-8', 'transfer-encoding': 'chunked', 'vary': 'Accept-Encoding', 'date': 'Mon, 12 Mar 2018 18:28:02 GMT', 'server': 'AmazonEC2'}, 'RetryAttempts': 0}}
         instance_state         = response["InstanceStatuses"][0]["InstanceState"]["Name"]
         instance_system_status = response["InstanceStatuses"][0]["SystemStatus"]["Status"]
-        logger.info("    Instance State:         " + instance_state)
-        logger.info("    Instance System Status: " + instance_system_status)
-
-
-        logger.info("ENDED: Describe Instance Status\n")
-
+        logger.info(log_indentation + "    Instance State:         " + instance_state)
+        logger.info(log_indentation + "    Instance System Status: " + instance_system_status)
         return instance_state, instance_system_status
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Describe EC2 Instance Status\n")
 
 
 
-def describe_instance_attribute(region="", instance_id="", attribute="", param2="", param3="", param4="", param5=""):
-    logger.info("\nSTART: Describe Instance Attribute")
+
+def describe_instance_attribute(logger=None, 
+                                region="", 
+                                instance_id="", 
+                                attribute="", 
+                                aws_access_key_id="", 
+                                aws_secret_access_key="",
+                                log_indentation=""
+                                ):
+    logger.info(log_indentation + "START: Describe Instance Attribute")
 
     ec2_client   = boto3.client(service_name='ec2',
                                 region_name=region,
                                 aws_access_key_id=aws_access_key_id,
                                 aws_secret_access_key=aws_secret_access_key)
-    ec2_resource = boto3.resource(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
 
     try:
         ##### Step 01: Describe Instance Attribute
@@ -1643,36 +1600,33 @@ def describe_instance_attribute(region="", instance_id="", attribute="", param2=
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        ##### Step 02: Get response
-        logger.info(response)  # result  -->>
-        logger.info("ENDED: Describe Instance Attribute\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return response
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Describe Instance Attribute\n")
 
 
 
-def describe_instances(region="", instance_id_list="", param2="", param3="", param4="", param5="", param6=""):
-    logger.info("\nSTART: Describe EC2 Instances")
+
+def describe_instances(logger=None,
+                       region="",
+                       instance_id_list="",
+                       aws_access_key_id="",
+                       aws_secret_access_key="",
+                       log_indentation=""
+                       ):
+    logger.info(log_indentation + "START: Describe EC2 Instances")
 
     ec2_client   = boto3.client(service_name='ec2',
                                 region_name=region,
                                 aws_access_key_id=aws_access_key_id,
                                 aws_secret_access_key=aws_secret_access_key)
-    ec2_resource = boto3.resource(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
 
     try:
         ##### Step 01: Describe EC2 Instances
@@ -1691,38 +1645,34 @@ def describe_instances(region="", instance_id_list="", param2="", param3="", par
             # NextToken='string'
         )
 
-        logger.info("    Succeed")
-
-        ##### Step 02: Get XXXXX_somthing_XXXXX Attributes
-        logger.info(response)  # logger.info(response)  -->>  {'Reservations': [{'Groups': [], 'Instances': [{'AmiLaunchIndex': 0, 'ImageId': 'ami-de4bceba', 'InstanceId': 'i-0bae4085922aa1cbf', 'InstanceType': 't2.large', 'KeyName': 'key_aws_central', 'LaunchTime': datetime.datetime(2018, 3, 12, 10, 30, 47, tzinfo=tzutc()), 'Monitoring': {'State': 'disabled'}, 'Placement': {'AvailabilityZone': 'ca-central-1b', 'GroupName': '', 'Tenancy': 'default'}, 'PrivateDnsName': 'ip-172-31-2-170.ca-central-1.compute.internal', 'PrivateIpAddress': '172.31.2.170', 'ProductCodes': [{'ProductCodeId': 'zemc6exdso42eps9ki88l9za', 'ProductCodeType': 'marketplace'}], 'PublicDnsName': 'ec2-35-182-200-255.ca-central-1.compute.amazonaws.com', 'PublicIpAddress': '35.182.200.255', 'State': {'Code': 16, 'Name': 'running'}, 'StateTransitionReason': '', 'SubnetId': 'subnet-0eb26575', 'VpcId': 'vpc-89bc09e0', 'Architecture': 'x86_64', 'BlockDeviceMappings': [{'DeviceName': '/dev/sda1', 'Ebs': {'AttachTime': datetime.datetime(2018, 3, 12, 10, 30, 47, tzinfo=tzutc()), 'DeleteOnTermination': True, 'Status': 'attached', 'VolumeId': 'vol-0b51877595e063882'}}], 'ClientToken': '152085064685063311', 'EbsOptimized': False, 'EnaSupport': False, 'Hypervisor': 'xen', 'IamInstanceProfile': {'Arn': 'arn:aws:iam::971302066566:instance-profile/aviatrix-role-ec2', 'Id': 'AIPAI6VQ5VKT6BWKG27JI'}, 'NetworkInterfaces': [{'Association': {'IpOwnerId': 'amazon', 'PublicDnsName': 'ec2-35-182-200-255.ca-central-1.compute.amazonaws.com', 'PublicIp': '35.182.200.255'}, 'Attachment': {'AttachTime': datetime.datetime(2018, 3, 12, 10, 30, 47, tzinfo=tzutc()), 'AttachmentId': 'eni-attach-7340f19b', 'DeleteOnTermination': True, 'DeviceIndex': 0, 'Status': 'attached'}, 'Description': '', 'Groups': [{'GroupName': 'Aviatrix for Cloud Interconnect- Cloud Peering and VPN -BYOL--111517-AutogenByAWSMP-1', 'GroupId': 'sg-6f83b207'}], 'Ipv6Addresses': [], 'MacAddress': '06:93:cd:63:c2:7a', 'NetworkInterfaceId': 'eni-853410d0', 'OwnerId': '971302066566', 'PrivateDnsName': 'ip-172-31-2-170.ca-central-1.compute.internal', 'PrivateIpAddress': '172.31.2.170', 'PrivateIpAddresses': [{'Association': {'IpOwnerId': 'amazon', 'PublicDnsName': 'ec2-35-182-200-255.ca-central-1.compute.amazonaws.com', 'PublicIp': '35.182.200.255'}, 'Primary': True, 'PrivateDnsName': 'ip-172-31-2-170.ca-central-1.compute.internal', 'PrivateIpAddress': '172.31.2.170'}], 'SourceDestCheck': True, 'Status': 'in-use', 'SubnetId': 'subnet-0eb26575', 'VpcId': 'vpc-89bc09e0'}], 'RootDeviceName': '/dev/sda1', 'RootDeviceType': 'ebs', 'SecurityGroups': [{'GroupName': 'Aviatrix for Cloud Interconnect- Cloud Peering and VPN -BYOL--111517-AutogenByAWSMP-1', 'GroupId': 'sg-6f83b207'}], 'SourceDestCheck': True, 'Tags': [{'Key': 'Name', 'Value': 'UCC_manual'}], 'VirtualizationType': 'hvm'}], 'OwnerId': '971302066566', 'ReservationId': 'r-0dcbc8209770ca286'}], 'ResponseMetadata': {'RequestId': '0b510002-f64f-4841-be49-2bb9e475921a', 'HTTPStatusCode': 200, 'HTTPHeaders': {'content-type': 'text/xml;charset=UTF-8', 'transfer-encoding': 'chunked', 'vary': 'Accept-Encoding', 'date': 'Mon, 12 Mar 2018 18:59:43 GMT', 'server': 'AmazonEC2'}, 'RetryAttempts': 0}}
-
-        logger.info("ENDED: Describe EC2 Instances\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return response
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Describe EC2 Instances\n")
 
 
 
-def describe_iam_instance_profile_associations(region="", instance_id="", param2="", param3="", param4="", param5="", param6=""):
-    logger.info("\nSTART: Describe IAM Instance Profile Associations for Instance: " + instance_id + " in " + region)
+
+def describe_iam_instance_profile_associations(logger=None, 
+                                               region="", 
+                                               instance_id="",
+                                               aws_access_key_id="",
+                                               aws_secret_access_key="",
+                                               log_indentation=""
+                                               ):
+    logger.info(log_indentation + "START: Describe IAM Instance Profile Associations for Instance: " + 
+                instance_id + " in " + region)
 
     ec2_client   = boto3.client(service_name='ec2',
                                 region_name=region,
                                 aws_access_key_id=aws_access_key_id,
                                 aws_secret_access_key=aws_secret_access_key)
-    ec2_resource = boto3.resource(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
 
     try:
         ##### Step 01: Describe IAM Instance Profile Associations
@@ -1742,28 +1692,26 @@ def describe_iam_instance_profile_associations(region="", instance_id="", param2
             # NextToken='string'
         )
 
-        logger.info("    Succeed")
-        logger.info(response)  # logger.info(response)  -->>  {'IamInstanceProfileAssociations': [{'AssociationId': 'iip-assoc-0366ca256cba98d83', 'InstanceId': 'i-0805e7138f8e540e1', 'IamInstanceProfile': {'Arn': 'arn:aws:iam::971302066566:instance-profile/byol-AviatrixInstanceProfile-1IWGARA2GOKHJ', 'Id': 'AIPAJQF4LCA6NR6L2SOWG'}, 'State': 'associated'}], 'ResponseMetadata': {'RequestId': '747594ad-35a6-43ae-a850-445c9c9623c0', 'HTTPStatusCode': 200, 'HTTPHeaders': {'content-type': 'text/xml;charset=UTF-8', 'transfer-encoding': 'chunked', 'vary': 'Accept-Encoding', 'date': 'Mon, 12 Mar 2018 19:58:55 GMT', 'server': 'AmazonEC2'}, 'RetryAttempts': 0}}
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))  # logger.info(response)  -->>  {'IamInstanceProfileAssociations': [{'AssociationId': 'iip-assoc-0366ca256cba98d83', 'InstanceId': 'i-0805e7138f8e540e1', 'IamInstanceProfile': {'Arn': 'arn:aws:iam::971302066566:instance-profile/byol-AviatrixInstanceProfile-1IWGARA2GOKHJ', 'Id': 'AIPAJQF4LCA6NR6L2SOWG'}, 'State': 'associated'}], 'ResponseMetadata': {'RequestId': '747594ad-35a6-43ae-a850-445c9c9623c0', 'HTTPStatusCode': 200, 'HTTPHeaders': {'content-type': 'text/xml;charset=UTF-8', 'transfer-encoding': 'chunked', 'vary': 'Accept-Encoding', 'date': 'Mon, 12 Mar 2018 19:58:55 GMT', 'server': 'AmazonEC2'}, 'RetryAttempts': 0}}
 
         ##### Step 02: Get Association-ID between Profile-Instance and EC2 Instance
         association_id = response["IamInstanceProfileAssociations"][0]["AssociationId"]
-        logger.info("    Association-ID between Profile-Instance and EC2 Instance: " + association_id)
+        logger.info(log_indentation + "    Association-ID between Profile-Instance and EC2 Instance: " + association_id)
 
         ##### Step 03: Get Profile-Instance ARN
         instance_profile_arn = response["IamInstanceProfileAssociations"][0]["IamInstanceProfile"]["Arn"]
-        logger.info("    Instance Profile ARN                                    : " + instance_profile_arn)
-
-        logger.info("ENDED: Describe IAM Instance Profile Associations for Instance: " + instance_id + " in " + region + "\n")
+        logger.info(log_indentation + "    Instance Profile ARN                                    : " + instance_profile_arn)
 
         return association_id, instance_profile_arn
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Describe IAM Instance Profile Associations for Instance: " + instance_id + " in " + region + "\n")
+
 
 
 
@@ -1772,16 +1720,10 @@ def describe_iam_instance_profile_associations(region="", instance_id="", param2
 #######################################################################################################################
 
 
-def allocate_eip(region=""):
-    logger.info("\nSTART: Allocate EIP")
+def allocate_eip(logger=None, region="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
+    logger.info("START: Allocate EIP")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1796,37 +1738,39 @@ def allocate_eip(region=""):
             DryRun=False
         )
 
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
+
         ##### Step 02: Get EIP ID
-        logger.info("    Succeed")
         eip_id = response["AllocationId"]
-        eip = response["PublicIp"]
-        logger.info("    EIP ID: " + eip_id)
-        logger.info("    EIP   : " + eip)
-
-        logger.info("ENDED: Allocate EIP\n")
-
+        eip    = response["PublicIp"]
+        logger.info(log_indentation + "    EIP ID: " + eip_id)
+        logger.info(log_indentation + "    EIP   : " + eip)
         return (eip_id, eip)
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Allocate EIP\n")
 
 
 
-def release_address(region="", eip_id=""):
-    logger.info("\nSTART: Release EIP")
+def release_address(logger=None,
+                    region="",
+                    eip_id="",
+                    aws_access_key_id="",
+                    aws_secret_access_key="",
+                    log_indentation=""
+                    ):
+    """
+    This function release/delete an EIP 
+    :return: return True if no error/exception occurs
+    """
+    logger.info(log_indentation + "START: Release EIP")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1841,9 +1785,8 @@ def release_address(region="", eip_id=""):
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Release EIP\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
 
     except Exception as e:
@@ -1851,20 +1794,26 @@ def release_address(region="", eip_id=""):
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Release EIP\n")
 
 
 
-def associate_address(region="", eip="", instance_id=""):
-    logger.info("\nSTART: Associate EIP to EC2 Instance")
+
+def associate_address(logger=None, 
+                      region="", 
+                      eip="", 
+                      instance_id="", 
+                      aws_access_key_id="", 
+                      aws_secret_access_key="",
+                      log_indentation=""
+                      ):
+    """
+    This AWS API associate an EIP to an EC2 instance(VM)
+    :return: This function returns True if no error/exception occurs
+    """
+    logger.info(log_indentation + "START: Associate EIP to EC2 Instance")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1883,11 +1832,10 @@ def associate_address(region="", eip="", instance_id=""):
             DryRun=False,
         )
 
-        logger.info("    Succeed")
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         eip_association_id = response["AssociationId"]
-        logger.info("AssociationId: " + eip_association_id)
-        logger.info("ENDED: Associate EIP to EC2 Instance\n")
-
+        logger.info(log_indentation + "AssociationId: " + eip_association_id)
         return eip_association_id
 
     except Exception as e:
@@ -1895,20 +1843,21 @@ def associate_address(region="", eip="", instance_id=""):
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Associate EIP to EC2 Instance\n")
 
 
 
-def disassociate_address(region="", eip_association_id=""):
-    logger.info("\nSTART: Disassociate EIP from instance")
+
+def disassociate_address(logger=None, 
+                         region="", 
+                         eip_association_id="", 
+                         aws_access_key_id="", 
+                         aws_secret_access_key="",
+                         log_indentation=""
+                         ):
+    logger.info(log_indentation + "START: Disassociate EIP from an EC2 instance")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1923,9 +1872,8 @@ def disassociate_address(region="", eip_association_id=""):
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info("ENDED: Disassociate EIP from instance\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
         return True
 
 
@@ -1934,21 +1882,16 @@ def disassociate_address(region="", eip_association_id=""):
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Disassociate EIP from instance\n")
 
 
 
 
-def describe_addresses(region="", param1="", param2="", param3="", param4="", param5="", param6=""):
-    logger.info("\nSTART: Describe EIPs")
+
+def describe_addresses(logger=None, region="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
+    logger.info(log_indentation + "START: Describe EIPs")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -1975,35 +1918,33 @@ def describe_addresses(region="", param1="", param2="", param3="", param4="", pa
             DryRun=False
         )
 
-        logger.info("    Succeed")
-        logger.info(response)  # logger.info(response)  -->>  {'Addresses': [{'InstanceId': 'i-0805e7138f8e540e1', 'PublicIp': '35.182.94.13', 'AllocationId': 'eipalloc-6f133641', 'AssociationId': 'eipassoc-ccebf406', 'Domain': 'vpc', 'NetworkInterfaceId': 'eni-9085a1c5', 'NetworkInterfaceOwnerId': '971302066566', 'PrivateIpAddress': '172.31.7.96'}, {'InstanceId': 'i-0ac9916bd87167dff', 'PublicIp': '52.60.65.87', 'AllocationId': 'eipalloc-1d301533', 'AssociationId': 'eipassoc-c8243b02', 'Domain': 'vpc', 'NetworkInterfaceId': 'eni-4d341018', 'NetworkInterfaceOwnerId': '971302066566', 'PrivateIpAddress': '172.31.3.205', 'Tags': [{'Key': 'Description', 'Value': 'Created by Aviatrix gateway gw1, please do NOT remove it.'}, {'Key': 'Name', 'Value': 'Aviatrix-eip@gw1-52.60.65.87'}]}], 'ResponseMetadata': {'RequestId': '8fcf2bb5-f44a-4645-9d5f-4c891ac2a826', 'HTTPStatusCode': 200, 'HTTPHeaders': {'content-type': 'text/xml;charset=UTF-8', 'transfer-encoding': 'chunked', 'vary': 'Accept-Encoding', 'date': 'Mon, 12 Mar 2018 21:29:52 GMT', 'server': 'AmazonEC2'}, 'RetryAttempts': 0}}
-        logger.info("ENDED: Describe EIPs\n")
-
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))  # -->>  {'Addresses': [{'InstanceId': 'i-0805e7138f8e540e1', 'PublicIp': '35.182.94.13', 'AllocationId': 'eipalloc-6f133641', 'AssociationId': 'eipassoc-ccebf406', 'Domain': 'vpc', 'NetworkInterfaceId': 'eni-9085a1c5', 'NetworkInterfaceOwnerId': '971302066566', 'PrivateIpAddress': '172.31.7.96'}, {'InstanceId': 'i-0ac9916bd87167dff', 'PublicIp': '52.60.65.87', 'AllocationId': 'eipalloc-1d301533', 'AssociationId': 'eipassoc-c8243b02', 'Domain': 'vpc', 'NetworkInterfaceId': 'eni-4d341018', 'NetworkInterfaceOwnerId': '971302066566', 'PrivateIpAddress': '172.31.3.205', 'Tags': [{'Key': 'Description', 'Value': 'Created by Aviatrix gateway gw1, please do NOT remove it.'}, {'Key': 'Name', 'Value': 'Aviatrix-eip@gw1-52.60.65.87'}]}], 'ResponseMetadata': {'RequestId': '8fcf2bb5-f44a-4645-9d5f-4c891ac2a826', 'HTTPStatusCode': 200, 'HTTPHeaders': {'content-type': 'text/xml;charset=UTF-8', 'transfer-encoding': 'chunked', 'vary': 'Accept-Encoding', 'date': 'Mon, 12 Mar 2018 21:29:52 GMT', 'server': 'AmazonEC2'}, 'RetryAttempts': 0}}
         return response
-
 
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Describe EIPs\n")
+
 
 
 
 """
 Check if an EC2 Instance is using EIP or not
 """
-def is_instance_attached_eip(region="", instance_id=""):
-    # logger.info("\nSTART: Check if an EC2 Instance is using EIP")
+def is_instance_attached_eip(logger=None, 
+                             region="", 
+                             instance_id="", 
+                             aws_access_key_id="", 
+                             aws_secret_access_key="",
+                             log_indentation=""
+                             ):
+    logger.info(log_indentation + "START: Check if an EC2 Instance is using EIP")
 
     ec2_client = boto3.client(
-        service_name='ec2',
-        region_name=region,
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key
-    )
-    ec2_resource = boto3.resource(
         service_name='ec2',
         region_name=region,
         aws_access_key_id=aws_access_key_id,
@@ -2029,7 +1970,8 @@ def is_instance_attached_eip(region="", instance_id=""):
             # ],
             DryRun=False
         )
-        # logger.info(response)  # -->>  {'Addresses': [{'InstanceId': 'i-0805e7138f8e540e1', 'PublicIp': '35.182.94.13', 'AllocationId': 'eipalloc-6f133641', 'AssociationId': 'eipassoc-ccebf406', 'Domain': 'vpc', 'NetworkInterfaceId': 'eni-9085a1c5', 'NetworkInterfaceOwnerId': '971302066566', 'PrivateIpAddress': '172.31.7.96'}, {'InstanceId': 'i-0ac9916bd87167dff', 'PublicIp': '52.60.65.87', 'AllocationId': 'eipalloc-1d301533', 'AssociationId': 'eipassoc-c8243b02', 'Domain': 'vpc', 'NetworkInterfaceId': 'eni-4d341018', 'NetworkInterfaceOwnerId': '971302066566', 'PrivateIpAddress': '172.31.3.205', 'Tags': [{'Key': 'Description', 'Value': 'Created by Aviatrix gateway gw1, please do NOT remove it.'}, {'Key': 'Name', 'Value': 'Aviatrix-eip@gw1-52.60.65.87'}]}], 'ResponseMetadata': {'RequestId': '8fcf2bb5-f44a-4645-9d5f-4c891ac2a826', 'HTTPStatusCode': 200, 'HTTPHeaders': {'content-type': 'text/xml;charset=UTF-8', 'transfer-encoding': 'chunked', 'vary': 'Accept-Encoding', 'date': 'Mon, 12 Mar 2018 21:29:52 GMT', 'server': 'AmazonEC2'}, 'RetryAttempts': 0}}
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))  # logger.info(response)  # -->>  {'Addresses': [{'InstanceId': 'i-0805e7138f8e540e1', 'PublicIp': '35.182.94.13', 'AllocationId': 'eipalloc-6f133641', 'AssociationId': 'eipassoc-ccebf406', 'Domain': 'vpc', 'NetworkInterfaceId': 'eni-9085a1c5', 'NetworkInterfaceOwnerId': '971302066566', 'PrivateIpAddress': '172.31.7.96'}, {'InstanceId': 'i-0ac9916bd87167dff', 'PublicIp': '52.60.65.87', 'AllocationId': 'eipalloc-1d301533', 'AssociationId': 'eipassoc-c8243b02', 'Domain': 'vpc', 'NetworkInterfaceId': 'eni-4d341018', 'NetworkInterfaceOwnerId': '971302066566', 'PrivateIpAddress': '172.31.3.205', 'Tags': [{'Key': 'Description', 'Value': 'Created by Aviatrix gateway gw1, please do NOT remove it.'}, {'Key': 'Name', 'Value': 'Aviatrix-eip@gw1-52.60.65.87'}]}], 'ResponseMetadata': {'RequestId': '8fcf2bb5-f44a-4645-9d5f-4c891ac2a826', 'HTTPStatusCode': 200, 'HTTPHeaders': {'content-type': 'text/xml;charset=UTF-8', 'transfer-encoding': 'chunked', 'vary': 'Accept-Encoding', 'date': 'Mon, 12 Mar 2018 21:29:52 GMT', 'server': 'AmazonEC2'}, 'RetryAttempts': 0}}
         eips = response["Addresses"]
         found = False
 
@@ -2039,8 +1981,7 @@ def is_instance_attached_eip(region="", instance_id=""):
             if instance_id == instance_id:
                 found = True
                 break
-
-        # logger.info("ENDED: Check if an EC2 Instance is using EIP\n")
+        # END for
 
         return found
 
@@ -2050,5 +1991,6 @@ def is_instance_attached_eip(region="", instance_id=""):
         logger.error(tracekback_msg)
 
     finally:
-        pass
+        logger.info(log_indentation + "ENDED: Check if an EC2 Instance is using EIP\n")
+
 

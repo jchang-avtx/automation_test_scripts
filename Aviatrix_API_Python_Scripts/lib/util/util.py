@@ -39,7 +39,7 @@ def set_logger(logger_name="main",
 
     ### Step 02 : Setup format for log output
     formatter = logging.Formatter(
-        "%(asctime)s    %(filename)s    [line:%(lineno)d]    %(levelname)s    %(message)s")
+        "%(asctime)s    %(filename)35s    [line:%(lineno)4d]    %(levelname)8s    %(message)s")
 
     ### Step 03 : Create a StreamHandler, for to writing output to stdout
     stream_handler = logging.StreamHandler()
@@ -68,58 +68,54 @@ def set_logger(logger_name="main",
 
 
 
-def delete_local_file(path_to_file):
+def delete_local_file(logger=None, path_to_file="", log_indentation=""):
     """
     This function deletes a local file.
 
     :param path_to_file:
     :return:
     """
+    logger.info(log_indentation + "START: Delete local file")
     os.remove(path_to_file)
-    return
+    logger.info(log_indentation + "ENDED: Delete local file")
+    return True
 
 
 
-def print_greeting_msg():
-    print("\nWelcome to Aviatrix Transit-Network API with Python!")
-    print("Aviatrix  --> Encrypted Tunnel  --> ∧v!@+r!x")
-    print("✈ ☁ ✈ Aviatrix ✈ ☁ ✈ The Best Cloud Network Architect!! ✈ ☁ ✈ Aviatrix ✈ ☁ ✈")
-    return
+def read_config_file_to_py_dict(logger=None, path_to_file="", log_indentation=""):
+    ### This block of commented code is for debugging purpose only. To display the PATH to file
+    # if logger is None:
+    #     print("START: Read JSON format configuration file to string from PATH: " + path_to_file)
+    # else:
+    #     logger.info("START: Read JSON format configuration file to string from PATH: " + path_to_file)
 
-
-
-def print_farewell_msg():
-    print("\nThank you for using Aviatrix!")
-    print("Aviatrix  --> Encrypted Tunnel  --> ∧v!@+r!x")
-    print("✈ ☁ ✈ Aviatrix ✈ ☁ ✈ The Best Cloud Network Architect!! ✈ ☁ ✈ Aviatrix ✈ ☁ ✈")
-    return
-
-
-
-def read_config_file_to_py_dict(path_to_file):
-    print("\nSTART: Read configuration file and convert to Python dictionary")
     with open(path_to_file, "r") as in_file_stream:
         py_dict = json.load(in_file_stream)
-        print("    Succeed")
-        print("ENDED: Read configuration file and convert to Python dictionary\n")
+
+        # if logger is None:
+        #     print("ENDED: Read JSON format configuration file to string from PATH: " + path_to_file)
+        # else:
+        #     logger.info("ENDED: Read JSON format configuration file to string from PATH: " + path_to_file)
+
         return py_dict
 
 
 
-def write_py_dict_to_config_file(py_dict=None, path_to_file=None):
-    print("\nSTART: Write Python dictionary to configuration file")
+def write_py_dict_to_config_file(logger=None, py_dict=None, path_to_file=None, log_indentation=""):
+    # logger.info(log_indentation + "START: Write python-dict to JSON format configuration file PATH: " + path_to_file)
+
     with open(path_to_file, "w") as out_file_stream:
         json.dump(py_dict, out_file_stream)
-        print("    Succeed")
-        print("ENDED: Write Python dictionary to configuration file\n")
+
+        # logger.info(log_indentation + "ENDED: Write python-dict to JSON format configuration file PATH: " + path_to_file)
         return True
 
 
 
-def check_requirements(config):
-        print("\nSTART: Check requirements")
+def check_requirements(logger=None, config=None, log_indentation=""):
+        logger.info(log_indentation + "START: Check requirements")
         ##### Check controller login
-        print("    Checking Aviatrix controller accessibility... ")
+        logger.info(log_indentation + "    Checking Aviatrix controller accessibility... ")
 
         ### Login and Get CID
         controller_ip = config["controller"]["public_ip"]
@@ -127,10 +123,10 @@ def check_requirements(config):
         admin_password = config["controller"]["admin_password"]
         CID = login(url=url, username="admin", password=admin_password)
 
-        print("        PASS: Successfully logged onto controller!")
+        logger.info(log_indentation + "        PASS: Successfully logged onto controller!")
 
         ### Check controller version
-        print("    Checking Aviatrix controller version... ")
+        logger.info(log_indentation + "    Checking Aviatrix controller version... ")
 
         # Get controller current version
         versions = ["UserConnect-3.1", "UserConnect-3.2", "UserConnect-3.3"]
@@ -144,16 +140,17 @@ def check_requirements(config):
                 is_valid = True
 
         if is_valid:
-            print("        PASS: Good! controller version is: " + current_version)
+            logger.info(log_indentation + "        PASS: Good! controller version is: " + current_version)
         else:
-            print("        Fail: Current controller version is: " + current_version)
-            print("        Please upgrade controller to the version that supports Transit Network Solution.")
+            logger.info(log_indentation + "        Fail: Current controller version is: " + current_version)
+            logger.info(log_indentation +
+                        "        Please upgrade controller to the version that supports Transit Network Solution.")
             os.system("pause")
 
         ### Check cloud-account
         pass
 
-        print("ENDED: Check requirements\n")
+        logger.info(log_indentation + "ENDED: Check requirements\n")
         return True
 
 
@@ -161,7 +158,7 @@ def check_requirements(config):
 """
 For Windows
 """
-def run_completion_notification():
+def run_completion_notification(logger=None, log_indentation=""):
     winsound.Beep(200, 100)
     winsound.Beep(300, 200)
 
@@ -169,34 +166,51 @@ def run_completion_notification():
     wmi.WMI(namespace='wmi').WmiMonitorBrightnessMethods()[0].WmiSetBrightness(brightness, 0)
     time.sleep(0.25)
     wmi.WMI(namespace='wmi').WmiMonitorBrightnessMethods()[0].WmiSetBrightness(100, 0)
-    return
+    return True
 
 
 
-def print_wall_beg():
-    print("\n\n✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁")
-    print("✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁\n")
-    return
+def print_wall_beg(logger=None):
+    logger.info("WELCOME TO AVIATRIX!\n" +
+                "✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁" +
+                " ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈\n")
+    return True
 
 
 
-def print_wall_end():
-    print("\n✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁\n\n")
-    print("✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁\n")
-    return
+def print_wall_end(logger=None):
+    logger.info("Thank You for Cloud Surfing with Aviatrix \n" +
+                "✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁" +
+                " ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈\n")
+    return True
 
 
 
-def print_exception_wall_beg():
-    print("\n\n✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁\n")
-    print("START: Exception/Error occurred, printing detail message...\n\n")
-    return
+def print_greeting_msg(logger=None):
+    logger.info("\nWelcome to Aviatrix Transit-Network API with Python!")
+    logger.info("Aviatrix  --> Encrypted Tunnel  --> ∧v!@+r!x")
+    logger.info("✈ ☁ ✈ Aviatrix ✈ ☁ ✈ The Best Cloud Network Architect!! ✈ ☁ ✈ Aviatrix ✈ ☁ ✈")
+    return True
 
 
 
-def print_exception_wall_end():
-    print("\n\nENDED: Exception/Error occurred, printing detail message...")
-    print("\n✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁\n\n")
+def print_farewell_msg(logger=None):
+    logger.info("\nThank you for using Aviatrix!")
+    logger.info("Aviatrix  --> Encrypted Tunnel  --> ∧v!@+r!x")
+    logger.info("✈ ☁ ✈ Aviatrix ✈ ☁ ✈ The Best Cloud Network Architect!! ✈ ☁ ✈ Aviatrix ✈ ☁ ✈")
+    return True
 
-    return
+
+
+def print_exception_wall_beg(logger=None):
+    logger.info("\n\n\n✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ \n")
+    logger.info("START: Exception/Error occurred, printing detail message...\n\n")
+    return True
+
+
+
+def print_exception_wall_end(logger=None):
+    logger.info("\n\nENDED: Exception/Error occurred, printing detail message...")
+    logger.info("\n\n✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ \n\n")
+    return True
 
