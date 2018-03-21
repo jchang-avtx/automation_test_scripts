@@ -1,12 +1,12 @@
 Description
 -----------
-  Terraform configuration files to site2cloud connection between Aviatrix Gateway and AWS VGW.
+  Terraform configuration files to build encrypteed peering between Aviatrix gateways in HA mode.
 
 Pre-Requisites
 --------------
-    * Active AWS account and credentials
-    * Up and running Aviatrix controller and credentials
-    * Update file named "terraform.tfvars" to input all credentials
+    * Aviatrix controller login access
+    * Aviatrix gateways already created by controller with HA enabled
+    * Update file named "terraform.tfvars" to input all parameters
 
 Launch new Controller with CloudFormation Template
 --------------------------------------------------
@@ -19,19 +19,20 @@ How to run terraform
     * terraform apply auto-approve  = to kickoff the run
     * terraform destroy -force      = to cleanup everything 
 
-Default configuration
----------------------
-    1 - OnPrem Gateway
+Aviatrix Peering Topology
+-------------------------
+          gateway_name1 <------- primary ipsec tunnel -----> gateway_name2
+     gateway_name1-hagw <------- backup  ipsec tunnel -----> gateway_name2-hagw
 
-How to debug site2cloud connection
-----------------------------------
+How to debug peering connection
+-------------------------------
     Currently working on 
 
 For more information you can visit our Aviatrix FAQs
 ----------------------------------------------------
 Aviatrix FAQs [here](http://docs.aviatrix.com/HowTos/FAQ.html).
 
-Site2Cloud FAQs [here](http://docs.aviatrix.com/HowTos/site2cloud_faq.html).
+Encrypted Peering FAQs [here](http://docs.aviatrix.com/HowTos/peering_faq.html).
 
 Aviatrix Overview
 -----------------
