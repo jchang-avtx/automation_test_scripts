@@ -25,6 +25,7 @@ from lib.util.util import *
 '''
 
 
+
 #######################################################################################################################
 #################################################    Tag     ##########################################################
 #######################################################################################################################
@@ -1994,8 +1995,15 @@ def is_instance_attached_eip(logger=None,
         logger.info(log_indentation + "ENDED: Check if an EC2 Instance is using EIP\n")
 
 
-def aws_create_vpc(aws_access_key_id=None, aws_secret_access_key=None, region_name=None,
-                   vpc_cidr=None, vpc_name=None, subnet_cidr=None, create_instance=False ):
+def aws_create_vpc(aws_access_key_id=None, 
+                   aws_secret_access_key=None, 
+                   region_name=None,
+                   vpc_cidr=None, 
+                   vpc_name_tag=None, 
+                   subnet_cidr=None, 
+                   create_instance=False,
+                   cfg_file_path=None ):
+    vpc_cfg = {}
     ec2 = boto3.resource('ec2', 
                          aws_access_key_id=aws_access_key_id,
                          aws_secret_access_key=aws_secret_access_key,
@@ -2004,14 +2012,18 @@ def aws_create_vpc(aws_access_key_id=None, aws_secret_access_key=None, region_na
     # create VPC
     vpc = ec2.create_vpc(CidrBlock=vpc_cidr)
     # we can assign a name to vpc, or any resource, by using tag
-    vpc.create_tags(Tags=[{"Key": "Name", "Value": vpc_name}])
+    vpc.create_tags(Tags=[{"Key": "Name", "Value": vpc_name_tag}])
     vpc.wait_until_available()
     print(vpc.id)
+    vpc_cfg["vpc_name_tag"] = vpc_name_tag
+    vpc_cfg["vpc_cidr"] = vpc_cidr
+    vpc_cfg["vpc_id"] = vpc.id
 
     # create then attach internet gateway
     ig = ec2.create_internet_gateway()
     vpc.attach_internet_gateway(InternetGatewayId=ig.id)
     print(ig.id)
+    vpc_cfg["igw_id"] = ig.id
 
     # create a route table and a public route
     route_table = vpc.create_route_table()
@@ -2020,18 +2032,21 @@ def aws_create_vpc(aws_access_key_id=None, aws_secret_access_key=None, region_na
         GatewayId=ig.id
         )
     print(route_table.id)
+    vpc_cfg["rtb_id"] = route_table.id
 
     # create subnet
-    subnet_name = vpc_name + '_public'
+    subnet_name = vpc_name_tag + '-public'
     subnet = ec2.create_subnet(CidrBlock=subnet_cidr, VpcId=vpc.id)
     subnet.create_tags(Tags=[{"Key": "Name", "Value": subnet_name}])
     print(subnet.id)
+    vpc_cfg["subnet_name"] = subnet_name
+    vpc_cfg["subnet_id"] = subnet.id
 
     # associate the route table with the subnet
     route_table.associate_with_subnet(SubnetId=subnet.id)
 
     # Create sec group
-    sg_name = vpc_name + '_sg'
+    sg_name = vpc_name_tag + '-sg'
     sec_group = ec2.create_security_group(
        GroupName='vpc_name_sg', Description=sg_name, VpcId=vpc.id)
     sec_group.authorize_ingress(
@@ -2041,14 +2056,25 @@ def aws_create_vpc(aws_access_key_id=None, aws_secret_access_key=None, region_na
         ToPort=-1
     )
     print(sec_group.id)
+    vpc_cfg["sg_name"] = sg_name
+    vpc_cfg["sg_id"] = sec_group.id
 
-    """
-    # find image id ami-835b4efa / us-west-2
-    # Create instance
-    instances = ec2.create_instances(
-        ImageId='ami-835b4efa', InstanceType='t2.micro', MaxCount=1, MinCount=1,
-        NetworkInterfaces=[{'SubnetId': subnet.id, 'DeviceIndex': 0, 'AssociatePublicIpAddress': True, 'Groups': [sec_group.group_id]}])
-    instances[0].wait_until_running()
-    print(instances[0].id)
-    """
+    if create_instance:
+        # find image id ami-835b4efa / us-west-2
+        # Create instance
+        path_to_aws_global_config_file = '../../config_global/aws_config.json'
+        with open(path_to_aws_global_config_file, 'r') as f:
+            aws_config  = json.load(f)
+        ami_id = aws_config["AWS"]["AMI"][region_name]["ubuntu_16_04"]
+        instances = ec2.create_instances(
+            ImageId='ami-66506c1c', InstanceType='t2.micro', MaxCount=1, MinCount=1,
+            NetworkInterfaces=[{'SubnetId': subnet.id, 'DeviceIndex': 0, 'AssociatePublicIpAddress': True, 'Groups': [sec_group.group_id]}])
+        instances[0].wait_until_running()
+        print(instances[0].id)
+        vpc_cfg["inst_id"] = instances[0].id
+        vpc_cfg["inst_ip"] = instances[0].public_ip_address
+    if cfg_file_path:
+        with open(cfg_file_path, 'w+') as f:
+            f.write(json.dumps(vpc_cfg, indent=2))
+
 
