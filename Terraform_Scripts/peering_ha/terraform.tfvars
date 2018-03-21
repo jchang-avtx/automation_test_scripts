@@ -1,0 +1,6 @@
+controller_ip       = "a.b.c.d"
+controller_username = "admin"
+controller_password = "helloworld123"
+gateway_name1       = "myspoke-GW-module-us-west-1-0"
+gateway_name2       = "myspoke-GW-spoke-shared-GW-0"
+enable_ha           = "yes"
