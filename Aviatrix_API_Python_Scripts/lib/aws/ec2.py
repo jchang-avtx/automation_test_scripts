@@ -2096,8 +2096,9 @@ def aws_create_vpc(aws_access_key_id=None,
             KeyName=key_pair_name, ImageId='ami-66506c1c', InstanceType='t2.micro', MaxCount=1, MinCount=1,
             NetworkInterfaces=[{'SubnetId': subnet.id, 'DeviceIndex': 0, 'AssociatePublicIpAddress': True, 'Groups': [sec_group.group_id]}])
         instances[0].wait_until_running()
-        print(str(instances[0]))
+        instances[0].load()
         print(instances[0].id)
+        print(instances[0].public_ip_address)
         vpc_cfg["inst_id"] = instances[0].id
         vpc_cfg["inst_ip"] = instances[0].public_ip_address
     if cfg_file:
