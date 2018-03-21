@@ -12,7 +12,7 @@
         "BYOL":         "ami-db9bb9a1",
         "utility":      "ami-xxxxxx",
         "metering":     "ami-xxxxxx",
-        "ubuntu_16_04": "ami-xxxxx",
+        "ubuntu_16_04": "ami-66506c1c",
         "ubuntu_14_04": "ami-xxxxxxxxx",
         "my_ami":       "ami-xxxxxxx"
       },
@@ -39,7 +39,7 @@
         "BYOL":         "ami-fd48f885",
         "utility":      "ami-xxxxxx",
         "metering":     "ami-xxxxxx",
-        "ubuntu_16_04": "ami-xxxxxxxxxx",
+        "ubuntu_16_04": "ami-79873901",
         "ubuntu_14_04": "ami-xxxxxxxxx",
         "my_ami":       "ami-xxxxxxxx"
       },
