@@ -14,6 +14,7 @@ New Aviatrix Controller guide [here](http://docs.aviatrix.com/StartUpGuides/avia
 
 How to run terraform
 --------------------
+    * terraform init                = initialize working directorty and provider plugins, done only once 
     * terraform plan                = to check and review all parameters
     * terraform apply auto-approve  = to kickoff the run
     * terraform destroy -force      = to cleanup everything 
