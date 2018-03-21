@@ -11,8 +11,6 @@ import paramiko
 import requests
 import traceback
 import time
-import winsound
-import wmi
 
 from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
@@ -38,8 +36,8 @@ def set_logger(logger_name="main",
     logger.setLevel(logging.INFO)
 
     ### Step 02 : Setup format for log output
-    formatter = logging.Formatter(
-        "%(asctime)s    %(filename)35s    [line:%(lineno)4d]    %(levelname)8s    %(message)s")
+    format_string = "%(asctime)s %(levelname)s %(module)s %(funcName)s %(lineno)d %(message)s"
+    formatter = logging.Formatter(format_string)
 
     ### Step 03 : Create a StreamHandler, for to writing output to stdout
     stream_handler = logging.StreamHandler()
@@ -154,19 +152,6 @@ def check_requirements(logger=None, config=None, log_indentation=""):
         return True
 
 
-
-"""
-For Windows
-"""
-def run_completion_notification(logger=None, log_indentation=""):
-    winsound.Beep(200, 100)
-    winsound.Beep(300, 200)
-
-    brightness = 50  # Vaild Value: 0 ~ 100
-    wmi.WMI(namespace='wmi').WmiMonitorBrightnessMethods()[0].WmiSetBrightness(brightness, 0)
-    time.sleep(0.25)
-    wmi.WMI(namespace='wmi').WmiMonitorBrightnessMethods()[0].WmiSetBrightness(100, 0)
-    return True
 
 
 

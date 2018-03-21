@@ -1,6 +1,7 @@
 # Aviatrix Controller QuickStart
 A Terraform example to launch a controller in desired region and complete  the following:
 
+```sh
 Create IAM role if needed
 Create vpc for controller
 assign EIP
@@ -8,6 +9,7 @@ configure SG
 complete initial setup
 setup account
 setup customer-id if needed
+```
 
 Pre-Requisites 
 --------------

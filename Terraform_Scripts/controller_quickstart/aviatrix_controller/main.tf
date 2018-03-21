@@ -8,14 +8,13 @@ module "create_aviatrix_roles" {
 
 module "create_controller_vpc" {
   source = "../create_vpc"
-  vpc_count = 1
   name_suffix = "TerraformControllerVPC"
   vpc_cidr_prefix = "${var.controller_vpc_cidr_prefix}"
 }
 
 resource "aws_security_group" "aviatrix_controller_sg" {
   name = "aviatrix_controller_sg"
-  vpc_id = "${element(module.create_controller_vpc.vpc_id, 0)}"
+  vpc_id = "${module.create_controller_vpc.vpc_id}"
   description = "Security group for controller"
   tags {
       Name = "SG-AviatrixController-${var.controller_name_suffix}"
@@ -45,14 +44,14 @@ data "aws_region" "current" {}
 resource "aws_instance" "aviatrix_controller_ec2" {
   ami = "${lookup(var.controller_amis[var.controller_ami_type], data.aws_region.current.name)}"
   instance_type = "${var.controller_size}"
-  subnet_id = "${element(module.create_controller_vpc.subnet_id, 0)}"
+  subnet_id = "${module.create_controller_vpc.subnet_id}"
   associate_public_ip_address = true
   vpc_security_group_ids = ["${aws_security_group.aviatrix_controller_sg.id}"]
   key_name = "${var.controller_key}"
   iam_instance_profile = "${module.create_aviatrix_roles.controller_ec2_role}"
   tags {
       Name = "AviatrixController-${var.controller_name_suffix}"
-      VPC-RouteTable-Association-ID = "${element(module.create_controller_vpc.vpc_ra_id, 0)}"
+      VPC-RouteTable-Association-ID = "${module.create_controller_vpc.vpc_ra_id}"
   }
   provisioner "local-exec" {
     command = "sleep 90s"
