@@ -2002,7 +2002,8 @@ def aws_create_vpc(aws_access_key_id=None,
                    vpc_name_tag=None, 
                    subnet_cidr=None, 
                    create_instance=False,
-                   cfg_file_path=None ):
+                   cfg_file=False):
+    logger = logging.getLogger(__name__)
     vpc_cfg = {}
     ec2 = boto3.resource('ec2', 
                          aws_access_key_id=aws_access_key_id,
@@ -2018,6 +2019,7 @@ def aws_create_vpc(aws_access_key_id=None,
     vpc_cfg["vpc_name_tag"] = vpc_name_tag
     vpc_cfg["vpc_cidr"] = vpc_cidr
     vpc_cfg["vpc_id"] = vpc.id
+    vpc_cfg["vpc_region"] = region_name
 
     # create then attach internet gateway
     ig = ec2.create_internet_gateway()
@@ -2041,6 +2043,7 @@ def aws_create_vpc(aws_access_key_id=None,
     print(subnet.id)
     vpc_cfg["subnet_name"] = subnet_name
     vpc_cfg["subnet_id"] = subnet.id
+    vpc_cfg["subnet_cidr"] = subnet_cidr
 
     # associate the route table with the subnet
     route_table.associate_with_subnet(SubnetId=subnet.id)
@@ -2048,32 +2051,57 @@ def aws_create_vpc(aws_access_key_id=None,
     # Create sec group
     sg_name = vpc_name_tag + '-sg'
     sec_group = ec2.create_security_group(
-       GroupName='vpc_name_sg', Description=sg_name, VpcId=vpc.id)
+       GroupName=sg_name, Description=sg_name, VpcId=vpc.id)
     sec_group.authorize_ingress(
         CidrIp='0.0.0.0/0',
         IpProtocol='icmp',
         FromPort=-1,
         ToPort=-1
     )
+    sec_group.authorize_ingress(
+        CidrIp='0.0.0.0/0',
+        IpProtocol='tcp',
+        FromPort=22,
+        ToPort=22
+    )
     print(sec_group.id)
     vpc_cfg["sg_name"] = sg_name
     vpc_cfg["sg_id"] = sec_group.id
 
     if create_instance:
-        # find image id ami-835b4efa / us-west-2
-        # Create instance
+        
+        # Create ssh key
+        key_pair_name = vpc_name_tag + '-sshkey'
+        key_file_name = './config/' + key_pair_name + '.pem'
+        private_key = create_key_pair(logger = logger,
+                                      region=region_name,
+                                      key_pair_name=key_pair_name,
+                                      aws_access_key_id=aws_access_key_id,
+                                      aws_secret_access_key=aws_secret_access_key) 
+        print private_key
+        try:
+            with open(key_file_name, 'w+') as f:
+                f.write(private_key)
+        except Exception as e:
+            print str(e)
+
+        # Aquire AMI ID
         path_to_aws_global_config_file = '../../config_global/aws_config.json'
         with open(path_to_aws_global_config_file, 'r') as f:
             aws_config  = json.load(f)
         ami_id = aws_config["AWS"]["AMI"][region_name]["ubuntu_16_04"]
+       
+        # Create instance
         instances = ec2.create_instances(
-            ImageId='ami-66506c1c', InstanceType='t2.micro', MaxCount=1, MinCount=1,
+            KeyName=key_pair_name, ImageId='ami-66506c1c', InstanceType='t2.micro', MaxCount=1, MinCount=1,
             NetworkInterfaces=[{'SubnetId': subnet.id, 'DeviceIndex': 0, 'AssociatePublicIpAddress': True, 'Groups': [sec_group.group_id]}])
         instances[0].wait_until_running()
+        print(str(instances[0]))
         print(instances[0].id)
         vpc_cfg["inst_id"] = instances[0].id
         vpc_cfg["inst_ip"] = instances[0].public_ip_address
-    if cfg_file_path:
+    if cfg_file:
+        cfg_file_path = './config/' + vpc_name_tag + '.cfg'
         with open(cfg_file_path, 'w+') as f:
             f.write(json.dumps(vpc_cfg, indent=2))
 
