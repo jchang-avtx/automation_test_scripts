@@ -2107,3 +2107,64 @@ def aws_create_vpc(aws_access_key_id=None,
             f.write(json.dumps(vpc_cfg, indent=2))
 
 
+def aws_delete_vpc(aws_access_key_id=None,
+                   aws_secret_access_key=None,
+                   region_name=None,
+                   vpc_name_tag = None,
+                   vpc_id = None):
+
+    logger = logging.getLogger(__name__)
+
+    ec2 = boto3.resource('ec2',
+                         aws_access_key_id=aws_access_key_id,
+                         aws_secret_access_key=aws_secret_access_key,
+                         region_name=region_name)
+    ec2_client = ec2.meta.client
+
+    vpc = ec2.Vpc(vpc_id)
+
+    # delete any instances
+    for subnet in vpc.subnets.all():
+        for instance in subnet.instances.all():
+            print 'terminate instance'
+            instance.terminate()
+
+    # delete all route table associations
+    for rt in vpc.route_tables.all():
+        for rta in rt.associations:
+            if not rta.main:
+                print rt.id
+                rta.delete()
+                ec2_client.delete_route_table(RouteTableId=rt.id)
+
+
+    # delete network interfaces
+    for subnet in vpc.subnets.all():
+        print 'delete subnet'
+        subnet.delete()
+
+    # delete our security groups
+    for sg in vpc.security_groups.all():
+        if sg.group_name != 'default':
+            print 'delete sg'
+            sg.delete()
+
+    # detach and delete all gateways associated with the vpc
+    for gw in vpc.internet_gateways.all():
+        print gw.id
+        vpc.detach_internet_gateway(InternetGatewayId=gw.id)
+        gw.delete()
+
+
+    # finally, delete the vpc
+    ec2_client.delete_vpc(VpcId=vpc_id)
+    
+    #delete key pair
+    key_pair_name = vpc_name_tag + '-sshkey'
+    ec2_client.delete_key_pair(
+            KeyName=key_pair_name,
+            DryRun=False
+        )
+    
+
+
