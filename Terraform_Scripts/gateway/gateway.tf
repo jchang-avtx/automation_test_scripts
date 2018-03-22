@@ -10,3 +10,9 @@ resource "aviatrix_gateway" "aws_gateway" {
         vpc_net = "${var.aws_vpc_public_cidr}"
 }
 
+# if need to enable NAT, add this line to resource  
+# and include variable "aviatrix_enable_nat" to vars.tf file
+#
+#     enable_nat = "${var.aviatrix_enable_nat}"
+
+
