@@ -199,3 +199,7 @@ def print_exception_wall_end(logger=None):
     logger.info("\n\n✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ \n\n")
     return True
 
+
+
+def run_completion_notification(logger=None):
+    pass

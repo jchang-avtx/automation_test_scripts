@@ -2,15 +2,16 @@
 # -*- coding: UTF-8 -*-
 
 
-import boto3
-import datetime
-import json
-import logging
 import os
-import paramiko
-import requests
 import traceback
 import time
+import datetime
+import paramiko
+import boto3
+import json
+import requests
+import winsound
+import wmi
 
 from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
@@ -21,30 +22,43 @@ requests.packages.urllib3.disable_warnings()
 
 
 #######################################################################################################################
-#########################################    Encrypted Peering    #####################################################
+###############################################    VPN Users     ######################################################
 #######################################################################################################################
 
-def create_encrypted_peering(
+
+
+def create_vpn_user(
         logger=None,
         url=None,
         CID=None,
-        gateway_name_1=None,
-        gateway_name_2=None,
-        ha_enabled=None,
-        max_retry=10
+        vpc_id=None,
+        username=None,
+        lb_name=None,
+        gateway_name=None,
+        user_email=None,
+        profile_name=None,
+        max_retry=10,
+        log_indentation=""
         ):
+    if lb_name is not None:
+        lb_or_gateway_name = lb_name
+    else:
+        lb_or_gateway_name = gateway_name
 
     ### Required parameters
     data = {
-        "action": "peer_vpc_pair",
+        "action": "add_vpn_user",
         "CID": CID,
-        "vpc_name1": gateway_name_1,
-        "vpc_name2": gateway_name_2
+        "vpc_id": vpc_id,
+        "username": username,
+        "lb_name": lb_or_gateway_name
     }
 
     ### Optional parameters
-    if ha_enabled is not None:
-        data["ha_enabled"] = ha_enabled
+    if user_email is not None:
+        data["user_email"] = user_email
+    if profile_name is not None:
+        data["profile_name"] = profile_name
 
     ### Call Aviatrix API (with max retry)
     for i in range(max_retry):
@@ -67,20 +81,23 @@ def create_encrypted_peering(
 
 
 
-def delete_encrypted_peering(
+
+
+def delete_vpn_user(
         logger=None,
         url=None,
         CID=None,
-        gateway_name_1=None,
-        gateway_name_2=None,
-        max_retry=10
+        vpc_id=None,
+        username=None,
+        max_retry=10,
+        log_indentation=""
         ):
     ### Required parameters
     data = {
-        "action": "unpeer_vpc_pair",
+        "action": "delete_vpn_user",
         "CID": CID,
-        "vpc_name1": gateway_name_1,
-        "vpc_name2": gateway_name_2
+        "vpc_id": vpc_id,
+        "username": username
     }
 
     ### Call Aviatrix API (with max retry)

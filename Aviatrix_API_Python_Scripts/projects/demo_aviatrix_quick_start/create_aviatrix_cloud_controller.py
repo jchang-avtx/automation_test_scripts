@@ -35,6 +35,7 @@ import datetime
 import json
 import logging
 import os
+import sys
 import paramiko
 import requests
 import traceback
@@ -43,6 +44,22 @@ import time
 from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
 from requests.exceptions import ConnectionError
+
+
+
+
+
+##### Step 00: Specify PATH to Files
+PATH_TO_PROJECT_ROOT_DIR = "../../"
+sys.path.append(PATH_TO_PROJECT_ROOT_DIR)
+
+path_to_aws_global_config_file      = os.path.join(PATH_TO_PROJECT_ROOT_DIR, "config_global/aws_config.json")
+path_to_aviatrix_global_config_file = os.path.join(PATH_TO_PROJECT_ROOT_DIR, "config_global/aviatrix_config.json")  # This script does not use this file. This line is just for demo purpose.
+path_to_user_config_file            = os.path.join(PATH_TO_PROJECT_ROOT_DIR, "projects/demo_aviatrix_quick_start/config/user_config.json")
+path_to_result_file                 = os.path.join(PATH_TO_PROJECT_ROOT_DIR, "projects/demo_aviatrix_quick_start/result/result.json")
+path_to_log_file                    = os.path.join(PATH_TO_PROJECT_ROOT_DIR, "projects/demo_aviatrix_quick_start/result/log_history.txt")
+
+
 
 from lib.aws.account import get_aws_account_id
 
@@ -82,23 +99,15 @@ from lib.aviatrix.account import create_cloud_account
 from lib.util.util import set_logger
 from lib.util.util import read_config_file_to_py_dict
 from lib.util.util import write_py_dict_to_config_file
-from lib.util.util import run_completion_notification
 from lib.util.util import print_wall_beg
 from lib.util.util import print_wall_end
 from lib.util.util import print_exception_wall_beg
 from lib.util.util import print_exception_wall_end
+from lib.util.util import run_completion_notification
 
 
 timestamp_start = "{0:%Y-%m-%d_%H-%M-%S}".format(datetime.datetime.now())  # for naming some objects
 
-##### Step 00: Specify PATH to Configuration Files
-PATH_TO_PROJECT_ROOT_DIR = "../../"
-
-path_to_aws_global_config_file      = os.path.join(PATH_TO_PROJECT_ROOT_DIR, "config_global/aws_config.json")
-path_to_aviatrix_global_config_file = os.path.join(PATH_TO_PROJECT_ROOT_DIR, "config_global/aviatrix_config.json")  # This script does not use this file. This line is just for demo purpose.
-path_to_user_config_file            = os.path.join(PATH_TO_PROJECT_ROOT_DIR, "projects/demo_aviatrix_quick_start/config/user_config.json")
-path_to_result_file                 = os.path.join(PATH_TO_PROJECT_ROOT_DIR, "projects/demo_aviatrix_quick_start/result/result.json")
-path_to_log_file                    = os.path.join(PATH_TO_PROJECT_ROOT_DIR, "projects/demo_aviatrix_quick_start/result/log_history.txt")
 
 
 ##### Step 01-a: Read .json file into Python dictionary
@@ -582,7 +591,7 @@ try:
     aws_secret_access_key = None
 
     # Clear Account_Users list in result file
-    result["UCC"]["Account_Users"].clear()
+    result["UCC"]["Account_Users"] = []
     write_py_dict_to_config_file(logger=logger, py_dict=result, path_to_file=path_to_result_file)
 
     for user in users:
@@ -693,9 +702,16 @@ finally:
     logger.info(msg="Controller admin password : " + admin_password + " \n")
     logger.info(msg="---------------------------------------------------------\n")
 
-    if notification_enabled:
-        run_completion_notification(logger=logger)
-
     timestamp_end = "{0:%Y-%m-%d_%H-%M-%S}".format(datetime.datetime.now())
     logger.info(msg="ENDED: " + timestamp_end)
     print_wall_end(logger=logger)
+    sys.path.remove(PATH_TO_PROJECT_ROOT_DIR)
+
+    if notification_enabled:
+        run_completion_notification(logger=logger)
+    # END if
+
+    os.system("pause")
+
+
+# EOF
