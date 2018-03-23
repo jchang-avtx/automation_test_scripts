@@ -1998,21 +1998,21 @@ def is_instance_attached_eip(logger=None,
         logger.info(log_indentation + "ENDED: Check if an EC2 Instance is using EIP\n")
 
 
-def aws_create_vpc(aws_access_key_id=None, 
-                   aws_secret_access_key=None, 
+def aws_create_vpc(aws_access_key_id=None,
+                   aws_secret_access_key=None,
                    region_name=None,
-                   vpc_cidr=None, 
-                   vpc_name_tag=None, 
-                   subnet_cidr=None, 
+                   vpc_cidr=None,
+                   vpc_name_tag=None,
+                   subnet_cidr=None,
                    create_instance=False,
                    cfg_file=False):
     logger = logging.getLogger(__name__)
     vpc_cfg = {}
-    ec2 = boto3.resource('ec2', 
+    ec2 = boto3.resource('ec2',
                          aws_access_key_id=aws_access_key_id,
                          aws_secret_access_key=aws_secret_access_key,
-                         region_name = region_name)
-                         
+                         region_name=region_name)
+
     # create VPC
     vpc = ec2.create_vpc(CidrBlock=vpc_cidr)
     # we can assign a name to vpc, or any resource, by using tag
@@ -2035,7 +2035,7 @@ def aws_create_vpc(aws_access_key_id=None,
     route = route_table.create_route(
         DestinationCidrBlock='0.0.0.0/0',
         GatewayId=ig.id
-        )
+    )
     print(route_table.id)
     vpc_cfg["rtb_id"] = route_table.id
 
@@ -2054,7 +2054,7 @@ def aws_create_vpc(aws_access_key_id=None,
     # Create sec group
     sg_name = vpc_name_tag + '-sg'
     sec_group = ec2.create_security_group(
-       GroupName=sg_name, Description=sg_name, VpcId=vpc.id)
+        GroupName=sg_name, Description=sg_name, VpcId=vpc.id)
     sec_group.authorize_ingress(
         CidrIp='0.0.0.0/0',
         IpProtocol='icmp',
@@ -2072,32 +2072,33 @@ def aws_create_vpc(aws_access_key_id=None,
     vpc_cfg["sg_id"] = sec_group.id
 
     if create_instance:
-        
+
         # Create ssh key
         key_pair_name = vpc_name_tag + '-sshkey'
         key_file_name = './config/' + key_pair_name + '.pem'
-        private_key = create_key_pair(logger = logger,
+        private_key = create_key_pair(logger=logger,
                                       region=region_name,
                                       key_pair_name=key_pair_name,
                                       aws_access_key_id=aws_access_key_id,
-                                      aws_secret_access_key=aws_secret_access_key) 
-        print private_key
+                                      aws_secret_access_key=aws_secret_access_key)
+        print(private_key)
         try:
             with open(key_file_name, 'w+') as f:
                 f.write(private_key)
         except Exception as e:
-            print str(e)
+            print(e)
 
-        # Aquire AMI ID
+        # Acquire AMI ID
         path_to_aws_global_config_file = '../../config_global/aws_config.json'
         with open(path_to_aws_global_config_file, 'r') as f:
-            aws_config  = json.load(f)
+            aws_config = json.load(f)
         ami_id = aws_config["AWS"]["AMI"][region_name]["ubuntu_16_04"]
-       
+
         # Create instance
         instances = ec2.create_instances(
             KeyName=key_pair_name, ImageId='ami-66506c1c', InstanceType='t2.micro', MaxCount=1, MinCount=1,
-            NetworkInterfaces=[{'SubnetId': subnet.id, 'DeviceIndex': 0, 'AssociatePublicIpAddress': True, 'Groups': [sec_group.group_id]}])
+            NetworkInterfaces=[{'SubnetId': subnet.id, 'DeviceIndex': 0, 'AssociatePublicIpAddress': True,
+                                'Groups': [sec_group.group_id]}])
         instances[0].wait_until_running()
         instances[0].load()
         print(instances[0].id)
@@ -2113,9 +2114,8 @@ def aws_create_vpc(aws_access_key_id=None,
 def aws_delete_vpc(aws_access_key_id=None,
                    aws_secret_access_key=None,
                    region_name=None,
-                   vpc_name_tag = None,
-                   vpc_id = None):
-
+                   vpc_name_tag=None,
+                   vpc_id=None):
     logger = logging.getLogger(__name__)
 
     ec2 = boto3.resource('ec2',
@@ -2129,14 +2129,14 @@ def aws_delete_vpc(aws_access_key_id=None,
     # delete any instances
     for subnet in vpc.subnets.all():
         for instance in subnet.instances.all():
-            print 'terminate instance'
+            print('terminate instance')
             instance.terminate()
 
     # delete all route table associations
     for rt in vpc.route_tables.all():
         for rta in rt.associations:
             if not rta.main:
-                print rt.id
+                print(rt.id)
                 rta.delete()
                 ec2_client.delete_route_table(RouteTableId=rt.id)
 
@@ -2145,19 +2145,19 @@ def aws_delete_vpc(aws_access_key_id=None,
     time.sleep(60)
     # delete network interfaces
     for subnet in vpc.subnets.all():
-        print 'delete subnet'
+        print('delete subnet')
         subnet.delete()
 
     # delete our security groups
     for sg in vpc.security_groups.all():
         if sg.group_name != 'default':
-            print 'delete sg'
+            print('delete sg')
             sg.delete()
 
     time.sleep(60)
     # detach and delete all gateways associated with the vpc
     for gw in vpc.internet_gateways.all():
-        print gw.id
+        print(gw.id)
         vpc.detach_internet_gateway(InternetGatewayId=gw.id)
         gw.delete()
 
@@ -2165,13 +2165,11 @@ def aws_delete_vpc(aws_access_key_id=None,
     time.sleep(60)
     # finally, delete the vpc
     ec2_client.delete_vpc(VpcId=vpc_id)
-    
-    #delete key pair
+
+    # delete key pair
     key_pair_name = vpc_name_tag + '-sshkey'
     ec2_client.delete_key_pair(
-            KeyName=key_pair_name,
-            DryRun=False
-        )
-    
-
+        KeyName=key_pair_name,
+        DryRun=False
+    )
 

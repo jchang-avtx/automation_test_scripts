@@ -17,18 +17,8 @@ from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
 from requests.exceptions import ConnectionError
 
-from lib.aviatrix.aviatrix_util import *
-from lib.aviatrix.account import *
-from lib.aviatrix.initial_setup import *
-from lib.aviatrix.gateway import *
-from lib.aviatrix.transit_network import *
-from lib.aviatrix.transit_network import *
 
-from lib.aws.account import *
-from lib.aws.ec2 import *
-from lib.aws.iam import *
-
-from lib.util.util import *
+requests.packages.urllib3.disable_warnings()
 
 
 #######################################################################################################################
