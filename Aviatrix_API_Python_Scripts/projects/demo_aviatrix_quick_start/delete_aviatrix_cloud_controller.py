@@ -123,10 +123,6 @@ try:
         logger.info(msg=tracekback_msg)
 
 
-
-
-
-
     try:
         ##### Delete UCC
         terminate_instances(logger=logger,
@@ -139,9 +135,6 @@ try:
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.info(msg=tracekback_msg)
-
-
-
 
 
     try:
@@ -157,10 +150,6 @@ try:
         logger.info(msg=tracekback_msg)
 
 
-
-
-
-
     try:
         ##### Disassociate Route-Table from Subnet
         disassociate_route_table(logger=logger,
@@ -174,9 +163,6 @@ try:
         logger.info(msg=tracekback_msg)
 
 
-
-
-
     try:
         ##### Delete Key-Pair
         delete_key_pair(logger=logger,
@@ -188,9 +174,6 @@ try:
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.info(msg=tracekback_msg)
-
-
-
 
 
     try:
@@ -207,9 +190,6 @@ try:
         logger.info(msg=tracekback_msg)
 
 
-
-
-
     try:
         ##### Delete Route-Table
         delete_route_table(logger=logger,
@@ -221,9 +201,6 @@ try:
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.info(msg=tracekback_msg)
-
-
-
 
 
     try:
@@ -240,9 +217,6 @@ try:
         logger.info(msg=tracekback_msg)
 
 
-
-
-
     try:
         #### Delete IGW
         delete_igw(logger=logger,
@@ -256,7 +230,6 @@ try:
         logger.info(msg=tracekback_msg)
 
 
-
     try:
         ##### Delete Subnet
         delete_subnet(logger=logger,
@@ -268,9 +241,6 @@ try:
     except Exception as e:
         tracekback_msg = traceback.format_exc()
         logger.info(msg=tracekback_msg)
-
-
-
 
 
     try:
@@ -290,10 +260,13 @@ except Exception as e:
     logger.info(msg=tracekback_msg)
 
 finally:
-    if notification_enabled:
-        run_completion_notification(logger=logger)
-
     timestamp_end = "{0:%Y-%m-%d_%H-%M-%S}".format(datetime.datetime.now())
     logger.info(msg="ENDED: " + timestamp_end)
     print_wall_end(logger=logger)
+
+    if notification_enabled:
+        pass
+
+
+# EOF
 
