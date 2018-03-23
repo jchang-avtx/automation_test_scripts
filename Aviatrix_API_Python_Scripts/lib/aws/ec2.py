@@ -20,9 +20,12 @@ from requests.exceptions import ConnectionError
 '''
 from lib.aws.account import *
 from lib.aws.iam import *
-
 from lib.util.util import *
+
 '''
+import sys
+sys.path.append('../util')
+from apirequest import APIRequest
 
 
 
@@ -2100,7 +2103,7 @@ def aws_create_vpc(aws_access_key_id=None,
         print(instances[0].id)
         print(instances[0].public_ip_address)
         vpc_cfg["inst_id"] = instances[0].id
-        vpc_cfg["inst_ip"] = instances[0].public_ip_address
+        vpc_cfg["inst_public_ip"] = instances[0].public_ip_address
     if cfg_file:
         cfg_file_path = './config/' + vpc_name_tag + '.cfg'
         with open(cfg_file_path, 'w+') as f:
@@ -2138,6 +2141,8 @@ def aws_delete_vpc(aws_access_key_id=None,
                 ec2_client.delete_route_table(RouteTableId=rt.id)
 
 
+    #sleep for dependency cleanup
+    time.sleep(60)
     # delete network interfaces
     for subnet in vpc.subnets.all():
         print 'delete subnet'
@@ -2149,6 +2154,7 @@ def aws_delete_vpc(aws_access_key_id=None,
             print 'delete sg'
             sg.delete()
 
+    time.sleep(60)
     # detach and delete all gateways associated with the vpc
     for gw in vpc.internet_gateways.all():
         print gw.id
@@ -2156,6 +2162,7 @@ def aws_delete_vpc(aws_access_key_id=None,
         gw.delete()
 
 
+    time.sleep(60)
     # finally, delete the vpc
     ec2_client.delete_vpc(VpcId=vpc_id)
     
