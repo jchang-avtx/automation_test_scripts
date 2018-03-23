@@ -10,8 +10,6 @@ import paramiko
 import boto3
 import json
 import requests
-import winsound
-import wmi
 
 from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
