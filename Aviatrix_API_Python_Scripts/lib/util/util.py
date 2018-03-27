@@ -32,7 +32,7 @@ def set_logger(logger_name="main",
                log_file_mode="a"
                ):
     ### Step 01: Create logger object
-    logger = logging.getLogger(logger_name)
+    logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
     ### Step 02 : Setup format for log output
