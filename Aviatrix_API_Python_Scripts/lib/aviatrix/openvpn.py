@@ -118,3 +118,49 @@ def delete_vpn_user(
     return response
 
 
+
+def get_vpn_client_cert(
+        logger=None,
+        url=None,
+        CID=None,
+        vpc_id=None,
+        lb_name=None,
+        username=None,
+        dns="false",
+        max_retry=10,
+        log_indentation=""
+        ):
+    ### Required parameters
+    params = {
+        "action": "get_vpn_ssl_ca_configuration",
+        "CID": CID,
+        "vpc_id": vpc_id,
+        "lb_name": lb_name,
+        "username": username,
+        "dns": dns
+    }
+
+    ### Optional parameters
+    # if dns is not None:
+    #     payload["dns"] = dns
+
+
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.get(url=url, params=params, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+        # END try-except
+    # END for
+
+    # logger.info("END: Aviatrix API: " + api_name)
+    return response
+
