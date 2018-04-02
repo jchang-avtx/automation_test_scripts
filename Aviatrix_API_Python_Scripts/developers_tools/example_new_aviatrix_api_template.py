@@ -10,8 +10,6 @@ import paramiko
 import boto3
 import json
 import requests
-import winsound
-import wmi
 
 from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
@@ -95,4 +93,4 @@ def create_XXX_avx_object_XXX(
 
     # logger.info("END: Aviatrix API: " + api_name)
     return response
-
+# END create_XXX_avx_object_XXX()
