@@ -1,8 +1,8 @@
 # create aviatrix role and policy
-resource "null_resource" "download_aviatrix_app_policy" {
+resource "null_resource" "download_aviatrix_iam_policy" {
   count       = "${var.create_iam_role}"
   provisioner "local-exec" {
-   command = "python3 aviatrix_iam_role/download_aviatrix_app_policy.py"
+   command = "python3 aviatrix_iam_role/download_aviatrix_iam_policy.py"
   }
 }
 
@@ -11,6 +11,7 @@ resource "aws_iam_policy" "aviatrix_assume_role_policy" {
   name        = "aviatrix-assume-role-policy"
   description = "aviatrix assume role policy"
   policy      = "${file("aviatrix_iam_role/aviatrix-assume-role-policy.json")}"
+  depends_on = ["null_resource.download_aviatrix_iam_policy"]
 }
 
 resource "aws_iam_policy" "aviatrix_app_policy" {
@@ -18,7 +19,7 @@ resource "aws_iam_policy" "aviatrix_app_policy" {
   name        = "aviatrix-app-policy"
   description = "aviatrix app policy"
   policy      = "${file("aviatrix_iam_role/aviatrix-app-policy.json")}"
-  depends_on = ["null_resource.download_aviatrix_app_policy"]
+  depends_on = ["null_resource.download_aviatrix_iam_policy"]
 }
 
 
