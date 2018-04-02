@@ -196,7 +196,46 @@ def create_gateway(logger=None, url=None, CID=None,
     # END for
 
     return response
+# END create_gateway()
 
+
+def get_gateway_info(
+        logger=None,
+        url=None,
+        CID=None,
+        gateway_name=None,
+        max_retry=10,
+        log_indentation=""
+        ):
+    ### Required parameters
+    params = {
+        "action": "list_vpc_by_name",
+        "CID": CID,
+        "vpc_name": gateway_name
+    }
+
+    ### Optional parameters
+    pass
+
+    ### Call Aviatrix API (with max retry)
+    for i in range(max_retry):
+        try:
+            # Send the GET/POST RESTful API request
+            response = requests.get(url=url, params=params, verify=False)
+
+            if response.status_code == 200:
+                # IF status_code is 200 meaning server has responded, then break out of retry loop
+                break
+
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+        # END try-except
+    # END for
+
+    # logger.info("END: Aviatrix API: " + api_name)
+    return response
+# END get_gateway_info()
 
 
 def delete_gateway_api(logger=None, url=None, CID=None, cloud_type=None, gateway_name=None, max_retry=10):
@@ -229,5 +268,7 @@ def delete_gateway_api(logger=None, url=None, CID=None, cloud_type=None, gateway
     # END for
 
     return response
+# END delete_gateway()
+
 
 
