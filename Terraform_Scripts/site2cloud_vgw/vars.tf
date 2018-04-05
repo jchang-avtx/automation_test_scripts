@@ -10,6 +10,5 @@ variable "region1" {}
 variable "onprem_cidr" {}
 variable "t2instance" {}
 variable "conn_name1" {}
-variable "conn_name2" {}
 variable "remote_subnet1" {}
 variable "remote_subnet2" {}
