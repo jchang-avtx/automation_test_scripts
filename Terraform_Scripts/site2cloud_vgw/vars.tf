@@ -1,6 +1,5 @@
 variable "account_name" {}
 variable "account_password" {}
-variable "account_email" {}
 variable "aws_account_number" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
@@ -11,6 +10,5 @@ variable "region1" {}
 variable "onprem_cidr" {}
 variable "t2instance" {}
 variable "conn_name1" {}
-variable "conn_name2" {}
 variable "remote_subnet1" {}
 variable "remote_subnet2" {}

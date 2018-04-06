@@ -1,7 +1,6 @@
 #
 account_name ="Temporary-AWS-account"
 account_password = "xxxxxxxxx"
-account_email = "name@aviatrix.com"
 aws_account_number = "123456788888888"
 aws_access_key = "xxxxxxxxxxxxxxxxxxx"
 aws_secret_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
@@ -15,7 +14,6 @@ region1 = "us-west-2"
 t2instance = "t2.micro"
 onprem_cidr = "172.16.0.0/16"
 conn_name1 = "site2cloud_primary"
-conn_name2 = "site2cloud_secondary"
 remote_subnet1 = "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
 remote_subnet2 = "11.0.0.0/8,173.16.0.0/12,192.169.0.0/16"
 
