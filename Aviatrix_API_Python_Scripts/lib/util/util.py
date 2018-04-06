@@ -20,6 +20,9 @@ from lib.aviatrix.initial_setup import login
 from lib.aviatrix.initial_setup import login_GET_method
 from lib.aviatrix.controller import get_controller_version
 
+logger = logging.getLogger(__name__)
+
+
 
 #######################################################################################################################
 #########################################    General     ##########################################################
@@ -203,3 +206,21 @@ def print_exception_wall_end(logger=None):
 
 def run_completion_notification(logger=None):
     pass
+
+def read_config_file(file_path=""):
+    logger.info('file_path: {}'.format(file_path))
+    cfg = {}
+    if not os.path.exists(file_path):
+        logger.info('file_path: {} does not exist.'.format(file_path))
+        return cfg
+    with open(file_path, 'r') as f:
+        cfg  = json.load(f)
+        logger.info('cfg: {}'.format(cfg))
+    return cfg
+
+def write_config_file(file_path=None, cfg=None):
+    logger.info('file_path: {}'.format(file_path))
+    logger.info('cfg: {}'.format(cfg))
+    with open(file_path, 'w+') as f:
+        f.write(json.dumps(cfg, indent=2))
+

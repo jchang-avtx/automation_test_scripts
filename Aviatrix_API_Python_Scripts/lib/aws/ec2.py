@@ -23,9 +23,14 @@ from lib.aws.iam import *
 from lib.util.util import *
 
 '''
-import sys
-sys.path.append('../util')
 from apirequest import APIRequest
+from lib.util.util import write_config_file
+from lib.util.util import read_config_file
+
+request_api = APIRequest()
+logger = logging.getLogger(__name__)
+CFG_EXT = '.cfg'
+KEY_EXT = '.pem'
 
 
 
@@ -2005,8 +2010,8 @@ def aws_create_vpc(aws_access_key_id=None,
                    vpc_name_tag=None,
                    subnet_cidr=None,
                    create_instance=False,
-                   cfg_file=False):
-    logger = logging.getLogger(__name__)
+                   cfg_file=""):
+
     vpc_cfg = {}
     ec2 = boto3.resource('ec2',
                          aws_access_key_id=aws_access_key_id,
@@ -2014,60 +2019,62 @@ def aws_create_vpc(aws_access_key_id=None,
                          region_name=region_name)
 
     # create VPC
-    vpc = ec2.create_vpc(CidrBlock=vpc_cidr)
+    vpc = request_api.execute(ec2.create_vpc, CidrBlock=vpc_cidr)
+
     # we can assign a name to vpc, or any resource, by using tag
-    vpc.create_tags(Tags=[{"Key": "Name", "Value": vpc_name_tag}])
+    request_api.execute(vpc.create_tags, Tags=[{"Key": "Name", "Value": vpc_name_tag}])
     vpc.wait_until_available()
-    print(vpc.id)
+    logger.info('vpc_id: {}'.format(vpc.id))
+
     vpc_cfg["vpc_name_tag"] = vpc_name_tag
     vpc_cfg["vpc_cidr"] = vpc_cidr
     vpc_cfg["vpc_id"] = vpc.id
     vpc_cfg["vpc_region"] = region_name
 
     # create then attach internet gateway
-    ig = ec2.create_internet_gateway()
-    vpc.attach_internet_gateway(InternetGatewayId=ig.id)
-    print(ig.id)
+    ig = request_api.execute(ec2.create_internet_gateway)
+    request_api.execute(vpc.attach_internet_gateway, InternetGatewayId=ig.id)
+    logger.info('ig_id: {}'.format(ig.id))
     vpc_cfg["igw_id"] = ig.id
 
     # create a route table and a public route
-    route_table = vpc.create_route_table()
-    route = route_table.create_route(
+    route_table = request_api.execute(vpc.create_route_table)
+    route = request_api.execute(route_table.create_route,
         DestinationCidrBlock='0.0.0.0/0',
         GatewayId=ig.id
     )
-    print(route_table.id)
+    logger.info('route_table_id: {}'.format(route_table.id))
     vpc_cfg["rtb_id"] = route_table.id
 
     # create subnet
     subnet_name = vpc_name_tag + '-public'
-    subnet = ec2.create_subnet(CidrBlock=subnet_cidr, VpcId=vpc.id)
-    subnet.create_tags(Tags=[{"Key": "Name", "Value": subnet_name}])
-    print(subnet.id)
+    subnet = request_api.execute(ec2.create_subnet, CidrBlock=subnet_cidr, VpcId=vpc.id)
+    request_api.execute(subnet.create_tags, Tags=[{"Key": "Name", "Value": subnet_name}])
+    logger.info('subnet_id: {}'.format(subnet.id))
     vpc_cfg["subnet_name"] = subnet_name
     vpc_cfg["subnet_id"] = subnet.id
     vpc_cfg["subnet_cidr"] = subnet_cidr
 
     # associate the route table with the subnet
-    route_table.associate_with_subnet(SubnetId=subnet.id)
+    request_api.execute(route_table.associate_with_subnet, SubnetId=subnet.id)
 
     # Create sec group
     sg_name = vpc_name_tag + '-sg'
-    sec_group = ec2.create_security_group(
+    sec_group = request_api.execute(ec2.create_security_group,
         GroupName=sg_name, Description=sg_name, VpcId=vpc.id)
-    sec_group.authorize_ingress(
+    request_api.execute(sec_group.authorize_ingress,
         CidrIp='0.0.0.0/0',
         IpProtocol='icmp',
         FromPort=-1,
         ToPort=-1
     )
-    sec_group.authorize_ingress(
+    request_api.execute(sec_group.authorize_ingress,
         CidrIp='0.0.0.0/0',
         IpProtocol='tcp',
         FromPort=22,
         ToPort=22
     )
-    print(sec_group.id)
+    logger.info('sec_group_id: {}'.format(sec_group.id))
     vpc_cfg["sg_name"] = sg_name
     vpc_cfg["sg_id"] = sec_group.id
 
@@ -2075,40 +2082,38 @@ def aws_create_vpc(aws_access_key_id=None,
 
         # Create ssh key
         key_pair_name = vpc_name_tag + '-sshkey'
-        key_file_name = './config/' + key_pair_name + '.pem'
-        private_key = create_key_pair(logger=logger,
+        private_key = request_api.execute(create_key_pair,logger=logger,
                                       region=region_name,
                                       key_pair_name=key_pair_name,
                                       aws_access_key_id=aws_access_key_id,
                                       aws_secret_access_key=aws_secret_access_key)
-        print(private_key)
-        try:
+        if cfg_file:
+            key_file_name = cfg_file + key_pair_name + KEY_EXT
             with open(key_file_name, 'w+') as f:
                 f.write(private_key)
-        except Exception as e:
-            print(e)
+
 
         # Acquire AMI ID
         path_to_aws_global_config_file = '../../config_global/aws_config.json'
-        with open(path_to_aws_global_config_file, 'r') as f:
-            aws_config = json.load(f)
+        aws_config = read_config_file(file_path=path_to_aws_global_config_file)
         ami_id = aws_config["AWS"]["AMI"][region_name]["ubuntu_16_04"]
 
         # Create instance
-        instances = ec2.create_instances(
+        instances = request_api.execute(ec2.create_instances,
             KeyName=key_pair_name, ImageId='ami-66506c1c', InstanceType='t2.micro', MaxCount=1, MinCount=1,
             NetworkInterfaces=[{'SubnetId': subnet.id, 'DeviceIndex': 0, 'AssociatePublicIpAddress': True,
                                 'Groups': [sec_group.group_id]}])
         instances[0].wait_until_running()
-        instances[0].load()
-        print(instances[0].id)
-        print(instances[0].public_ip_address)
+        request_api.execute(instances[0].load)
+        logger.info('instance_id: {}'.format(instances[0].id))
+        logger.info('instance_pubic_ip: {}'.format(instances[0].public_ip_address))
+        logger.info('instance_private_ip: {}'.format(instances[0].private_ip_address))
         vpc_cfg["inst_id"] = instances[0].id
         vpc_cfg["inst_public_ip"] = instances[0].public_ip_address
+        vpc_cfg["inst_private_ip"] = instances[0].private_ip_address
     if cfg_file:
-        cfg_file_path = './config/' + vpc_name_tag + '.cfg'
-        with open(cfg_file_path, 'w+') as f:
-            f.write(json.dumps(vpc_cfg, indent=2))
+        cfg_file_path = cfg_file + vpc_name_tag + CFG_EXT
+        write_config_file(file_path=cfg_file_path, cfg=vpc_cfg)
 
 
 def aws_delete_vpc(aws_access_key_id=None,
@@ -2116,7 +2121,6 @@ def aws_delete_vpc(aws_access_key_id=None,
                    region_name=None,
                    vpc_name_tag=None,
                    vpc_id=None):
-    logger = logging.getLogger(__name__)
 
     ec2 = boto3.resource('ec2',
                          aws_access_key_id=aws_access_key_id,
@@ -2127,49 +2131,74 @@ def aws_delete_vpc(aws_access_key_id=None,
     vpc = ec2.Vpc(vpc_id)
 
     # delete any instances
+    logger.info('Deleting subnets...')
     for subnet in vpc.subnets.all():
         for instance in subnet.instances.all():
-            print('terminate instance')
-            instance.terminate()
+            try:
+                request_api.execute(instance.terminate)
+            except Exception as e:
+                logger.error(str(e))
+
+    #sleep for dependency cleanup
+    time.sleep(30)
 
     # delete all route table associations
+    logger.info('Deleting route tables...')
     for rt in vpc.route_tables.all():
         for rta in rt.associations:
             if not rta.main:
-                print(rt.id)
-                rta.delete()
-                ec2_client.delete_route_table(RouteTableId=rt.id)
+                try:
+                    request_api.execute(rta.delete)
+                    request_api.execute(ec2_client.delete_route_table, RouteTableId=rt.id)
+                except Exception as e:
+                    logger.error(str(e))
+                
 
 
-    #sleep for dependency cleanup
-    time.sleep(60)
     # delete network interfaces
     for subnet in vpc.subnets.all():
-        print('delete subnet')
-        subnet.delete()
+        try:
+            request_api.execute(subnet.delete)
+        except Exception as e:
+            logger.error(str(e))
 
-    # delete our security groups
+    # delete our security groups 
+    logger.info('Deleting security groups...')
     for sg in vpc.security_groups.all():
         if sg.group_name != 'default':
-            print('delete sg')
-            sg.delete()
+            try:
+                request_api.execute(sg.delete)
+            except Exception as e:
+                logger.error(str(e))
 
-    time.sleep(60)
+    time.sleep(30)
     # detach and delete all gateways associated with the vpc
+    logger.info('Deleting internet gateways...')
     for gw in vpc.internet_gateways.all():
-        print(gw.id)
-        vpc.detach_internet_gateway(InternetGatewayId=gw.id)
-        gw.delete()
+        try:
+            request_api.execute(vpc.detach_internet_gateway, InternetGatewayId=gw.id)
+            request_api.execute(gw.delete)
+        except Exception as e:
+            logger.error(str(e))
 
 
-    time.sleep(60)
+    time.sleep(30)
     # finally, delete the vpc
-    ec2_client.delete_vpc(VpcId=vpc_id)
+    logger.info('Deleting internet gateways...')
+    try:
+        request_api.execute(ec2_client.delete_vpc, VpcId=vpc_id)
+    except Exception as e:
+        logger.error(str(e))
+
 
     # delete key pair
+    logger.info('Deleting key pair...')
     key_pair_name = vpc_name_tag + '-sshkey'
-    ec2_client.delete_key_pair(
-        KeyName=key_pair_name,
-        DryRun=False
-    )
+    try:
+        request_api.execute(ec2_client.delete_key_pair,
+            KeyName=key_pair_name,
+            DryRun=False
+        )
+    except Exception as e:
+        logger.error(str(e))
 
