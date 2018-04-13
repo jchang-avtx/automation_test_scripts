@@ -215,12 +215,10 @@ def read_config_file(file_path=""):
         return cfg
     with open(file_path, 'r') as f:
         cfg  = json.load(f)
-        logger.info('cfg: {}'.format(cfg))
     return cfg
 
 def write_config_file(file_path=None, cfg=None):
     logger.info('file_path: {}'.format(file_path))
-    logger.info('cfg: {}'.format(cfg))
     with open(file_path, 'w+') as f:
         f.write(json.dumps(cfg, indent=2))
 
