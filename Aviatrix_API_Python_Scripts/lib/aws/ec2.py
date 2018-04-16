@@ -2091,6 +2091,8 @@ def aws_create_vpc(aws_access_key_id=None,
             key_file_name = cfg_file + key_pair_name + KEY_EXT
             with open(key_file_name, 'w+') as f:
                 f.write(private_key)
+            cmd = 'sudo chmod 400 ' + key_file_name
+            os.system(cmd)
 
 
         # Acquire AMI ID
@@ -2201,4 +2203,16 @@ def aws_delete_vpc(aws_access_key_id=None,
         )
     except Exception as e:
         logger.error(str(e))
+
+
+def aws_stop_instance(aws_access_key_id=None,
+                   aws_secret_access_key=None,
+                   region_name=None,
+                   instance_id=None):
+
+    ec2 = boto3.resource('ec2',
+                         aws_access_key_id=aws_access_key_id,
+                         aws_secret_access_key=aws_secret_access_key,
+                         region_name=region_name)
+    ec2.Instance(instance_id).stop()
 
