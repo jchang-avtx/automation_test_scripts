@@ -23,7 +23,7 @@ Description:
 
   *"controller_password": "", 			#Aviatrix Controller password
 
-  "cloud_type": 1, 				#AWS cloud type-1, ARM cloud type-8
+  *"cloud_type": 1, 				#AWS cloud type-1
 
   *"aws_account_number": "",                    #AWS account credential
 
