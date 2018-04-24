@@ -20,7 +20,7 @@ onprem_gateway_name = "canada-OnPrem"
 onprem_gateway_size = "t2.micro"
 onprem_region = "ca-central-1"
 onprem_cidr_prefix = "172.16"
-s2c_remote_subnet = "10.224.0.0/24,10.45.0.0/24,10.46.0.0/24,10.47.0.0/24,10.48.0.0/24"
+s2c_remote_subnet = "10.224.0.0/24,10.1.0.0/24,10.1.1.0/24,10.10.2.0/24"
 
 # region parameters
 spoke_gateway_size = "t2.micro"
