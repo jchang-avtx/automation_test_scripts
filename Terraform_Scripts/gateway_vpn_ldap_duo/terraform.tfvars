@@ -3,10 +3,8 @@
                      aws_instance = "t2.micro"
               aws_vpc_public_cidr = "10.10.0.0/24"
 
-           aviatrix_controller_ip = "a.b.c.d"
-     aviatrix_controller_username = "admin"
-     aviatrix_controller_password = "myownpassword411!"
-     aviatrix_cloud_account_name  = "habackup"
+
+     aviatrix_cloud_account_name  = "Temp-AWS-CloudAccount"
            aviatrix_gateway_name  = "myAviatrix-gateway-VPN-ldap-duo"
           aviatrix_cloud_type_aws = 1
 
@@ -21,7 +19,7 @@
        aviatrix_vpn_duo_push_mode = "auto"
 
          aviatrix_vpn_ldap_enable = "yes"
-         aviatrix_vpn_ldap_server = "a.b.c.d:389"
+         aviatrix_vpn_ldap_server = "1.2.3.4:389"
         aviatrix_vpn_ldap_bind_dn = "TTTTTTTTTEST\\Administrator"
        aviatrix_vpn_ldap_password = "myLDAPpassword123"
         aviatrix_vpn_ldap_base_dn = "DC=aviatrixtest, DC=com"
