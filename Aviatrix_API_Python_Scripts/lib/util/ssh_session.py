@@ -42,6 +42,7 @@ class SSHSession:
         cmd_result = {}
         cmd_result['stdout'] = stdout.readlines()
         cmd_result['stderr'] = stderr.readlines()
+        # self.logger.info('Command %s execution output: %s', cmd, cmd_result['stdout'])
         if ignore_exit_status:
             return cmd_result
         if not exit_status:
