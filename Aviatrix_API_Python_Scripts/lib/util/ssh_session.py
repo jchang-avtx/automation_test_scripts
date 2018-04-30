@@ -1,17 +1,14 @@
 # Copyright (c) 2014, 2015 Carmelo Systems, Inc.
 #! Remote ssh utils 
 
-import os
-import os.path
-import sys
-import logging
-import json
 import logging
 import traceback
 import paramiko
 
+
 class SSHSessionError(Exception):
       pass
+
 
 class SSHSession:
     def __init__(self, host, ssh_username, ssh_key=None,
