@@ -16,7 +16,7 @@ from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
 from requests.exceptions import ConnectionError
 
-from lib.aviatrix.initial_setup import get_cloud_type
+from Aviatrix_API_Python_Scripts.lib.aviatrix.initial_setup import get_cloud_type
 
 
 requests.packages.urllib3.disable_warnings()
