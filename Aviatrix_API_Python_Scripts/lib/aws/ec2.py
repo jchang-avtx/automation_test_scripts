@@ -23,9 +23,8 @@ from lib.aws.iam import *
 from lib.util.util import *
 
 '''
-from apirequest import APIRequest
-from lib.util.util import write_config_file
-from lib.util.util import read_config_file
+from Aviatrix_API_Python_Scripts.lib.util.apirequest import APIRequest
+from Aviatrix_API_Python_Scripts.lib.util.util import write_config_file, read_config_file
 
 request_api = APIRequest()
 logger = logging.getLogger(__name__)
@@ -33,11 +32,9 @@ CFG_EXT = '.cfg'
 KEY_EXT = '.pem'
 
 
-
 #######################################################################################################################
 #################################################    Tag     ##########################################################
 #######################################################################################################################
-
 def create_name_tag(logger=None,
                     region="",
                     resource="",
@@ -94,12 +91,9 @@ def create_name_tag(logger=None,
         pass
 
 
-
-
 #######################################################################################################################
 #################################################    VPC     ##########################################################
 #######################################################################################################################
-
 def create_vpc(logger=None, region="", cidr="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
     logger.info(log_indentation + "START: Create VPC")
     instance_tenancy = "default"  # Valid Value: "default" || "dedicated" || "host"
@@ -143,6 +137,7 @@ def create_vpc(logger=None, region="", cidr="", aws_access_key_id="", aws_secret
                 break
         # END for
 
+        vpc.wait_until_exists()
         vpc.wait_until_available()
 
         ##### Step 04: Modify VPC Attributes to set "DNS hostnames" to "yes"
@@ -166,10 +161,6 @@ def create_vpc(logger=None, region="", cidr="", aws_access_key_id="", aws_secret
 
     finally:
         logger.info(log_indentation + "ENDED: Create VPC\n")
-
-
-
-
 
 
 def delete_vpc(logger=None, region="", vpc_id="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
@@ -201,13 +192,9 @@ def delete_vpc(logger=None, region="", vpc_id="", aws_access_key_id="", aws_secr
         logger.info(log_indentation + "ENDED: Delete VPC\n")
 
 
-
-
-
 #######################################################################################################################
 #################################################    Subnet     #######################################################
 #######################################################################################################################
-
 def create_subnet(logger=None,
                   region="",
                   vpc_id="",
@@ -260,8 +247,6 @@ def create_subnet(logger=None,
         logger.info(log_indentation + "ENDED: Create Subnet\n")
 
 
-
-
 def delete_subnet(logger=None, 
                   region="", 
                   subnet_id="", 
@@ -297,12 +282,9 @@ def delete_subnet(logger=None,
         logger.info(log_indentation + "ENDED: Delete Subnet\n")
 
 
-
-
 #######################################################################################################################
 ###################################################    IGW     ########################################################
 #######################################################################################################################
-
 def create_igw(logger=None, region="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
     logger.info(log_indentation + "START: Create IGW")
 
@@ -336,8 +318,6 @@ def create_igw(logger=None, region="", aws_access_key_id="", aws_secret_access_k
         logger.info(log_indentation + "ENDED: Create IGW\n")
 
 
-
-
 def delete_igw(logger=None, region="", igw_id="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
     logger.info(log_indentation + "START: Delete IGW")
 
@@ -366,8 +346,6 @@ def delete_igw(logger=None, region="", igw_id="", aws_access_key_id="", aws_secr
 
     finally:
         logger.info(log_indentation + "ENDED: Delete IGW\n")
-
-
 
 
 def attach_igw_to_vpc(logger=None, 
@@ -409,8 +387,6 @@ def attach_igw_to_vpc(logger=None,
         logger.info(log_indentation + "ENDED: Attach IGW " + igw_id + " to VPC " + vpc_id)
 
 
-
-
 def detach_igw_from_vpc(logger=None, 
                         region="", 
                         igw_id="", 
@@ -429,7 +405,7 @@ def detach_igw_from_vpc(logger=None,
     )
 
     try:
-        ##### Step 01: Detach IGW from VPC
+        # Step 01: Detach IGW from VPC
         response = ec2_client.detach_internet_gateway(
             InternetGatewayId=igw_id,
             VpcId=vpc_id,
@@ -449,14 +425,9 @@ def detach_igw_from_vpc(logger=None,
         logger.info(log_indentation + "ENDED: Detach IGW\n")
 
 
-
-
-
 #######################################################################################################################
 ###############################################    Route Table     ####################################################
 #######################################################################################################################
-
-
 def create_route_table(logger=None, 
                        region="", 
                        vpc_id="", 
@@ -498,8 +469,6 @@ def create_route_table(logger=None,
         logger.info(log_indentation + "ENDED: Create Route-Table\n")
 
 
-
-
 def delete_route_table(logger=None, 
                        region="", 
                        route_table_id="", 
@@ -534,8 +503,6 @@ def delete_route_table(logger=None,
 
     finally:
         logger.info(log_indentation + "ENDED: Delete route table: " + route_table_id + "\n")
-
-
 
 
 def associate_route_table_to_subnet(logger=None,
@@ -579,8 +546,6 @@ def associate_route_table_to_subnet(logger=None,
         logger.info(log_indentation + "ENDED: Associate route table to subnet\n")
 
 
-
-
 def disassociate_route_table(logger=None,
                              region="",
                              route_table_association_id="",
@@ -615,8 +580,6 @@ def disassociate_route_table(logger=None,
 
     finally:
         logger.info(log_indentation + "ENDED: Disassociate route table from subnet\n")
-
-
 
 
 def create_route(logger=None,
@@ -664,8 +627,6 @@ def create_route(logger=None,
         logger.info(log_indentation + "ENDED: Create route to route-table: " + route_table_id + "\n")
 
 
-
-
 def delete_route(logger=None,
                  region="",
                  route_table_id="",
@@ -703,7 +664,6 @@ def delete_route(logger=None,
 
     finally:
         logger.info(log_indentation + "ENDED: Delete Route\n")
-
 
 
 def get_route_table_id_from_subnet(logger=None,
@@ -753,14 +713,9 @@ def get_route_table_id_from_subnet(logger=None,
         logger.info(log_indentation + "ENDED: Get route table ID from subnet: " + subnet_id + "\n")
 
 
-
-
-
 #######################################################################################################################
 ##########################################    Security Group     ######################################################
 #######################################################################################################################
-
-
 def create_security_group(logger=None,
                           region="",
                           vpc_id="",
@@ -806,7 +761,6 @@ def create_security_group(logger=None,
         logger.info(log_indentation + "ENDED: Create Security-Group for VPC: " + vpc_id + "\n")
 
 
-
 def delete_security_group(logger=None,
                           region="",
                           security_group_id="",
@@ -845,11 +799,8 @@ def delete_security_group(logger=None,
         logger.info(log_indentation + "ENDED: Delete Security-Group\n")
 
 
-
-
 """
 Create a inbound rule for a security group
-
 """
 def authorize_security_group_ingress(logger=None,
                                      region="",
@@ -873,7 +824,7 @@ def authorize_security_group_ingress(logger=None,
     )
 
     try:
-        ##### Step 01: Create a rule for Security Group
+        # Step 01: Create a rule for Security Group
         response = ec2_client.authorize_security_group_ingress(
             GroupId=security_group_id,
             # GroupName=security_group_name,  # either specifying sg-id or sg-name
@@ -936,13 +887,9 @@ def authorize_security_group_ingress(logger=None,
         logger.info(log_indentation + "ENDED: Create a rule for Security Group\n")
 
 
-
-
 #######################################################################################################################
 #############################################    Network-Interface     ################################################
 #######################################################################################################################
-
-
 def create_network_interface(logger=None,
                              region="",
                              subnet_id="",
@@ -1001,8 +948,6 @@ def create_network_interface(logger=None,
         logger.info(log_indentation + "ENDED: Create Network-Interface\n")
 
 
-
-
 def delete_network_interface(logger=None,
                              region="",
                              network_interface_id="",
@@ -1038,13 +983,9 @@ def delete_network_interface(logger=None,
         logger.info(log_indentation + "ENDED: Delete Network-Interface\n")
 
 
-
-
 #######################################################################################################################
 #################################################    Volume     #######################################################
 #######################################################################################################################
-
-
 def create_volume(logger=None,
                   region="",
                   availability_zone="",
@@ -1103,8 +1044,6 @@ def create_volume(logger=None,
         logger.info(log_indentation + "ENDED: Create Volume\n")
 
 
-
-
 def delete_volume(logger=None, 
                   region="", 
                   volume_id="", 
@@ -1141,13 +1080,9 @@ def delete_volume(logger=None,
         logger.info(log_indentation + "ENDED: Delete Volume\n")
 
 
-
-
 #######################################################################################################################
 #################################################    Key Pair     #######################################################
 #######################################################################################################################
-
-
 def create_key_pair(logger=None, 
                     region="", 
                     key_pair_name="", 
@@ -1182,8 +1117,6 @@ def create_key_pair(logger=None,
 
     finally:
         logger.info(log_indentation + "ENDED: Create Key-Pair\n")
-
-
 
 
 def delete_key_pair(logger=None, 
@@ -1222,19 +1155,12 @@ def delete_key_pair(logger=None,
         logger.info(log_indentation + "ENDED: Delete Key-Pair\n")
 
 
-
-
 #######################################################################################################################
 #################################    EC2 Instance / VM / Virtual Machine     ##########################################
 #######################################################################################################################
-
-
-
 '''
 Associate IAM-Instance-Profile to a EC2 Instance
 '''
-
-
 def associate_iam_instance_profile_to_ec2_instance(
         logger=None,
         region="",
@@ -1281,8 +1207,6 @@ def associate_iam_instance_profile_to_ec2_instance(
         logger.info(log_indentation + "ENDED: Associate IAM-Instance-Profile to a EC2 Instance\n")
 
 
-
-
 def disassociate_iam_instance_profile_from_ec2_instance(
         logger=None,
         region="",
@@ -1316,8 +1240,6 @@ def disassociate_iam_instance_profile_from_ec2_instance(
 
     finally:
         logger.info(log_indentation + "ENDED: Disassociate IAM-Instance-Profile from an EC2 Instance\n")
-
-
 
 
 '''
@@ -1493,8 +1415,6 @@ def run_instance(logger=None,
         logger.info(log_indentation + "ENDED: Create EC2 Instance/VM\n")
 
 
-
-
 def terminate_instances(logger=None,
                         region="",
                         instance_id_list="",
@@ -1528,8 +1448,6 @@ def terminate_instances(logger=None,
 
     finally:
         logger.info(log_indentation + "ENDED: Terminate Instances\n")
-
-
 
 
 def describe_instance_status(logger=None, 
@@ -1584,8 +1502,6 @@ def describe_instance_status(logger=None,
         logger.info(log_indentation + "ENDED: Describe EC2 Instance Status\n")
 
 
-
-
 def describe_instance_attribute(logger=None, 
                                 region="", 
                                 instance_id="", 
@@ -1619,8 +1535,6 @@ def describe_instance_attribute(logger=None,
 
     finally:
         logger.info(log_indentation + "ENDED: Describe Instance Attribute\n")
-
-
 
 
 def describe_instances(logger=None,
@@ -1664,8 +1578,6 @@ def describe_instances(logger=None,
 
     finally:
         logger.info(log_indentation + "ENDED: Describe EC2 Instances\n")
-
-
 
 
 def describe_iam_instance_profile_associations(logger=None, 
@@ -1722,13 +1634,9 @@ def describe_iam_instance_profile_associations(logger=None,
         logger.info(log_indentation + "ENDED: Describe IAM Instance Profile Associations for Instance: " + instance_id + " in " + region + "\n")
 
 
-
-
 #######################################################################################################################
 ############################################    Elastic IP (EIP)     ##################################################
 #######################################################################################################################
-
-
 def allocate_eip(logger=None, region="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
     logger.info("START: Allocate EIP")
 
@@ -1763,7 +1671,6 @@ def allocate_eip(logger=None, region="", aws_access_key_id="", aws_secret_access
 
     finally:
         logger.info(log_indentation + "ENDED: Allocate EIP\n")
-
 
 
 def release_address(logger=None,
@@ -1804,8 +1711,6 @@ def release_address(logger=None,
 
     finally:
         logger.info(log_indentation + "ENDED: Release EIP\n")
-
-
 
 
 def associate_address(logger=None, 
@@ -1855,8 +1760,6 @@ def associate_address(logger=None,
         logger.info(log_indentation + "ENDED: Associate EIP to EC2 Instance\n")
 
 
-
-
 def disassociate_address(logger=None, 
                          region="", 
                          eip_association_id="", 
@@ -1892,9 +1795,6 @@ def disassociate_address(logger=None,
 
     finally:
         logger.info(log_indentation + "ENDED: Disassociate EIP from instance\n")
-
-
-
 
 
 def describe_addresses(logger=None, region="", aws_access_key_id="", aws_secret_access_key="", log_indentation=""):
@@ -1937,8 +1837,6 @@ def describe_addresses(logger=None, region="", aws_access_key_id="", aws_secret_
 
     finally:
         logger.info(log_indentation + "ENDED: Describe EIPs\n")
-
-
 
 
 """
@@ -2020,10 +1918,13 @@ def aws_create_vpc(aws_access_key_id=None,
 
     # create VPC
     vpc = request_api.execute(ec2.create_vpc, CidrBlock=vpc_cidr)
+    time.sleep(10)
+    vpc.wait_until_available()
+    vpc.wait_until_exists()
 
     # we can assign a name to vpc, or any resource, by using tag
     request_api.execute(vpc.create_tags, Tags=[{"Key": "Name", "Value": vpc_name_tag}])
-    vpc.wait_until_available()
+
     logger.info('vpc_id: {}'.format(vpc.id))
 
     vpc_cfg["vpc_name_tag"] = vpc_name_tag
@@ -2054,6 +1955,7 @@ def aws_create_vpc(aws_access_key_id=None,
     vpc_cfg["subnet_name"] = subnet_name
     vpc_cfg["subnet_id"] = subnet.id
     vpc_cfg["subnet_cidr"] = subnet_cidr
+    time.sleep(5)
 
     # associate the route table with the subnet
     request_api.execute(route_table.associate_with_subnet, SubnetId=subnet.id)
@@ -2087,22 +1989,27 @@ def aws_create_vpc(aws_access_key_id=None,
                                       key_pair_name=key_pair_name,
                                       aws_access_key_id=aws_access_key_id,
                                       aws_secret_access_key=aws_secret_access_key)
+        if not private_key:
+            logger.error('SSH key pair can not be created successfully')
+            return
         if cfg_file:
             key_file_name = cfg_file + key_pair_name + KEY_EXT
             with open(key_file_name, 'w+') as f:
                 f.write(private_key)
-            cmd = 'sudo chmod 400 ' + key_file_name
-            os.system(cmd)
+            #cmd = 'sudo chmod 400 ' + key_file_name
+            #os.system(cmd)
+            #os.chmod(key_file_name, 0o400)
 
 
         # Acquire AMI ID
-        path_to_aws_global_config_file = '../../config_global/aws_config.json'
+        path_to_aws_global_config_file = './Aviatrix_API_Python_Scripts/config_global/aws_config.json'
         aws_config = read_config_file(file_path=path_to_aws_global_config_file)
-        ami_id = aws_config["AWS"]["AMI"][region_name]["ubuntu_16_04"]
+        if aws_config:
+            ami_id = aws_config["AWS"]["AMI"][region_name]["ubuntu_16_04"]
 
         # Create instance
         instances = request_api.execute(ec2.create_instances,
-            KeyName=key_pair_name, ImageId='ami-66506c1c', InstanceType='t2.micro', MaxCount=1, MinCount=1,
+            KeyName=key_pair_name, ImageId=ami_id, InstanceType='t2.micro', MaxCount=1, MinCount=1,
             NetworkInterfaces=[{'SubnetId': subnet.id, 'DeviceIndex': 0, 'AssociatePublicIpAddress': True,
                                 'Groups': [sec_group.group_id]}])
         instances[0].wait_until_running()
@@ -2124,6 +2031,8 @@ def aws_delete_vpc(aws_access_key_id=None,
                    vpc_name_tag=None,
                    vpc_id=None):
 
+    max_retries = 3
+
     ec2 = boto3.resource('ec2',
                          aws_access_key_id=aws_access_key_id,
                          aws_secret_access_key=aws_secret_access_key,
@@ -2133,7 +2042,7 @@ def aws_delete_vpc(aws_access_key_id=None,
     vpc = ec2.Vpc(vpc_id)
 
     # delete any instances
-    logger.info('Deleting subnets...')
+    logger.info('Deleting all instances...')
     for subnet in vpc.subnets.all():
         for instance in subnet.instances.all():
             try:
@@ -2144,54 +2053,68 @@ def aws_delete_vpc(aws_access_key_id=None,
     #sleep for dependency cleanup
     time.sleep(30)
 
-    # delete all route table associations
-    logger.info('Deleting route tables...')
-    for rt in vpc.route_tables.all():
-        for rta in rt.associations:
-            if not rta.main:
+    for i in range(0, max_retries):
+        logger.info("Trying to delete VPC with retry {} ...".format(str(i)))
+        try:
+            response = ec2_client.describe_vpcs(
+                VpcIds=[
+                    vpc.id,
+                ]
+            )
+        except Exception as e:
+            logger.info(str(e))
+            break
+
+        # delete all route table associations
+        logger.info('Deleting route tables...')
+        for rt in vpc.route_tables.all():
+            for rta in rt.associations:
+                if not rta.main:
+                    try:
+                        request_api.execute(rta.delete)
+                        request_api.execute(ec2_client.delete_route_table, RouteTableId=rt.id)
+                    except Exception as e:
+                        logger.error(str(e))
+
+        # delete all subnets
+        logger.info('Deleting all subnets...')
+        for subnet in vpc.subnets.all():
+            for interface in subnet.network_interfaces.all():
                 try:
-                    request_api.execute(rta.delete)
-                    request_api.execute(ec2_client.delete_route_table, RouteTableId=rt.id)
+                    request_api.execute(interface.delete)
                 except Exception as e:
                     logger.error(str(e))
-                
-
-
-    # delete network interfaces
-    for subnet in vpc.subnets.all():
-        try:
-            request_api.execute(subnet.delete)
-        except Exception as e:
-            logger.error(str(e))
-
-    # delete our security groups 
-    logger.info('Deleting security groups...')
-    for sg in vpc.security_groups.all():
-        if sg.group_name != 'default':
             try:
-                request_api.execute(sg.delete)
+                request_api.execute(subnet.delete)
             except Exception as e:
                 logger.error(str(e))
 
-    time.sleep(30)
-    # detach and delete all gateways associated with the vpc
-    logger.info('Deleting internet gateways...')
-    for gw in vpc.internet_gateways.all():
+        # delete our security groups
+        logger.info('Deleting security groups...')
+        for sg in vpc.security_groups.all():
+            if sg.group_name != 'default':
+                try:
+                    request_api.execute(sg.delete)
+                except Exception as e:
+                    logger.error(str(e))
+
+        time.sleep(30)
+        # detach and delete all gateways associated with the vpc
+        logger.info('Deleting internet gateways...')
+        for gw in vpc.internet_gateways.all():
+            try:
+                request_api.execute(vpc.detach_internet_gateway, InternetGatewayId=gw.id)
+                request_api.execute(gw.delete)
+            except Exception as e:
+                logger.error(str(e))
+
+        time.sleep(30)
+        # finally, delete the vpc
+        logger.info('Finally, deleting the vpc...')
         try:
-            request_api.execute(vpc.detach_internet_gateway, InternetGatewayId=gw.id)
-            request_api.execute(gw.delete)
+            request_api.execute(ec2_client.delete_vpc, VpcId=vpc_id)
         except Exception as e:
             logger.error(str(e))
-
-
-    time.sleep(30)
-    # finally, delete the vpc
-    logger.info('Deleting internet gateways...')
-    try:
-        request_api.execute(ec2_client.delete_vpc, VpcId=vpc_id)
-    except Exception as e:
-        logger.error(str(e))
-
 
     # delete key pair
     logger.info('Deleting key pair...')
