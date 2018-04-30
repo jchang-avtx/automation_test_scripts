@@ -1,16 +1,28 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+
+import boto3
+import datetime
 import json
 import logging
 import os
-import re
-import shutil
+import paramiko
+import requests
+import traceback
+import time
 
-from Aviatrix_API_Python_Scripts.lib.aviatrix.initial_setup import login
-from Aviatrix_API_Python_Scripts.lib.aviatrix.controller import get_controller_version
+from urllib3.exceptions import NewConnectionError
+from urllib3.exceptions import MaxRetryError
+from requests.exceptions import ConnectionError
+
+from lib.aviatrix.initial_setup import login
+from lib.aviatrix.initial_setup import login_GET_method
+from lib.aviatrix.controller import get_controller_version
 
 logger = logging.getLogger(__name__)
+
+
 
 #######################################################################################################################
 #########################################    General     ##########################################################
@@ -56,6 +68,7 @@ def set_logger(logger_name="main",
     return logger
 
 
+
 def delete_local_file(logger=None, path_to_file="", log_indentation=""):
     """
     This function deletes a local file.
@@ -67,6 +80,7 @@ def delete_local_file(logger=None, path_to_file="", log_indentation=""):
     os.remove(path_to_file)
     logger.info(log_indentation + "ENDED: Delete local file")
     return True
+
 
 
 def read_config_file_to_py_dict(logger=None, path_to_file="", log_indentation=""):
@@ -87,6 +101,7 @@ def read_config_file_to_py_dict(logger=None, path_to_file="", log_indentation=""
         return py_dict
 
 
+
 def write_py_dict_to_config_file(logger=None, py_dict=None, path_to_file=None, log_indentation=""):
     # logger.info(log_indentation + "START: Write python-dict to JSON format configuration file PATH: " + path_to_file)
 
@@ -95,6 +110,7 @@ def write_py_dict_to_config_file(logger=None, py_dict=None, path_to_file=None, l
 
         # logger.info(log_indentation + "ENDED: Write python-dict to JSON format configuration file PATH: " + path_to_file)
         return True
+
 
 
 def check_requirements(logger=None, config=None, log_indentation=""):
@@ -139,11 +155,15 @@ def check_requirements(logger=None, config=None, log_indentation=""):
         return True
 
 
+
+
+
 def print_wall_beg(logger=None):
     logger.info("WELCOME TO AVIATRIX!\n" +
                 "✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁" +
                 " ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈\n")
     return True
+
 
 
 def print_wall_end(logger=None):
@@ -153,11 +173,13 @@ def print_wall_end(logger=None):
     return True
 
 
+
 def print_greeting_msg(logger=None):
     logger.info("\nWelcome to Aviatrix Transit-Network API with Python!")
     logger.info("Aviatrix  --> Encrypted Tunnel  --> ∧v!@+r!x")
     logger.info("✈ ☁ ✈ Aviatrix ✈ ☁ ✈ The Best Cloud Network Architect!! ✈ ☁ ✈ Aviatrix ✈ ☁ ✈")
     return True
+
 
 
 def print_farewell_msg(logger=None):
@@ -167,10 +189,12 @@ def print_farewell_msg(logger=None):
     return True
 
 
+
 def print_exception_wall_beg(logger=None):
     logger.info("\n\n\n✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ ☁ ✈ \n")
     logger.info("START: Exception/Error occurred, printing detail message...\n\n")
     return True
+
 
 
 def print_exception_wall_end(logger=None):
@@ -179,9 +203,9 @@ def print_exception_wall_end(logger=None):
     return True
 
 
+
 def run_completion_notification(logger=None):
     pass
-
 
 def read_config_file(file_path=""):
     logger.info('file_path: {}'.format(file_path))
@@ -193,56 +217,20 @@ def read_config_file(file_path=""):
         cfg  = json.load(f)
     return cfg
 
-
 def write_config_file(file_path=None, cfg=None):
     logger.info('file_path: {}'.format(file_path))
     with open(file_path, 'w+') as f:
         f.write(json.dumps(cfg, indent=2))
 
-
-def delete_files_in_directory(path):
-    for the_file in os.listdir(path):
-        file_path = os.path.join(path, the_file)
-        try:
-            if os.path.isfile(file_path):
-                os.unlink(file_path)
-            elif os.path.isdir(file_path):
-                shutil.rmtree(file_path)
-        except Exception as e:
-            print(e)
-
-
-def ping_from_instance(sshclient, ping_target_ip, ping_count=10,
-                       ping_timeout=20, ping_pass_rate=0.8):
-    transmitted = 0
-    received = 0
-    ssh = sshclient
-    target = ping_target_ip
-    count = ping_count
-    timeout = ping_timeout
-
-    cmd = 'ping -c ' + str(count) + ' -w ' + str(timeout) + ' ' + target
-    logger.info('cmd: {}'.format(cmd))
-    ssh_result = ssh.exec_cmd(cmd, ignore_exit_status=True)
-    ping_result = ''.join(ssh_result['stdout'])
-    for line in ping_result.split('\n'):
-        logger.info(line)
-        stats = re.match(r'(.*) packets transmitted, (.*) received', line)
-        if stats:
-            transmitted = int(stats.group(1))
-            received = int(stats.group(2))
-    logger.debug("{} packets transmitted".format(transmitted))
-    logger.debug("{} packets received".format(received))
-    if transmitted != 0:
-        success_rate = received / transmitted
-        if success_rate >= ping_pass_rate:
-            logger.info("ping test PASSED: success rate is %f" % success_rate)
-            return True
-        else:
-            for line in ping_result.split('\n'):
-                logger.debug(line)
-            logger.error("ping test FAILED: success rate is %f" % success_rate)
-            return False
+def generate_ssh_keys(private_key_path):
+    # add ssh-keygen fo, r diagnostic plugin. Convert this key back to the way Azure need
+    command0 = 'ssh-keygen -t rsa -b 2048 -f ' + private_key_path + ' -q -N ""'
+    os.system(command0)
+    logger.info(command0)
+    command1 = 'chmod 600 ' + private_key_path
+    logger.info(command1)
+    public_key_path = private_key_path + '.pub'
+    if os.path.exists(private_key_path) and os.path.exists(public_key_path):
+        return True, public_key_path
     else:
-        logger.info("No ping packet as transmitted. Failed")
-        return False
+        return False, public_key_path
