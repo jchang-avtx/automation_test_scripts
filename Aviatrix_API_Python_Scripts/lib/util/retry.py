@@ -50,7 +50,7 @@ def _retry_internal(
         tries=-1,
         delay=0,
         max_delay=None,
-        backoff=1):
+        backoff=2):
     logger = logging.getLogger('avx')
     _tries, _delay = tries, delay
     if exceptions:
@@ -92,7 +92,7 @@ def invoke(
         tries=-1,
         delay=0,
         max_delay=None,
-        backoff=1):
+        backoff=2):
     '''
     Invokes a function and re-executes it if it failed.
 
