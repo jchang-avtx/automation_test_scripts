@@ -3,7 +3,7 @@
 Cloud API request mechanism.
 '''
 import logging
-from tools import retry
+from Aviatrix_API_Python_Scripts.lib.util import retry
 
 
 class APIRequestError(Exception):
