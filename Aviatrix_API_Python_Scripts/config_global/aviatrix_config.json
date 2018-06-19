@@ -1,5 +1,20 @@
 {
   "Aviatrix": {
-    
+    "UCC_Controller": {
+      "version": "latest",
+      "cloud_type": "aws",
+      "aviatrix_license_type": "BYOL",
+      "aviatrix_license_id": "xxxxxxxxxx",
+      "public_ip": "123.123.123.123",
+      "private_ip": "10.123.123.123",
+      "admin_password": "xxxxxxxxxx",
+      "admin_email": "test@aviatrix.com",
+      "access_account_users": [
+        {
+          "username": "ryan",
+          "password": "xxxxxxxxxx"
+        }
+      ]
+    }
   }
 }

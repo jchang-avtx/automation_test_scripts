@@ -7,6 +7,7 @@ import datetime
 import json
 import logging
 import os
+import sys
 import paramiko
 import requests
 import traceback
@@ -15,6 +16,10 @@ import time
 from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
 from requests.exceptions import ConnectionError
+
+
+PATH_TO_PROJECT_ROOT_DIR = "../"
+sys.path.append((PATH_TO_PROJECT_ROOT_DIR))
 
 
 requests.packages.urllib3.disable_warnings()

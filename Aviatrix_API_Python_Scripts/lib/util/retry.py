@@ -10,6 +10,10 @@ import time
 from functools import partial
 
 
+PATH_TO_PROJECT_ROOT_DIR = "../"
+sys.path.append((PATH_TO_PROJECT_ROOT_DIR))
+
+
 class RetryError(Exception):
     '''
     Retry exception.

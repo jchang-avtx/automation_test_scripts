@@ -7,6 +7,7 @@ import datetime
 import json
 import logging
 import os
+import sys
 import paramiko
 import requests
 import traceback
@@ -16,11 +17,17 @@ from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
 from requests.exceptions import ConnectionError
 
+
+PATH_TO_PROJECT_ROOT_DIR = "../"
+sys.path.append((PATH_TO_PROJECT_ROOT_DIR))
+
+
 from lib.aws.account import get_aws_account_id
 
 from lib.aviatrix.aviatrix_util import get_aviatrix_aws_iam_policy
 from lib.aviatrix.aviatrix_util import read_aws_iam_role_document_to_string
 from lib.aviatrix.aviatrix_util import download_aviatrix_aws_iam_policy
+
 
 
 #######################################################################################################################

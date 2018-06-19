@@ -7,6 +7,7 @@ import datetime
 import json
 import logging
 import os
+import sys
 import paramiko
 import requests
 import traceback
@@ -17,19 +18,972 @@ from urllib3.exceptions import MaxRetryError
 from requests.exceptions import ConnectionError
 
 
-'''
-from lib.aws.account import *
-from lib.aws.iam import *
-from lib.util.util import *
+PATH_TO_PROJECT_ROOT_DIR = "../"
+sys.path.append(PATH_TO_PROJECT_ROOT_DIR)
 
-'''
-from Aviatrix_API_Python_Scripts.lib.util.apirequest import APIRequest
-from Aviatrix_API_Python_Scripts.lib.util.util import write_config_file, read_config_file
+from lib.util.apirequest import APIRequest
+from lib.util.util import write_config_file, read_config_file
 
 request_api = APIRequest()
 logger = logging.getLogger(__name__)
 CFG_EXT = '.cfg'
 KEY_EXT = '.pem'
+
+
+#######################################################################################################################
+###############################################    Wizards     ########################################################
+#######################################################################################################################
+
+
+"""
+* This function does the following...
+    Step 01. Create VPC
+    Step 02. Create Subnet (public subnet)
+    Step 03. Create IGW
+    Step 04. Attach IGW to VPC
+    Step 05: Create Route-Table for VPC (which is creating the non-Main Route-Table)
+    Step 06: Associate Non-Main Route table to Public Subnet
+    Step xx: Create Default Route for Public Subnet's Route-Table
+    Step xx: Create Subnet (private subnet)
+    Step xx: Get Main-Route-Table ID
+    Step xx: Associate Main Route table to Private Subnet
+    Step xx: Create Security-Group
+    Step xx: Authorize Security Group Ingress (SSH)
+    Step xx: Authorize Security Group Ingress (HTTPS)
+    Step xx: Authorize Security Group Ingress (HTTP)
+    Step xx: Create key pair (pem file)
+    Step xx: Create EC2 instance in Public Subenet
+    Step xx: Create EC2 instance in Private Subenet
+    
+
+* The reason why we create the VM in the private subnet without assigning a public IP is because...
+  If the VM in the private subnet has public IP, we can't SSH into the VM from the VM in public subnet because 
+  VM (in private subnet) will try to use public IP to respond the SSH hand-shake.
+
+* The return object is a python-dictionary, and it looks like the following...
+    (This pydict is used for resources clean up purpose...)
+{
+    "region": "ca-central-1",
+    "vpc_name": "@@@-vpc-2018-06-08_11-57-58",
+    "vpc_cidr": "10.123.0.0/16",
+    "public_subnet_name": "@@@-PubSub-2018-06-08_11-57-58",
+    "public_subnet_cidr": "10.123.1.0/24",
+    "public_subnet_availability_zone": "ca-central-1a",
+    "igw_name": "@@@-igw-2018-06-08_11-57-58",
+    "non_main_rtb_name": "@@@-non-main-rtb-2018-06-08_11-57-58",
+    "private_subnet_name": "@@@-PriSub-2018-06-08_11-57-58",
+    "private_subnet_cidr": "10.123.2.0/24",
+    "private_subnet_availability_zone": "ca-central-1a",
+    "main_rtb_name": "@@@-main-rtb-2018-06-08_11-57-58",
+    "security_group_name": "@@@-sg-2018-06-08_11-57-58",
+    "security_group_rule_list": [
+        "SSH",
+        "HTTPS",
+        "HTTP",
+        "All ICMP - IPv4"
+    ],
+    "public_subnet_ec2_instance_name": "@@@-ubuntu_vm_in_pub_sub-2018-06-08_11-57-58",
+    "private_subnet_ec2_instance_name": "@@@-ubuntu_vm_in_pri_sub-2018-06-08_11-57-58",
+    "ami_id": "ami-7e21a11a",
+    "instance_type": "t2.micro",
+    "create_new_key_pair": true,
+    "key_pair_name": "@@@-keypair-2018-06-08_11-57-58",
+    "prefix_str": "@@@",
+    "vpc_id": "vpc-1e11ba76",
+    "public_subnet_id": "subnet-9a2ad3e0",
+    "igw_id": "igw-b8a28dd1",
+    "default_security_group_id": "sg-91fa44fa",
+    "non_main_rtb_id": "rtb-2c2ab144",
+    "non_main_rtb_association_id": "rtbassoc-73c8cd1b",
+    "private_subnet_id": "subnet-122bd268",
+    "main_rtb_id": "rtb-e334af8b",
+    "main_rtb_association_id": "rtbassoc-9bcecbf3",
+    "security_group_id": "sg-fefd4395",
+    "private_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEogIBAAKCAQEAqTnkytl+mssOYW4DEUkVU0GUvKB4SCaWBkU7lNX4gtTMgYeW+bOdceAWz7wO\nzZgT7xXWk3uAAhck7qI7kW8U2H8ZrdhCLdgO2+ZfPoTutydZzbrBnqNmqjwaUA+ziGpHbcLw5wmJ\nhJkN94fmpl1ioEQ2yC26B0SGKoDXA4QIfSY8lROvpAsLhTf6s2p5dLeHcB5Pz0vbs0UqYbOB5Ddr\nhTXN0w9ghwB/VN6am8X8Cu+0DSC5zE4AZx+pyaBk3o28QdezpDFvsvlQFNeOCX/RTBUl/RWehVv8\nOlFgI/a8csshKStXya2vKMpg4pKHHB9q5G/ADSV2sn3ZSmeeZ5FOLQIDAQABAoIBAGxQNOOtH/69\ntx+fRXFb4L1gPW4aG8K6h83NpFwYNC6xO5Awk+6RC1YmwxMFYEgxbZja1nOhWYZ8/9OJnSzx91q2\nx13hDELBhokzQ4UFmrE6C53FSkZaecy+GW1jD1tiAwP7ASwvi4iGWk0z++pB3W2NG682rVoXfvRX\ncMe8S56lvxnNG51Op2V6QWRgBa3/kQyDNmjy7NOpcOhkiYpgSPgCE1JUlj6nXYq+a+Hu/iaPVztd\nXOXl8uQel+T+s+W2IUiVk/ndo3UhLMBsLk/QbVvvq4Bf82KHvolci00WpXKCMCQv30fu0syXtCXk\ntte1Q3wNmIvVSds7BxG7sOExhUECgYEA1bPaurIkoJFZqNuzbgXjbx3+P1HnV7gOqtf4WLRk3xZR\nqAfCv357/0LN2VVhPQsG6cp5GOrf4RZGCnU1bgLUs3LXnCuzlRvfcdyoiq/xgoeHfmLX506WSYKE\nCT8iJqkcIIUGsPkD6B78sTMJyB03ZrUy0M9gcoZXlqLouaNXq90CgYEAyrh0Hb2T81itzVgOq5q8\n1h8qAz7V4Qd7+HgBZNf0EeWFFhObhjpKGA0orkfMSC2a6vfDEl6HdohSplH0ZzRsOQxH46wc1V4W\n8gnFbYEfcl0wC45hW7pbYN7tdIUQO2JQchlAnMh10AZ/qvoHCSsUKGEOSs6i1evUzweKAmpQbpEC\ngYBm1D9InJWxSZ95+BWTuHOisSz47QFDnUY5gOh4Tn1HN2cdUnasTEGAJ3YDwOikRd0SvCGfEs2d\ncmlLePC3udb9biI/fGvSMPJIyKO08Epmw64363n2TENWpd3A0UcukSr+nuQEXh46IEb5QRTQ3PYe\njswf29mN4gTdcBBJ20ZBZQKBgFTTUAsty53U6oz1HtZhnki+q5bGETrjJdW3aWXoE0H113WAaOCG\nvYBI6U/bzTgalSti1yZ1lZtcubDMtEcHIY3RfLdgyoPhphpLSmhi0mTJZ5Q+VLDMTvY+8f+CumMO\n5XiI5od0Pg/42C0UCCOm+f1Xd2KICo0W7GpgzjfqgpNxAoGAUcPiVPuZZLuZrjEjUa49rFkp/8sf\nF5x0jW4Dl+SMdFLXjbHRLykm452+esQQjNs0gQ4hN0bF0HEOtKtHKUUCjBgKR6JeeZ+vJ19vky7v\n9R/4uTs4mg153ncMlYg73yaXqewZfo4oRc5e9EuT0n+0JtEZXsCuXQT5v3YJolEG0Y0=\n-----END RSA PRIVATE KEY-----",
+    "public_subnet_ec2_instance_id": "i-037ccbb0c924dbdf1",
+    "public_subnet_ec2_instance_private_ip": "10.123.1.66",
+    "public_subnet_ec2_instance_public_ip": "35.183.45.52",
+    "private_subnet_ec2_instance_id": "i-013053b999e05b553",
+    "private_subnet_ec2_instance_private_ip": "10.123.2.7"
+}
+"""
+def create_aws_fqdn_test_environment_by_wizard(
+                logger=None,
+                resources_config=None,  # json
+
+                region_name="us-west-2",
+                vpc_name="auto-vpc",
+                vpc_cidr="10.99.0.0/16",
+
+                public_subnet_name="auto-public-subnet",
+                public_subnet_cidr="10.99.1.0/24",
+                public_subnet_availability_zone="us-west-2a",
+                igw_name="auto-igw",
+                non_main_rtb_name="auto-non-main-rtb",
+
+                private_subnet_name="auto-private-subnet",
+                private_subnet_cidr="10.99.2.0/24",
+                private_subnet_availability_zone="us-west-2a",
+                main_rtb_name="auto-main-rtb",
+
+                security_group_name="",
+                security_group_rule_list=list(["SSH", "HTTPS", "HTTP", "All ICMP - IPv4"]),
+                default_security_group_name="",
+
+                create_new_key_pair=True,
+                key_pair_name="auto-keypair",
+                path_to_save_new_pem_file=None,
+                existing_rsa_private_key=None,  # required only when create_new_key_pair == True
+
+                public_subnet_ec2_instance_name="auto-vm-in-PubSub",
+                private_subnet_ec2_instance_name="auto-vm-in-PriSub",
+                ami_id="ami-db710fa3",
+                instance_type="t2.micro",
+
+                prefix_str="auto",
+
+                aws_access_key_id=None,
+                aws_secret_access_key=None,
+                log_indentation=""
+                ):
+    try:
+        logger.info(log_indentation + "START: create_aws_fqdn_test_environment()")
+
+        if resources_config is None:
+            resources_config = dict()
+
+            resources_config["region_name"] = region_name
+            resources_config["vpc_name"] = vpc_name
+            resources_config["vpc_cidr"] = vpc_cidr
+
+            resources_config["public_subnet_name"] = public_subnet_name
+            resources_config["public_subnet_cidr"] = public_subnet_cidr
+            resources_config["public_subnet_availability_zone"] = public_subnet_availability_zone
+
+            resources_config["igw_name"] = igw_name
+            resources_config["non_main_rtb_name"] = non_main_rtb_name
+
+            resources_config["private_subnet_name"] = private_subnet_name
+            resources_config["private_subnet_cidr"] = private_subnet_cidr
+            resources_config["private_subnet_availability_zone"] = private_subnet_availability_zone
+            resources_config["main_rtb_name"] = main_rtb_name
+
+            resources_config["security_group_name"] = security_group_name
+            resources_config["security_group_rule_list"] = security_group_rule_list
+
+            resources_config["public_subnet_ec2_instance_name"] = public_subnet_ec2_instance_name
+            resources_config["private_subnet_ec2_instance_name"] = private_subnet_ec2_instance_name
+            resources_config["ami_id"] = ami_id
+            resources_config["instance_type"] = instance_type
+
+            if create_new_key_pair is True:
+                resources_config["create_new_key_pair"]      = create_new_key_pair
+                resources_config["key_pair_name"]            = key_pair_name
+            else:
+                resources_config["create_new_key_pair"]      = create_new_key_pair
+                resources_config["key_pair_name"]            = key_pair_name
+                resources_config["private_key"]              = existing_rsa_private_key
+
+            resources_config["prefix_str"] = prefix_str
+
+        else:
+            region_name = resources_config["region_name"]
+
+            vpc_name = resources_config["vpc_name"]
+            vpc_cidr = resources_config["vpc_cidr"]
+
+            public_subnet_name = resources_config["public_subnet_name"]
+            public_subnet_cidr = resources_config["public_subnet_cidr"]
+            public_subnet_availability_zone = resources_config["public_subnet_availability_zone"]
+
+            igw_name = resources_config["igw_name"]
+            non_main_rtb_name = resources_config["non_main_rtb_name"]
+
+            private_subnet_name = resources_config["private_subnet_name"]
+            private_subnet_cidr = resources_config["private_subnet_cidr"]
+            private_subnet_availability_zone = resources_config["private_subnet_availability_zone"]
+            main_rtb_name = resources_config["main_rtb_name"]
+
+            security_group_name = resources_config["security_group_name"]
+            security_group_rule_list = resources_config["security_group_rule_list"]
+
+            public_subnet_ec2_instance_name = resources_config["public_subnet_ec2_instance_name"]
+            private_subnet_ec2_instance_name = resources_config["private_subnet_ec2_instance_name"]
+            ami_id = resources_config["ami_id"]
+            instance_type = resources_config["instance_type"]
+
+            if create_new_key_pair is True:
+                create_new_key_pair = resources_config["create_new_key_pair"]
+                key_pair_name = resources_config["key_pair_name"]
+            else:
+                create_new_key_pair = resources_config["create_new_key_pair"]
+                key_pair_name = resources_config["key_pair_name"]
+                private_key = resources_config["private_key"]
+
+            prefix_str = resources_config["prefix_str"]
+
+            prefix_str = resources_config["prefix_str"]
+        # END if-else
+
+
+        ec2_resource = boto3.resource(
+            service_name='ec2',
+            region_name=region_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key
+        )
+
+
+        ### Step xx: Create VPC
+        resources_config["vpc_id"] = create_vpc(
+            logger=logger,
+            region=region_name,
+            cidr=vpc_cidr,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+        ### Step xx: Create Name-Tag for VPC
+        create_name_tag(
+            logger=logger,
+            region=region_name,
+            resource=resources_config["vpc_id"],
+            name=vpc_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+
+        ### Step xx: Create Public Subnet (The "Main" Route-Table will also be created automatically)
+        resources_config["public_subnet_id"] = create_subnet(
+            logger=logger,
+            region=region_name,
+            vpc_id=resources_config["vpc_id"],
+            cidr=public_subnet_cidr,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+        ##### Step xx: Create Name-Tag for Public Subnet
+        create_name_tag(
+            logger=logger,
+            region=region_name,
+            resource=resources_config["public_subnet_id"],
+            name=public_subnet_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+
+        ##### Step xx: Create IGW
+        resources_config["igw_id"] = create_igw(
+            logger=logger,
+            region=region_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+        ##### Step xx: Create Name-Tag for IGW
+        create_name_tag(
+            logger=logger,
+            region=region_name,
+            resource=resources_config["igw_id"],
+            name=igw_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+        ##### Step xx: Attach IGW to VPC
+        attach_igw_to_vpc(
+            logger=logger,
+            region=region_name,
+            igw_id=resources_config["igw_id"],
+            vpc_id=resources_config["vpc_id"],
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+
+        ##### Step xx: Create Name-Tag for the default Security-Group of the VPC
+        default_security_group_id = get_default_security_group_id_from_vpc(
+            logger=logger,
+            region_name=region_name,
+            vpc_id=resources_config["vpc_id"],
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+        create_name_tag(
+            logger=logger,
+            region=region_name,
+            resource=default_security_group_id,
+            name=default_security_group_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+        resources_config["default_security_group_id"] = default_security_group_id
+
+
+        ##### Step xx: Create (non-main) Route-Table for VPC
+        resources_config["non_main_rtb_id"] = create_route_table(
+            logger=logger,
+            region=region_name,
+            vpc_id=resources_config["vpc_id"],
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+        ##### Step xx: Create Name-Tag for (non-main) route table
+        create_name_tag(
+            logger=logger,
+            region=region_name,
+            resource=resources_config["non_main_rtb_id"],
+            name=non_main_rtb_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+
+        ##### Step xx: Associate Non-Main Route-Table to Public Subnet
+        resources_config["non_main_rtb_association_id"] = associate_route_table_to_subnet(
+            logger=logger,
+            region=region_name,
+            route_table_id=resources_config["non_main_rtb_id"],
+            subnet_id=resources_config["public_subnet_id"],
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+
+        ##### Step xx: Create Default Route to Public-Subnet's Route-Table
+        create_route(
+            logger=logger,
+            region=region_name,
+            route_table_id=resources_config["non_main_rtb_id"],
+            destnation_cidr="0.0.0.0/0",
+            igw_id=resources_config["igw_id"],
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+
+        ### Step xx: Create Private Subnet
+        resources_config["private_subnet_id"] = create_subnet(
+            logger=logger,
+            region=region_name,
+            vpc_id=resources_config["vpc_id"],
+            cidr=private_subnet_cidr,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+        ##### Step xx: Create Name-Tag for Private Subnet
+        create_name_tag(
+            logger=logger,
+            region=region_name,
+            resource=resources_config["private_subnet_id"],
+            name=private_subnet_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+
+        ##### Step xx: Get Main-Route-Table ID
+        resources_config["main_rtb_id"] = get_main_route_table_id_by_vpc_id(
+            logger=logger,
+            region=region_name,
+            vpc_id=resources_config["vpc_id"],
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+        ##### Step xx: Create Name-Tag for Main Route-Table
+        create_name_tag(
+            logger=logger,
+            region=region_name,
+            resource=resources_config["main_rtb_id"],
+            name=main_rtb_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+
+        ##### Step xx: Associate Main Route-Table to Private Subnet
+        resources_config["main_rtb_association_id"] = associate_route_table_to_subnet(
+            logger=logger,
+            region=region_name,
+            route_table_id=resources_config["main_rtb_id"],
+            subnet_id=resources_config["private_subnet_id"],
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+
+        ##### Step xx: Create Security-Group
+        security_group_id = create_security_group(
+            logger=logger,
+            region=region_name,
+            vpc_id=resources_config["vpc_id"],
+            security_group_name=security_group_name,
+            description=security_group_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+        resources_config["security_group_id"] = security_group_id
+
+
+        ##### Step xx: Create Name-Tag for Security Group
+        create_name_tag(
+            logger=logger,
+            region=region_name,
+            resource=resources_config["security_group_id"],
+            name=security_group_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key
+        )
+
+
+        ##### Step xx: Authorize Security Group Ingress (SSH)
+        if "SSH" in security_group_rule_list:
+            authorize_security_group_ingress(
+                logger=logger,
+                region=region_name,
+                security_group_id=resources_config["security_group_id"],
+                security_group_name=security_group_name,
+                ip_protocal="tcp",
+                port_range_from=22,
+                port_range_to=22,
+                source_ip_cidr="0.0.0.0/0",
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key
+            )
+        #END IF
+
+
+        ##### Step xx: Authorize Security Group Ingress (HTTPS)
+        if "HTTPS" in security_group_rule_list:
+            authorize_security_group_ingress(
+                logger=logger,
+                region=region_name,
+                security_group_id=resources_config["security_group_id"],
+                security_group_name=security_group_name,
+                ip_protocal="tcp",
+                port_range_from=443,
+                port_range_to=443,
+                source_ip_cidr="0.0.0.0/0",
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key
+            )
+        # END IF
+
+
+        ##### Step xx: Authorize Security Group Ingress (HTTP)
+        if "HTTPS" in security_group_rule_list:
+            authorize_security_group_ingress(
+                logger=logger,
+                region=region_name,
+                security_group_id=resources_config["security_group_id"],
+                security_group_name=security_group_name,
+                ip_protocal="tcp",
+                port_range_from=80,
+                port_range_to=80,
+                source_ip_cidr="0.0.0.0/0",
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key
+            )
+        # END IF
+
+
+        ##### Step xx: Authorize Security Group Ingress (ICMP)
+        if "All ICMP - IPv4" in security_group_rule_list:
+            authorize_security_group_ingress(
+                logger=logger,
+                region=region_name,
+                security_group_id=resources_config["security_group_id"],
+                security_group_name=security_group_name,
+                ip_protocal="icmp",
+                port_range_from=-1,
+                port_range_to=-1,
+                source_ip_cidr="0.0.0.0/0",
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key
+            )
+        # END IF
+
+
+        ##### Step xx: Create key pair (pem file) IF specified
+        if create_new_key_pair == True:
+            private_key = create_key_pair(
+                logger=logger,
+                region=region_name,
+                key_pair_name=key_pair_name,
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                log_indentation="    "
+            )
+            resources_config["key_pair_name"] = key_pair_name
+            resources_config["private_key"]   = private_key
+
+            ### Create a text (.pem) file in local for the new key pair
+            with open(file=path_to_save_new_pem_file, mode="w") as output_file_stream:
+                output_file_stream.write(private_key)
+            # END creating local pem file for new key
+        #END create new key pair
+
+
+        ##### Create EC2 Instance in Public Subnet
+        instance_id, private_ip = run_instance(
+            logger=logger,
+            region=region_name,
+            ami_id=ami_id,
+            subnet_id=resources_config["public_subnet_id"],
+            instance_type=instance_type,
+            vm_name=public_subnet_ec2_instance_name,
+            key_pair_name=key_pair_name,
+            security_group_id=security_group_id,
+            auto_assign_public_ip=True,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+        resources_config["public_subnet_ec2_instance_id"] = instance_id
+        resources_config["public_subnet_ec2_instance_private_ip"] = private_ip
+
+
+        ##### Step xx: Get the default public ip of the ec2 instance in the public subnet
+        ec2_instance = ec2_resource.Instance(instance_id)
+        public_subnet_ec2_instance_public_ip = ec2_instance.public_ip_address
+        resources_config["public_subnet_ec2_instance_public_ip"] = public_subnet_ec2_instance_public_ip
+
+
+        ##### Step xx: Create Name-Tag for EC2 Instance in Public Subnet
+        create_name_tag(
+            logger=logger,
+            region=region_name,
+            resource=instance_id,
+            name=public_subnet_ec2_instance_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+
+        ##### Create EC2 Instance in Private Subnet
+        instance_id, private_ip = run_instance(
+            logger=logger,
+            region=region_name,
+            ami_id=ami_id,
+            subnet_id=resources_config["private_subnet_id"],
+            instance_type=instance_type,
+            vm_name=private_subnet_ec2_instance_name,
+            key_pair_name=key_pair_name,
+            security_group_id=security_group_id,
+            auto_assign_public_ip=False,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+        resources_config["private_subnet_ec2_instance_id"] = instance_id
+        resources_config["private_subnet_ec2_instance_private_ip"] = private_ip
+
+
+
+        ##### Step xx: Create Name-Tag for EC2 Instance in Private Subnet
+        create_name_tag(
+            logger=logger,
+            region=region_name,
+            resource=instance_id,
+            name=private_subnet_ec2_instance_name,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+
+        logger.info(log_indentation + "Succeeded!")
+
+    except Exception as e:
+        tracekback_msg = traceback.format_exc()
+        logger.error(tracekback_msg)
+
+    finally:
+        logger.info(log_indentation + "ENDED: create_aws_fqdn_test_environment_by_wizard()")
+        return resources_config  # Regardless having error in the middle of the whole function or not, we should return whatever we have in "resources_config"
+# END create_aws_fqdn_test_environment_by_wizard()
+
+
+"""
+This function does the following...
+    Step xx. Delete Public Subnet VM
+    Step xx. Delete Private Subnet VM
+    Step xx. Delete Key-Pair
+    Step xx. Delete Security-Group
+    Step xx. Disassociate Main Route-Table from Private Subnet
+    Step xx. Disassociate Route-Table from Public Subnet
+    Step xx. Delete non-Main Route-Table
+    Step xx. Detach IGW from VPC
+    Step xx. Delete IGW
+    Step xx. Delete Private Subnet
+    Step xx. Delete Public Subnet
+    Step xx. Delete VPC
+
+NOTE: 
+    If you decide to pass "config" (python-dict) without explicitly specifying other resource-IDs, 
+    then "config, the "resources_config" (python-dict) MUST contain the following...
+
+{
+    "region_name": "ca-central-1",
+    
+    "public_subnet_ec2_instance_id": "i-06d2cc76579a22f50",
+    "private_subnet_ec2_instance_id": "i-05059188b739e2b88",
+    
+    "create_new_key_pair": true,
+    "key_pair_name": "ccc-keypair-2018-05-31_16-51-49",
+    
+    "security_group_id": "sg-e1df758a",
+    
+    "igw_id": "igw-b9664bd0",
+    "non_main_rtb_id": "rtb-e8d54980",
+    "non_main_rtb_association_id": "rtbassoc-9ec1fcf6",
+    "main_rtb_id": "rtb-52d64a3a",
+    "main_rtb_association_id": "rtbassoc-ecc6fb84",
+    
+    "public_subnet_id": "subnet-c81de0b2",
+    "private_subnet_id": "subnet-e31fe299",
+    "vpc_id": "vpc-3e5ef256",
+}
+
+"""
+def delete_aws_fqdn_test_environment_by_wizard(
+                logger=None,
+
+                resources_config=None,
+                region_name="us-west-2",
+
+                public_subnet_ec2_instance_id="i-xxxxxxxxxx",
+                private_subnet_ec2_instance_id="i-xxxxxxxxxx",
+                create_new_key_pair=True,
+                key_pair_name="auto-keypair",
+                security_group_id="sg-xxxxxxxxxx",
+
+                main_rtb_association_id=None,
+                non_main_rtb_association_id=None,
+                non_main_rtb_id=None,
+                igw_id="igw-xxxxxxxxxx",
+                public_subnet_id="subnet-xxxxxxxxxx",
+                private_subnet_id="subnet-xxxxxxxxxx",
+                vpc_id="vpc-xxxxxxxxxx",
+
+                aws_access_key_id=None,
+                aws_secret_access_key=None,
+                log_indentation=""
+                ):
+    try:
+        logger.info(json.dumps(resources_config, indent=4))  ####################################################################################
+        logger.info(log_indentation + "START: delete_aws_fqdn_test_environment_by_wizard()")
+
+
+        # IF user passes "resources_config" (python-dict), then get the resources_configuration data from "resources_config"
+        if resources_config is None:
+            resources_config                                   = dict()
+            resources_config["region_name"]                    = region_name
+
+            resources_config["public_subnet_ec2_instance_id"]  = public_subnet_ec2_instance_id
+            resources_config["private_subnet_ec2_instance_id"] = private_subnet_ec2_instance_id
+            resources_config["create_new_key_pair"]            = create_new_key_pair
+            resources_config["key_pair_name"]                  = key_pair_name
+            resources_config["security_group_id"]              = security_group_id
+
+            resources_config["main_rtb_association_id"]        = main_rtb_association_id
+            resources_config["non_main_rtb_association_id"]    = non_main_rtb_association_id
+            resources_config["non_main_rtb_id"]                = non_main_rtb_id
+            resources_config["igw_id"]                         = igw_id
+            resources_config["public_subnet_id"]               = public_subnet_id
+            resources_config["private_subnet_id"]              = private_subnet_id
+            resources_config["vpc_id"]                         = vpc_id
+        else:
+            region_name                    = resources_config["region_name"]
+
+            public_subnet_ec2_instance_id  = resources_config["public_subnet_ec2_instance_id"]
+            private_subnet_ec2_instance_id = resources_config["private_subnet_ec2_instance_id"]
+            create_new_key_pair            = resources_config["create_new_key_pair"]
+            key_pair_name                  = resources_config["key_pair_name"]
+            security_group_id              = resources_config["security_group_id"]
+
+            main_rtb_association_id        = resources_config["main_rtb_association_id"]
+            non_main_rtb_association_id    = resources_config["non_main_rtb_association_id"]
+            non_main_rtb_id                = resources_config["non_main_rtb_id"]
+            igw_id                         = resources_config["igw_id"]
+            public_subnet_id               = resources_config["public_subnet_id"]
+            private_subnet_id              = resources_config["private_subnet_id"]
+            vpc_id                         = resources_config["vpc_id"]
+        # END if-else
+
+
+        ##### Delete EC2 Instance in Public Subnet
+        terminate_instances(
+            logger=logger,
+            region=region_name,
+            instance_id_list=[public_subnet_ec2_instance_id],
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key
+        )
+
+
+        ##### Delete EC2 Instance in Private Subnet
+        terminate_instances(
+            logger=logger,
+            region=region_name,
+            instance_id_list=[private_subnet_ec2_instance_id],
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key
+        )
+
+
+        time.sleep(100)  # There was one time tried 60 sec but failed
+
+
+        ##### Delete Key-Pair
+        if create_new_key_pair == True:
+            delete_key_pair(
+                logger=logger,
+                region=region_name,
+                key_pair_name=key_pair_name,
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key
+            )
+        #END delete key-pair
+
+
+        ##### Delete Security-Group
+        try:
+            ##### Delete Security-Group
+            delete_security_group(
+                logger=logger,
+                region=region_name,
+                security_group_id=security_group_id,
+                # security_group_name=resources_config["security_group_name"],
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key
+            )
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(msg=tracekback_msg)
+
+
+
+        ##### Disassociate Main Route-Table from Private Subnet
+        try:
+            disassociate_route_table(
+                logger=logger,
+                region=region_name,
+                route_table_association_id=main_rtb_association_id,
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                log_indentation="    "
+            )
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(msg=tracekback_msg)
+
+
+        ##### Disassociate Non-Main Route-Table from Public Subnet
+        try:
+            disassociate_route_table(
+                logger=logger,
+                region=region_name,
+                route_table_association_id=non_main_rtb_association_id,
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                log_indentation="    "
+            )
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(msg=tracekback_msg)
+
+
+        ##### Delete the Non-Main Route-Table
+        try:
+            delete_route_table(
+                logger=logger,
+                region=region_name,
+                route_table_id=non_main_rtb_id,
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                log_indentation="    "
+            )
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(msg=tracekback_msg)
+
+
+        ##### Detach IGW from VPC
+        try:
+            detach_igw_from_vpc(
+                logger=logger,
+                region=region_name,
+                igw_id=igw_id,
+                vpc_id=vpc_id,
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                log_indentation="    "
+            )
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(msg=tracekback_msg)
+
+
+        #### Delete IGW
+        try:
+            delete_igw(
+                logger=logger,
+                region=region_name,
+                igw_id=igw_id,
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                log_indentation="    "
+            )
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(msg=tracekback_msg)
+
+
+        ##### Delete Private Subnet
+        try:
+            delete_subnet(
+                logger=logger,
+                region=region_name,
+                subnet_id=private_subnet_id,
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                log_indentation="    "
+            )
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+
+
+        ##### Delete Public Subnet
+        try:
+            delete_subnet(
+                logger=logger,
+                region=region_name,
+                subnet_id=public_subnet_id,
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                log_indentation="    "
+            )
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+
+
+        ##### Delete VPC
+        try:
+            delete_vpc(
+                logger=logger,
+                region=region_name,
+                vpc_id=vpc_id,
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                log_indentation="    "
+            )
+        except Exception as e:
+            tracekback_msg = traceback.format_exc()
+            logger.error(tracekback_msg)
+
+
+        logger.info(log_indentation + "Successfully completed delete_aws_fqdn_test_environment_by_wizard() task!")
+        return True
+
+    except Exception as e:
+        tracekback_msg = traceback.format_exc()
+        logger.error(tracekback_msg)
+    finally:
+        logger.info(log_indentation + "ENDED: delete_aws_fqdn_test_environment_by_wizard()")
+# END delete_aws_fqdn_test_environment_by_wizard()
+
+
+#######################################################################################################################
+###########################################    Route-Table     ########################################################
+#######################################################################################################################
+def get_main_route_table_id_by_vpc_id(logger=None,
+                                      region="",
+                                      vpc_id="",
+                                      aws_access_key_id="",
+                                      aws_secret_access_key="",
+                                      log_indentation=""):
+    logger.info(log_indentation + "START: Get main route table ID by VPC ID: " + vpc_id)
+
+    ### Get AWS-EC2-Client connection object
+    ec2_client = boto3.client(
+        service_name='ec2',
+        region_name=region,
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key
+    )
+
+    filters = [
+        {
+            'Name': 'vpc-id',
+            'Values': [vpc_id]
+        }
+    ]
+
+    try:
+        ### Call AWS API
+        response = ec2_client.describe_route_tables(
+            Filters=filters,
+            DryRun=False,
+            # RouteTableIds=[
+            #     'string',
+            # ]
+        )
+
+        # logger.info(log_indentation + "    Succeed")
+        # logger.info(log_indentation + "    " + str(response))
+        main_route_table_id = ""
+        found = False
+        route_tables = response["RouteTables"]
+        for route_table in route_tables:
+            # print(json.dumps(route_table, indent=4))
+            if route_table["Associations"][0]["Main"] is True:
+                logger.info(log_indentation + "Found main_route_table_id")
+                main_route_table_id = route_table["Associations"][0]["RouteTableId"]
+                logger.info(log_indentation + "main_route_table_id: " + main_route_table_id)
+                found = True
+        # EDN for
+
+        if found is False:
+            logger.error(log_indentation + "Did NOT find main_route_table_id")
+
+        return main_route_table_id
+
+    except Exception as e:
+        tracekback_msg = traceback.format_exc()
+        logger.error(tracekback_msg)
+
+    finally:
+        logger.info(log_indentation + "END: Get main route table ID by VPC ID: " + vpc_id + "\n")
+# END get_main_route_table_id_by_vpc_id()
 
 
 #######################################################################################################################
@@ -716,6 +1670,11 @@ def get_route_table_id_from_subnet(logger=None,
 #######################################################################################################################
 ##########################################    Security Group     ######################################################
 #######################################################################################################################
+
+"""
+Notes:
+    * The parameter "description" can NOT take special characters such as dash '-' and underscore '_'
+"""
 def create_security_group(logger=None,
                           region="",
                           vpc_id="",
@@ -885,6 +1844,74 @@ def authorize_security_group_ingress(logger=None,
 
     finally:
         logger.info(log_indentation + "ENDED: Create a rule for Security Group\n")
+
+
+#######################################################################################################################
+#############################################    Security-Group     ################################################
+#######################################################################################################################
+
+def get_default_security_group_id_from_vpc(logger=None,
+                                           region_name="",
+                                           vpc_id="",
+                                           aws_access_key_id="",
+                                           aws_secret_access_key="",
+                                           log_indentation=""
+                                           ):
+    logger.info(log_indentation + "START: Create Network-Interface")
+
+    ##### Step 01: Use credential to get AWS "Client" || "Resource" objects
+    ec2_resource = boto3.resource(
+        service_name='ec2',
+        region_name=region_name,
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key
+    )
+
+    try:
+        ##### Step 02: Get the VPC
+        vpc = ec2_resource.Vpc(vpc_id)
+
+
+        ##### Step 03: Get a list of Security-Group object from the VPC
+        security_group_list = vpc.security_groups.all()
+
+
+        ##### Step 04: Get all ID of each Security-Group
+        # print("\n\nGet all ID of each Security-Group")
+        security_group_id_list = list()
+
+        for security_group in security_group_list:
+            # print(type(security_group))  # It's a security group object  -->  <class 'boto3.resources.factory.ec2.SecurityGroup'>
+            # print(security_group)
+            # print(security_group.id)
+            security_group_id_list.append(security_group.id)
+        # END for
+
+
+        ##### Step 05: Iterate each Security-Group ID
+        # print("\n\nIterate each Security-Group ID...")
+        default_security_group_id = None
+
+        for security_group_id in security_group_id_list:
+            security_group = ec2_resource.SecurityGroup(security_group_id)
+            # print(security_group.group_name)
+            if security_group.group_name == "default":  # KEY-POINT!!!!!!!!!!!!!!
+                # print("FOUND!!")
+                default_security_group_id = security_group_id
+        # END for
+
+        return default_security_group_id
+
+    except Exception as e:
+        tracekback_msg = traceback.format_exc()
+        logger.error(tracekback_msg)
+
+    finally:
+        logger.info(log_indentation + "ENDED: Create Network-Interface\n")
+# END get_default_security_group_id_from_vpc()
+
+
+
 
 
 #######################################################################################################################
@@ -1253,13 +2280,34 @@ def run_instance(logger=None,
                  vm_name="",
                  key_pair_name="",
                  security_group_id="",
-                 iam_instance_profile_name="",
+                 auto_assign_public_ip=False,
+                 # iam_instance_profile_name="",
                  iam_instance_profile_arn="",
-                 network_interface_id="",
+                 # network_interface_id="",
                  aws_access_key_id="",
                  aws_secret_access_key="",
                  log_indentation=""
                  ):
+    ### IF auto_assign_public_ip is True, call another method to do the job
+    if auto_assign_public_ip is True:
+        instance_id, instance_private_ip = _run_instance_and_auto_assign_public_ip(
+            logger=logger,
+            region=region,
+            ami_id=ami_id,
+            subnet_id=subnet_id,
+            instance_type=instance_type,
+            vm_name=vm_name,
+            key_pair_name=key_pair_name,
+            security_group_id=security_group_id,
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            log_indentation="    "
+        )
+        return instance_id, instance_private_ip
+    # END IF auto_assign_public_ip is True
+
+    # At this point, user decide to create an EC2 instance without auto_assign a default public IP
+
     logger.info(log_indentation + "START: Create EC2 Instance/VM")
 
     ec2_client = boto3.client(
@@ -1399,9 +2447,10 @@ def run_instance(logger=None,
         logger.info(log_indentation + "    Succeed")
         logger.info(log_indentation + "    " + str(response))
 
-        ##### Step 02: Get Instance ID
+        ##### Step 02: Get Instance ID & Private IP & auto-assigned Public IP
         instance_id         = response["Instances"][0]["InstanceId"]
         instance_private_ip = response["Instances"][0]["PrivateIpAddress"]
+
         logger.info(log_indentation + "    Instance ID: " + instance_id)
 
 
@@ -1413,6 +2462,180 @@ def run_instance(logger=None,
 
     finally:
         logger.info(log_indentation + "ENDED: Create EC2 Instance/VM\n")
+# END _run_instance()
+
+
+def _run_instance_and_auto_assign_public_ip(
+                 logger=None,
+                 region="",
+                 ami_id="",
+                 subnet_id="",
+                 instance_type="",
+                 vm_name="",
+                 key_pair_name="",
+                 security_group_id="",
+                 # iam_instance_profile_name="",
+                 iam_instance_profile_arn="",
+                 # network_interface_id="",
+                 aws_access_key_id="",
+                 aws_secret_access_key="",
+                 log_indentation=""
+                 ):
+    logger.info(log_indentation + "START: Create EC2 Instance/VM and auto assign public IP")
+
+    ec2_client = boto3.client(
+        service_name='ec2',
+        region_name=region,
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key
+    )
+
+    try:
+        ##### Step 01: Create EC2 Instance/VM
+        response = ec2_client.run_instances(
+            ImageId=ami_id,
+            # SubnetId=subnet_id,
+            InstanceType=instance_type,  # 't1.micro' | 't2.nano' | 't2.micro' | 't2.small' | 't2.medium' | 't2.large' | 't2.xlarge' | 't2.2xlarge' | 'm1.small' | 'm1.medium' | 'm1.large' | 'm1.xlarge' | 'm3.medium' | 'm3.large' | 'm3.xlarge' | 'm3.2xlarge' | 'm4.large' | 'm4.xlarge' | 'm4.2xlarge' | 'm4.4xlarge' | 'm4.10xlarge' | 'm4.16xlarge' | 'm2.xlarge' | 'm2.2xlarge' | 'm2.4xlarge' | 'cr1.8xlarge' | 'r3.large' | 'r3.xlarge' | 'r3.2xlarge' | 'r3.4xlarge' | 'r3.8xlarge' | 'r4.large' | 'r4.xlarge' | 'r4.2xlarge' | 'r4.4xlarge' | 'r4.8xlarge' | 'r4.16xlarge' | 'x1.16xlarge' | 'x1.32xlarge' | 'x1e.xlarge' | 'x1e.2xlarge' | 'x1e.4xlarge' | 'x1e.8xlarge' | 'x1e.16xlarge' | 'x1e.32xlarge' | 'i2.xlarge' | 'i2.2xlarge' | 'i2.4xlarge' | 'i2.8xlarge' | 'i3.large' | 'i3.xlarge' | 'i3.2xlarge' | 'i3.4xlarge' | 'i3.8xlarge' | 'i3.16xlarge' | 'hi1.4xlarge' | 'hs1.8xlarge' | 'c1.medium' | 'c1.xlarge' | 'c3.large' | 'c3.xlarge' | 'c3.2xlarge' | 'c3.4xlarge' | 'c3.8xlarge' | 'c4.large' | 'c4.xlarge' | 'c4.2xlarge' | 'c4.4xlarge' | 'c4.8xlarge' | 'c5.large' | 'c5.xlarge' | 'c5.2xlarge' | 'c5.4xlarge' | 'c5.9xlarge' | 'c5.18xlarge' | 'cc1.4xlarge' | 'cc2.8xlarge' | 'g2.2xlarge' | 'g2.8xlarge' | 'g3.4xlarge' | 'g3.8xlarge' | 'g3.16xlarge' | 'cg1.4xlarge' | 'p2.xlarge' | 'p2.8xlarge' | 'p2.16xlarge' | 'p3.2xlarge' | 'p3.8xlarge' | 'p3.16xlarge' | 'd2.xlarge' | 'd2.2xlarge' | 'd2.4xlarge' | 'd2.8xlarge' | 'f1.2xlarge' | 'f1.16xlarge' | 'm5.large' | 'm5.xlarge' | 'm5.2xlarge' | 'm5.4xlarge' | 'm5.12xlarge' | 'm5.24xlarge' | 'h1.2xlarge' | 'h1.4xlarge' | 'h1.8xlarge' | 'h1.16xlarge'
+            KeyName=key_pair_name,
+            IamInstanceProfile={
+                'Arn': iam_instance_profile_arn      # Either passing Arn or Name. Can't pass both
+                # 'Name': iam_instance_profile_name  # Either passing Arn or Name. Can't pass both
+            },
+            # SecurityGroupIds=[
+            #     security_group_id,
+            # ],
+            # SecurityGroups=[
+            #     'string',
+            # ],
+            BlockDeviceMappings=[
+                {
+                    'DeviceName': "/dev/sda1",
+                    # 'VirtualName': 'string',
+                    'Ebs': {
+                        # 'Encrypted': False,
+                        'DeleteOnTermination': True,
+                        # 'Iops': 123,
+                        # 'KmsKeyId': 'string',
+                        # 'SnapshotId': 'string',
+                        'VolumeSize': 8,
+                        'VolumeType': "gp2"  # 'standard' | 'io1' | 'gp2' | 'sc1' | 'st1'
+                    },
+                    # 'NoDevice': 'string'
+                },
+            ],
+            # PrivateIpAddress='string',
+            InstanceInitiatedShutdownBehavior="terminate",  # 'stop' | 'terminate'
+            NetworkInterfaces=[
+                {
+                    'SubnetId': subnet_id,
+                    'AssociatePublicIpAddress': True,
+                    'DeleteOnTermination': True,
+                    # 'Description': 'string',
+                    'DeviceIndex': 0,
+                    'Groups': [
+                        security_group_id,
+                    ],
+                #     'Ipv6AddressCount': 123,
+                #     'Ipv6Addresses': [
+                #         {
+                #             'Ipv6Address': 'string'
+                #         },
+                #     ],
+                #     'NetworkInterfaceId': network_interface_id,
+                #     'PrivateIpAddress': 'string',
+                #     'PrivateIpAddresses': [
+                #         {
+                #             'Primary': True | False,
+                #             'PrivateIpAddress': 'string'
+                #         },
+                #     ],
+                #     'SecondaryPrivateIpAddressCount': 123,
+                }
+            ],
+            TagSpecifications=[
+                {
+                    'ResourceType': "instance",
+                # 'customer-gateway' | 'dhcp-options' | 'image' | 'instance' | 'internet-gateway' | 'network-acl' | 'network-interface' | 'reserved-instances' | 'route-table' | 'snapshot' | 'spot-instances-request' | 'subnet' | 'security-group' | 'volume' | 'vpc' | 'vpn-connection' | 'vpn-gateway'
+                    'Tags': [
+                        {
+                            'Key': 'Name',
+                            'Value': vm_name
+                        },
+                    ]
+                },
+            ],
+            MaxCount=1,
+            MinCount=1,
+            # Ipv6AddressCount=123,
+            # Ipv6Addresses=[
+            #     {
+            #         'Ipv6Address': 'string'
+            #     },
+            # ],
+            # KernelId='string',
+            # Monitoring={
+            #     'Enabled': True | False
+            # },
+            # Placement={
+            #     'AvailabilityZone': 'string',
+            #     'Affinity': 'string',
+            #     'GroupName': 'string',
+            #     'HostId': 'string',
+            #     'Tenancy': 'default' | 'dedicated' | 'host',
+            #     'SpreadDomain': 'string'
+            # },
+            # RamdiskId='string',
+            # UserData='string',
+            # AdditionalInfo='string',
+            # ClientToken='string',
+            # DisableApiTermination=True | False,
+            # EbsOptimized=True | False,
+            #
+            # ElasticGpuSpecification=[
+            #     {
+            #         'Type': 'string'
+            #     },
+            # ],
+            # LaunchTemplate={
+            #     'LaunchTemplateId': 'string',
+            #     'LaunchTemplateName': 'string',
+            #     'Version': 'string'
+            # },
+            # InstanceMarketOptions={
+            #     'MarketType': 'spot',
+            #     'SpotOptions': {
+            #         'MaxPrice': 'string',
+            #         'SpotInstanceType': 'one-time' | 'persistent',
+            #         'BlockDurationMinutes': 123,
+            #         'ValidUntil': datetime(2015, 1, 1),
+            #         'InstanceInterruptionBehavior': 'hibernate' | 'stop' | 'terminate'
+            #     }
+            # },
+            # CreditSpecification={
+            #     'CpuCredits': 'string'
+            # },
+            DryRun=False
+        )
+
+        logger.info(log_indentation + "    Succeed")
+        logger.info(log_indentation + "    " + str(response))
+
+        ##### Step 02: Get Instance ID & Private IP & auto-assigned Public IP
+        instance_id         = response["Instances"][0]["InstanceId"]
+        instance_private_ip = response["Instances"][0]["PrivateIpAddress"]
+
+        logger.info(log_indentation + "    Instance ID: " + instance_id)
+
+
+        return instance_id, instance_private_ip
+
+    except Exception as e:
+        tracekback_msg = traceback.format_exc()
+        logger.error(tracekback_msg)
+
+    finally:
+        logger.info(log_indentation + "ENDED: Create EC2 Instance/VM and auto assign public IP\n")
+# END _run_instance_and_auto_assign_public_ip()
 
 
 def terminate_instances(logger=None,

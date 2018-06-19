@@ -4,6 +4,11 @@
 import logging
 import traceback
 import paramiko
+import sys
+
+
+PATH_TO_PROJECT_ROOT_DIR = "../"
+sys.path.append((PATH_TO_PROJECT_ROOT_DIR))
 
 
 class SSHSessionError(Exception):
@@ -32,6 +37,7 @@ class SSHSession:
             self.logger.error(err)
             raise SSHSessionError(err)
 
+
     def exec_cmd(self, cmd, ignore_exit_status = False):
         self.logger.info('Executing command %s', cmd)
         stdin, stdout, stderr = self.ssh.exec_command(cmd)
@@ -43,13 +49,29 @@ class SSHSession:
         if ignore_exit_status:
             return cmd_result
         if not exit_status:
-            self.logger.info('Command %s successfully executed, result %s', 
+            self.logger.info('Command %s successfully executed, result %s',
                               cmd, cmd_result)
             return cmd_result
         else:
             err = 'Command {} failed to execute'.format(cmd)
             self.logger.error(err)
             raise SSHSessionError(err)
-    
+
+
     def close(self):
         self.ssh.close()
+
+
+    def upload_file(self, path_to_local_file, path_to_save_in_remote):
+        try:
+            ftp_client = self.ssh.open_sftp()
+            ftp_client.put(
+                localpath=path_to_local_file,
+                remotepath=path_to_save_in_remote
+            )
+        except Exception as e:
+            traceback_msg = traceback.format_exc()
+            self.logger.error(traceback_msg)
+        finally:
+            pass
+

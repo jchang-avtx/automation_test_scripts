@@ -36,24 +36,6 @@ def create_XXX_avx_object_XXX(
         max_retry=10,
         log_indentation=""
         ):
-    # api_name = "create_XXX_avx_object_XXX"
-    # logger.info("START: Aviatrix API: " + api_name)
-    # logger.info("Parameters Values" +
-    #             " param1=" + param1 +
-    #             " param2=" + param2 +
-    #             " optional_param3=" + optional_param3 +
-    #             " optional_param4=" + optional_param4
-    #             )
-
-
-    ### Save/Update the parameter(s) as instance-variable(s) if needed
-    # if param1 is not None:
-    #     self.param1 = param1
-    # if param2 is not None:
-    #     self.param2 = param2
-    # if param2 is not None:
-    #     self.param2 = param2
-
 
     ### Required parameters
     payload = {
