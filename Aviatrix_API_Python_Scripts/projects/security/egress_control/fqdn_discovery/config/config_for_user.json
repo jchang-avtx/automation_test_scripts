@@ -1,0 +1,18 @@
+{
+  "prefix_str": "avx",
+  "cloud_type": "aws",
+  "region_name": "ca-central-1",
+  "vpc_cidr": "10.123.0.0/16",
+  "public_subnet_availability_zone": "ca-central-1a",
+  "public_subnet_cidr": "10.123.1.0/24",
+  "private_subnet_availability_zone": "ca-central-1a",
+  "private_subnet_cidr": "10.123.2.0/24",
+  "ec2_ubuntu_ami_id": "ami-7e21a11a",
+  "sites_to_visit": [
+    "https://www.yahoo.com",
+    "https://mail.google.com",
+    "https://www.aviatrix.com/products/",
+    "https://www.google.cn",
+    "https://www.github.com"
+  ]
+}
