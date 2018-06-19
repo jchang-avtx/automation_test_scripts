@@ -3,7 +3,13 @@
 Cloud API request mechanism.
 '''
 import logging
-from Aviatrix_API_Python_Scripts.lib.util import retry
+import sys
+
+PATH_TO_PROJECT_ROOT_DIR = "../"
+sys.path.append((PATH_TO_PROJECT_ROOT_DIR))
+
+
+from lib.util import retry
 
 
 class APIRequestError(Exception):

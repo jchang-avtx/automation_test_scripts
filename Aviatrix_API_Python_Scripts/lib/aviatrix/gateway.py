@@ -7,6 +7,7 @@ import datetime
 import json
 import logging
 import os
+import sys
 import paramiko
 import requests
 import traceback
@@ -15,6 +16,10 @@ import time
 from urllib3.exceptions import NewConnectionError
 from urllib3.exceptions import MaxRetryError
 from requests.exceptions import ConnectionError
+
+
+PATH_TO_PROJECT_ROOT_DIR = "../"
+sys.path.append((PATH_TO_PROJECT_ROOT_DIR))
 
 
 requests.packages.urllib3.disable_warnings()
@@ -70,7 +75,7 @@ def create_gateway(logger=None, url=None, CID=None,
                    avx_cloud_account_name=None, cloud_type=None, vpc_region=None, vpc_id=None,
                    subnet_name=None, gateway_size=None, gateway_name=None,
 
-                   allocate_new_eip="on", zone=None, enable_nat=None,
+                   allocate_new_eip="on", zone=None, enable_nat="no",
                    vpn_access="no", vpn_cidr=None, split_tunnel=None, max_connection=None, additional_cidrs=None,
                    enable_elb=None, elb_name=None,
 

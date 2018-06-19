@@ -2,50 +2,50 @@
   "AWS": {
     "Accounts": {
       "root": {
-        "aws_access_key_id"    : "xxxxxxxxxxxx",
-        "aws_secret_access_key": "xxxxxxxxxxxx"
+        "aws_access_key_id"    : "XXXXXXXXXX",
+        "aws_secret_access_key": "XXXXXXXXXX"
       }
     },
     "AMI": {
       "us-east-1": {
         "name":         "N. Virginia",
-        "BYOL":         "ami-db9bb9a1",
+        "BYOL":         "ami-e578ef9a",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
-        "ubuntu_16_04": "ami-66506c1c",
+        "metering":     "ami-df74f6a0",
+        "ubuntu_16_04": "ami-a4dc46db",
         "ubuntu_14_04": "ami-xxxxxxxxx",
         "my_ami":       "ami-xxxxxxx"
       },
       "us-east-2": {
         "name":         "Ohio",
-        "BYOL":         "ami-b40228d1",
+        "BYOL":         "ami-d8a39ebd",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
-        "ubuntu_16_04": "ami-xxxxxxx",
+        "metering":     "ami-a72c11c2",
+        "ubuntu_16_04": "ami-6a003c0f",
         "ubuntu_14_04": "ami-xxxxxxx",
         "my_ami":       "ami-xxxxxxx"
       },
       "us-west-1": {
         "name":         "N. California",
-        "BYOL":         "ami-2a7e7c4a",
+        "BYOL":         "ami-fa322b9a",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
-        "ubuntu_16_04": "ami-xxxxxxxxxx",
+        "metering":     "ami-e3170983",
+        "ubuntu_16_04": "ami-8d948ced",
         "ubuntu_14_04": "ami-xxxxxxxx",
         "my_ami":       "ami-xxxxxxx"
       },
       "us-west-2": {
         "name":         "Oregon",
-        "BYOL":         "ami-fd48f885",
+        "BYOL":         "ami-98b3c1e0",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
-        "ubuntu_16_04": "ami-79873901",
+        "metering":     "ami-1f770667",
+        "ubuntu_16_04": "ami-db710fa3",
         "ubuntu_14_04": "ami-xxxxxxxxx",
         "my_ami":       "ami-xxxxxxxx"
       },
       "us-gov-west-1": {
         "name":         "US GovCloud West",
-        "BYOL":         "ami-30890051",
+        "BYOL":         "ami-edc1578c",
         "utility":      "ami-xxxxxx",
         "metering":     "ami-xxxxxx",
         "ubuntu_16_04": "ami-xxxxxxxxxxxx",
@@ -63,72 +63,72 @@
       },
       "ca-central-1": {
         "name":         "Canada ",
-        "BYOL":         "ami-de4bceba",
+        "BYOL":         "ami-8c4bcbe8",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
-        "ubuntu_16_04": "ami-xxxxxxxxxxx",
+        "metering":     "ami-8d8707e9",
+        "ubuntu_16_04": "ami-7e21a11a",
         "ubuntu_14_04": "ami-xxxxxxxxxx",
         "my_ami":       "ami-xxxxxxxx"
       },
       "sa-east-1": {
         "name":         "Sao Paulo",
-        "BYOL":         "ami-404c012c",
+        "BYOL":         "ami-ed85d981",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
+        "metering":     "ami-1a90cd76",
         "ubuntu_16_04": "ami-xxxxxxxxxxx",
         "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
         "my_ami":       "ami-xxxxxxxx"
       },
       "eu-west-1": {
         "name":         "Ireland",
-        "BYOL":         "ami-830d93fa",
+        "BYOL":         "ami-cdcefeb4",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
+        "metering":     "ami-f227138b",
         "ubuntu_16_04": "ami-xxxxxxxxxxxx",
         "ubuntu_14_04": "ami-xxxxxxxxxxx",
         "my_ami":       "ami-xxxxxxx"
       },
       "eu-west-2": {
         "name":         "London",
-        "BYOL":         "ami-bc253ed8",
+        "BYOL":         "ami-86f518e1",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
+        "metering":     "ami-a06587c7",
         "ubuntu_16_04": "ami-xxxxxxxxxxx",
         "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
         "my_ami":       "ami-xxxxxxxx"
       },
       "eu-west-3": {
         "name":         "Paris",
-        "BYOL":         "ami-f8e35585",
+        "BYOL":         "ami-3c71c041",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
+        "metering":     "ami-339e2f4e",
         "ubuntu_16_04": "ami-xxxxxxxxxxxx",
         "ubuntu_14_04": "ami-xxxxxxxxxxx",
         "my_ami":       "ami-xxxxxxx"
       },
       "eu-central-1": {
         "name":         "Frankfurt",
-        "BYOL":         "ami-a025b9cf",
+        "BYOL":         "ami-02f9d6e9",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
+        "metering":     "ami-d9bf9d32",
         "ubuntu_16_04": "ami-xxxxxxxxxxx",
         "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
         "my_ami":       "ami-xxxxxxxx"
       },
       "ap-northeast-1": {
         "name":         "Tokyo",
-        "BYOL":         "ami-2a43244c",
+        "BYOL":         "ami-0238cf7d",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
+        "metering":     "ami-358f674a",
         "ubuntu_16_04": "ami-xxxxxxxxxxxx",
         "ubuntu_14_04": "ami-xxxxxxxxxxx",
         "my_ami":       "ami-xxxxxxx"
       },
       "ap-northeast-2": {
         "name":         "Seoul",
-        "BYOL":         "ami-d902a2b7",
+        "BYOL":         "ami-3eb21a50",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
+        "metering":     "ami-cc08a1a2",
         "ubuntu_16_04": "ami-xxxxxxxxxxx",
         "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
         "my_ami":       "ami-xxxxxxxx"
@@ -144,26 +144,26 @@
       },
       "ap-southeast-1": {
         "name":         "Singapore",
-        "BYOL":         "ami-0484f878",
+        "BYOL":         "ami-0b744577",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
+        "metering":     "ami-8fcbfef3",
         "ubuntu_16_04": "ami-xxxxxxxxxxxx",
         "ubuntu_14_04": "ami-xxxxxxxxxxx",
         "my_ami":       "ami-xxxxxxx"
       },
       "ap-southeast-2": {
         "name":         "Sydney",
-        "BYOL":         "ami-34728e56",
+        "BYOL":         "ami-c79746a5",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
+        "metering":     "ami-e90ed98b",
         "ubuntu_16_04": "ami-xxxxxxxxxxx",
         "ubuntu_14_04": "ami-xxxxxxxxxxxxx",
         "my_ami":       "ami-xxxxxxxx"
       },"ap-south-1": {
         "name":         "Mumbai",
-        "BYOL":         "ami-e7560088",
+        "BYOL":         "ami-1294b67d",
         "utility":      "ami-xxxxxx",
-        "metering":     "ami-xxxxxx",
+        "metering":     "ami-ccc4e7a3",
         "ubuntu_16_04": "ami-xxxxxxxxxxxx",
         "ubuntu_14_04": "ami-xxxxxxxxxxx",
         "my_ami":       "ami-xxxxxxx"

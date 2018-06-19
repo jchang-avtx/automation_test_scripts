@@ -5,11 +5,17 @@
 import json
 import logging
 import os
+import sys
 import re
 import shutil
 
-from Aviatrix_API_Python_Scripts.lib.aviatrix.initial_setup import login
-from Aviatrix_API_Python_Scripts.lib.aviatrix.controller import get_controller_version
+
+PATH_TO_PROJECT_ROOT_DIR = "../"
+sys.path.append((PATH_TO_PROJECT_ROOT_DIR))
+
+
+from lib.aviatrix.initial_setup import login
+from lib.aviatrix.controller import get_controller_version
 
 logger = logging.getLogger(__name__)
 
@@ -93,7 +99,11 @@ def write_py_dict_to_config_file(logger=None, py_dict=None, path_to_file=None, l
     # logger.info(log_indentation + "START: Write python-dict to JSON format configuration file PATH: " + path_to_file)
 
     with open(path_to_file, "w") as out_file_stream:
-        json.dump(py_dict, out_file_stream)
+        json.dump(
+            py_dict,
+            out_file_stream,
+            indent=4
+        )
 
         # logger.info(log_indentation + "ENDED: Write python-dict to JSON format configuration file PATH: " + path_to_file)
         return True
