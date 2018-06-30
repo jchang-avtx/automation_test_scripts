@@ -33,6 +33,12 @@ module "shared_services_vpc" {
   vpc_name = "shared"
   transit_gw = "${var.transit_gateway_name}"
 }
+# Create Azure spoke
+module "azure_spoke" {
+  source = "aviatrix_azurespoke"
+  account_name = "EdselARM"
+  transit_gw = "${var.transit_gateway_name}"
+}
 # Create OnPrem spoke
 module "onprem" {
   source = "aviatrix_onprem"

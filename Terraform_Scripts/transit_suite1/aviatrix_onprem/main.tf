@@ -8,6 +8,9 @@ resource "aviatrix_gateway" "OnPrem-GW" {
     vpc_reg = "${var.region}"
     vpc_size = "${var.onprem_gw_size}"
     vpc_net = "172.16.0.0/16"
+    public_subnet = "172.16.0.0/16"
+    new_zone = "no"
+
 }
 ## END -------------------------------
 
@@ -50,12 +53,19 @@ resource "aws_vpn_connection_route" "onprem2" {
 ## END -------------------------------
 resource "aviatrix_site2cloud" "onprem-vgw" {
     vpc_id = "vpc-94ca2efc"
-    gw_name = "${aviatrix_gateway.OnPrem-GW.gw_name}"
-    conn_name = "s2c_to_vgw",
-    remote_gw_type = "aws",
-    remote_gw_ip = "${aws_vpn_connection.onprem.tunnel1_address}",
-    remote_subnet = "${var.remote_subnet}",
+    primary_cloud_gateway_name = "${aviatrix_gateway.OnPrem-GW.gw_name}"
+    connection_name = "s2c_to_vgw"
+    connection_type = "unmapped"
+    tunnel_type = "udp"
+    remote_gateway_type = "aws"
+    remote_subnet_cidr = "${var.remote_subnet}"
+    remote_gateway_ip = "${aws_vpn_connection.onprem.tunnel1_address}"
     pre_shared_key = "${aws_vpn_connection.onprem.tunnel1_preshared_key}"
+    ha_enabled = "yes"
+    backup_remote_gateway_ip = "${aws_vpn_connection.onprem.tunnel2_address}"
+    backup_pre_shared_key = "${aws_vpn_connection.onprem.tunnel2_preshared_key}"
+    backup_gateway_name = "${aviatrix_gateway.OnPrem-GW.gw_name}-hagw"
+    depends_on = ["aviatrix_gateway.OnPrem-GW"]
 }
 ## END -------------------------------
 

@@ -2,7 +2,7 @@ vgw_connection_name = "canada_vgw_bgp_s2c_conn"
 vgw_id = "vgw-d9c14fe9"
 bgp_local_as = 6510
 
-controller_custom_version = "3.2"
+controller_custom_version = "3.4"
 transit_gateway_name = "canada-transit"
 transit_gateway_size = "t2.micro"
 transit_cidr_prefix = "192.168"
