@@ -8,6 +8,9 @@ Shared  VPC = 10.224.0.0/24
 Spoke0  VPC = 10.1.0.0/24
 Spoke1  VPC = 10.1.1.0/24
 Spoke2  VPC = 10.1.2.0/24
+spoke-azure VNET = 10.0.1.0/24 av-group1-vnet:av-group1 West US
+
+All in Transit Network HA deployment
 
 terraform plan -var-file=<path_secret_file.tfvars> -var account_name="EdselAWS"
 terrafrom apply -auto-approve -var-file=<path_secret_file.tfvars>  -var account_name="EdselAWS"

@@ -38,6 +38,7 @@ module "azure_spoke" {
   source = "aviatrix_azurespoke"
   account_name = "EdselARM"
   transit_gw = "${var.transit_gateway_name}"
+  shared = "${module.shared_services_vpc.shared_gateway_name}"
 }
 # Create OnPrem spoke
 module "onprem" {
@@ -65,5 +66,6 @@ module "spoke_ca_central-1" {
   spoke_region = "ca-central-1"
   spoke_gw_size = "${var.spoke_gateway_size}"
   name_suffix = "canada-ca-central-1"
-  shared_gw_name = "${var.shared_gateway_name}"
+  shared_gateway_name = "${module.shared_services_vpc.shared_gateway_name}"
 }
+  #shared_gw_name = "${var.shared_gateway_name}"

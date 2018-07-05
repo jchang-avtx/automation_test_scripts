@@ -3,7 +3,7 @@ variable "name_suffix" {}
 variable "transit_gateway_name" {}
 variable "spoke_region" {}
 variable "spoke_gw_size" {}
-variable "shared_gw_name" {}
+variable "shared_gateway_name" {}
 
 variable "AMI" {
   type = "map"

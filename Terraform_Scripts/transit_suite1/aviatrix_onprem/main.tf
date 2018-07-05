@@ -9,7 +9,7 @@ resource "aviatrix_gateway" "OnPrem-GW" {
     vpc_size = "${var.onprem_gw_size}"
     vpc_net = "172.16.0.0/16"
     public_subnet = "172.16.0.0/16"
-    new_zone = "no"
+    zone = "no"
 
 }
 ## END -------------------------------

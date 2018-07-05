@@ -38,7 +38,7 @@ resource "aviatrix_spoke_vpc" "spoke2" {
 
 # Create encrypteed peering between shared to spoke gateway
 resource "aviatrix_tunnel" "shared-to-spoke0"{
-  vpc_name1 = "canada-shared"
+  vpc_name1 = "${var.shared_gateway_name}"
   vpc_name2 = "${var.name_suffix}-0"
   cluster   = "no"
   over_aws_peering = "no"
@@ -46,7 +46,7 @@ resource "aviatrix_tunnel" "shared-to-spoke0"{
   enable_ha        = "yes"
 }
 resource "aviatrix_tunnel" "shared-to-spoke1"{
-  vpc_name1 = "canada-shared"
+  vpc_name1 = "${var.shared_gateway_name}"
   vpc_name2 = "${var.name_suffix}-1"
   cluster   = "no"
   over_aws_peering = "no"
@@ -54,7 +54,7 @@ resource "aviatrix_tunnel" "shared-to-spoke1"{
   enable_ha        = "yes"
 }
 resource "aviatrix_tunnel" "shared-to-spoke2"{
-  vpc_name1 = "canada-shared"
+  vpc_name1 = "${var.shared_gateway_name}"
   vpc_name2 = "${var.name_suffix}-2"
   cluster   = "no"
   over_aws_peering = "no"
