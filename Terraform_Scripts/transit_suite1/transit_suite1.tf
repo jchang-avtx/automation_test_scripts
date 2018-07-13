@@ -2,70 +2,76 @@
 
 # Create TRANSIT 
 module "transit_vpc" {
-  source = "aviatrix_transit"
-  providers = {
-    aws = "aws.ca-central-1"
+  source          = "aviatrix_transit"
+  providers       = {
+      aws = "aws.ca-central-1"
   }
-  account_name = "${var.account_name}"
-  vpc_count = "${var.transit_count}"
-  region = "${var.transit_region}"
-  gw_size = "${var.transit_gateway_size}"
-  name_suffix = "${var.transit_gateway_name}"
-  cidr_prefix = "${var.transit_cidr_prefix}"
-  vgw_id = "${var.vgw_id}"
-  vpc_name = "transit"
-  bgp_local_as = "${var.bgp_local_as}"
-  vgw_connection_name = "${var.vgw_connection_name}"
+  account_name    = "${var.account_name}"
+  region          = "${var.single_region}"
+  gw_size         = "${var.transit_gateway_size}"
+  name_suffix     = "${var.transit_gateway_name}"
+  subnet          = "${var.transit_subnet}"
+  vgw_id          = "${var.vgw_id}"
+  bgp_local_as    = "${var.bgp_local_as}"
+  vgw_conn_name   = "${var.vgw_connection_name}"
+  vpc_id          = "${var.transit_vpc}"
 }
 
 # Create Shared spoke
 module "shared_services_vpc" {
-  source = "aviatrix_shared"
-  providers = {
-    aws = "aws.ca-central-1"
+  source          = "aviatrix_shared"
+  providers       = {
+      aws = "aws.ca-central-1"
   }
-  account_name = "${var.account_name}"
-  vpc_count = "${var.shared_count}"
-  region = "${var.shared_region}"
-  gw_size = "${var.shared_gateway_size}"
-  name_suffix = "${var.shared_gateway_name}"
-  cidr_prefix = "${var.shared_cidr_prefix}"
-  vpc_name = "shared"
-  transit_gw = "${var.transit_gateway_name}"
+  account_name    = "${var.account_name}"
+  region          = "${var.single_region}"
+  gw_size         = "${var.shared_gateway_size}"
+  name_suffix     = "${var.shared_gateway_name}"
+  vpc_id          = "${var.shared_vpc}"
+  subnet          = "${var.shared_subnet}"
+  transit_gw      = "${module.transit_vpc.transit_gateway_name}"
 }
 # Create Azure spoke
 module "azure_spoke" {
-  source = "aviatrix_azurespoke"
-  account_name = "EdselARM"
-  transit_gw = "${var.transit_gateway_name}"
-  shared = "${module.shared_services_vpc.shared_gateway_name}"
+  source          = "aviatrix_azurespoke"
+  account_name    = "${var.azure_account_name}"
+  transit_gw      = "${module.transit_vpc.transit_gateway_name}"
+  shared          = "${module.shared_services_vpc.shared_gateway_name}"
+  region          = "${var.azure_region}"
+  vpc_id          = "${var.azure_vpc}"
+  subnet          = "${var.azure_subnet}"
 }
 # Create OnPrem spoke
 module "onprem" {
-  source = "aviatrix_onprem"
-  providers = {
-    aws = "aws.ca-central-1"
+  source          = "aviatrix_onprem"
+  providers       = {
+      aws = "aws.ca-central-1"
   }
-  account_name = "${var.account_name}"
-  onprem_count = "${var.onprem_count}"
-  onprem_gw_name = "${var.onprem_gateway_name}"
-  vgw_id = "${var.vgw_id}"
-  region = "${var.onprem_region}"
-  onprem_gw_size = "${var.onprem_gateway_size}"
-  name_suffix = "${var.onprem_gateway_name}"
-  onprem_cidr_prefix = "${var.onprem_cidr_prefix}"
-  remote_subnet = "${var.s2c_remote_subnet}"
+  account_name    = "${var.account_name}"
+  onprem_gw_name  = "${var.onprem_gateway_name}"
+  vgw_id          = "${var.vgw_id}"
+  region          = "${var.single_region}"
+  onprem_gw_size  = "${var.onprem_gateway_size}"
+  name_suffix     = "${var.onprem_gateway_name}"
+  vpc_id          = "${var.onprem_vpc}"
+  subnet          = "${var.onprem_subnet}"
+  remote_subnet   = "${var.s2c_remote_subnet}"
 }
-module "spoke_ca_central-1" {
-  source = "aviatrix_spoke"
-  providers = {
-    aws = "aws.ca-central-1"
+module "spoke" {
+  source          = "aviatrix_spoke"
+  providers       = {
+      aws = "aws.ca-central-1"
   }
-  account_name = "${var.account_name}"
-  transit_gateway_name = "${var.transit_gateway_name}"
-  spoke_region = "ca-central-1"
-  spoke_gw_size = "${var.spoke_gateway_size}"
-  name_suffix = "canada-ca-central-1"
-  shared_gateway_name = "${module.shared_services_vpc.shared_gateway_name}"
+  account_name    = "${var.account_name}"
+  transit_gateway = "${module.transit_vpc.transit_gateway_name}"
+  shared_gateway  = "${module.shared_services_vpc.shared_gateway_name}"
+  spoke_gw_size   = "${var.spoke_gateway_size}"
+  name_suffix     = "${var.spoke_gateway_prefix}"
+  spoke_region    = "${var.single_region}"
+  spoke0_vpc_id   = "${var.spoke0_vpc}"
+  spoke0_subnet   = "${var.spoke0_subnet}"
+  spoke1_vpc_id   = "${var.spoke1_vpc}"
+  spoke1_subnet   = "${var.spoke1_subnet}"
+  spoke2_vpc_id   = "${var.spoke2_vpc}"
+  spoke2_subnet   = "${var.spoke2_subnet}"
 }
-  #shared_gw_name = "${var.shared_gateway_name}"

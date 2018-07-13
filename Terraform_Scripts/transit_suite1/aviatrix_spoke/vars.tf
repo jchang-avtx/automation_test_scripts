@@ -1,9 +1,15 @@
 variable "account_name" {}
 variable "name_suffix" {}
-variable "transit_gateway_name" {}
+variable "transit_gateway" {}
 variable "spoke_region" {}
 variable "spoke_gw_size" {}
-variable "shared_gateway_name" {}
+variable "shared_gateway" {}
+variable "spoke0_vpc_id" {}
+variable "spoke0_subnet" {}
+variable "spoke1_vpc_id" {}
+variable "spoke1_subnet" {}
+variable "spoke2_vpc_id" {}
+variable "spoke2_subnet" {}
 
 variable "AMI" {
   type = "map"

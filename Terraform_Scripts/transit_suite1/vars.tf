@@ -14,23 +14,35 @@ variable "controller_custom_version" {}
 
 variable "transit_gateway_name" {}
 variable "transit_gateway_size" {}
-variable "transit_cidr_prefix" {}
-variable "transit_region" {}
-variable "transit_count" {}
+variable "transit_vpc" {}
+variable "transit_subnet" {}
 
 variable "shared_gateway_name" {}
 variable "shared_gateway_size" {}
-variable "shared_cidr_prefix" {}
-variable "shared_region" {}
-variable "shared_count" {}
+variable "shared_vpc" {}
+variable "shared_subnet" {}
 
+variable "single_region" {}
 variable "spoke_gateway_size" {}
+variable "spoke_gateway_prefix" {}
 
-variable "onprem_count" {}
-variable "onprem_region" {}
-variable "onprem_cidr_prefix" {}
+variable "spoke0_vpc" {}
+variable "spoke0_subnet" {}
+
+variable "spoke1_vpc" {}
+variable "spoke1_subnet" {}
+
+variable "spoke2_vpc" {}
+variable "spoke2_subnet" {}
+
+variable "onprem_vpc" {}
+variable "onprem_subnet" {}
 variable "onprem_gateway_name" {}
 variable "onprem_gateway_size" {}
 variable "s2c_remote_subnet" {}
-variable "single_region" {}
+
+variable "azure_region" {}
+variable "azure_vpc" {}
+variable "azure_subnet" {}
+variable "azure_account_name" {}
 

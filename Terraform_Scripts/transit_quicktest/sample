@@ -1,0 +1,11 @@
+terraform init -var-file=/home/ubuntu/54.177.55.54.secret.tfvars -var account_name="TestAccount" 
+terraform plan -var-file=/home/ubuntu/54.177.55.54.secret.tfvars -var account_name="TestAccount" 
+terraform apply -auto-approve -var-file=/home/ubuntu/54.177.55.54.secret.tfvars -var account_name="TestAccount" 
+terraform destroy -force -var-file=/home/ubuntu/54.177.55.54.secret.tfvars -var account_name="TestAccount" 
+
+terraform destroy -force -var-file=/home/ubuntu/54.177.55.54.secret.tfvars -var account_name="TestAccount" -target=module.spoke0
+terraform destroy -force -var-file=/home/ubuntu/54.177.55.54.secret.tfvars -var account_name="TestAccount" -target=module.azure_spoke
+terraform destroy -force -var-file=/home/ubuntu/54.177.55.54.secret.tfvars -var account_name="TestAccount" -target module.shared_services_vpc
+terraform destroy -force -var-file=/home/ubuntu/54.177.55.54.secret.tfvars -var account_name="TestAccount" -target=module.transit_vpc
+terraform destroy -force -var-file=/home/ubuntu/54.177.55.54.secret.tfvars -var account_name="TestAccount" -target=module.onprem
+terraform destroy -force -var-file=/home/ubuntu/54.177.55.54.secret.tfvars -var account_name="TestAccount" 

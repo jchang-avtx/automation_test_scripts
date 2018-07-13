@@ -1,6 +1,6 @@
 provider "aws" {
   alias      = "ca-central-1"
-  region     = "${var.transit_region}"
+  region     = "${var.single_region}"
   access_key = "${var.aws_access_key}"
   secret_key = "${var.aws_secret_key}"
 }

@@ -1,5 +1,5 @@
-variable "onprem_count" {}
-variable "onprem_cidr_prefix" {}
+variable "subnet" {}
+variable "vpc_id" {}
 variable "account_name" {}
 variable "name_suffix" {}
 variable "onprem_gw_name" {}
@@ -23,16 +23,3 @@ variable "AMI" {
 
   }
 }
-
-
-#variable "INSTANCE_USERNAME" {
-#  default = "ubuntu"
-#}
-#variable "PATH_TO_PRIVATE_KEY" {
-#  default = "mykey"
-#}
-#variable "PATH_TO_PUBLIC_KEY" {
-#  default = "mykey.pub"
-#}
-
-
