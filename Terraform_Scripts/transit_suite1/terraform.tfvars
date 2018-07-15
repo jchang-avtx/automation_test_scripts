@@ -1,5 +1,5 @@
 vgw_connection_name = "canada_vgw_bgp_s2c"
-vgw_id = "vgw-05e54079c2b80d433"
+vgw_id = "vgw-d9c14fe9"
 bgp_local_as = 6580
 
 controller_custom_version = "3.4"
@@ -34,7 +34,7 @@ onprem_count = 1
 onprem_gateway_name = "canada-OnPrem"
 onprem_gateway_size = "t2.micro"
 onprem_region = "ca-central-1"
-onprem_subnet = "172.16.0.0/28"
+onprem_subnet = "172.16.0.0/16"
 s2c_remote_subnet = "10.224.0.0/24,10.1.0.0/24,10.1.1.0/24,10.1.2.0/24"
 
 # region parameters
