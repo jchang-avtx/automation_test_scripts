@@ -22,28 +22,30 @@ resource "aws_vpn_gateway" "vpn_gw" {
 resource "aviatrix_gateway" "OnPrem-GW" {
   cloud_type = 1
   account_name = "${aviatrix_account.access_account.account_name}"
-  gw_name = "OnPrem-GW"
-  vpc_id = "${aws_vpc.OnPrem-VPC.id}"
-  vpc_reg = "${var.aws_region}"
-  vpc_size = "${var.aws_instance}"
-  vpc_net = "${aws_subnet.OnPrem-VPC-public.cidr_block}"
-  depends_on = ["aviatrix_account.access_account"]
+  gw_name       = "${var.aviatrix_gateway_name}"
+  vpc_id        = "${aws_vpc.OnPrem-VPC.id}"
+  vpc_reg       = "${var.aws_region}"
+  vpc_size      = "${var.aws_instance}"
+  vpc_net       = "${aws_subnet.OnPrem-VPC-public.cidr_block}"
+  public_subnet = "${aws_subnet.OnPrem-VPC-public.cidr_block}"
+  depends_on    = ["aviatrix_account.access_account"]
 }
 
 # Aviatrix site2cloud connection facing AWS VGW
 # tunnel1
 resource "aviatrix_site2cloud" "onprem-vgw" {
   primary_cloud_gateway_name = "${aviatrix_gateway.OnPrem-GW.gw_name}" 
-  vpc_id = "${aws_vpc.OnPrem-VPC.id}",
+  vpc_id = "${aws_vpc.OnPrem-VPC.id}"
   connection_name = "${var.connection_name1}"
   connection_type = "unmapped"
   tunnel_type = "udp"
   remote_gateway_type = "aws"
-  remote_gateway_ip = "${aws_vpn_connection.onprem.tunnel1_address}"
+  remote_gateway_ip = "${aws_vpn_connection.vpn1.tunnel1_address}"
+  pre_shared_key = "${aws_vpn_connection.vpn1.tunnel1_preshared_key}"
   remote_subnet_cidr = "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
-  pre_shared_key = "${aws_vpn_connection.onprem.tunnel1_preshared_key}"
-  depends_on = ["aviatrix_gateway.OnPrem-GW","aws_vpc.OnPrem-VPC","aws_subnet.OnPrem-VPC-public",
-                "aws_internet_gateway.OnPrem-VPC-gw","aws_route_table.OnPrem-VPC-route",
-                "aws_route_table_association.OnPrem-VPC-ra","aws_vpn_connection_route.onprem1",
-                "aviatrix_account.access_account"]
+  ha_enabled                 = "${var.ha_enabled}"
+  backup_remote_gateway_ip   = "${aws_vpn_connection.vpn2.tunnel1_address}"
+  backup_pre_shared_key      = "${aws_vpn_connection.vpn2.tunnel1_preshared_key}"
+  backup_gateway_name        = "${aviatrix_gateway.OnPrem-GW.gw_name}-hagw"
+  depends_on = ["aviatrix_gateway.OnPrem-GW"]
 }

@@ -11,6 +11,7 @@ variable "mylocal_cloud_account_name" {}
 variable "aviatrix_gateway_name" {}
 
 
+variable "ha_enabled" {}
 variable "connection_name1" {}
 variable "remote_subnet1" {}
 variable "remote_subnet2" {}

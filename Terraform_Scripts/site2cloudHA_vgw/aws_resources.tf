@@ -78,7 +78,7 @@ resource "aws_route_table_association" "OnPrem-VPC-ra" {
 
 ## Create AWS customer gateway & VGW towards aviatrix OnPrem Gateway
 ## -----------------------------------------------------------------
-resource "aws_customer_gateway" "customer_gateway" {
+resource "aws_customer_gateway" "customer_gateway1" {
     bgp_asn    = 6588
     ip_address = "${aviatrix_gateway.OnPrem-GW.public_ip}"
     type       = "ipsec.1"
@@ -86,25 +86,44 @@ resource "aws_customer_gateway" "customer_gateway" {
        Name = "onprem-gateway"
     }
 }
-resource "aws_vpn_connection" "onprem" {
+resource "aws_customer_gateway" "customer_gateway2" {
+    bgp_asn    = 6590
+    ip_address = "${aviatrix_gateway.OnPrem-GW.backup_public_ip}"
+    type       = "ipsec.1"
+    tags {
+       Name = "aviatrix-customer-gateway2"
+    }
+    depends_on = ["aviatrix_gateway.OnPrem-GW"]
+}
+resource "aws_vpn_connection" "vpn1" {
     vpn_gateway_id      = "${aws_vpn_gateway.vpn_gw.id}"
-    customer_gateway_id = "${aws_customer_gateway.customer_gateway.id}"
+    customer_gateway_id = "${aws_customer_gateway.customer_gateway1.id}"
     type                = "ipsec.1"
     static_routes_only  = true
     tags {
-       Name = "site2cloud-to-vgw"
+       Name = "site2cloud-to-vgw-connection1"
     }
 }
+resource "aws_vpn_connection" "vpn2" {
+    vpn_gateway_id      = "${aws_vpn_gateway.vpn_gw.id}"
+    customer_gateway_id = "${aws_customer_gateway.customer_gateway2.id}"
+    type                = "ipsec.1"
+    static_routes_only  = true
+    tags {
+       Name = "site2cloud-to-vgw-connection2"
+    }
+}
+
 
 # original onprem CIDR block
 resource "aws_vpn_connection_route" "onprem1" {
     destination_cidr_block = "${aws_subnet.OnPrem-VPC-public.cidr_block}"
-    vpn_connection_id = "${aws_vpn_connection.onprem.id}"
+    vpn_connection_id = "${aws_vpn_connection.vpn1.id}"
 }
 # 2nd static route from onprem 
 resource "aws_vpn_connection_route" "onprem2" {
     destination_cidr_block = "100.100.100.0/24"
-    vpn_connection_id = "${aws_vpn_connection.onprem.id}"
+    vpn_connection_id = "${aws_vpn_connection.vpn2.id}"
 }
 
 ## END -------------------------------
