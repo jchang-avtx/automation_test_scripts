@@ -34,7 +34,7 @@ resource "aviatrix_gateway" "OnPrem-GW" {
 # tunnel1
 resource "aviatrix_site2cloud" "onprem-vgw" {
   primary_cloud_gateway_name = "${aviatrix_gateway.OnPrem-GW.gw_name}" 
-  vpc_id = "${aws_vpc.OnPrem-VPC.id}",
+  vpc_id = "${aws_vpc.OnPrem-VPC.id}"
   connection_name = "${var.connection_name1}"
   connection_type = "unmapped"
   tunnel_type = "udp"
@@ -42,8 +42,5 @@ resource "aviatrix_site2cloud" "onprem-vgw" {
   remote_gateway_ip = "${aws_vpn_connection.onprem.tunnel1_address}"
   remote_subnet_cidr = "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
   pre_shared_key = "${aws_vpn_connection.onprem.tunnel1_preshared_key}"
-  depends_on = ["aviatrix_gateway.OnPrem-GW","aws_vpc.OnPrem-VPC","aws_subnet.OnPrem-VPC-public",
-                "aws_internet_gateway.OnPrem-VPC-gw","aws_route_table.OnPrem-VPC-route",
-                "aws_route_table_association.OnPrem-VPC-ra","aws_vpn_connection_route.onprem1",
-                "aviatrix_account.access_account"]
+  depends_on = ["aviatrix_gateway.OnPrem-GW"]
 }
