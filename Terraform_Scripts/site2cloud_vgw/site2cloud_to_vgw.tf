@@ -22,7 +22,7 @@ resource "aws_vpn_gateway" "vpn_gw" {
 resource "aviatrix_gateway" "OnPrem-GW" {
   cloud_type = 1
   account_name = "${aviatrix_account.access_account.account_name}"
-  gw_name = "OnPrem-GW"
+  gw_name = "${var.aviatrix_gateway_name}"
   vpc_id = "${aws_vpc.OnPrem-VPC.id}"
   vpc_reg = "${var.aws_region}"
   vpc_size = "${var.aws_instance}"
