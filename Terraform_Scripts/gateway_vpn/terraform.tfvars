@@ -4,7 +4,7 @@
          aws_vpc_public_cidr = "10.10.0.0/24"
 
 aviatrix_cloud_account_name  = "Temp-AWS-CloudAccount"
-      aviatrix_gateway_name  = "myAviatrix-gateway-VPN-enabled"
+      aviatrix_gateway_name  = "tr-gateway-vpn"
      aviatrix_cloud_type_aws = 1
 
 # VPN gateway parameters (sample#1 Split_Tunnel enabled)
