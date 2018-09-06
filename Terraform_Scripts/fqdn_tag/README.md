@@ -1,35 +1,18 @@
 Description
 -----------
-  Terraform configuration files to attached Aviatrix gateway (NAT enabled) to FQDN filter. 
+  1. Terraform configuration files to attached Aviatrix gateway (NAT enabled) to FQDN filter. 
+  2. It assumed aviatrix gateway is ready from designated controller.
 
-Pre-Requisites
---------------
-    * Aviatrix controller login access
-    * Aviatrix gateways already created by controller with NAT enabled
-    * Update file named "terraform.tfvars" to input all parameters
+  FYI: Implementation was based on Aviatrix UserConnect-3.3.403 version.
 
-Launch new Controller with CloudFormation Template
---------------------------------------------------
-New Aviatrix Controller guide [here](http://docs.aviatrix.com/StartUpGuides/aviatrix-cloud-controller-startup-guide.html#launch-the-controller-with-cloudformation-template).
 
-How to run terraform
---------------------
-    * terraform init                = initialize working directorty and provider plugins, done only once 
-    * terraform plan                = to check and review all parameters
-    * terraform apply auto-approve  = to kickoff the run
-    * terraform destroy -force      = to cleanup everything 
 
-How to debug FQDN filter
-------------------------
-    Currently working on 
+terraform validate -var-file=/home/ubuntu/52.52.3.186_regression.secret.tfvars
+terraform plan -var-file=/home/ubuntu/52.52.3.186_regression.secret.tfvars
+terraform apply -auto-approve -var-file=/home/ubuntu/52.52.3.186_regression.secret.tfvars
+terraform destroy -force -var-file=/home/ubuntu/52.52.3.186_regression.secret.tfvars
 
 For more information you can visit our Aviatrix FAQs
 ----------------------------------------------------
-Aviatrix FAQs [here](http://docs.aviatrix.com/HowTos/FAQ.html).
-
 Learn more about FQDN Whitelist [here](http://docs.aviatrix.com/HowTos/FQDN_Whitelists_Ref_Design.html?highlight=fqdn).
-
-Aviatrix Overview
------------------
-Aviatrix Overview [here](http://docs.aviatrix.com/StartUpGuides/aviatrix_overview.html).
 
