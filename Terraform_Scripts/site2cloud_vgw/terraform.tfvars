@@ -1,4 +1,4 @@
-aws_region = "us-east-1"
+aws_region = "eu-central-1"
 aws_instance = "t2.micro"
 aws_vpc_public_cidr = "172.16.0.0/16"
 connection_name1 = "site2cloud_primary"
