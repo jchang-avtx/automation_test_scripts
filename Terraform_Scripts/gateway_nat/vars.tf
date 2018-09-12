@@ -10,4 +10,4 @@ variable "aviatrix_controller_password" {}
 variable "aviatrix_cloud_account_name" {}
 variable "aviatrix_gateway_name" {}
 variable "aviatrix_cloud_type_aws" {}
-
+variable "aviatrix_enable_nat" {}

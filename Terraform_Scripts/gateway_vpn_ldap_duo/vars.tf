@@ -15,11 +15,13 @@ variable "aviatrix_vpn_cidr" {}
 variable "aviatrix_vpn_elb" {}
 variable "aviatrix_vpn_split_tunnel" {}
 variable "aviatrix_vpn_otp_mode" {}
+
 # duo parameters
 variable "aviatrix_vpn_duo_integration_key" {}
 variable "aviatrix_vpn_duo_secret_key" {}
 variable "aviatrix_vpn_duo_api_hostname" {}
 variable "aviatrix_vpn_duo_push_mode" {}
+
 # ldap parameters
 variable "aviatrix_vpn_ldap_enable" {}
 variable "aviatrix_vpn_ldap_server" {}
