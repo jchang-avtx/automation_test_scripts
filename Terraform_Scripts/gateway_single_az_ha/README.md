@@ -6,7 +6,6 @@ Sample
 ------
 aviatrix_gateway.aws_gateway:
   account_name = aws-fqdn-root
-  cidr = 192.168.101.0/24
   cloud_type = 1
   gw_name = DNS-SingleAZ-GW
   vpc_id = vpc-0d288427933081d57

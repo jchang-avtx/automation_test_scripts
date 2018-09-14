@@ -8,4 +8,5 @@ resource "aviatrix_gateway" "aws_gateway" {
         vpc_reg = "${var.aws_region}"
        vpc_size = "${var.aws_instance}"
         vpc_net = "${var.aws_vpc_public_cidr}"
+   single_az_ha = "${var.aviatrix_single_az_ha}"
 }
