@@ -1,5 +1,5 @@
 vgw_connection_name = "oregon_vgw_bgp_s2c"
-vgw_id = "vgw-05e54079c2b80d433"
+vgw_id = "vgw-03aed14497455dc1f"
 bgp_local_as = 6510
 
 controller_custom_version = "3.4"
