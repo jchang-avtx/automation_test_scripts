@@ -5,7 +5,7 @@ provider "aviatrix" {
        password = "${var.aviatrix_controller_password}"
 }
 
-resource "aviatrix_profile" "terr_profile" {
+resource "aviatrix_vpn_profile" "terr_profile" {
   name = "profile"
   base_rule = "allow_all"
   policy = [
