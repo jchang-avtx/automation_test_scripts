@@ -31,14 +31,9 @@ resource "aviatrix_customer_id" "setup_customer_id" {
 
 resource "aviatrix_account" "setup_aws_account" {
   account_name = "${var.account_name}"
-  account_password = "${var.account_password}"
   cloud_type = 1
-  account_email = "${var.account_email}"
   aws_account_number = "${var.aws_account_number}"
   aws_iam = "true"
-  aws_role_app = "arn:aws:iam::${var.aws_account_number}:role/aviatrix-role-app"
-  aws_role_ec2 = "arn:aws:iam::${var.aws_account_number}:role/aviatrix-role-ec2"
-
 }
 
 output "controller_public_ip" {
