@@ -1,0 +1,13 @@
+cloud_type                  = 1
+transit_account             = 1
+transit_account_name        = "NuSkin-transit-account"
+transit_gateway_name        = "NuSkin-transit"
+transit_gateway_size        = "t3.micro"
+transit_cidr_prefix         = "192.168"
+ondemand_spoke_gateway_size = "t2.micro"
+ondemand_max_account        = 10
+ondemand_act_name           = "NuSkin-spoke-account"
+ondemand_gateway_name       = "NuSkin-spoke"
+ondemand_spoke_cidr_prefix1 = "10.51"
+ondemand_spoke_cidr_prefix2 = "10.52"
+#ondemand_spoke_count        = 2
