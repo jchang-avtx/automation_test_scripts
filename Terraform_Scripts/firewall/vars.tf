@@ -1,3 +1,26 @@
 variable "aviatrix_controller_ip" {}
 variable "aviatrix_controller_username" {}
 variable "aviatrix_controller_password" {}
+
+variable "aviatrix_gateway_name" {}
+variable "aviatrix_firewall_base_policy" {}
+variable "aviatrix_firewall_packet_logging" {}
+
+variable "aviatrix_firewall_policy_protocol" {
+  type = "list"
+}
+variable "aviatrix_firewall_policy_source_ip" {
+  type = "list"
+}
+variable "aviatrix_firewall_policy_log_enable" {
+  type = "list"
+}
+variable "aviatrix_firewall_policy_destination_ip" {
+  type = "list"
+}
+variable "aviatrix_firewall_policy_action" {
+  type = "list"
+}
+variable "aviatrix_firewall_policy_port" {
+  type = "list"
+}
