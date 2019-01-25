@@ -13,5 +13,8 @@ After creating a base profile to manipulate (using terraform.tfvars), the test f
    * will change the CIDR / VPC_Net parameter
    * Note: this function is not supported by Controller
 
+   * **emptycreation.tfvars**
+      * (This is used to test invalid/ empty inputs)
+
 Running the scripts in this order will allow testing of manipulation of individual parameters.
 You can switch around orders to do combinations of different updates.
