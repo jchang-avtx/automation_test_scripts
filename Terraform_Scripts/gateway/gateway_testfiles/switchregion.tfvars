@@ -1,4 +1,4 @@
-# initial creation for Aviatrix gateway
+# Test order 2: change region and vpc id and swap back to original account name
 
 aviatrix_controller_ip          = "1.2.3.4"
 aviatrix_controller_username    = "admin"
@@ -13,13 +13,13 @@ aviatrix_gateway_name   = ["testGW1"] # case 1
 ##############################################
 ## Singular gateway for faster testing
 ##############################################
-aws_vpc_id = ["vpc-abc123"]
-aws_region = ["us-east-1"]
+aws_vpc_id = ["vpc-def456"]
+aws_region = ["us-west-1"]
 aws_vpc_public_cidr = ["10.0.0.0/24"]
 aws_instance = ["t2.micro"]
 
-## Testing 2 GWs
-# aws_vpc_id = ["vpc-abc123", "vpc-abc123"]
-# aws_region = ["us-east-1", "us-east-1"]
+## Testing 2 GW
+# aws_vpc_id = ["vpc-def456", "vpc-def456"]
+# aws_region = ["us-west-1", "us-west-1"]
 # aws_vpc_public_cidr = ["10.0.0.0/24", "10.0.0.0/24"]
 # aws_instance = ["t2.micro", "t2.micro"]

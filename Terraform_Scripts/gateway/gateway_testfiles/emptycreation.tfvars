@@ -1,5 +1,8 @@
-# initial creation for Aviatrix gateway
+# empty creation
 
+## Use variations of commenting out the top and bottom portion of this file to test individual/ combinations of empty/invalid + valid input
+
+## These credentials must be filled to test
 aviatrix_controller_ip          = "1.2.3.4"
 aviatrix_controller_username    = "admin"
 aviatrix_controller_password    = "password"
@@ -11,8 +14,9 @@ aviatrix_gateway_name   = ["testGW1"] # case 1
 # aviatrix_gateway_name  = ["testGW1", "testGW2"] # comment out either gateway_name if testing 1 or 2
 
 ##############################################
-## Singular gateway for faster testing
+## VALID INPUT
 ##############################################
+## Singular gateway for faster testing
 aws_vpc_id = ["vpc-abc123"]
 aws_region = ["us-east-1"]
 aws_vpc_public_cidr = ["10.0.0.0/24"]
@@ -23,3 +27,23 @@ aws_instance = ["t2.micro"]
 # aws_region = ["us-east-1", "us-east-1"]
 # aws_vpc_public_cidr = ["10.0.0.0/24", "10.0.0.0/24"]
 # aws_instance = ["t2.micro", "t2.micro"]
+
+##############################################
+## INVALID INPUT
+##############################################
+# aviatrix_cloud_account_name     = ""
+# aviatrix_cloud_type_aws = 0
+# aviatrix_gateway_name   = [""] # case 1
+# aviatrix_gateway_name  = ["", ""] # comment out either gateway_name if testing 1 or 2
+
+## one GW
+# aws_vpc_id = [""]
+# aws_region = [""]
+# aws_vpc_public_cidr = [""]
+# aws_instance = [""]
+
+## Testing 2 GWs
+# aws_vpc_id = ["", ""]
+# aws_region = ["", ""]
+# aws_vpc_public_cidr = ["", ""]
+# aws_instance = ["", ""]

@@ -1,4 +1,4 @@
-# initial creation for Aviatrix gateway
+# Test order 4: change cidr / vpc_net
 
 aviatrix_controller_ip          = "1.2.3.4"
 aviatrix_controller_username    = "admin"
@@ -15,11 +15,11 @@ aviatrix_gateway_name   = ["testGW1"] # case 1
 ##############################################
 aws_vpc_id = ["vpc-abc123"]
 aws_region = ["us-east-1"]
-aws_vpc_public_cidr = ["10.0.0.0/24"]
-aws_instance = ["t2.micro"]
+aws_vpc_public_cidr = ["11.0.0.0/24"]
+aws_instance = ["t2.small"]
 
-## Testing 2 GWs
+## Testing 2 GW
 # aws_vpc_id = ["vpc-abc123", "vpc-abc123"]
 # aws_region = ["us-east-1", "us-east-1"]
-# aws_vpc_public_cidr = ["10.0.0.0/24", "10.0.0.0/24"]
-# aws_instance = ["t2.micro", "t2.micro"]
+# aws_vpc_public_cidr = ["11.0.0.0/24", "11.0.0.0/24"]
+# aws_instance = ["t2.small", "t2.small"]
