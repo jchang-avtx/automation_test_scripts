@@ -1,3 +1,6 @@
+## Test case 1. Changes Duo-related parameter values
+## Please see Mantis id =
+
 aviatrix_controller_ip          = "1.2.3.4"
 aviatrix_controller_username    = "admin"
 aviatrix_controller_password    = "password"
@@ -17,10 +20,14 @@ aviatrix_controller_password    = "password"
                  aviatrix_vpn_elb = "yes"
         aviatrix_vpn_split_tunnel = "yes"
             aviatrix_vpn_otp_mode = "2"
- aviatrix_vpn_duo_integration_key = "DDDDDDDDDDDDDDDDDDY6"
-      aviatrix_vpn_duo_secret_key = "QqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqXN2zwQ"
-    aviatrix_vpn_duo_api_hostname = "api-11111111.duosecurity.com"
-       aviatrix_vpn_duo_push_mode = "auto"
+##############################################
+## This is the section you're concerned with
+ aviatrix_vpn_duo_integration_key = "UPDATED_DUO_INTEGRATION_KEY"
+      aviatrix_vpn_duo_secret_key = "UPDATED_DUO_SECRET_KEY"
+    aviatrix_vpn_duo_api_hostname = "api-22222222.duosecurity.com"
+       aviatrix_vpn_duo_push_mode = "selective"
+       # aviatrix_vpn_duo_push_mode = "token" #If you are interested in testing another push_mode config
+##############################################
 
          aviatrix_vpn_ldap_enable = "yes"
          aviatrix_vpn_ldap_server = "1.2.3.4:389"
