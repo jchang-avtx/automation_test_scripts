@@ -9,6 +9,7 @@ variable "aviatrix_cloud_account_name" {}
 variable "aviatrix_cloud_type_aws" {}
 variable "aviatrix_gateway_name" {}
 variable "aviatrix_vpn_access" {}
+variable "aviatrix_vpn_saml" {}
 variable "aviatrix_vpn_cidr" {}
 variable "aviatrix_vpn_elb" {}
 variable "aviatrix_vpn_split_tunnel" {}
