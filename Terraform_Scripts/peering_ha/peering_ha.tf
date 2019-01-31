@@ -1,9 +1,5 @@
 # Enter your controller's IP, username and password to login
-provider "aviatrix" {
-  controller_ip = "${var.aviatrix_controller_ip}"
-       username = "${var.aviatrix_controller_username}"
-       password = "${var.aviatrix_controller_password}"
-}
+
 resource "aviatrix_gateway" "GW" {
           count = "${length(var.aws_vpc_id)}"
      cloud_type = "${var.aviatrix_cloud_type_aws}"
