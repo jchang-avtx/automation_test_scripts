@@ -8,7 +8,7 @@ aviatrix_controller_password    = "password"
                 aws_instance = "t2.micro"
          aws_vpc_public_cidr = "10.0.0.0/24"
 
-aviatrix_cloud_account_name  = "Temp-AWS-CloudAccount"
+aviatrix_cloud_account_name  = "PrimaryAccessAccount"
       aviatrix_gateway_name  = "testGW-VPN"
      aviatrix_cloud_type_aws = 1
 
