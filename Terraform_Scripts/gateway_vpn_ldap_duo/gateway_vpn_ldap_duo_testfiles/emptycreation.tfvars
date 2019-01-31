@@ -1,7 +1,7 @@
 # empty creation
 
 ## Use variations of commenting out the top and bottom portion of this file to test individual/ combinations of empty/invalid + valid input
-## Please see Mantis id =
+## Please see Mantis id = 8142
 
 aviatrix_controller_ip          = "1.2.3.4"
 aviatrix_controller_username    = "admin"
@@ -43,7 +43,7 @@ aviatrix_controller_password    = "password"
 ## INVALID/ EMPTY INPUT
 ##############################################
 
-aviatrix_vpn_otp_mode = ""
+aviatrix_vpn_otp_mode = "4" # invalid. 2 for DUO, 3 for OKTA
 aviatrix_vpn_duo_integration_key = ""
 aviatrix_vpn_duo_secret_key = ""
 aviatrix_vpn_duo_api_hostname = ""

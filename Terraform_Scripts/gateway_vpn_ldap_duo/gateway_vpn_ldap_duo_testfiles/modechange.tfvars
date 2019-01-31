@@ -1,5 +1,5 @@
 ## Test case 0. Change otp mode and/or change enable_ldap
-## Please see Mantis id =
+## Please see Mantis id = 8142
 
 aviatrix_controller_ip          = "1.2.3.4"
 aviatrix_controller_username    = "admin"
