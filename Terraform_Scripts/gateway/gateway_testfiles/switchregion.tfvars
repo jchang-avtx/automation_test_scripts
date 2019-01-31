@@ -17,9 +17,11 @@ aws_vpc_id = ["vpc-def456"]
 aws_region = ["us-west-1"]
 aws_vpc_public_cidr = ["10.0.0.0/24"]
 aws_instance = ["t2.micro"]
+aws_gateway_tag_list = ["Purpose:Test TF GW1"]
 
 ## Testing 2 GW
 # aws_vpc_id = ["vpc-def456", "vpc-def456"]
 # aws_region = ["us-west-1", "us-west-1"]
 # aws_vpc_public_cidr = ["10.0.0.0/24", "10.0.0.0/24"]
 # aws_instance = ["t2.micro", "t2.micro"]
+# aws_gateway_tag_list = ["Purpose:Test TF GW1", "Purpose:Test TF GW2"]

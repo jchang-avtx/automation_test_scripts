@@ -21,12 +21,14 @@ aws_vpc_id = ["vpc-abc123"]
 aws_region = ["us-east-1"]
 aws_vpc_public_cidr = ["10.0.0.0/24"]
 aws_instance = ["t2.micro"]
+# aws_gateway_tag_list = ["Purpose:Test TF GW1"] # optional. can comment out if do not want
 
 ## Testing 2 GWs
 # aws_vpc_id = ["vpc-abc123", "vpc-abc123"]
 # aws_region = ["us-east-1", "us-east-1"]
 # aws_vpc_public_cidr = ["10.0.0.0/24", "10.0.0.0/24"]
 # aws_instance = ["t2.micro", "t2.micro"]
+# aws_gateway_tag_list = ["Purpose:Test TF GW1", "Purpose:Test TF GW2"]
 
 ##############################################
 ## INVALID INPUT
@@ -41,6 +43,8 @@ aws_instance = ["t2.micro"]
 # aws_region = [""]
 # aws_vpc_public_cidr = [""]
 # aws_instance = [""]
+aws_gateway_tag_list = ["PurposeTest TF GW1"] # invalid input because no :
+# aws_gateway_tag_list = [""] # empty
 
 ## Testing 2 GWs
 # aws_vpc_id = ["", ""]
