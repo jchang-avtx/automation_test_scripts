@@ -14,7 +14,7 @@ resource "aviatrix_gateway" "testGW1" {
         vpc_reg = "${var.aws_region[0]}"
        vpc_size = "${var.aws_instance[0]}"
         vpc_net = "${var.aws_vpc_public_cidr[0]}"
-       tag_list = "${var.aws_gateway_tag_list[0]}" # optional. can comment out if do not want
+       tag_list = "${var.aws_gateway_tag_list}" # optional. can comment out if do not want
 }
 
 # resource "aviatrix_gateway" "testGW2" {
@@ -25,7 +25,7 @@ resource "aviatrix_gateway" "testGW1" {
 #         vpc_reg = "${var.aws_region[1]}"
 #        vpc_size = "${var.aws_instance[1]}"
 #         vpc_net = "${var.aws_vpc_public_cidr[1]}"
-#        tag_list = "${var.aws_gateway_tag_list[1]}" # optional. can comment out if do not want
+#        tag_list = "${var.aws_gateway_tag_list}" # optional. can comment out if do not want
 # }
 
 ##############################################

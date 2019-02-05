@@ -1,4 +1,5 @@
-# Enter your controller's IP, username and password to login
+## build encrypted peering between Aviatrix gateways in HA mode
+## Creates 2 GWs and a peering tunnel
 
 resource "aviatrix_gateway" "GW" {
           count = "${length(var.aws_vpc_id)}"

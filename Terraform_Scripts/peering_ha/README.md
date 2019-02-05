@@ -1,6 +1,6 @@
 Description
 -----------
-  Terraform configuration files to build encrypteed peering between Aviatrix gateways in HA mode.
+  Terraform configuration files to build encrypted peering between Aviatrix gateways in HA mode.
 
 Pre-Requisites
 --------------
@@ -9,10 +9,10 @@ Pre-Requisites
 
 How to run terraform
 --------------------
-    * terraform init                = initialize working directorty and provider plugins, done only once 
+    * terraform init                = initialize working directorty and provider plugins, done only once
     * terraform plan                = to check and review all parameters
     * terraform apply auto-approve  = to kickoff the run
-    * terraform destroy -force      = to cleanup everything 
+    * terraform destroy -force      = to cleanup everything
 
 Aviatrix Peering Topology
 -------------------------
