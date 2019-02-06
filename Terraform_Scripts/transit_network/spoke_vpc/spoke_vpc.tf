@@ -1,5 +1,9 @@
 ## Initial creation
-## Creates a spoke gateway, as part of the transit network steps
+# Launch a spoke VPC, and join with transit VPC.
+# Omit ha_subnet to launch spoke VPC without HA.
+# ha_subnet can be later added or deleted to enable/disable HA in spoke VPC
+# Omit transit_gw to launch spoke VPC without attaching with transit GW.
+# transit_gw can be later added or deleted to attach/detach from spoke VPC
 
 resource "aviatrix_spoke_vpc" "test_spoke_vpc" {
   cloud_type = "${var.aviatrix_cloud_type_aws}"
@@ -16,5 +20,5 @@ resource "aviatrix_spoke_vpc" "test_spoke_vpc" {
   enable_nat = "${var.aviatrix_enable_nat}" # Specify whether enabling NAT feature on the gateway or not. (Please disable AWS NAT instance before enabling this feature)
   # dns_server = # (optional) specify DNS IP, only required while using a custom private DNS for the VPC
   transit_gw = "${var.aviatrix_transit_gw}" # optional; comment out if want to test Update from no transitGW attachment to yes
-  tag_list = "${var.tag_list}" #optional
+  tag_list = "${var.tag_list}" # optional
 }
