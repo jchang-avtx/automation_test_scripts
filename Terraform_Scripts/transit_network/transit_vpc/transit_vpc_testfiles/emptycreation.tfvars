@@ -3,7 +3,7 @@
 ## Use variations of commenting out the top and bottom portion of this file to test individual/ combinations of empty/invalid + valid input
 ## Please see Mantis: id=8192 for issue with ha_subnet, ha_gw_size
 ## Please see Mantis: id=8209 for issues with refresh and update tests
-## This file is also used to test Update/ refresh test case;; See sections for Valid Input
+## This file is also used to test Update test case;; See sections for Valid Input
 
 aviatrix_controller_ip = "1.2.3.4"
 aviatrix_controller_username = "admin"
