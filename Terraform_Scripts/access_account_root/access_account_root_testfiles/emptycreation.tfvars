@@ -1,7 +1,7 @@
 ## empty creations
 
 ## Use variations of commenting out the top and bottom portion of this file to test individual/ combinations of emptyinvalid + valid input
-## Please see Mantis: id=XXXX for reported refresh, update, and REST-API issues
+## Please see Mantis: id=8328 for reported refresh, update, and REST-API issues
 ## This file is also used to test Update test case;; See sections for Valid Input
 
 ## NOTE: Please be careful and DO NOT commit personal credentials (ESPECIALLY your access_key and secret_key) into the repo

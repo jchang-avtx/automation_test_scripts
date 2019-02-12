@@ -1,7 +1,7 @@
 # empty creation
 
 ## Use variations of commenting out the top and bottom portion of this file to test individual/ combinations of empty/invalid + valid input
-## Please see Mantis: id=XXXX for issue with ???
+## Please see Mantis: id=8240 for issue with reported refresh, update and REST-API issues
 ## This file is also used to test Update test case;; See sections for Valid Input
 
 aviatrix_controller_ip = "1.2.3.4"
