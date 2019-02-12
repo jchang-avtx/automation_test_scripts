@@ -8,18 +8,22 @@ aviatrix_controller_ip          = "1.2.3.4"
 aviatrix_controller_username    = "admin"
 aviatrix_controller_password    = "password"
 
-aws_vpc_id                      = "vpc-abcd1234"
+aws_vpc_id                      = "vpc-abc123"
 aviatrix_gateway_name           = "gw1"
 aviatrix_vpn_user_name          = {
-      "user1" = "username1"
-      "user2" = "username2"
-      "user3" = "username3"
+      "user1" = "testdummy1"
+      "user2" = "testdummy2"
+      "user3" = "testdummy3"
+      "user4" = "testdummy4"
 }
 aviatrix_vpn_user_email         = {
-      "email1" = "user1@xyz.com"
-      "email2" = "user2@xyz.com"
-      "email3" = "user3@xyz.com"
+      "email1" = "testdavtx1@gmail.com"
+      "email2" = "testdavtx2@gmail.com"
+      "email3" = "testdavtx3@gmail.com"
+      "email4" = "testdavtx4@gmail.com"
 }
+
+# aviatrix_vpn_user_saml          = ["saml_test_endpoint"]
 
 #########################
 # INVALID INPUT BELOW
@@ -31,9 +35,14 @@ aviatrix_vpn_user_email         = {
 #       "user1" = ""
 #       "user2" = ""
 #       "user3" = ""
+#       "user4" = ""
 # }
 # aviatrix_vpn_user_email         = {
 #       "email1" = ""
 #       "email2" = ""
 #       "email3" = ""
+#       "email4" = ""
 # }
+
+aviatrix_vpn_user_saml          = [" "] # invalid "<" error
+# aviatrix_vpn_user_saml          = [""] # empty list works fine

@@ -15,4 +15,7 @@ variable "aws_vpc_public_cidr" {}
 variable "aviatrix_ha_subnet" {}
 variable "aviatrix_ha_gw_size" {}
 
+variable "tag_list" {
+  type = "list"
+}
 variable "tgw_enable_hybrid" {}

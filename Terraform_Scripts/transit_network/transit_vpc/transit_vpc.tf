@@ -16,6 +16,6 @@ resource "aviatrix_transit_vpc" "test_transit_gw" {
   ha_subnet = "${var.aviatrix_ha_subnet}"# (optional) HA subnet. Setting to empty/unset will disable HA. Setting to valid subnet will create an HA gateway in the subnet
   ha_gw_size = "${var.aviatrix_ha_gw_size}"# (optional) HA gw size. Mandatory if HA is enabled (ex. "t2.micro")
 
-  tag_list = ["key1:value1", "key2:value2"] # (optional) instance tag of cloud provider
+  tag_list = "${var.tag_list}" # optional
   enable_hybrid_connection = "${var.tgw_enable_hybrid}" # (optional) sign of readiness for TGW connection (ex. false)
 }

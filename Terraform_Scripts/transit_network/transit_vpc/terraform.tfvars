@@ -15,7 +15,7 @@ aws_instance = "t2.micro"
 aws_vpc_public_cidr = "123.0.0.0/24"
 
 ## HA parameters
-aviatrix_ha_subnet = "123.0.0.0/24"# (optional) HA subnet. Setting to empty/unset will disable HA. Setting to valid subnet will create an HA gateway in the subnet
-aviatrix_ha_gw_size = "t2.micro"# (optional) HA gw size. Mandatory if HA is enabled (ex. "t2.micro")
+aviatrix_ha_subnet = "123.0.0.0/24" # (optional) HA subnet. Setting to empty/unset will disable HA. Setting to valid subnet will create an HA gateway in the subnet
+aviatrix_ha_gw_size = "t2.micro" # (optional) HA gw size. Mandatory if HA is enabled (ex. "t2.micro")
 
 tgw_enable_hybrid = true # (optional) sign of readiness for TGW connection (ex. false)
