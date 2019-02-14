@@ -14,7 +14,7 @@ aviatrix_controller_password    = "password"
               aws_vpc_public_cidr = "10.0.0.0/24"
 
      aviatrix_cloud_account_name  = "PrimaryAccessAccount"
-           aviatrix_gateway_name  = "myAviatrix-gateway-VPN-ldap-duo"
+           aviatrix_gateway_name  = "myAviatrix-gateway-VPN-okta"
           ## DO NOT MODIFY VALUES BELOW THIS COMMENT
           aviatrix_cloud_type_aws = 1
 
