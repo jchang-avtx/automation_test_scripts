@@ -10,10 +10,10 @@ resource "aviatrix_gateway" "aws_gateway" {
         vpc_net = "${var.aws_vpc_public_cidr}"
      vpn_access = "${var.aviatrix_vpn_access}"
    saml_enabled = "${var.aviatrix_vpn_saml}"
-           cidr = "${var.aviatrix_vpn_cidr}"
+       vpn_cidr = "${var.aviatrix_vpn_cidr}"
    split_tunnel = "${var.aviatrix_vpn_split_tunnel}"
      enable_elb = "${var.aviatrix_vpn_elb}"
-     elb_name = "test-elb-name"
+       elb_name = "test-elb-name"
 }
 
 ## enable both if split_tunnel is configured

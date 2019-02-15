@@ -1,4 +1,4 @@
-# intial creation for Aviatrix Spoke GW for the Transit Network
+# initial creation for Aviatrix Spoke GW for the Transit Network
 
 aviatrix_controller_ip = "1.2.3.4"
 aviatrix_controller_username = "admin"
