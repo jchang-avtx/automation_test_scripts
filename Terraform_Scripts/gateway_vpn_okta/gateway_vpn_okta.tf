@@ -9,7 +9,7 @@ resource "aviatrix_gateway" "aws_gateway" {
                 vpc_size = "${var.aws_instance}"
                  vpc_net = "${var.aws_vpc_public_cidr}"
               vpn_access = "${var.aviatrix_vpn_access}"
-                    cidr = "${var.aviatrix_vpn_cidr}"
+                vpn_cidr = "${var.aviatrix_vpn_cidr}"
             split_tunnel = "${var.aviatrix_vpn_split_tunnel}"
               enable_elb = "${var.aviatrix_vpn_elb}"
                 otp_mode = "${var.aviatrix_vpn_otp_mode}"
