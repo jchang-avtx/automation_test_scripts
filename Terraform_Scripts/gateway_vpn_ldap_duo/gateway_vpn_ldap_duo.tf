@@ -1,4 +1,4 @@
-# Create Aviatrix gateway in AWS public cloud 
+# Create Aviatrix gateway in AWS public cloud
 
 resource "aviatrix_gateway" "aws_gateway" {
               cloud_type = "${var.aviatrix_cloud_type_aws}"
@@ -9,7 +9,7 @@ resource "aviatrix_gateway" "aws_gateway" {
                 vpc_size = "${var.aws_instance}"
                  vpc_net = "${var.aws_vpc_public_cidr}"
               vpn_access = "${var.aviatrix_vpn_access}"
-                    cidr = "${var.aviatrix_vpn_cidr}"
+                vpn_cidr = "${var.aviatrix_vpn_cidr}"
             split_tunnel = "${var.aviatrix_vpn_split_tunnel}"
               enable_elb = "${var.aviatrix_vpn_elb}"
                 otp_mode = "${var.aviatrix_vpn_otp_mode}"
@@ -24,4 +24,3 @@ resource "aviatrix_gateway" "aws_gateway" {
             ldap_base_dn = "${var.aviatrix_vpn_ldap_base_dn}"
  ldap_username_attribute = "${var.aviatrix_vpn_ldap_username_attribute}"
 }
-
