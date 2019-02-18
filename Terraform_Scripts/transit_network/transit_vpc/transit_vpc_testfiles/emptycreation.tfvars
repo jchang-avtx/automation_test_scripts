@@ -36,6 +36,8 @@ aviatrix_controller_password = "password"
 # # tag_list = ["k4:v4","k5:v5"] # uncomment to use for Update test case
 # tgw_enable_hybrid = true
 # # tgw_enable_hybrid = false # uncomment to use for Update test case
+# tgw_enable_connected_transit = "yes"
+# # tgw_enable_connected_transit = "no" # uncomment to use for Update test case
 
 ##############################################
 ## EMPTY / INVALID INPUT
@@ -62,3 +64,5 @@ aviatrix_ha_gw_size = "asdf"# (optional) HA gw size. Mandatory if HA is enabled 
 
 tgw_enable_hybrid = "notaBoolean" # invalid: not a boolean input
 # tgw_enable_hybrid = variable # invalid: not a boolean, is a variable type;; correctly fails
+tgw_enable_connected_transit = "" # empty
+# tgw_enable_connected_transit = "notYesorNo" # invalid

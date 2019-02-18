@@ -19,3 +19,4 @@ variable "tag_list" {
   type = "list"
 }
 variable "tgw_enable_hybrid" {}
+variable "tgw_enable_connected_transit" {}
