@@ -9,6 +9,7 @@
 
 ## Additional test cases to consider:
 ## - When users set "enable_elb" = "yes", but "vpn_access" = "no"
+## - Setting empty "elb_name" with "split_tunnel" enabled
 
 ## These credentials must be filled to test
 aviatrix_controller_ip          = "1.2.3.4"

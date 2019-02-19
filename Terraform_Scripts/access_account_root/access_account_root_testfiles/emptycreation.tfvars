@@ -20,7 +20,7 @@ num_account = 3
 ##############################################
 # cloud_type = 1
 # myname = "ROOT-access-account"
-# aws_iam = "false" # DO NOT change this because this is for root account testing
+# aws_iam = "false" # change this between "false" and "true" for root vs IAM-role based testing, respectively
 # aws_account_number = "" # input your account number here
 
 ## Key block
