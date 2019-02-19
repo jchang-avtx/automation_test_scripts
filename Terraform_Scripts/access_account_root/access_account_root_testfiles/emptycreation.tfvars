@@ -46,7 +46,8 @@ num_account = 3
 ##############################################
 cloud_type = 123455677 # this is invalid input; currently only AWS (1) is supported
 myname = "" # blank name works because of access_account_root.tf defaulting with count variable
-aws_iam = "invalidBoolean" # by default is false; accepts boolean, so string type should fail; EDIT: it doesn't?
+aws_iam = "" # empty.
+# aws_iam = "invalidBoolean" # SHOULD accept boolean, so string type should fail; it is now a string type req?!
 # aws_account_number = ""
 aws_account_number = "1234" # invalid account number (requires 12 digit format)
 
