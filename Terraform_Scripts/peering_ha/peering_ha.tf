@@ -19,6 +19,6 @@ resource "aviatrix_tunnel" "PEERING"{
            vpc_name2 = "${var.gateway_names[1]}"
            enable_ha = "${var.enable_ha}"
           depends_on = ["aviatrix_gateway.GW"]
-          # cluster = "no" # (optional)
+          cluster = "${var.enable_cluster}" # (optional) whether to enable cluster peering
  # over_aws_peering = "no" # (deprecated) Use aws_peer resource instead
 }
