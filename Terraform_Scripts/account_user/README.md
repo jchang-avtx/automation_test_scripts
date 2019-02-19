@@ -1,3 +1,3 @@
 Description
 -----------
-Terraform configuration files to build Aviatrix account users
+Terraform configuration files to create and manage Aviatrix account users
