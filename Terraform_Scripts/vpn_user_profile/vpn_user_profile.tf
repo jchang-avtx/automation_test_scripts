@@ -49,24 +49,3 @@ resource "aviatrix_vpn_profile" "terr_profile" {
       }
   ]
 }
-
-## previous hardcoded version
-# resource "aviatrix_vpn_profile" "terr_profile" {
-#   name            = "profile"
-#   base_rule       = "allow_all"
-#   users           = []
-#   policy = [
-#       {
-#         action    = "allow"
-#         proto     = "tcp"
-#         port      = "5544"
-#         target    = "10.0.0.0/32"
-#       },
-#       {
-#         action    = "allow"
-#         proto     = "tcp"
-#         port      = "5244"
-#         target    = "11.0.0.0/32"
-#       }
-#   ]
-# }
