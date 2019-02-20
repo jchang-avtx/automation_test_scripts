@@ -18,4 +18,5 @@ resource "aviatrix_transit_vpc" "test_transit_gw" {
 
   tag_list = "${var.tag_list}" # optional
   enable_hybrid_connection = "${var.tgw_enable_hybrid}" # (optional) sign of readiness for TGW connection (ex. false)
+  connected_transit = "${var.tgw_enable_connected_transit}" # (optional) specify connected transit status (yes or no)
 }

@@ -7,6 +7,10 @@
 ## 2. elb_enable (elb_name can be found on the main gateway_vpn.tf)
 ## 3. split_tunnel
 
+## Additional test cases to consider:
+## - When users set "enable_elb" = "yes", but "vpn_access" = "no"
+## - Setting empty "elb_name" with "split_tunnel" enabled
+
 ## These credentials must be filled to test
 aviatrix_controller_ip          = "1.2.3.4"
 aviatrix_controller_username    = "admin"

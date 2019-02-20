@@ -18,9 +18,10 @@ aviatrix_account_user_email     = "username1@example.com"
 aviatrix_account_user_password  = "Password1!"
 
 ## update test case
-# aviatrix_account_username = "changedUser" # should not work; EDIT: fails.
+# aviatrix_account_username = "changedUser" # should not work; EDIT: not supported by TF
 # aviatrix_cloud_account_name = "changedAccountName" # should not work
-# aviatrix_account_user_email = "changedEmail@example.com" # should work; EDIT: fails; no changes in GUI
+# aviatrix_account_user_email = "changedEmail@example.com" # should work
+# aviatrix_account_user_email = "notanemail@nodotcom" # EDIT: accepted b/c x@y is acceptable email
 # aviatrix_account_user_password = "changedPassword1!" # should work; EDIT: fails; no changes in GUI
 
 ##############################################
@@ -36,6 +37,5 @@ aviatrix_account_user_password = "" # optional; theoretically should work and de
 ## invalid
 # aviatrix_account_username = "!?!" # IGNORE THIS; apparently this is acceptable name
 # aviatrix_cloud_account_name = "invalidAccountName" # correctly detects does not exist
-# aviatrix_account_user_email = "notanemail@nodotcom" # if its optional, should receive error and not assign an email; EDIT: fails. accepted 'email'
 # aviatrix_account_user_email = "notanemail" # correctly fails because not correct email format
 # aviatrix_account_user_password = "password1" # invalid because of weak password requirement; should catch and not create/edit/ruin state
