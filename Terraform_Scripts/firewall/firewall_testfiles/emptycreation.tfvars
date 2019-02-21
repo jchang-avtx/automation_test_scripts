@@ -23,6 +23,9 @@ aviatrix_firewall_policy_port             = ["69", "0:65535", "25:420", "420", "
 
 ##############################################
 ## EMPTY / INVALID INPUT
+##############################################
+## (can also be used to test ALL case (Case 3) in firewall.tf)
+
 # aviatrix_gateway_name             = ""
 # aviatrix_firewall_base_policy     = ""
 # aviatrix_firewall_packet_logging  = ""
@@ -35,11 +38,14 @@ aviatrix_firewall_policy_port             = ["69", "0:65535", "25:420", "420", "
 # aviatrix_firewall_policy_port             = ["", "", "", "", "", ""]
 
 ##############################################
-## EMPTY / INVALID ICMP (run in conjunction with ICMP case (Case 2) in firewall.tf)
+## EMPTY / INVALID ICMP
+##############################################
+## (run in conjunction with ICMP case (Case 2) in firewall.tf)
+
 # aviatrix_gateway_name             = ""
 # aviatrix_firewall_base_policy     = ""
 # aviatrix_firewall_packet_logging  = ""
-#
+
 # aviatrix_firewall_policy_protocol         = [""]
 # aviatrix_firewall_policy_source_ip        = [""]
 # aviatrix_firewall_policy_log_enable       = ["", ""] # Use 0 or 1 for enabling packet logging

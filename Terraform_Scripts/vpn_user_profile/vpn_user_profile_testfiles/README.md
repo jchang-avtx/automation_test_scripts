@@ -16,7 +16,7 @@ After creating a base profile to manipulate (using terraform.tfvars), the test f
    * (Warning: this will bring about a bug; see id=7967)
 
 * **emptycreation.tfvars**
-   * (This is used to test invalid/ empty inputs; there are bugs; see id=7981)
+   * (This is used to test invalid/ empty inputs; there are bugs; see id=7981 for empty input crash issue)
    * see id=8119 for issue with ICMP, ALL ports
 
 Running the scripts in this order will allow testing of manipulation of individual parameters.
