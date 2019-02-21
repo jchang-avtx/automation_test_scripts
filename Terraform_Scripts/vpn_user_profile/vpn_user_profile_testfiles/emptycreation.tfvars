@@ -6,6 +6,7 @@
 ## Additional test cases to consider:
 ## - special characters in profile_name (id=8205)
 ## - empty vpn user list should be [] not [""]
+## - ports for protocol 'all' or 'icmp' must be "0:65535"
 
 ## These credentials must be filled to test
 aviatrix_controller_ip          = "1.2.3.4"
