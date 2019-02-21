@@ -33,8 +33,14 @@ aviatrix_controller_password    = "password"
 ################################################
 ## You can also try inputting incorrect vpc id or gw name
 
+# empty
 aws_vpc_id                      = ""
 aviatrix_gateway_name           = ""
+
+# invalid
+aws_vpc_id                      = "vpc-notReal" # invalid
+aviatrix_gateway_name           = "notRealGWName" # invalid
+
 aviatrix_vpn_user_name          = {
       "user1" = ""
       "user2" = ""
