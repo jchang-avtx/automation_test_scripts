@@ -7,6 +7,7 @@
 ## - special characters in profile_name (id=8205)
 ## - empty vpn user list should be [] not [""]
 ## - ports for protocol 'all' or 'icmp' must be "0:65535"
+## - all empty profile rules values should still properly create an empty vpn profile (id=7981)
 
 ## These credentials must be filled to test
 aviatrix_controller_ip          = "1.2.3.4"
@@ -29,7 +30,7 @@ aviatrix_vpn_profile_target     = ["10.0.0.0/32", "11.0.0.0/32", "12.0.0.0/32", 
 ##############################################
 ## EMPTY / INVALID INPUT
 ##############################################
-# aviatrix_vpn_profile_user_list  = [] # empty
+# aviatrix_vpn_profile_user_list  = [] # empty (VALID)
 # aviatrix_vpn_profile_user_list  = [""] # incorrect format. will crash
 #
 # aviatrix_vpn_profile_action     = ["",""] # can be referred to with [0] for allow, [1] for deny in vpn_user_profile.tf
