@@ -1,6 +1,6 @@
 ## initial creation
 
+## can specify release version number to upgrade to. "latest" will upgrade to latest release
 resource "aviatrix_version" "test_version" {
-  target_version = "4.1" # (OPTIONAL). if unspecified, default = upgrade to latest release
-  # version = "4.1" # (COMPUTED) current version of the controller
+  target_version = "latest" # (OPTIONAL). if unspecified, controller will not be upgraded;
 }

@@ -16,6 +16,8 @@ aviatrix_controller_password = "password"
 # aviatrix_cloud_type_aws = 1
 # aviatrix_gateway_name = "testtransitGW1"
 # # aviatrix_gateway_name = "updatedGatewayName" # use for Update test case
+# aviatrix_enable_nat = "yes"
+# # aviatrix_enable_nat = "no" # uncomment to use for Update test case
 #
 # aws_vpc_id = "vpc-abc123" # make sure this is the transitVPC; see specifications in the docs
 # # aws_vpc_id = "vpc-def456" # input another valid vpc; uncomment for Update test case
@@ -47,6 +49,7 @@ aviatrix_cloud_account_name = ""
 # aviatrix_cloud_account_name = "as;dlfkj" # nonexistent account name
 aviatrix_cloud_type_aws = 3 # 1 is for AWS. We only currently support 1
 aviatrix_gateway_name = "" # empty gw name
+aviatrix_enable_nat = "notYesorNo" # invalid; blank should work because optional
 
 aws_vpc_id = "" # empty
 # aws_vpc_id = "vpc-123abc" # invalid vpc id

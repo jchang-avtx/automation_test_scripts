@@ -12,3 +12,6 @@ variable "aws_instance" {}
 variable "aws_vpc_public_cidr" {}
 
 variable "aviatrix_single_az_ha" {} # comment out if testing Additional#1 or disabling single_az_ha
+variable "aws_gateway_tag_list" {
+  type = "list"
+}

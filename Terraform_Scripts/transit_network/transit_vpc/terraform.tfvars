@@ -8,6 +8,7 @@ aviatrix_controller_password = "password"
 aviatrix_cloud_account_name = "PrimaryAccessAccount"
 aviatrix_cloud_type_aws = 1
 aviatrix_gateway_name = "testtransitGW1"
+aviatrix_enable_nat = "yes"
 
 aws_vpc_id = "vpc-abc123" # make sure this is the transitVPC id; see specifications in the docs
 aws_region = "us-east-1"

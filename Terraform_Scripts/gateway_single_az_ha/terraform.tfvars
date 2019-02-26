@@ -20,7 +20,8 @@ aviatrix_cloud_account_name  = "AccessAccountName"
          aws_vpc_public_cidr = "10.0.0.0/24"
 
        aviatrix_single_az_ha = "enabled" # comment out to test disabled; default is off; or testing Additional#1
-
+        aws_gateway_tag_list = ["k1:v1", "k2:v2"]
+        
 ##############################################
 ## EMPTY/ INVALID INPUT
 ##############################################

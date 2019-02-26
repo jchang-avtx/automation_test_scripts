@@ -1,5 +1,10 @@
+## Manages creation and management of Aviatrix Firewall Tags
+
+## Additional test cases:
+## - empty input for cidr_list->cidr_tag_name
+
 resource "aviatrix_firewall_tag" "myown_tag" {
-  firewall_tag = "edsel-tag"
+  firewall_tag = "fw-tag-name"
   cidr_list = [
             {
               cidr_tag_name = "tag1"
@@ -35,4 +40,3 @@ resource "aviatrix_firewall_tag" "myown_tag" {
             }
           ]
 }
-
