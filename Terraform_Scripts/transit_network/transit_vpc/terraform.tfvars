@@ -19,5 +19,5 @@ aws_vpc_public_cidr = "123.0.0.0/24"
 aviatrix_ha_subnet = "123.0.0.0/24" # (optional) HA subnet. Setting to empty/unset will disable HA. Setting to valid subnet will create an HA gateway in the subnet
 aviatrix_ha_gw_size = "t2.micro" # (optional) HA gw size. Mandatory if HA is enabled (ex. "t2.micro")
 
-tgw_enable_hybrid = true # (optional) sign of readiness for TGW connection (ex. false)
+tgw_enable_hybrid = true # (optional) enable to prep for TGW attachment; allows you to skip Step5 in TGW orchestrator
 tgw_enable_connected_transit = "yes" # (optional) specify connected transit status

@@ -5,7 +5,7 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
   account_name = "${var.aviatrix_cloud_account_name}"
   region = "${var.aviatrix_tgw_region}"
   aws_side_as_number = "${var.aws_bgp_asn}"
-  # attached_aviatrix_transit_gateway = ["avxtransitgw", "avxtransitgw2"]
+  attached_aviatrix_transit_gateway = ["avxtransitgw", "avxtransitgw2"] # be sure to have the transitGWs have "enable_hybrid_connection" set to true; otherwise must do Step5 in TGW GUI
 
   ## By default, there will be 3 domains ("Aviatrix_Edge_Domain", "Default_Domain", and "Shared_Service_Domain")
   security_domains = [

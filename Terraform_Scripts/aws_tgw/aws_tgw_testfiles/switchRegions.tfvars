@@ -1,5 +1,5 @@
 ## Test Case: Update regions ( and consequently VPC IDs )
-## Should be invalid operation
+## should be invalid operation
 
 ## You must input valid credentials here
 aviatrix_controller_ip = "1.2.3.4"
