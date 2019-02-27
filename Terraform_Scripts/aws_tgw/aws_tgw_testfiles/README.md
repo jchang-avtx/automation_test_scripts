@@ -13,16 +13,12 @@ After creating a base TGW (using terraform.tfvars), the test files can be run in
 4. **switchAccountName.tfvars**
   - will change Aviatrix cloud account names
   - should be an invalid operation
-5. **switchVPC.tfvars**
-  - will change Aviatrix VPC IDs attached to the security domains
-  - should be an invalid operation
-6. **switchASN.tfvars**
+5. **switchASN.tfvars**
   - will change BGP Local ASN
   - should be an invalid operation
-7. **switchTGWname.tfvars**
+6. **switchTGWname.tfvars**
   - will change AWS TGW after creation
   - should be an invalid operation
-
 
 * **emptycreation.tfvars**
   * (This is used to test invalid/ empty inputs)

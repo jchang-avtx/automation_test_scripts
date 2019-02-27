@@ -1,4 +1,4 @@
-## Test Case: Update regions
+## Test Case: Update regions ( and consequently VPC IDs )
 ## Should be invalid operation
 
 ## You must input valid credentials here
@@ -21,4 +21,4 @@ connected_domains_list4 = ["Aviatrix_Edge_Domain"]
 security_domain_name_list = ["SDN1", "SDN2"]
 aws_region = ["eu-central-1", "eu-central-1", "eu-central-1", "eu-central-1"] # << EDITED REGIONS
 aviatrix_cloud_account_name_list = ["devops1", "devops1", "devops2", "devops"]
-aws_vpc_id = ["vpc-abc", "vpc-def", "vpc-123", "vpc-456"]
+aws_vpc_id = ["vpc-abc", "vpc-def", "vpc-123", "vpc-456"] # << EDIT THESE WITH NEW VALID VPC IDs FROM NEW REGION
