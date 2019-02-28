@@ -1,11 +1,28 @@
 ## Manages the AWS TGW (Orchestrator)
+# must first create an Aviatrix transitGW before attaching
+
+# Manage Aviatrix Transit Network Gateways
+resource "aviatrix_transit_vpc" "test_transit_gw" {
+  cloud_type = 1
+  account_name = "devops"
+  gw_name = "avxtransitgw"
+  vpc_id = "vpc-abcd1234" # ensure in different VPC than aws_tgw, or any other VPCs that will be connected to security domains
+  vpc_reg = "us-east-1" # ensure same region as aws_tgw
+  vpc_size = "t2.micro"
+  subnet = "10.1.0.0/24"
+  ha_subnet = "10.1.0.0/24"
+  ha_gw_size = "t2.micro"
+  tag_list = ["name:value", "name1:value1", "name2:value2"]
+  enable_hybrid_connection = true # ensure this is true, otherwise cannot attach to aws_tgw
+  connected_transit = "yes"
+}
 
 resource "aviatrix_aws_tgw" "test_aws_tgw" {
   tgw_name = "${var.aviatrix_tgw_name}"
   account_name = "${var.aviatrix_cloud_account_name}"
   region = "${var.aviatrix_tgw_region}"
   aws_side_as_number = "${var.aws_bgp_asn}"
-  attached_aviatrix_transit_gateway = ["avxtransitgw", "avxtransitgw2"] # be sure to have the transitGWs have "enable_hybrid_connection" set to true; otherwise must do Step5 in TGW GUI
+  attached_aviatrix_transit_gateway = ["avxtransitgw"] # be sure to have the transitGWs have "enable_hybrid_connection" set to true; otherwise must do Step5 in TGW GUI
 
   ## By default, there will be 3 domains ("Aviatrix_Edge_Domain", "Default_Domain", and "Shared_Service_Domain")
   security_domains = [
@@ -56,4 +73,5 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
                     ]
   },
   ]
+  depends_on = ["aviatrix_transit_vpc.test_transit_gw"]
 }

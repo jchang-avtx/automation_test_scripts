@@ -8,14 +8,17 @@ After creating a base TGW (using terraform.tfvars), the test files can be run in
 2. **switchRegions.tfvars**
   - will change all region-related parameters to test updating
   - should be an invalid operation
+  - see id = 8428
 3. **switchConnectDomain.tfvars**
   - will change connected domain to test updating
 4. **switchAccountName.tfvars**
   - will change Aviatrix cloud account names
   - should be an invalid operation
+  - see id = 8428
 5. **switchASN.tfvars**
   - will change BGP Local ASN
   - should be an invalid operation
+  - see id = 8428
 6. **switchTGWname.tfvars**
   - will change AWS TGW after creation
   - should be an invalid operation
