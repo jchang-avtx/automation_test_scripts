@@ -10,6 +10,7 @@ variable "aws_vpc_id" { type = "list" }
 variable "aws_vpc_public_cidr" { type = "list" }
 variable "aws_region" {}
 variable "aws_instance" {}
+variable "avx_peering_eip" {}
 
 variable "enable_ha" {}
 variable "enable_cluster" {}
