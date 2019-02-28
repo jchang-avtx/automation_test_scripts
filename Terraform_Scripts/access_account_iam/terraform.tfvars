@@ -11,5 +11,5 @@ access_account_name = "IAM-Access-Account"
 aws_account_number = "123456789012"
 aws_iam = "true"
 
-aws_iam_role_app = "arn:aws:iam::123456789012:role/aviatrix-role-app"
-aws_iam_role_ec2 = "arn:aws:iam::123456789012:role/aviatrix-role-ec2"
+# aws_iam_role_app = "arn:aws:iam::123456789012:role/aviatrix-role-app"
+# aws_iam_role_ec2 = "arn:aws:iam::123456789012:role/aviatrix-role-ec2"

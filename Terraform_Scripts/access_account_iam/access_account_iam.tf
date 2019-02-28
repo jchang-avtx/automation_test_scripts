@@ -7,6 +7,6 @@ resource "aviatrix_account" "access_account" {
   aws_account_number = "${var.aws_account_number}"
   aws_iam = "true"
 
-  aws_role_app = "${var.aws_iam_role_app}"
-  aws_role_ec2 = "${var.aws_iam_role_ec2}"
+  # aws_role_app = "${var.aws_iam_role_app}"
+  # aws_role_ec2 = "${var.aws_iam_role_ec2}"
 }
