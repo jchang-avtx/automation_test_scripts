@@ -12,8 +12,4 @@ resource "aviatrix_account" "access_account" {
     ## Key block
     aws_access_key     = "${var.aws_access_key}"
     aws_secret_key     = "${var.aws_secret_key}"
-
-    ## Role block : IAM-role based
-    aws_role_app       = "${var.aws_role_app_arn}"
-    aws_role_ec2       = "${var.aws_role_ec2_arn}"
 }

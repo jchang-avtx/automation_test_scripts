@@ -1,5 +1,6 @@
 # Test order 3. change protocols
 # icmp type/code is expected as 0-39/0-19 or None or "ping" in the port field
+# protocol 'all' will default to 'all' regardless of input
 
 aviatrix_controller_ip  = "1.2.3.4"
 aviatrix_account_username  = "admin"

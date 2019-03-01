@@ -1,4 +1,4 @@
-# initial creation for Aviatrix transit gateway peering between 2 TGWs
+# initial creation for Aviatrix transit gateway peering between 2 Transit GWs
 
 aviatrix_controller_ip = "1.2.3.4"
 aviatrix_controller_username = "admin"
