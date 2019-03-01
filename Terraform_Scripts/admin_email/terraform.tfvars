@@ -6,3 +6,6 @@ aviatrix_controller_password = "password"
 ##############################################
 
 avx_admin_email = "testAdminEmail@testaccount.com"
+
+## Update Test case
+# avx_admin_email = "testAdminEmail2@testaccount.com" # uncomment to test update test case; vice versa
