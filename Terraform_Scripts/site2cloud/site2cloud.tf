@@ -4,16 +4,19 @@
 resource "aviatrix_gateway" "test_gateway1" {
   cloud_type = 1
   account_name = "devops"
-  gw_name = "avtxgw1"
+  gw_name = "avxPrimaryGwName"
   vpc_id = "vpc-abcdef"
   vpc_reg = "us-west-1"
   vpc_size = "t2.micro"
   vpc_net = "10.0.0.0/24"
   tag_list = ["k1:v1","k2:v2"]
+  peering_ha_subnet = "10.0.0.0/24"
+  allocate_new_eip = "off"
+  eip = "6.6.6.6"
 }
 
 # Create Aviatrix AWS gateway to act as our on-prem / "Remote" server
-resource "aviatrix_gateway" "test_gateway1" {
+resource "aviatrix_gateway" "test_gateway2" {
   cloud_type = 1
   account_name = "devops"
   gw_name = "avtxgw2"
@@ -22,6 +25,9 @@ resource "aviatrix_gateway" "test_gateway1" {
   vpc_size = "t2.micro"
   vpc_net = "11.0.0.0/24"
   tag_list = ["k1:v1","k2:v2"]
+  peering_ha_subnet = "11.0.0.0/24"
+  allocate_new_eip = "off"
+  eip = "5.5.5.5"
 }
 
 resource "aviatrix_site2cloud" "s2c_test" {
@@ -32,9 +38,10 @@ resource "aviatrix_site2cloud" "s2c_test" {
   tunnel_type = "${var.avx_s2c_tunnel_type}" # "udp" , "tcp"
   ha_enabled = "${var.ha_enabled}" # (Optional) "true" or "false"
 
-  primary_cloud_gateway_name = "${var.avx_gw_name}"
+  primary_cloud_gateway_name = "${var.avx_gw_name}" # local gw name
   backup_gateway_name = "${var.avx_gw_name_backup}" # (Optional)
   remote_gateway_ip = "${var.remote_gw_ip}"
+  backup_remote_gateway_ip = "${var.remote_gw_ip_backup}" # (Optional)
   pre_shared_key = "${var.pre_shared_key}" # (Optional) Auto-generated if not specified
   backup_pre_shared_key = "${var.pre_shared_key_backup}" # (Optional)
   remote_subnet_cidr = "${var.remote_subnet_cidr}" # on-prem's subnet cidr
