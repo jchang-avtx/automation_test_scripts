@@ -8,9 +8,7 @@ resource "aviatrix_gateway" "test_gateway1" {
   vpc_id = "vpc-abcdef"
   vpc_reg = "us-west-1"
   vpc_size = "t2.micro"
-  vpc_net = "10.0.0.0/24"
-  # tag_list = ["k1:v1","k2:v2"]
-  # peering_ha_subnet = "10.0.0.0/24"
+  vpc_net = "10.20.1.0/24"
   allocate_new_eip = "off"
   eip = "6.6.6.6"
 }
@@ -23,9 +21,7 @@ resource "aviatrix_gateway" "test_gateway2" {
   vpc_id = "vpc-ghijkl"
   vpc_reg = "us-east-1"
   vpc_size = "t2.micro"
-  vpc_net = "11.0.0.0/24"
-  # tag_list = ["k1:v1","k2:v2"]
-  # peering_ha_subnet = "11.0.0.0/24"
+  vpc_net = "10.23.0.0/24"
   allocate_new_eip = "off"
   eip = "5.5.5.5"
 }

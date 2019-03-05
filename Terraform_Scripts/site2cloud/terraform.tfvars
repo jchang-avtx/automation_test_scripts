@@ -13,7 +13,7 @@ remote_gw_type = "generic"
 avx_s2c_tunnel_type = "udp"
 ha_enabled = "false" # (optional)
 
-avx_gw_name = "avx_gw_name"
+avx_gw_name = "avxPrimaryGwName"
 # avx_gw_name_backup = "avxPrimaryGwName" # (optional)
 remote_gw_ip = "5.5.5.5"
 # remote_gw_ip_backup = "4.4.4.4"
