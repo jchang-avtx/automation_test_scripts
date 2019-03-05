@@ -9,8 +9,8 @@ resource "aviatrix_gateway" "test_gateway1" {
   vpc_reg = "us-west-1"
   vpc_size = "t2.micro"
   vpc_net = "10.0.0.0/24"
-  tag_list = ["k1:v1","k2:v2"]
-  peering_ha_subnet = "10.0.0.0/24"
+  # tag_list = ["k1:v1","k2:v2"]
+  # peering_ha_subnet = "10.0.0.0/24"
   allocate_new_eip = "off"
   eip = "6.6.6.6"
 }
@@ -24,8 +24,8 @@ resource "aviatrix_gateway" "test_gateway2" {
   vpc_reg = "us-east-1"
   vpc_size = "t2.micro"
   vpc_net = "11.0.0.0/24"
-  tag_list = ["k1:v1","k2:v2"]
-  peering_ha_subnet = "11.0.0.0/24"
+  # tag_list = ["k1:v1","k2:v2"]
+  # peering_ha_subnet = "11.0.0.0/24"
   allocate_new_eip = "off"
   eip = "5.5.5.5"
 }
@@ -39,13 +39,13 @@ resource "aviatrix_site2cloud" "s2c_test" {
   ha_enabled = "${var.ha_enabled}" # (Optional) "true" or "false"
 
   primary_cloud_gateway_name = "${var.avx_gw_name}" # local gw name
-  backup_gateway_name = "${var.avx_gw_name_backup}" # (Optional)
+  # backup_gateway_name = "${var.avx_gw_name_backup}" # (Optional)
   remote_gateway_ip = "${var.remote_gw_ip}"
-  backup_remote_gateway_ip = "${var.remote_gw_ip_backup}" # (Optional)
+  # backup_remote_gateway_ip = "${var.remote_gw_ip_backup}" # (Optional)
   pre_shared_key = "${var.pre_shared_key}" # (Optional) Auto-generated if not specified
-  backup_pre_shared_key = "${var.pre_shared_key_backup}" # (Optional)
+  # backup_pre_shared_key = "${var.pre_shared_key_backup}" # (Optional)
   remote_subnet_cidr = "${var.remote_subnet_cidr}" # on-prem's subnet cidr
   local_subnet_cidr = "${var.local_subnet_cidr}" # (Optional)
 
-  depends_on = ["aviatrix_gateway.test_gateway1", "aviatrix_gateway.test_gateway2"]
+  depends_on = ["aviatrix_gateway.test_gateway1", "aviatrix_gateway.test_gateway2"] # must comment out if testing backup parameters
 }

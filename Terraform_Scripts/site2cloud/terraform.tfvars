@@ -14,10 +14,10 @@ avx_s2c_tunnel_type = "udp"
 ha_enabled = "false" # (optional)
 
 avx_gw_name = "avx_gw_name"
-avx_gw_name_backup = "avxPrimaryGwName" # (optional)
+# avx_gw_name_backup = "avxPrimaryGwName" # (optional)
 remote_gw_ip = "5.5.5.5"
-remote_gw_ip_backup = "4.4.4.4"
+# remote_gw_ip_backup = "4.4.4.4"
 pre_shared_key = "key1234" # (optional) Auto-generated if not specified
-pre_shared_key_backup = "backupkey5678" # (optional)
+# pre_shared_key_backup = "backupkey5678" # (optional)
 remote_subnet_cidr = "10.23.0.0/24" # on-prem's subnet cidr
 local_subnet_cidr = "10.20.1.0/24" # (optional)
