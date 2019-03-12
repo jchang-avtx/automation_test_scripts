@@ -4,17 +4,17 @@
   * This is used to test empty inputs
   * Mantis issues stated inside, if any
   * You must manually manipulate the values (comment/uncomment) to test either invalid/ empty inputs for various parameters
-* **invalidaccesskey.tfvars**
+* **invalidAccessKey.tfvars**
   * This is used to test create/ update on invalid access key
   * There are 2 test cases within; invalid formatting & invalid key
-* **invalidaccountnum.tfvars**
+* **invalidAccountNum.tfvars**
   * This is used to test create/ update on invalid account num
   * There are 2 test cases within; invalid formatting & invalid account num
-* **invalidcloud.tfvars**
+* **invalidCloud.tfvars**
   * This is used to test create/ update on invalid cloud type
 * **invalidIAM.tfvars**
   * This is used to test create/ update invalid IAM option
-* **invalidsecretkey.tfvars**
+* **invalidSecretKey.tfvars**
   * This is used to test create/ update invalid secret key
   * There are 2 test cases within; invalid formatting & invalid key
 
