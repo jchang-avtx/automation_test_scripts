@@ -1,8 +1,20 @@
 Usage
 -----------
 * **emptycreation.tfvars**
-   * (This is used to test invalid/ empty inputs)
-   * Has been modified to also test for update test cases
-   * Mantis issues stated inside, if any
-
-Please see file for more specific instructutions on variable manipulation
+  * This is used to test empty inputs
+  * Mantis issues stated inside, if any
+* **invalidaccesskey.tfvars**
+  * This is used to test create/ update on invalid access key
+  * There are 2 test cases within; invalid formatting & invalid key
+* **invalidaccountnum.tfvars**
+  * This is used to test create/ update on invalid account num
+  * There are 2 test cases within; invalid formatting & invalid account num
+* **invalidcloud.tfvars**
+  * This is used to test create/ update on invalid cloud type
+* **invalidIAM.tfvars**
+  * This is used to test create/ update invalid IAM option
+* **invalidsecretkey.tfvars**
+  * This is used to test create/ update invalid secret key
+  * There are 2 test cases within; invalid formatting & invalid key
+  
+Please see file for more specific instructions on variable manipulation
