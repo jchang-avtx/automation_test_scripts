@@ -4,6 +4,17 @@
 # note: use 0 or 1 for allow_deny for allow or deny respectively
 # comment out sections to test different cases (everything), (ICMP protocol) or ("ALL")
 
+resource "aviatrix_gateway" "test_gateway1" {
+  cloud_type = 1
+  account_name = "devops"
+  gw_name = "firewall_gw_name"
+  vpc_id = "vpc-abc123"
+  vpc_reg = "us-west-1"
+  vpc_size = "t2.micro"
+  vpc_net = "10.0.0.0/24"
+  tag_list = ["k1:v1", "k2:v2"]
+}
+
 ##############################################
 ## Case 1. Create every type of protocol rule (except ICMP)
 # Expected result: the "all" protocol should fail and yield "Port must be blank/empty"
@@ -64,6 +75,7 @@ resource "aviatrix_firewall" "test_firewall" {
       port = "${var.aviatrix_firewall_policy_port[5]}"
     }
   ]
+  depends_on = ["aviatrix_gateway.test_gateway1"]
 }
 
 ##############################################
@@ -85,6 +97,7 @@ resource "aviatrix_firewall" "test_firewall" {
 #       port = "${var.aviatrix_firewall_policy_port[0]}"
 #     }
 #   ]
+#   depends_on = ["aviatrix_gateway.test_gateway1"]
 # }
 
 ##############################################
@@ -107,4 +120,5 @@ resource "aviatrix_firewall" "test_firewall" {
 #       port = "${var.aviatrix_firewall_policy_port[5]}"
 #     }
 #   ]
+#   depends_on = ["aviatrix_gateway.test_gateway1"]
 # }
