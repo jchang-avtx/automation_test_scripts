@@ -1,8 +1,9 @@
-Usage
+# Usage
 -----------
 * **emptycreation.tfvars**
   * This is used to test empty inputs
   * Mantis issues stated inside, if any
+  * You must manually manipulate the values (comment/uncomment) to test either invalid/ empty inputs for various parameters
 * **invalidaccesskey.tfvars**
   * This is used to test create/ update on invalid access key
   * There are 2 test cases within; invalid formatting & invalid key
@@ -16,5 +17,5 @@ Usage
 * **invalidsecretkey.tfvars**
   * This is used to test create/ update invalid secret key
   * There are 2 test cases within; invalid formatting & invalid key
-  
+
 Please see file for more specific instructions on variable manipulation
