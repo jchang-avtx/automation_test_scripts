@@ -1,7 +1,7 @@
 # empty creation
 
 ## Use variations of commenting out the top and bottom portion of this file to test individual/ combinations of emptyinvalid + valid input
-## Please see Mantis: id=8064 for All port issue
+## Please see Mantis: id=8063 for ICMP port issue
 
 ## These credentials must be filled to test
 aviatrix_controller_ip          = "1.2.3.4"
@@ -21,17 +21,17 @@ aviatrix_controller_password    = "password"
 # aviatrix_firewall_policy_port             = ["69", "0:65535", "25:420", "420", "65535", "0:65535"]
 
 ##############################################
-## EMPTY / INVALID INPUT
+## EMPTY / INVALID ICMP
 ##############################################
-## (can also be used to test ALL case (Case 3) in firewall.tf)
+## (run in conjunction with ICMP case (Case 2) in firewall_icmp.tf)
 
 aviatrix_gateway_name             = ""
 aviatrix_firewall_base_policy     = ""
 aviatrix_firewall_packet_logging  = ""
 
-aviatrix_firewall_policy_protocol         = ["", "", "", "", "", ""]
-aviatrix_firewall_policy_source_ip        = ["", "", "", "", "", ""]
+aviatrix_firewall_policy_protocol         = [""]
+aviatrix_firewall_policy_source_ip        = [""]
 aviatrix_firewall_policy_log_enable       = ["", ""] # Use 0 or 1 for enabling packet logging
-aviatrix_firewall_policy_destination_ip   = ["", "", "", "", "", ""]
+aviatrix_firewall_policy_destination_ip   = [""]
 aviatrix_firewall_policy_action           = ["", ""] # Use 0 or 1 for allow or deny policy action
-aviatrix_firewall_policy_port             = ["", "", "", "", "", ""]
+aviatrix_firewall_policy_port             = [""]
