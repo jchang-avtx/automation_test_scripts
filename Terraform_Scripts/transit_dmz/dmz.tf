@@ -4,7 +4,7 @@ module "cluster0" {
   providers       = {
       aws = "aws.ca-central-1"
   }
-  account_name    = "${var.account_name}"
+  account_name    = "${var.aviatrix_account_name}"
   region          = "${var.single_region}"
   gw_size         = "${var.transit_gateway_size}"
   name_suffix     = "${var.transit_gateway_name}"
@@ -20,7 +20,7 @@ module "cluster0" {
 #  providers       = {
 #      aws = "aws.ca-central-1"
 #  }
-#  account_name    = "${var.account_name}"
+#  account_name    = "${var.aviatrix_account_name}"
 #  transit_gateway = "${var.transit_gateway_name}"
 #  spoke_gw_size   = "t2.micro"
 #  name_suffix     = "spoke1"
@@ -36,7 +36,7 @@ module "onprem" {
   providers       = {
       aws = "aws.ca-central-1"
   }
-  account_name    = "${var.account_name}"
+  account_name    = "${var.aviatrix_account_name}"
   onprem_gw_name  = "${var.onprem_gateway_name}"
   vgw_id          = "${var.vgw_id}"
   region          = "${var.single_region}"
