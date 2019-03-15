@@ -5,6 +5,7 @@ After creating a base TGW (using terraform.tfvars), the test files can be run in
 
 1. **switchSecDomain.tfvars**
   - will change Security Domains to test updating
+  - (updating a domain name is an invalid operation BUT attaching new or removing Security Domains are valid)
 2. **switchRegions.tfvars**
   - will change all region-related parameters to test updating
   - should be an invalid operation

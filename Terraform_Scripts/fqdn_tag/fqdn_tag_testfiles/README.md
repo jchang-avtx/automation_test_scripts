@@ -1,19 +1,19 @@
 Usage
 -----------
 After creating a base FQDN GW with policies to manipulate (using terraform.tfvars), the test files should be run in this order:
-1. **switchdomains.tfvars**
+1. **switchDomains.tfvars**
    * will change all domains in policy rules
-2. **switchport.tfvars**
+2. **switchPorts.tfvars**
    * will change all port numbers
 3. **switchprotocol.tfvars**
    * will change all protocols
-4. **switchmode.tfvars**
+4. **switchMode.tfvars**
    * will change from white to blacklist
-5. **switchstatus.tfvars**
+5. **switchStatus.tfvars**
    * will change status from enabled to disabled
-6. **switchgw.tfvars**
+6. **switchGW.tfvars**
    * will add gateway to gateway list
-7. **changetagname.tfvars**
+7. **changeTagName.tfvars**
    * will change name of the fqdn filter (not id)
 
 * **emptycreation.tfvars**

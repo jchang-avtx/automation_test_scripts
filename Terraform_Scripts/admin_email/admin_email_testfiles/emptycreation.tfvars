@@ -10,6 +10,3 @@ aviatrix_controller_password = "password"
 
 ## EMPTY
 avx_admin_email = ""
-
-## INVALID
-# avx_admin_email = "invalidEmail"

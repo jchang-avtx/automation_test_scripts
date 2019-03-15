@@ -9,12 +9,4 @@ aviatrix_controller_password = "password"
 ## VALID INPUT
 ##############################################
 
-# aviatrix_customer_id = "validCustomer-1234.56"
-# aviatrix_customer_id = "validCustomer-7890.12" # Input second valid customerID to test Update
-
-##############################################
-## EMPTY / INVALID INPUT
-##############################################
-
-# aviatrix_customer_id = "" # empty; cust_id req
-# aviatrix_customer_id = "user-1234.56" # invalid; cannot
+aviatrix_customer_id = "validCustomer-1234.56"
