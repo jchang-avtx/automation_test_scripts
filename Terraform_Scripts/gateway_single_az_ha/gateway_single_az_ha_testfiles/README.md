@@ -1,6 +1,6 @@
 Usage
 -----------
-After creating a base profile to manipulate (using terraform.tfvars), the following test files may be run in any order:
+After creating a base gateway to manipulate (using terraform.tfvars), the following test files may be run in any order:
 1. **invalidSingleAZHA.tfvars**
    * test invalid input for single_az_ha parameter (despite it being optional)
 

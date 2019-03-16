@@ -1,4 +1,4 @@
-# empty creation
+## empty creation
 
 ## Use variations of commenting out the top and bottom portion of this file to test individual/ combinations of empty/invalid + valid input
 ## There will be bugs with corrupt Terraform state;
@@ -28,19 +28,6 @@ aviatrix_cloud_account_name  = "PrimaryAccessAccount"
      aviatrix_cloud_type_aws = 1
 
 ##############################################
-## VALID INPUT
-##############################################
-       # aviatrix_gateway_name = "updatedGWName" # uncomment to test Additional#3
-
-## VPN gateway parameters (sample#1 Split_Tunnel enabled)
-         # aviatrix_vpn_access = "yes"
-         # aviatrix_vpn_access = "no" # turn off vpn access to check other vpn features are still working (they shouldnt)
-           # aviatrix_vpn_saml = "yes"
-           # aviatrix_vpn_cidr = "192.168.43.0/24"
-            # aviatrix_vpn_elb = "yes"
-   # aviatrix_vpn_split_tunnel = "yes"
-
-##############################################
 ## INVALID INPUT
 ##############################################
         aviatrix_vpn_access = "" # for empty input
@@ -48,5 +35,4 @@ aviatrix_cloud_account_name  = "PrimaryAccessAccount"
           aviatrix_vpn_saml = "invalid input" # invalid
           aviatrix_vpn_cidr = "" # empty/ invalid
            aviatrix_vpn_elb = ""
-           # aviatrix_vpn_elb = "no"
   aviatrix_vpn_split_tunnel = "no"

@@ -1,5 +1,5 @@
-## initial creation
-## Create Aviatrix gateway in AWS public cloud
+## Test case: Create empty ELB_name with split
+## Run this in conjunction with emptyELBwSplit.tfvars
 
 resource "aviatrix_gateway" "aws_gateway" {
      cloud_type = "${var.aviatrix_cloud_type_aws}"
@@ -16,7 +16,7 @@ resource "aviatrix_gateway" "aws_gateway" {
        vpn_cidr = "${var.aviatrix_vpn_cidr}"
    split_tunnel = "${var.aviatrix_vpn_split_tunnel}"
      enable_elb = "${var.aviatrix_vpn_elb}"
-       elb_name = "test-elb-name"
+       elb_name = "" # empty elb name here :D
 }
 
 ## enable both if split_tunnel is configured

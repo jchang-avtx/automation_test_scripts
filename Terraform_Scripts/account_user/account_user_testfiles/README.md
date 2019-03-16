@@ -5,4 +5,4 @@ Usage
    * Has been modified to also test for update test cases
    * Mantis issues stated inside, if any
 
-Please see file for more specific instructutions on variable manipulation
+Please see file for more specific instructions on variable manipulation
