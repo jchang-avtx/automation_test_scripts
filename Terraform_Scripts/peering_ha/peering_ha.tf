@@ -15,10 +15,10 @@ peering_ha_subnet = "${element(var.aws_vpc_public_cidr,count.index)}"
 }
 
 # Create encrypteed peering between two aviatrix gateway
-resource "aviatrix_tunnel" "PEERING"{
+resource "aviatrix_tunnel" "peeringTunnel"{
            vpc_name1 = "${var.gateway_names[0]}"
            vpc_name2 = "${var.gateway_names[1]}"
-           enable_ha = "${var.enable_ha}"
+           enable_ha = "${var.enable_ha}" # (optional)
           depends_on = ["aviatrix_gateway.GW"]
           cluster = "${var.enable_cluster}" # (optional) whether to enable cluster peering
  # over_aws_peering = "no" # (deprecated) Use aws_peer resource instead
