@@ -7,7 +7,7 @@
 resource "aviatrix_gateway" "test_gateway1" {
   cloud_type = 1
   account_name = "devops"
-  gw_name = "firewall_gw_name"
+  gw_name = "firewallGW"
   vpc_id = "vpc-abc123"
   vpc_reg = "us-west-1"
   vpc_size = "t2.micro"
