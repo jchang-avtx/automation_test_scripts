@@ -32,7 +32,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   connection_type = "${var.avx_s2c_conn_type}"
   remote_gateway_type = "${var.remote_gw_type}" # "generic", "avx", "aws", "azure", "sonicwall"
   tunnel_type = "${var.avx_s2c_tunnel_type}" # "udp" , "tcp"
-  ha_enabled = "${var.ha_enabled}" # (Optional) "true" or "false"
+  ha_enabled = "${var.ha_enabled}" # (Optional) "yes" or "no"
 
   primary_cloud_gateway_name = "${var.avx_gw_name}" # local gw name
   # backup_gateway_name = "${var.avx_gw_name_backup}" # (Optional)

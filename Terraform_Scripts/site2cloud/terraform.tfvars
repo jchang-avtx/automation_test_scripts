@@ -11,7 +11,7 @@ avx_s2c_conn_name = "s2c_test_conn_name"
 avx_s2c_conn_type = "unmapped"
 remote_gw_type = "generic"
 avx_s2c_tunnel_type = "udp"
-ha_enabled = "false" # (optional)
+ha_enabled = "no" # (optional)
 
 avx_gw_name = "avxPrimaryGwName"
 # avx_gw_name_backup = "avxPrimaryGwName" # (optional)
