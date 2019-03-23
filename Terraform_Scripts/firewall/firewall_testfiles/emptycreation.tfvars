@@ -9,7 +9,7 @@ aviatrix_controller_username    = "admin"
 aviatrix_controller_password    = "password"
 
 ## VALID INPUTS
-# aviatrix_gateway_name             = "firewall_gw_name"
+# aviatrix_gateway_name             = "firewallGW"
 # aviatrix_firewall_base_policy     = "allow-all"
 # aviatrix_firewall_packet_logging  = "on"
 #

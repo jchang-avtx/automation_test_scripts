@@ -15,6 +15,8 @@ After creating a base FQDN GW with policies to manipulate (using terraform.tfvar
    * will add gateway to gateway list
 7. **changeTagName.tfvars**
    * will change name of the fqdn filter (not id)
+   * (should fail)
+
 
 * **emptycreation.tfvars**
    * (This is used to test invalid/ empty inputs; there are bugs; see id=8002)

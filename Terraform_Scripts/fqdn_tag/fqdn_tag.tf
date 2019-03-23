@@ -13,6 +13,17 @@ resource "aviatrix_gateway" "FQDN-GW" {
   tag_list = ["k1:v1","k2:v2"]
 }
 
+resource "aviatrix_gateway" "FirewallGW" {
+  cloud_type = 1
+  account_name = "devops"
+  gw_name = "FirewallGW"
+  vpc_id = "vpc-ghijk"
+  vpc_reg = "us-east-1"
+  vpc_size = "t2.micro"
+  vpc_net = "11.0.0.0/24"
+  tag_list = ["k1:v1", "k2:v2"]
+}
+
 resource "aviatrix_fqdn" "TAG1" {
       fqdn_tag = "${var.aviatrix_fqdn_tag}"
    fqdn_status = "${var.aviatrix_fqdn_status}"
@@ -40,5 +51,5 @@ resource "aviatrix_fqdn" "TAG1" {
                      port   = "${var.aviatrix_fqdn_port[3]}"
                    }
                  ]
-  depends_on = ["aviatrix_gateway.FQDN-GW"]
+  depends_on = ["aviatrix_gateway.FQDN-GW", "aviatrix_gateway.FirewallGW"]
 }

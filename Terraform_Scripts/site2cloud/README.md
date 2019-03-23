@@ -1,6 +1,6 @@
 # Description
 -----------
-##### Terraform configuration files to create Site2Cloud resource and manage Aviatrix Site2Cloud connection
+### Terraform configuration files to create Site2Cloud resource and manage Aviatrix Site2Cloud connection
 
 * In order to test backup parameters:
   * must comment out the **'depends_on'** parameter in the S2C resource
