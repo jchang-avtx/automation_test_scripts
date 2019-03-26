@@ -72,3 +72,6 @@ tgw_enable_hybrid = "notaBoolean" # invalid: not a boolean input
 # tgw_enable_hybrid = variable # invalid: not a boolean, is a variable type;; correctly fails
 tgw_enable_connected_transit = "" # empty
 # tgw_enable_connected_transit = "notYesorNo" # invalid
+
+# tag_list = ["k1:v1", "k2:v2"] # uncomment to use to test tag_list
+# tag_list = ["k4:v4", "k5:v5"] # uncomment to use for Update test case

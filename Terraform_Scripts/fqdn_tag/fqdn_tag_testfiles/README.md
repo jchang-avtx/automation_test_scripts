@@ -5,7 +5,7 @@ After creating a base FQDN GW with policies to manipulate (using terraform.tfvar
    * will change all domains in policy rules
 2. **switchPorts.tfvars**
    * will change all port numbers
-3. **switchprotocol.tfvars**
+3. **switchProtocols.tfvars**
    * will change all protocols
 4. **switchMode.tfvars**
    * will change from white to blacklist
