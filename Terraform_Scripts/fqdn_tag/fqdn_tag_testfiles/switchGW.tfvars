@@ -8,8 +8,8 @@ aviatrix_account_password  = "password"
 
    aviatrix_fqdn_mode   = "black"
  aviatrix_fqdn_status   = "disabled"
-    aviatrix_fqdn_tag   = "user-fqdn-TAG3.4"
-aviatrix_gateway_list   = ["FQDN-GW", "FirewallGW"]
+    aviatrix_fqdn_tag   = "user-fqdn-TAG"
+aviatrix_gateway_list   = ["FQDN-GW", "FQDN-GW2"]
 
 aviatrix_fqdn_domain          = ["reddit.com", "amazon.com", "instagram.com", "nytimes.com"]
 aviatrix_fqdn_protocol        = ["tcp", "udp", "icmp", "all"]

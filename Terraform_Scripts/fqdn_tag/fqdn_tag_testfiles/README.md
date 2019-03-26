@@ -15,7 +15,7 @@ After creating a base FQDN GW with policies to manipulate (using terraform.tfvar
    * will add gateway to gateway list
 7. **changeTagName.tfvars**
    * will change name of the fqdn filter (not id)
-   * (should fail)
+   * (will only fail if delta in state file is not rectified)
 
 
 * **emptycreation.tfvars**

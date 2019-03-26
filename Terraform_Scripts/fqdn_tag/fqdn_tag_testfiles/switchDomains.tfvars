@@ -7,7 +7,7 @@ aviatrix_account_password  = "password"
 
    aviatrix_fqdn_mode   = "white"
  aviatrix_fqdn_status   = "enabled"
-    aviatrix_fqdn_tag   = "user-fqdn-TAG3.4"
+    aviatrix_fqdn_tag   = "user-fqdn-TAG"
 aviatrix_gateway_list   = ["FQDN-GW"]
 
 aviatrix_fqdn_domain          = ["reddit.com", "amazon.com", "instagram.com", "nytimes.com"]
