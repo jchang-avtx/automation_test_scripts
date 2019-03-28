@@ -16,6 +16,7 @@ After creating a base FQDN GW with policies to manipulate (using terraform.tfvar
 7. **changeTagName.tfvars**
    * will change name of the fqdn filter (not id)
    * (will only fail if delta in state file is not rectified)
+   * not supported
 
 
 * **emptycreation.tfvars**
