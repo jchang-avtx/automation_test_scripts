@@ -73,5 +73,6 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
                     ]
   },
   ]
+  manage_vpc_attachment = true # default is true; if set to false, must use aws_tgw_vpc_attachment resource, and must comment out 'attached_vpc' sections 
   depends_on = ["aviatrix_transit_vpc.test_transit_gw"]
 }

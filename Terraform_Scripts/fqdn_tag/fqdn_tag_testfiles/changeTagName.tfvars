@@ -11,12 +11,13 @@ aviatrix_account_password  = "password"
 
    aviatrix_fqdn_mode   = "black"
  aviatrix_fqdn_status   = "disabled"
-    aviatrix_fqdn_tag   = "changedName-fqdn-TAG3.4"
-aviatrix_gateway_list   = ["FQDN-GW", "FirewallGW"]
+    aviatrix_fqdn_tag   = "changedName-fqdn-TAG"
+aviatrix_gateway_list   = ["FQDN-GW", "FQDN-GW2"]
 
 aviatrix_fqdn_domain          = ["reddit.com", "amazon.com", "instagram.com", "nytimes.com"]
 aviatrix_fqdn_protocol        = ["tcp", "udp", "icmp", "all"]
-aviatrix_fqdn_port            = ["444", "420", "", "43"]
+aviatrix_fqdn_port            = ["444", "420", "ping", "all"]
 
 # Note that terraform will detect in controller port "" as "ping", and whatever port for protocol "all" as "all"
 # Nothing will actually change in behavior
+# When changing tag name, must make sure state is rectified, otherwise, will detect as delta and as an update-in-place to a nonexistent "changedName" tag
