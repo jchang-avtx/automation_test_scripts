@@ -1,4 +1,4 @@
-## Test case 4: Update transit_vpc's enable_hybrid_connection (disable)
+## Test case 2: Update transit_vpc's enable_hybrid_connection (disable)
 
 aviatrix_controller_ip = "1.2.3.4"
 aviatrix_controller_username = "admin"

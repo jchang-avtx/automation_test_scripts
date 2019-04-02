@@ -1,4 +1,4 @@
-## Test case 3: Update transit_vpc's connected_transit status
+## Test case 1: Update transit_vpc's connected_transit status
 
 aviatrix_controller_ip = "1.2.3.4"
 aviatrix_controller_username = "admin"

@@ -1,6 +1,6 @@
 Usage
 -----------
-After creating a base Transit GW (using terraform.tfvars), the test files should be run in this order:
+After creating a base Spoke GW (using terraform.tfvars), the test files should be run in this order:
 1. **updateTransitGW.tfvars**
   * will change the spoke_vpc to attach to another transit_vpc resource
 2. **updateGWSize.tfvars**
