@@ -1,4 +1,4 @@
-## Test case 2: Update transit_vpc's HA_GW size
+## Test case 4: Update transit_vpc's HA_GW size
 
 aviatrix_controller_ip = "1.2.3.4"
 aviatrix_controller_username = "admin"

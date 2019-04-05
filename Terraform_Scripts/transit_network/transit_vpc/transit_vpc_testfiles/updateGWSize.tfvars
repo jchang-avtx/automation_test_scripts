@@ -1,4 +1,4 @@
-## Test case 1: Update transit_vpc size
+## Test case 3: Update transit_vpc size
 
 aviatrix_controller_ip = "1.2.3.4"
 aviatrix_controller_username = "admin"
