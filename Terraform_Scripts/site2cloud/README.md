@@ -12,3 +12,6 @@
 
 * **emptycreation.tfvars**
   * Use this file to test invalid/empty cases
+
+* test cases:
+  * S2C must work with more than 2 connections/ 3 gateways
