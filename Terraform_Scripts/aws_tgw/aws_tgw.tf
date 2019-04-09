@@ -1,6 +1,8 @@
 ## Manages the AWS TGW (Orchestrator)
 # must first create an Aviatrix transitGW before attaching
 
+## Test case: Updating from provider version without "manage_vpc_attachment", and hitting apply should not detect diff
+
 # Manage Aviatrix Transit Network Gateways
 resource "aviatrix_transit_vpc" "test_transit_gw" {
   cloud_type = 1
@@ -73,6 +75,6 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
                     ]
   },
   ]
-  manage_vpc_attachment = true # default is true; if set to false, must use aws_tgw_vpc_attachment resource, and must comment out 'attached_vpc' sections 
+  manage_vpc_attachment = true # default is true; if set to false, must use aws_tgw_vpc_attachment resource, and must comment out 'attached_vpc' sections
   depends_on = ["aviatrix_transit_vpc.test_transit_gw"]
 }
