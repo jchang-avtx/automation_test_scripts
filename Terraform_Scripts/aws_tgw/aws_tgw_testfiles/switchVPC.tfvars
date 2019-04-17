@@ -1,4 +1,4 @@
-## Test case 1: Update Connected Doamins
+## Test case 2: Update Connected Doamins
 
 ## You must input valid credentials here
 aviatrix_controller_ip = "1.2.3.4"
@@ -20,4 +20,4 @@ connected_domains_list4 = ["Aviatrix_Edge_Domain", "Default_Domain"] # << EDITED
 security_domain_name_list = ["SDN1", "SDN2"]
 aws_region = ["us-east-1", "us-east-1", "us-east-1", "us-east-1"]
 aviatrix_cloud_account_name_list = ["devops1", "devops1", "devops2", "devops"]
-aws_vpc_id = ["vpc-abc", "vpc-def", "vpc-123", "vpc-456"]
+aws_vpc_id = ["vpc-abc", "vpc-123", "vpc-123", "vpc-456"] # << CHANGED TO VPC-def TO A VALID VPC-123 IN SAME REGION AND ACCOUNT
