@@ -56,23 +56,18 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
                       vpc_account_name = "${var.aviatrix_cloud_account_name_list[1]}"
                       vpc_id = "${var.aws_vpc_id[1]}"
                     },
-                    {
-                      vpc_region = "${var.aws_region[2]}"
-                      vpc_account_name = "${var.aviatrix_cloud_account_name_list[2]}"
-                      vpc_id = "${var.aws_vpc_id[2]}"
-                    },
                     ]
   },
   {
     security_domain_name = "${var.security_domain_name_list[1]}"
     connected_domains = []
-    attached_vpc = [
-                    {
-                      vpc_region = "${var.aws_region[3]}"
-                      vpc_account_name = "${var.aviatrix_cloud_account_name_list[3]}"
-                      vpc_id = "${var.aws_vpc_id[3]}"
-                    },
-                    ]
+    # attached_vpc = [
+    #                 {
+    #                   vpc_region = "${var.aws_region[3]}"
+    #                   vpc_account_name = "${var.aviatrix_cloud_account_name_list[3]}"
+    #                   vpc_id = "${var.aws_vpc_id[3]}"
+    #                 },
+    #                 ]
   },
   ]
   manage_vpc_attachment = true # default is true; if set to false, must use aws_tgw_vpc_attachment resource, and must comment out 'attached_vpc' sections
