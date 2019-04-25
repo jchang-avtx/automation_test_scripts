@@ -1,4 +1,4 @@
-# Test order 4. change mode
+# Test order 7. change source IPs
 # icmp type/code is expected as 0-39/0-19 or None or "ping" in the port field
 
 aviatrix_controller_ip  = "1.2.3.4"
@@ -7,11 +7,11 @@ aviatrix_account_password  = "password"
 ##############################################
 
    aviatrix_fqdn_mode   = "black"
- aviatrix_fqdn_status   = "enabled"
+ aviatrix_fqdn_status   = "disabled"
     aviatrix_fqdn_tag   = "user-fqdn-TAG"
-aviatrix_gateway_list   = ["FQDN-GW", "FQDN-GW2"]
+aviatrix_gateway_list   = ["FQDN-GW2", "FQDN-GW"]
 
-aviatrix_fqdn_source_ip_list  = ["172.31.0.0/16", "172.31.0.0/20"]
+aviatrix_fqdn_source_ip_list  = ["173.31.0.0/16", "174.31.0.0/20"] ## updated source IP list
 aviatrix_fqdn_domain          = ["reddit.com", "amazon.com", "instagram.com", "nytimes.com"]
 aviatrix_fqdn_protocol        = ["tcp", "udp", "icmp", "all"]
 aviatrix_fqdn_port            = ["444", "420", "ping", "all"]
