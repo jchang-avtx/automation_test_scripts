@@ -1,7 +1,7 @@
 # Create Aviatrix Controller Config
 resource "aviatrix_controller_config" "test_controller_config" {
-  http_access                = true # default: false
-  fqdn_exception_rule        = false # default: true
-  sg_management_account_name = "username" # optional cloud account name of user
-  security_group_management  = true # default: false; use to manage Controller instance's inbound rules from gws 
+  http_access                = "${var.toggle_http_access}" # default: false
+  fqdn_exception_rule        = "${var.toggle_fqdn_exception}" # default: true
+  sg_management_account_name = "${var.sg_account_name}" # optional cloud account name of user
+  security_group_management  = "${var.toggle_sg_management}" # default: false ; use to manage Controller instance's inbound rules from gws
 }
