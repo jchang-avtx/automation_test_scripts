@@ -9,11 +9,12 @@ aviatrix_account_password  = "password"
    aviatrix_fqdn_mode   = "black"
  aviatrix_fqdn_status   = "disabled"
     aviatrix_fqdn_tag   = "user-fqdn-TAG"
-aviatrix_gateway_list   = ["FQDN-GW", "FQDN-GW2"]
+aviatrix_gateway_list   = ["FQDN-GW2", "FQDN-GW"]
 
+aviatrix_fqdn_source_ip_list  = ["172.31.0.0/16", "172.31.0.0/20"]
 aviatrix_fqdn_domain          = ["reddit.com", "amazon.com", "instagram.com", "nytimes.com"]
 aviatrix_fqdn_protocol        = ["tcp", "udp", "icmp", "all"]
-aviatrix_fqdn_port            = ["444", "420", "", "43"]
+aviatrix_fqdn_port            = ["444", "420", "ping", "all"]
 
 # Note that terraform will detect in controller port "" as "ping", and whatever port for protocol "all" as "all"
 # Nothing will actually change in behavior

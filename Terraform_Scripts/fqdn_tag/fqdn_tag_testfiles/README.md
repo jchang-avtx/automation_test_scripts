@@ -7,17 +7,20 @@ After creating a base FQDN GW with policies to manipulate (using terraform.tfvar
    * will change all port numbers
 3. **switchProtocols.tfvars**
    * will change all protocols
+   * note: port for "icmp" and "all" protocols should be "ping" and "all", respectively
+    * this applies to subsequent test cases
 4. **switchMode.tfvars**
    * will change from white to blacklist
 5. **switchStatus.tfvars**
    * will change status from enabled to disabled
 6. **switchGW.tfvars**
    * will add gateway to gateway list
-7. **changeTagName.tfvars**
+7. **changetagname.tfvars**
    * will change name of the fqdn filter (not id)
    * (will only fail if delta in state file is not rectified)
    * not supported
-
+8. **switchSourceIP.tfvars**
+   * will change the source IPs being filtered
 
 * **emptycreation.tfvars**
    * (This is used to test invalid/ empty inputs; there are bugs; see id=8002)
