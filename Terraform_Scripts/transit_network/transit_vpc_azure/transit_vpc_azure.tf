@@ -10,7 +10,7 @@ resource "aviatrix_transit_vpc" "azure_transit_gw" {
   subnet = "10.2.0.0/24"
   ha_subnet = "10.2.0.0/24"
   ha_gw_size = "${var.arm_ha_gw_size}"
-  enable_nat = "no"
+  enable_nat = "${var.toggle_snat}"
   enable_hybrid_connection = "${var.tgw_enable_hybrid}" # 'true' not supported in Azure
   # tag_list = ["k1:v1"] # not supported in Azure
   connected_transit = "${var.tgw_enable_connected_transit}" # connected_transit update works
