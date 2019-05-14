@@ -3,11 +3,6 @@
 # There are various test cases testing ICMP protocol in isolation
 # Please see Mantis: id=8063
 
-## Make sure the controller credentials are filled
-aviatrix_controller_ip          = "1.2.3.4"
-aviatrix_controller_username    = "admin"
-aviatrix_controller_password    = "password"
-
 aviatrix_gateway_name             = "firewallGW"
 aviatrix_firewall_base_policy     = "allow-all"
 aviatrix_firewall_packet_logging  = "on"

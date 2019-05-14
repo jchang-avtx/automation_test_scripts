@@ -7,11 +7,6 @@
 ## - empty/ invalid gateway with valid/ invalid/ empty domain_names
 ## - protocol icmp with non-blank port / non 0:65535
 
-## These credentials must be filled to test
-aviatrix_controller_ip  = "1.2.3.4"
-aviatrix_account_username  = "admin"
-aviatrix_account_password  = "password"
-
 ##############################################
 ## VALID INPUTS
 ##############################################

@@ -1,8 +1,5 @@
 ## Test case 3: Update transit_vpc size
 
-aviatrix_controller_ip = "1.2.3.4"
-aviatrix_controller_username = "admin"
-aviatrix_controller_password = "password"
 ##############################################
 
 aviatrix_cloud_account_name = "PrimaryAccessAccount"

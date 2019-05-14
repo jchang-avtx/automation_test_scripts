@@ -1,7 +1,3 @@
-variable "aviatrix_controller_ip" {}
-variable "aviatrix_controller_username" {}
-variable "aviatrix_controller_password" {}
-
 variable "aviatrix_vpn_profile_name" {}
 variable "aviatrix_vpn_profile_base_rule" {}
 

@@ -1,9 +1,5 @@
 # Test order 3: shifting all protocols on policy; maintain swapped actions, ports
 
-aviatrix_controller_ip          = "1.2.3.4"
-aviatrix_controller_username    = "admin"
-aviatrix_controller_password    = "password"
-
 aviatrix_vpn_profile_name       = "profileName1"
 aviatrix_vpn_profile_base_rule  = "allow_all"
 aviatrix_vpn_profile_user_list  = ["user1"]

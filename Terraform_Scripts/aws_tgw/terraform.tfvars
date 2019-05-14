@@ -1,9 +1,6 @@
 # initial creation for Aviatrix TGW
 # used Aviatrix Controller's Create a VPC tool to make VPCs before testing that
 
-aviatrix_controller_ip = "1.2.3.4"
-aviatrix_controller_username = "admin"
-aviatrix_controller_password = "password"
 ##############################################
 
 aviatrix_tgw_name = "testAWSTGW"

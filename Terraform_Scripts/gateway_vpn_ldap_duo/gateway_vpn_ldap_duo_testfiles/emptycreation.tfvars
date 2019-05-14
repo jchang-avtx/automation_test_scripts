@@ -3,9 +3,6 @@
 ## Use variations of commenting out the top and bottom portion of this file to test individual/ combinations of empty/invalid + valid input
 ## Please see Mantis id = 8142
 
-aviatrix_controller_ip          = "1.2.3.4"
-aviatrix_controller_username    = "admin"
-aviatrix_controller_password    = "password"
 ##############################################
 ## Only modify the account-specific ones such as aws_region, vpc or aviatrix_account_name
                        aws_region = "us-east-1"

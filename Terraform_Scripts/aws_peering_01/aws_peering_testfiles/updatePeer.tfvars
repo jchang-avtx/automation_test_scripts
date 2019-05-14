@@ -2,9 +2,6 @@
 ## Only run this AFTER initial creation using the original 'terraform.tfvars'
 ## Will fail. cannot update existing connection
 
-aviatrix_controller_ip = "1.2.3.4"
-aviatrix_controller_username = "admin"
-aviatrix_controller_password = "password"
 ##############################################
 ## Please input valid other vpc (and/or account names if necessary) to 'establish new' connection
 avx_account_name_1 = "AviatrixAccount3"

@@ -12,10 +12,6 @@
 ## this will somehow cause Terraform to dissociate this profile as one it is managing and will no longer be able to be destroyed
 ## The GUI will also still be unchanged, unlike every other change that can be made to other parameters
 
-aviatrix_controller_ip          = "1.2.3.4"
-aviatrix_controller_username    = "admin"
-aviatrix_controller_password    = "password"
-
 aviatrix_vpn_profile_name       = "profileName2"
 aviatrix_vpn_profile_base_rule  = "allow_all"
 aviatrix_vpn_profile_user_list  = []

@@ -1,7 +1,3 @@
-aviatrix_controller_ip          = "1.2.3.4"
-aviatrix_controller_username    = "admin"
-aviatrix_controller_password    = "password"
-##############################################
 
                        aws_region = "us-east-1"
                        aws_vpc_id = "vpc-07eb417901c6b8382"

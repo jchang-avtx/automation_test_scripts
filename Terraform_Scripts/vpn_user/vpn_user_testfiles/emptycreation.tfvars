@@ -3,11 +3,6 @@
 ## Use variations of commenting out the top and bottom portion of this file to test individual/ combinations of empty/invalid + valid input
 ## There will be bugs with corrupt Terraform state; Please see Mantis: id=7985
 
-## These credentials must be filled to test
-aviatrix_controller_ip          = "1.2.3.4"
-aviatrix_controller_username    = "admin"
-aviatrix_controller_password    = "password"
-
 ################################################
 ## VALID INPUT
 ################################################

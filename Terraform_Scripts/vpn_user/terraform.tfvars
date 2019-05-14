@@ -1,9 +1,5 @@
 # initial creation
 
-aviatrix_controller_ip          = "1.2.3.4"
-aviatrix_controller_username    = "admin"
-aviatrix_controller_password    = "password"
-
 aws_vpc_id                      = "vpc-abc123" # VPC ID of the Avx VPN GW
 aviatrix_gateway_name           = "gw1" # this is the Avx VPN GW, or the ELB ID if elb_enabled
 aviatrix_vpn_user_name          = {
