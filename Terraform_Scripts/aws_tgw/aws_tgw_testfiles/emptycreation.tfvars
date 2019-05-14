@@ -4,10 +4,6 @@
 ## Please see Mantis: id=8428 for issues with refresh/ update
 ## This file is also used to test Update/ refresh test case;; See sections for Valid Input
 
-## You must input valid credentials here
-aviatrix_controller_ip = "1.2.3.4"
-aviatrix_controller_username = "admin"
-aviatrix_controller_password = "password"
 ##############################################
 ## VALID INPUT
 ##############################################

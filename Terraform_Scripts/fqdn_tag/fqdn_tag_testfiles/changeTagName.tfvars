@@ -4,9 +4,6 @@
 ## Cannot update tag name? Is it bug or intended behavior. Detects as an update-in-place but when apply,
 ## ends up being "newname does not exist" as if it wants to target changes to the new name instead?
 
-aviatrix_controller_ip  = "1.2.3.4"
-aviatrix_account_username  = "admin"
-aviatrix_account_password  = "password"
 ##############################################
 
    aviatrix_fqdn_mode   = "black"

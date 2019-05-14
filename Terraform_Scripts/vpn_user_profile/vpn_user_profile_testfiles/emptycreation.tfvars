@@ -9,11 +9,6 @@
 ## - ports for protocol 'all' or 'icmp' must be "0:65535"
 ## - all empty profile rules values should still properly create an empty vpn profile (id=7981)
 
-## These credentials must be filled to test
-aviatrix_controller_ip          = "1.2.3.4"
-aviatrix_controller_username    = "admin"
-aviatrix_controller_password    = "password"
-
 ##############################################
 ## VALID INPUTS
 ##############################################

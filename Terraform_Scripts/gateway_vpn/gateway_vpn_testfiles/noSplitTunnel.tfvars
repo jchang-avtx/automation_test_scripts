@@ -2,9 +2,6 @@
 ## if split_tunnel is NOT configured, ONLY enable ELB
 ##     enable_elb = "${var.aviatrix_vpn_elb}"
 
-aviatrix_controller_ip          = "1.2.3.4"
-aviatrix_controller_username    = "admin"
-aviatrix_controller_password    = "password"
 ##############################################
 
 aviatrix_cloud_account_name  = "PrimaryAccessAccount"

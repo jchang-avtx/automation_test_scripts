@@ -2,9 +2,6 @@
 ## This file is also used to test Update/ refresh test case;; See sections for Valid Input
 ## This file is also used to test invalid/ empty input test case;; See section for Invalid Input
 
-aviatrix_controller_ip = "1.2.3.4"
-aviatrix_controller_username = "admin"
-aviatrix_controller_password = "password"
 ##############################################
 ## VALID INPUT
 ##############################################

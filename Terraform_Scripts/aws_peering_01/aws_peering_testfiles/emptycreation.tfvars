@@ -4,9 +4,6 @@
 ## Please see Mantis: id=8537 for issues with
 ## This file can be used to test Update empty input; spoilers: Update is not supported on this resource
 
-aviatrix_controller_ip = "1.2.3.4"
-aviatrix_controller_username = "admin"
-aviatrix_controller_password = "password"
 ##############################################
 ## VALID INPUT
 ##############################################
