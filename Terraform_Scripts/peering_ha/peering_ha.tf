@@ -11,6 +11,7 @@ resource "aviatrix_gateway" "GW" {
          vpc_size = "${var.aws_instance}"
           vpc_net = "${element(var.aws_vpc_public_cidr,count.index)}"
 peering_ha_subnet = "${element(var.aws_vpc_public_cidr,count.index)}"
+peering_ha_gw_size = "${var.aws_instance}" # (as of 4.6; required if peering_ha_subnet is used)
    peering_ha_eip = "${element(var.avx_peering_eip,count.index)}"
 }
 
