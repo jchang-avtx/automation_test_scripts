@@ -118,14 +118,15 @@ resource "aviatrix_site2cloud" "s2c_test3" {
 
   remote_subnet_virtual = "10.23.0.0/24" # avtxgw2's vpc virtual cidr (must be same as real)
   local_subnet_virtual = "100.0.0.0/24" # avtxgw3's vpc virtual cidr (must match subnet mask of real)
-
-  # custom_algorithms = true # boolean values only
-  # phase_1_authentication = "SHA-1"
-  # phase_1_dh_groups = "2"
-  # phase_1_encryption = "AES-256-CBC"
-  # phase_2_authentication = "HMAC-SHA-1"
-  # phase_2_dh_groups = "2"
-  # phase_2_encryption = "AES-256-CBC"
+  
+  # 4.6 see id = (8287) (9150)
+  custom_algorithms = true # boolean values only
+  phase_1_authentication = "SHA-1"
+  phase_1_dh_groups = "2"
+  phase_1_encryption = "AES-256-CBC"
+  phase_2_authentication = "HMAC-SHA-1"
+  phase_2_dh_groups = "2"
+  phase_2_encryption = "AES-256-CBC"
 
   depends_on = ["aviatrix_site2cloud.s2c_test2"]
 }
@@ -151,13 +152,14 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   remote_subnet_virtual = "100.0.0.0/24" # avtxgw3's vpc virtual cidr
   local_subnet_virtual = "10.23.0.0/24"
 
-  # custom_algorithms = true
-  # phase_1_authentication = "SHA-512"
-  # phase_1_dh_groups = "16"
-  # phase_1_encryption = "AES-128-CBC"
-  # phase_2_authentication = "HMAC-SHA-512"
-  # phase_2_dh_groups = "16"
-  # phase_2_encryption = "AES-128-CBC"
+  # 4.6 see id = (8287) (9150)
+  custom_algorithms = true
+  phase_1_authentication = "SHA-512"
+  phase_1_dh_groups = "16"
+  phase_1_encryption = "AES-128-CBC"
+  phase_2_authentication = "HMAC-SHA-512"
+  phase_2_dh_groups = "16"
+  phase_2_encryption = "AES-128-CBC"
 
   depends_on = ["aviatrix_site2cloud.s2c_test3"]
 }

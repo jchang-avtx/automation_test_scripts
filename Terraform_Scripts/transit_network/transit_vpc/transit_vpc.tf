@@ -4,6 +4,9 @@
 # Omit ha_subnet to launch transit VPC without HA.
 # HA subnet can later be added or deleted to enable/disable HA in transit VPC
 
+## Additional test case:
+# 1. attempt apply without specifying ha_gw_size; gw should not be created, error returned
+
 resource "aviatrix_transit_vpc" "test_transit_gw" {
   cloud_type        = "${var.aviatrix_cloud_type_aws}"
   account_name      = "${var.aviatrix_cloud_account_name}"

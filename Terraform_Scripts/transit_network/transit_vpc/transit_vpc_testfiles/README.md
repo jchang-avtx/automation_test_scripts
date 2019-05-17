@@ -17,5 +17,8 @@ After creating a base Transit GW (using terraform.tfvars), the test files should
   * Please see Mantis: id=8209 for issues with refresh and update tests
   * (This is used to test invalid/ empty inputs; manual testing for Update cases as well)
 
+* Additional test case:
+  * attempt apply without specifying ha_gw_size; gw should not be created, error returned
+
 Running the scripts in this order will allow testing of manipulation of individual parameters.
 You can switch around orders to do combinations of different updates.

@@ -5,6 +5,9 @@
 # Omit transit_gw to launch spoke VPC without attaching with transit GW.
 # transit_gw can be later added or deleted to attach/detach from spoke VPC
 
+## Additional test case:
+# 1. attempt apply without specifying ha_gw_size; gw should not be created, error returned
+
 ## Create a 2nd transitGW to test "updateTransitGW.tfvars test case"
 resource "aviatrix_transit_vpc" "test_transit_gw2" {
   cloud_type = 1

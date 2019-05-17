@@ -8,6 +8,8 @@ After creating a base Spoke GW (using terraform.tfvars), the test files should b
 3. **updateHAGWSize.tfvars**
   * will change the spoke HA GW's size from t2.micro to t2.small
 
+* Additional test case:
+  * attempt apply without specifying ha_gw_size; gw should not be created, error returned
 
 * **emptycreation.tfvars**
   * Please see Mantis: id=8195 for reported refresh, update, and REST-API issues
