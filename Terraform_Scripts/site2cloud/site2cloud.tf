@@ -13,6 +13,7 @@ resource "aviatrix_gateway" "test_gateway1" {
   allocate_new_eip = "off"
   eip = "6.6.6.6"
   # peering_ha_subnet = xxxx # uncomment before creation to test s2c ha_enabled
+  # peering_ha_gw_size = xxxx # (as of 4.3; required if peering_ha_subnet is set)
   # peering_ha_eip = xxxx # uncomment before creation to test s2c ha_enabled
 }
 
@@ -28,6 +29,7 @@ resource "aviatrix_gateway" "test_gateway2" {
   allocate_new_eip = "off"
   eip = "5.5.5.5"
   # peering_ha_subnet = xxxx # uncomment before creation to test s2c ha_enabled = "yes"
+  # peering_ha_gw_size = xxxx # (as of 4.3; required if peering_ha_subnet is set)
   # peering_ha_eip = xxxx  # uncomment before creation to test s2c ha_enabled = "yes"
 }
 
@@ -42,6 +44,7 @@ resource "aviatrix_gateway" "test_gateway3" {
   allocate_new_eip = "off"
   eip = "4.4.4.4"
   # peering_ha_subnet = xxxx # uncomment before creation to test s2c ha_enabled = "yes"
+  # peering_ha_gw_size = xxxx # (as of 4.3; required if peering_ha_subnet is set)
   # peering_ha_eip = xxxx # uncomment before creation to test s2c ha_enabled = "yes"
 }
 
