@@ -1,5 +1,8 @@
 ## Testing a regular Aviatrix gateway with ha-enabled
 
+## Additional test case:
+# 1. attempt apply without specifying peering_ha_gw_size; gw should not be created, error returned
+
 resource "aviatrix_gateway" "testGW1" {
   cloud_type = 1
   account_name = "devops"

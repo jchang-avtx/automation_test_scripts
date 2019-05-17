@@ -10,4 +10,7 @@ After creating a base gateway to manipulate (using terraform.tfvars), the test f
 4. **updateHAGWSize.tfvars**
   * will change HA-GW size from t2.micro to t2.small
 
+* Additional test case:
+  * attempt apply without specifying peering_ha_gw_size; gw should not be created, error returned
+
 Note: must wait 2 mins in between updating these parameters because gateway goes down shortly
