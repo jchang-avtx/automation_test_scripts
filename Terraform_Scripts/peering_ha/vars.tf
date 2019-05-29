@@ -9,4 +9,4 @@ variable "aws_instance" {}
 variable "avx_peering_eip" { type = "list" }
 
 variable "enable_ha" {}
-variable "enable_cluster" {}
+# variable "enable_cluster" {}

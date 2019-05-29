@@ -9,4 +9,4 @@ aws_vpc_public_cidr = ["10.0.0.0/24","11.0.0.0/24"]
 avx_peering_eip     = ["11.11.11.11", "12.12.12.12"]
 
 enable_ha           = "yes"
-enable_cluster      = "no"
+# enable_cluster      = "no"
