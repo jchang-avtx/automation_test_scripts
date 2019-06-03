@@ -27,6 +27,6 @@ resource "aviatrix_vgw_conn" "test_vgw_conn" {
   bgp_vgw_id = "vgw-123456" # VGW ID
   bgp_local_as_num = "100"
   enable_advertise_transit_cidr = "${var.toggle_advertise_transit_cidr}"
-  bgp_manual_spoke_advertise_cidrs = "${var.bgp_manual_spoke_advertise_cidrs_list}"
+  # bgp_manual_spoke_advertise_cidrs = "${var.bgp_manual_spoke_advertise_cidrs_list}"
   depends_on = ["aviatrix_transit_vpc.test_transit_gw"]
 }
