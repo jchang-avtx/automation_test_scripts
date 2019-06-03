@@ -21,10 +21,12 @@ resource "aviatrix_transit_vpc" "test_transit_gw" {
 }
 
 resource "aviatrix_vgw_conn" "test_vgw_conn" {
-  conn_name = "${var.tgw_vgw_conn_name}" # Connection name
-  gw_name = "${var.aviatrix_gateway_name}" # existing transitGW name
-  vpc_id = "${var.aws_vpc_id}" # VPC ID of transitGW
-  bgp_vgw_id = "${var.aws_vgw_id}" # VGW ID
-  bgp_local_as_num = "${var.bgp_local_as}"
+  conn_name = "test_connection_tgw_vgw" # Connection name
+  gw_name = "testtransitGW1" # existing transitGW name
+  vpc_id = "vpc-abcd123" # VPC ID of transitGW (transitVPC resource)
+  bgp_vgw_id = "vgw-123456" # VGW ID
+  bgp_local_as_num = "100"
+  enable_advertise_transit_cidr = "${var.toggle_advertise_transit_cidr}"
+  bgp_manual_spoke_advertise_cidrs = "${var.bgp_manual_spoke_advertise_cidrs_list}"
   depends_on = ["aviatrix_transit_vpc.test_transit_gw"]
 }

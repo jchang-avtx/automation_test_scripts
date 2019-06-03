@@ -1,0 +1,2 @@
+
+variable "toggle_firenet" {}

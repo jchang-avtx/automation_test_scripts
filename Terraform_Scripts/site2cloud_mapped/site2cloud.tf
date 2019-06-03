@@ -21,6 +21,9 @@ resource "aviatrix_gateway" "test_gateway1" {
   eip = "6.6.6.6"
   # peering_ha_subnet = xxxx # uncomment before creation to test s2c ha_enabled
   # peering_ha_eip = xxxx # uncomment before creation to test s2c ha_enabled
+
+  vpn_access = "yes" # Required "yes" to test DirectConnect/ ExpressRoute for S2C
+  vpn_cidr = "192.168.43.0/24" # default
 }
 
 # Create Aviatrix AWS gateway to act as our on-prem / "Remote" server
@@ -36,6 +39,9 @@ resource "aviatrix_gateway" "test_gateway2" {
   eip = "5.5.5.5"
   # peering_ha_subnet = xxxx # uncomment before creation to test s2c ha_enabled = "yes"
   # peering_ha_eip = xxxx  # uncomment before creation to test s2c ha_enabled = "yes"
+
+  vpn_access = "yes" # Required "yes" to test DirectConnect/ ExpressRoute for S2C
+  vpn_cidr = "192.168.44.0/24"
 }
 
 resource "aviatrix_gateway" "test_gateway3" {
@@ -50,6 +56,9 @@ resource "aviatrix_gateway" "test_gateway3" {
   eip = "4.4.4.4"
   # peering_ha_subnet = xxxx # uncomment before creation to test s2c ha_enabled = "yes"
   # peering_ha_eip = xxxx # uncomment before creation to test s2c ha_enabled = "yes"
+
+  vpn_access = "yes" # Required "yes" to test DirectConnect/ ExpressRoute for S2C
+  vpn_cidr = "192.168.45.0/24"
 }
 
 #################################################
@@ -67,12 +76,18 @@ resource "aviatrix_site2cloud" "s2c_test" {
   # backup_gateway_name = "${var.avx_gw_name_backup}" # uncomment before creation to test s2c ha_enabled = "yes"
   remote_gateway_ip = "5.5.5.5"
   # backup_remote_gateway_ip = "${var.remote_gw_ip_backup}" # uncomment before creation to test s2c ha_enabled = "yes"
+
   # pre_shared_key = "${var.pre_shared_key}" # (Optional) Auto-generated if not specified
   # backup_pre_shared_key = "${var.pre_shared_key_backup}" # (Optional) # can uncomment before creation to test s2c ha_enabled = "yes"
+
   remote_subnet_cidr = "10.23.0.0/24" # on-prem's subnet cidr
   local_subnet_cidr = "10.20.1.0/24" # (Optional)
 
-  # ssl_server_pool = "192.168.44.0/24" # (optional) (specifies for tunnel type TCP)
+  private_route_encryption = true
+  route_table_list = ["rtb-01234"]
+
+  remote_gateway_latitude = 123.1234
+  remote_gateway_longitude = 456.7890
 
   depends_on = ["aviatrix_gateway.test_gateway1", "aviatrix_gateway.test_gateway2", "aviatrix_gateway.test_gateway3"]
 }
@@ -90,8 +105,10 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   # backup_gateway_name = "avtxgw2-hagw"
   remote_gateway_ip = "6.6.6.6"
   # backup_remote_gateway_ip = ""
+
   # pre_shared_key = ""
   # backup_pre_shared_key = ""
+
   remote_subnet_cidr = "10.20.1.0/24" # avxPrimaryGwName's cidr
   local_subnet_cidr = "10.23.0.0/24" # on-prem's cidr
 
@@ -118,15 +135,16 @@ resource "aviatrix_site2cloud" "s2c_test3" {
 
   remote_subnet_virtual = "10.23.0.0/24" # avtxgw2's vpc virtual cidr (must be same as real)
   local_subnet_virtual = "100.0.0.0/24" # avtxgw3's vpc virtual cidr (must match subnet mask of real)
-  
+
   # 4.6 see id = (8287) (9150)
+  # cannot set custom_algorithms as default
   custom_algorithms = true # boolean values only
-  phase_1_authentication = "SHA-1"
-  phase_1_dh_groups = "2"
-  phase_1_encryption = "AES-256-CBC"
-  phase_2_authentication = "HMAC-SHA-1"
-  phase_2_dh_groups = "2"
-  phase_2_encryption = "AES-256-CBC"
+  phase_1_authentication = "SHA-512"
+  phase_1_dh_groups = "1"
+  phase_1_encryption = "AES-192-CBC"
+  phase_2_authentication = "HMAC-SHA-512"
+  phase_2_dh_groups = "1"
+  phase_2_encryption = "AES-192-CBC"
 
   depends_on = ["aviatrix_site2cloud.s2c_test2"]
 }
@@ -153,13 +171,14 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   local_subnet_virtual = "10.23.0.0/24"
 
   # 4.6 see id = (8287) (9150)
+  # cannot set custom_algorithms as default
   custom_algorithms = true
-  phase_1_authentication = "SHA-512"
+  phase_1_authentication = "SHA-384"
   phase_1_dh_groups = "16"
-  phase_1_encryption = "AES-128-CBC"
-  phase_2_authentication = "HMAC-SHA-512"
+  phase_1_encryption = "3DES"
+  phase_2_authentication = "HMAC-SHA-384"
   phase_2_dh_groups = "16"
-  phase_2_encryption = "AES-128-CBC"
+  phase_2_encryption = "3DES"
 
   depends_on = ["aviatrix_site2cloud.s2c_test3"]
 }
