@@ -1,7 +1,7 @@
 resource "aviatrix_gateway" "gcloud_gw" {
   cloud_type = 4
   account_name = "GCPAccess"
-  gw_name = "testgcpvpngw" # gcloudgw
+  gw_name = "gcloudvpngw" # gcloudgw
   vpc_id = "gcptestvpc" # default
   vpc_reg = "us-west2-a"
   vpc_size = "f1-micro"
@@ -12,10 +12,10 @@ resource "aviatrix_gateway" "gcloud_gw" {
   ## failed to update Aviatrix VPN Gateway Authentication: Rest API set_vpn_gateway_authentication Get failed: [Aviatrix Error] VPC ID does not exist in DB
   ## Please see id = 9377
   ## remember to comment out; peeringHA not supported on VPN gw (in general)
-  # vpn_access = "yes"
-  # vpn_cidr = "192.168.43.0/24"
-  # enable_elb = "yes" # required parameter when cloud type is 4
-  # elb_name = "gcp-elb"
+  vpn_access = "yes"
+  vpn_cidr = "192.168.43.0/24"
+  enable_elb = "yes" # required parameter when cloud type is 4
+  elb_name = "gcp-elb"
   # saml_enabled = "yes"
 
   ## Please see id = 9377
