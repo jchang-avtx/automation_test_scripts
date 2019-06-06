@@ -4,7 +4,7 @@ resource "aviatrix_spoke_vpc" "test_spoke_vpc_arm" {
   cloud_type = 8
   account_name = "AzureAccess"
   gw_name = "azureSpokeGW"
-  vnet_and_resource_group_names = "SpokeVNet:SpokeRG"
+  vpc_id = "SpokeVNet:SpokeRG"
   vpc_reg = "Central US"
   vpc_size = "${var.arm_gw_size}" # Standard_B1ms
   subnet = "10.3.0.0/24"

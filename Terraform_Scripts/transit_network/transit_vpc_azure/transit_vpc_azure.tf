@@ -4,7 +4,7 @@ resource "aviatrix_transit_vpc" "azure_transit_gw" {
   cloud_type = 8
   account_name = "AzureAccess"
   gw_name = "azureTransitGW"
-  vnet_name_resource_group = "TransitVNet:TransitRG" # VNet2:NetworkWatcherRG (should block update)
+  vpc_id = "TransitVNet:TransitRG" # VNet2:NetworkWatcherRG (should block update)
   vpc_reg = "Central US"
   vpc_size = "${var.arm_gw_size}" # Standard_B1ms
   subnet = "10.2.0.0/24"
