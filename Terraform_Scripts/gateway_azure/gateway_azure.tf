@@ -9,19 +9,19 @@ resource "aviatrix_gateway" "azure_gw" {
   vpc_size = "Standard_B1s"
   vpc_net = "10.2.0.0/24"
 
-  peering_ha_subnet = "10.2.0.0/24"
-  peering_ha_gw_size = "Standard_B1s"
+  # peering_ha_subnet = "10.2.0.0/24"
+  # peering_ha_gw_size = "Standard_B1s"
 
   enable_nat = "yes"
   # single_az_ha = "enabled"
 
-  # vpn_access = "yes"
-  # vpn_cidr = "192.168.43.0/24"
-  # enable_elb = "yes"
-  # elb_name = "azureelb"
-  # saml_enabled = "yes"
+  vpn_access = "yes"
+  vpn_cidr = "192.168.43.0/24"
+  enable_elb = "yes"
+  elb_name = "azureelb"
+  saml_enabled = "yes"
 
-  ## Please see id = 9377
+  ## Please see id = 9377 (fixed)
   # split_tunnel = "yes" # default is "yes"
   # name_servers = "1.1.1.1,199.85.126.10"
   # search_domains = "https://www.google.com"
