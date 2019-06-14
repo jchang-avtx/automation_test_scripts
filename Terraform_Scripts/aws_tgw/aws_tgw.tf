@@ -19,11 +19,20 @@ resource "aviatrix_transit_vpc" "test_transit_gw" {
   connected_transit = "yes"
 }
 
+resource "aviatrix_vgw_conn" "test_vgw_conn" {
+  conn_name = "vgw_conn_for_tgw_test"
+  gw_name = "avxtransitgw"
+  vpc_id = "vpc-abc123"
+  bgp_vgw_id = "vgw_123"
+  bgp_local_as_num = "65001"
+  depends_on = ["aviatrix_transit_vpc.test_transit_gw"]
+}
+
 resource "aviatrix_aws_tgw" "test_aws_tgw" {
-  tgw_name = "${var.aviatrix_tgw_name}"
-  account_name = "${var.aviatrix_cloud_account_name}"
-  region = "${var.aviatrix_tgw_region}"
-  aws_side_as_number = "${var.aws_bgp_asn}"
+  tgw_name = "testAWSTGW"
+  account_name = "devops"
+  region = "us-east-1"
+  aws_side_as_number = "65412"
   attached_aviatrix_transit_gateway = ["avxtransitgw"] # be sure to have the transitGWs have "enable_hybrid_connection" set to true; otherwise must do Step5 in TGW GUI
 
   ## By default, there will be 3 domains ("Aviatrix_Edge_Domain", "Default_Domain", and "Shared_Service_Domain")
@@ -71,5 +80,5 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
   },
   ]
   manage_vpc_attachment = true # default is true; if set to false, must use aws_tgw_vpc_attachment resource, and must comment out 'attached_vpc' sections
-  depends_on = ["aviatrix_transit_vpc.test_transit_gw"]
+  depends_on = ["aviatrix_vgw_conn.test_vgw_conn"]
 }
