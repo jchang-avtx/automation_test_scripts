@@ -10,8 +10,8 @@ resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn1" {
   remote_as_number = "1234"
 
   # optional custom tunnel options
-  inside_ip_cidr_tun_1 = "169.254.69.69/30" #A /30 CIDR in 169.254.0.0/16
-  pre_shared_key_tun_1 = "abc_123.def" # A 8-64 character string with alphanumeric, underscore(_) and dot(.). It cannot start with 0. 
+  inside_ip_cidr_tun_1 = "169.254.69.69/30" # A /30 CIDR in 169.254.0.0/16
+  pre_shared_key_tun_1 = "abc_123.def" # A 8-64 character string with alphanumeric, underscore(_) and dot(.). It cannot start with 0.
   inside_ip_cidr_tun_2 = "169.254.70.70/30"
   pre_shared_key_tun_2 = "def_456.ghi"
 }
