@@ -1,7 +1,5 @@
 variable "aviatrix_controller_ip" {}
-variable "aviatrix_controller_username" {
-  default = "admin"
-}
+variable "aviatrix_controller_username" {}
 variable "aviatrix_controller_password" {}
 
 variable "acc_1" {}

@@ -2,7 +2,8 @@ variable "aviatrix_controller_ip" {}
 variable "aviatrix_controller_username" {}
 variable "aviatrix_controller_password" {}
 
-variable "account_name" {}
+variable "num_account" {}
 
-variable "gcloud_proj_id" {}
-variable "gcloud_proj_cred_filepath" {}
+variable "aws_account_number" {}
+variable "aws_access_key" {}
+variable "aws_secret_key" {}
