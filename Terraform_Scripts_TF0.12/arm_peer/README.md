@@ -16,5 +16,3 @@
 
   terraform destroy -var-file=/path/arm_peer_cred.tfvars -auto-approve
 ```
-
-* currently working on adding import

@@ -16,5 +16,3 @@
 
   terraform destroy -var-file=/path/account_user_cred.tfvars -auto-approve
 ```
-
-* currently working on adding import

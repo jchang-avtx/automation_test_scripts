@@ -18,5 +18,3 @@
 
   terraform destroy -var-file=/path/aws_peer_cred.tfvars -auto-approve
 ```
-
-* currently working on adding import
