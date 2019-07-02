@@ -15,7 +15,7 @@ resource "aviatrix_transit_vpc" "test_transit_gw" {
 
 resource "aviatrix_vgw_conn" "test_vgw_conn" {
   conn_name             = "vgw_conn_for_tgw_test"
-  gw_name               = "testTransitVPCGW"
+  gw_name               = aviatrix_transit_vpc.test_transit_gw.gw_name
   vpc_id                = aviatrix_transit_vpc.test_transit_gw.vpc_id
   bgp_vgw_id            = "vgw-041baa40dfbf28c9a"
   bgp_local_as_num      = "65001"
