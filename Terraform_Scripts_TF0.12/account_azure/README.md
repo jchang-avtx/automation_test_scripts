@@ -18,5 +18,3 @@
 
   terraform destroy -var-file=switchApp.tfvars -auto-approve
 ```
-
-* currently working on adding import
