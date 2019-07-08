@@ -10,7 +10,7 @@
   terraform show
 
   terraform state rm aviatrix_vpn_profile.test_profile1
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_firewall_tag.test_profile1 "profile Name1"
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_vpn_profile.test_profile1 "profile Name1"
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 

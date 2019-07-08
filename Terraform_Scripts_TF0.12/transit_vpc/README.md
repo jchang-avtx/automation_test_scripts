@@ -1,4 +1,4 @@
-## aviatrix_controller_config
+## aviatrix_transit_vpc (insane)
 
 ---
 
@@ -9,28 +9,27 @@
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
-  terraform state rm aviatrix_controller_config.test_controller_config
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_controller_config.test_controller_config <IP>
-  terraform plan -var-file=/path/provider_cred.tfvars
+  terraform state rm aviatrix_transit_vpc.insane_transit_gw
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_transit_vpc.insane_transit_gw insaneTransitGW1
+  terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
   terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=enableHTTP.tfvars \
+                  -var-file=switchConnectedTransit.tfvars \
                   -auto-approve
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=disableFQDN.tfvars \
+                  -var-file=disableHybrid.tfvars \
                   -auto-approve
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=disableSG.tfvars \
+                  -var-file=updateGWSize.tfvars \
+                  -auto-approve
+  terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=updateHAGWSize.tfvars \
                   -auto-approve
   terraform show
 
-  terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=enableHTTP.tfvars \
-                  -auto-approve
-  terraform show
-
-  // terraform destroy -var-file=/path/provider_cred.tfvars -auto-approve
+  terraform destroy -var-file=/path/provider_cred.tfvars -auto-approve
 ```
