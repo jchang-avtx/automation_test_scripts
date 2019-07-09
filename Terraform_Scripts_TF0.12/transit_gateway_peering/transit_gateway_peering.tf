@@ -25,8 +25,8 @@ resource "aviatrix_transit_vpc" "test_transit_gw2" {
   vpc_size          = "t2.micro"
   subnet            = "100.200.0.0/16"
 
-  enable_hybrid_connection = false
-  connected_transit = "yes"
+  enable_hybrid_connection  = false
+  connected_transit         = "yes"
 }
 
 resource "aviatrix_transit_gateway_peering" "test_transit_gw_peering" {
