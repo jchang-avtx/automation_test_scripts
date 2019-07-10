@@ -81,7 +81,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   connection_type               = "mapped"
   remote_gateway_type           = "generic"
   tunnel_type                   = "udp"
-  ha_enabled                    = "no"
+  ha_enabled                    = "yes"
 
   primary_cloud_gateway_name    = "onPremRemoteGW"
   backup_gateway_name           = "onPremRemoteGW-hagw"
