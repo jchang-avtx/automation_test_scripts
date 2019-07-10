@@ -1,4 +1,4 @@
-## aviatrix_arm_peer
+## aviatrix_transit_gateway_peering
 
 ---
 
@@ -9,8 +9,8 @@
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
-  terraform state rm aviatrix_arm_peer.test_armpeer
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_arm_peer.test_armpeer TransitVNet:TransitRG~SpokeVNet:SpokeRG
+  terraform state rm aviatrix_transit_gateway_peering.test_transit_gw_peering
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_transit_gateway_peering.test_transit_gw_peering transitGW1~transitGW2
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 

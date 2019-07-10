@@ -1,4 +1,4 @@
-## aviatrix_vpn_profile
+## aviatrix_spoke_vpc (azure)
 
 ---
 
@@ -9,29 +9,34 @@
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
-  terraform state rm aviatrix_vpn_profile.test_profile1
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_vpn_profile.test_profile1 "profile Name1"
+  terraform state rm aviatrix_spoke_vpc.test_spoke_vpc_arm
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_spoke_vpc.test_spoke_vpc_arm azureSpokeGW
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
   terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=switchAction.tfvars \
+                  -var-file=disableSingleAZHA.tfvars \
                   -auto-approve
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=switchPort.tfvars \
+                  -var-file=enableHA.tfvars \
                   -auto-approve
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=switchProtocol.tfvars \
+                  -var-file=updateGWSize.tfvars \
                   -auto-approve
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=switchTarget.tfvars \
+                  -var-file=updateHAGWSize.tfvars \
+                  -auto-approve
+  terraform show
+  sleep(time:1, unit:"MINUTES")
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=attachTransitGW.tfvars \
                   -auto-approve
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=removeUser.tfvars \
+                  -var-file=disableNAT.tfvars \
                   -auto-approve
   terraform show
 
