@@ -4,7 +4,7 @@
 
 ### Usage
 ```
-  // DO NOT COMMIT SECRET KEYS/ TOKENS INTO GIT. Tokens committed here are only test-keys, not real
+  // DO NOT COMMIT SECRET KEYS/ TOKENS INTO GIT. Credentials committed here are only test-values, not real
   terraform init
   terraform apply -var-file=/path/provider_cred.tfvars -auto-approve
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
