@@ -5,7 +5,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   connection_type               = "unmapped"
   remote_gateway_type           = "generic"
   tunnel_type                   = "udp"
-  ha_enabled                    = "yes"
+  ha_enabled                    = true
 
   primary_cloud_gateway_name    = "avxPrimaryGwName"
   backup_gateway_name           = "avxPrimaryGwName-hagw"
@@ -32,7 +32,7 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   connection_type               = "unmapped"
   remote_gateway_type           = "generic"
   tunnel_type                   = "udp"
-  ha_enabled                    = "yes"
+  ha_enabled                    = true
 
   primary_cloud_gateway_name    = "onPremRemoteGW"
   backup_gateway_name           = "onPremRemoteGW-hagw"
@@ -51,7 +51,7 @@ resource "aviatrix_site2cloud" "s2c_test3" {
   connection_type               = "mapped"
   remote_gateway_type           = "generic"
   tunnel_type                   = "udp"
-  ha_enabled                    = "yes"
+  ha_enabled                    = true
 
   primary_cloud_gateway_name    = "gateway3"
   backup_gateway_name           = "gateway3-hagw"
@@ -81,7 +81,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   connection_type               = "mapped"
   remote_gateway_type           = "generic"
   tunnel_type                   = "udp"
-  ha_enabled                    = "yes"
+  ha_enabled                    = true
 
   primary_cloud_gateway_name    = "onPremRemoteGW"
   backup_gateway_name           = "onPremRemoteGW-hagw"

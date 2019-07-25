@@ -1,7 +1,7 @@
 # Test order 7. change source IPs
 
    aviatrix_fqdn_mode   = "black"
- aviatrix_fqdn_status   = "disabled"
+ aviatrix_fqdn_status   = false
     aviatrix_fqdn_tag   = "anthony-fqdn-TAG"
 aviatrix_fqdn_gateway   = "FQDN-GW2"
 

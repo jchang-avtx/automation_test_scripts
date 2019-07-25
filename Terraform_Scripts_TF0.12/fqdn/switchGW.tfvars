@@ -1,7 +1,7 @@
 # Test order 6. change gw; you can also try to add more than one
 
    aviatrix_fqdn_mode   = "black"
- aviatrix_fqdn_status   = "disabled"
+ aviatrix_fqdn_status   = false
     aviatrix_fqdn_tag   = "anthony-fqdn-TAG"
 aviatrix_fqdn_gateway   = "FQDN-GW2"
 

@@ -15,8 +15,8 @@
   // terraform plan -var-file=/path/gcloud_account_cred.tfvars -detailed-exitcode
   // terraform show
 
-  terraform apply -var-file=switchProj.tfvars -auto-approve
+  terraform apply -var-file=switchProj_cred.tfvars -auto-approve
   terraform show
 
-  terraform destroy -var-file=switchProj.tfvars -auto-approve
+  terraform destroy -var-file=switchProj_cred.tfvars -auto-approve
 ```

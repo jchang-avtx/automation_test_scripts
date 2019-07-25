@@ -1,7 +1,7 @@
 # Test order 3. change protocols
 
    aviatrix_fqdn_mode   = "white"
- aviatrix_fqdn_status   = "enabled"
+ aviatrix_fqdn_status   = true
     aviatrix_fqdn_tag   = "anthony-fqdn-TAG"
 aviatrix_fqdn_gateway   = "FQDN-GW"
 
