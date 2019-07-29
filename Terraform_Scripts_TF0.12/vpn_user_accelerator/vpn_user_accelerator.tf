@@ -3,13 +3,13 @@ resource "aviatrix_gateway" "vpn_gw_for_elb" {
   account_name    = "AnthonyPrimaryAccess"
   gw_name         = "vpnGWforELB"
   vpc_id          = "vpc-0086065966b807866"
-  vpc_net         = "10.0.2.0/24"
+  subnet          = "10.0.2.0/24"
   vpc_reg         = "us-east-1"
-  vpc_size        = "t2.micro"
+  gw_size         = "t2.micro"
 
-  vpn_access      = "yes"
+  vpn_access      = true
   vpn_cidr        = "192.168.43.0/24"
-  enable_elb      = "yes"
+  enable_elb      = true
   elb_name        = "elb-for-vpn-user-accel"
   max_vpn_conn    = 100
 }

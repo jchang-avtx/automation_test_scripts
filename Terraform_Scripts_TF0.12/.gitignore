@@ -1,0 +1,6 @@
+.DS_Store
+*_cred.tfvars
+*.json
+
+Jenkinsfile
+user_emails.tfvars

@@ -7,4 +7,4 @@ variable "aws_ha_gw_size" {}
 variable "aws_gateway_tag_list" {
   type = "list"
 }
-variable "enable_nat" {}
+variable "enable_snat" {}

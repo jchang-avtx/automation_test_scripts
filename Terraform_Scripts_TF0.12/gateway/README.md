@@ -15,7 +15,7 @@
   terraform show
 
   terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=disableNAT.tfvars \
+                  -var-file=disableSNAT.tfvars \
                   -auto-approve
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \

@@ -8,18 +8,18 @@ resource "aviatrix_gateway" "vpn_gateway" {
 
   vpc_id            = "vpc-0086065966b807866"
   vpc_reg           = "us-east-1"
-  vpc_size          = "t2.micro"
-  vpc_net           = "10.0.0.0/24"
+  gw_size           = "t2.micro"
+  subnet            = "10.0.0.0/24"
 
-  vpn_access        = "yes"
-  saml_enabled      = "yes"
+  vpn_access        = true
+  saml_enabled      = true
   max_vpn_conn      = 100
   vpn_cidr          = "192.168.43.0/24"
-  split_tunnel      = "yes"
-  enable_elb        = "yes"
+  split_tunnel      = true
+  enable_elb        = true
   elb_name          = "test-elb-name"
-  enable_nat        = "no"
-  allocate_new_eip  = "on"
+  enable_snat       = false
+  allocate_new_eip  = true
 }
 
 resource "aviatrix_vpn_user" "test_vpn_user1" {

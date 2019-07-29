@@ -3,5 +3,3 @@ config/
 *.pyc
 **/.idea
 .DS_Store
-*_cred.tfvars
-Jenkinsfile

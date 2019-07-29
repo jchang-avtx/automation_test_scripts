@@ -1,7 +1,7 @@
 # Test order 4. change mode
 
    aviatrix_fqdn_mode   = "black"
- aviatrix_fqdn_status   = "enabled"
+ aviatrix_fqdn_status   = true
     aviatrix_fqdn_tag   = "anthony-fqdn-TAG"
 aviatrix_fqdn_gateway   = "FQDN-GW"
 

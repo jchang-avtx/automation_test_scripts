@@ -1,7 +1,7 @@
 ## initial creation
 
 aviatrix_firewall_base_policy     = "allow-all"
-aviatrix_firewall_packet_logging  = "on"
+aviatrix_firewall_packet_logging  = true
 
 aviatrix_firewall_policy_protocol         = ["tcp",
                                              "udp",
@@ -19,7 +19,7 @@ aviatrix_firewall_policy_source_ip        = ["10.10.10.10/32",
                                              "20.20.20.20/32",
                                              "22.22.22.22/32"]
 
-aviatrix_firewall_policy_log_enable       = ["on", "off"]
+aviatrix_firewall_policy_log_enable       = [true, false]
 
 aviatrix_firewall_policy_destination_ip   = ["11.11.11.11/32",
                                              "13.13.13.13/32",

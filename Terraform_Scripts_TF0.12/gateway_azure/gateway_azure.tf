@@ -6,15 +6,15 @@ resource "aviatrix_gateway" "azure_gw" {
   gw_name         = "azureGW"
   vpc_id          = "TransitVNet:TransitRG"
   vpc_reg         = "Central US"
-  vpc_size        = "Standard_B1s"
-  vpc_net         = "10.2.0.0/24"
+  gw_size         = "Standard_B1s"
+  subnet          = "10.2.0.0/24"
 
-  enable_nat      = "yes" # do not enable if using peering_ha
-  single_az_ha    = "enabled"
+  enable_snat     = true # do not enable if using peering_ha
+  single_az_ha    = true
 
-  vpn_access      = "yes"
+  vpn_access      = true
   vpn_cidr        = "192.168.43.0/24"
-  enable_elb      = "yes"
+  enable_elb      = true
   elb_name        = "azureelb"
   max_vpn_conn    = 100
 }

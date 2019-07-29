@@ -6,9 +6,9 @@ resource "aviatrix_gateway" "FQDN-GW" {
   gw_name       = "FQDN-GW"
   vpc_id        = "vpc-0086065966b807866"
   vpc_reg       = "us-east-1"
-  vpc_size      = "t2.micro"
-  vpc_net       = "10.0.0.0/24"
-  enable_nat    = "yes"
+  gw_size       = "t2.micro"
+  subnet        = "10.0.0.0/24"
+  enable_snat   = true
 }
 
 resource "aviatrix_gateway" "FQDN-GW2" {
@@ -17,14 +17,14 @@ resource "aviatrix_gateway" "FQDN-GW2" {
   gw_name       = "FQDN-GW2"
   vpc_id        = "vpc-04ca29a568bf2b35f"
   vpc_reg       = "us-east-1"
-  vpc_size      = "t2.micro"
-  vpc_net       = "10.202.0.0/16"
-  enable_nat    = "yes"
+  gw_size       = "t2.micro"
+  subnet        = "10.202.0.0/16"
+  enable_snat   = true
 }
 
 resource "aviatrix_fqdn" "FQDN-tag1" {
   fqdn_tag      = var.aviatrix_fqdn_tag
-  fqdn_status   = var.aviatrix_fqdn_status
+  fqdn_enabled  = var.aviatrix_fqdn_status
   fqdn_mode     = var.aviatrix_fqdn_mode
 
   gw_filter_tag_list {

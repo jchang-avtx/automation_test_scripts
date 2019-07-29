@@ -6,21 +6,21 @@ resource "aviatrix_gateway" "testGW3" {
   gw_name                 = "testGW3"
   vpc_id                  = "vpc-ba3c12dd"
   vpc_reg                 = "us-west-1"
-  vpc_size                = "t2.micro"
-  vpc_net                 = "172.31.0.0/20"
+  gw_size                 = "t2.micro"
+  subnet                  = "172.31.0.0/20"
 
-  vpn_access              = "yes"
+  vpn_access              = true
   max_vpn_conn            = 100
   vpn_cidr                = "192.168.43.0/24"
-  enable_elb              = "yes"
+  enable_elb              = true
   elb_name                = "elb-testgw3-vpn"
 
-  split_tunnel            = "yes"
+  split_tunnel            = true
 
   otp_mode                = 3
   okta_url                = var.aviatrix_vpn_okta_url
   okta_token              = var.aviatrix_vpn_okta_token
   okta_username_suffix    = var.aviatrix_vpn_okta_username_suffix
 
-  allocate_new_eip        = "on"
+  allocate_new_eip        = true
 }
