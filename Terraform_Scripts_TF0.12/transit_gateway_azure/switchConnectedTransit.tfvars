@@ -1,7 +1,7 @@
 ## Test case 1: disable connected_transit
 
-arm_gw_size       = "Standard_B1s"
-arm_ha_gw_size    = "Standard_B1s"
+arm_gw_size       = "Standard_D5_v2"
+arm_ha_gw_size    = "Standard_D5_v2"
 
 toggle_snat       = true
 

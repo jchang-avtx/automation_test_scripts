@@ -1,6 +1,6 @@
 ## Test case 2: Update spoke_vpc size
 
-gw_size             = "t2.small" ## t2.micro to t2.small
-aviatrix_ha_gw_size = "t2.micro"
+gw_size             = "c5.xlarge"
+aviatrix_ha_gw_size = "c5.large"
 
 aviatrix_transit_gw = "transitGW2forSpoke"
