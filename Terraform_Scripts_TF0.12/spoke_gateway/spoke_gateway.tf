@@ -49,6 +49,11 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway" {
   ha_subnet         = "172.0.2.64/26"
   ha_gw_size        = var.aviatrix_ha_gw_size
   enable_snat       = false
+
+  allocate_new_eip  = false
+  eip               = "34.239.41.40"
+  ha_eip            = "3.213.178.197"
+
   transit_gw        = var.aviatrix_transit_gw
   tag_list          = ["k1:v1", "k2:v2"]
   depends_on        = ["aviatrix_transit_gateway.test_transit_gw1", "aviatrix_transit_gateway.test_transit_gw2"]
