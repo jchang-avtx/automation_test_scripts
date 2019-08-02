@@ -7,12 +7,13 @@ resource "aviatrix_transit_gateway" "azure_transit_gw" {
   vpc_id              = "TransitVNet:TransitRG"
   vpc_reg             = "Central US"
   gw_size             = var.arm_gw_size
-  subnet              = "10.2.0.0/24"
+  subnet              = "10.2.2.0/26"
 
-  ha_subnet           = "10.2.0.0/24"
+  ha_subnet           = "10.2.2.64/26"
   ha_gw_size          = var.arm_ha_gw_size
-  enable_snat         = var.toggle_snat
+  enable_snat         = false # insane mode does not support SNAT
 
+  insane_mode               = true
   enable_hybrid_connection  = var.tgw_enable_hybrid
   connected_transit         = var.tgw_enable_connected_transit
 }

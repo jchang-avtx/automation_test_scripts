@@ -40,11 +40,15 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway" {
   vpc_id            = "vpc-06b5b670e792e3462"
   vpc_reg           = "us-east-1"
   gw_size           = var.gw_size
-  subnet            = "172.0.0.0/24"
 
-  ha_subnet         = "172.0.0.0/24"
+  insane_mode       = true
+  insane_mode_az    = "us-east-1a"
+  subnet            = "172.0.2.0/26"
+
+  ha_insane_mode_az = "us-east-1b"
+  ha_subnet         = "172.0.2.64/26"
   ha_gw_size        = var.aviatrix_ha_gw_size
-  enable_snat       = true
+  enable_snat       = false
   transit_gw        = var.aviatrix_transit_gw
   tag_list          = ["k1:v1", "k2:v2"]
   depends_on        = ["aviatrix_transit_gateway.test_transit_gw1", "aviatrix_transit_gateway.test_transit_gw2"]

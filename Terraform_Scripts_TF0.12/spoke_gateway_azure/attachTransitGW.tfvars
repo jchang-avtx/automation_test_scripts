@@ -1,9 +1,9 @@
 ## Test Case 5: attach transit gw
 
-arm_gw_size         = "Standard_B1ms" # Standard_B1s -> B1ms
+arm_gw_size         = "Standard_D4_v2" # D3 -> D4
 
-arm_ha_gw_subnet    = "10.3.0.0/24" # blank -> ha subnet
-arm_ha_gw_size      = "Standard_B1ms" # B1s -> B1ms
+arm_ha_gw_subnet    = "10.3.2.128/26" # blank -> ha subnet
+arm_ha_gw_size      = "Standard_D4_v2" # D3 -> D4
 
 toggle_snat         = true
 toggle_single_az_ha = false # enabled -> disabled
