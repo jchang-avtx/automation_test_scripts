@@ -3,7 +3,7 @@
 ## VPN user needs VPN GW
 resource "aviatrix_gateway" "vpn_gateway" {
   cloud_type        = 1
-  account_name      = "AnthonyPrimaryAccess"
+  account_name      = "AWSAccess"
   gw_name           = "testGW-VPN"
 
   vpc_id            = "vpc-0086065966b807866"

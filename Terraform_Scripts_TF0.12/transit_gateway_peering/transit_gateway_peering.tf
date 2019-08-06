@@ -3,7 +3,7 @@
 
 resource "aviatrix_transit_gateway" "test_transit_gw1" {
   cloud_type        = 1
-  account_name      = "AnthonyPrimaryAccess"
+  account_name      = "AWSAccess"
   gw_name           = "transitGW1"
   enable_snat       = true
   vpc_id            = "vpc-0c32b9c3a144789ef"
@@ -17,7 +17,7 @@ resource "aviatrix_transit_gateway" "test_transit_gw1" {
 
 resource "aviatrix_transit_gateway" "test_transit_gw2" {
   cloud_type        = 1
-  account_name      = "AnthonyPrimaryAccess"
+  account_name      = "AWSAccess"
   gw_name           = "transitGW2"
   enable_snat       = true
   vpc_id            = "vpc-0cbdc7571b2fd28bf"

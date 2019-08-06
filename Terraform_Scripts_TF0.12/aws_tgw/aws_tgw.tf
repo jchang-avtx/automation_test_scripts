@@ -2,7 +2,7 @@
 
 resource "aviatrix_transit_gateway" "test_transit_gw" {
   cloud_type                  = 1
-  account_name                = "AnthonyPrimaryAccess"
+  account_name                = "AWSAccess"
   gw_name                     = "testTransitVPCGW"
   vpc_id                      = "vpc-0b92c79340ba016ee"
   vpc_reg                     = "eu-central-1"

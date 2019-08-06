@@ -1,6 +1,6 @@
 resource "aviatrix_gateway" "vpn_gw_for_elb" {
   cloud_type      = 1
-  account_name    = "AnthonyPrimaryAccess"
+  account_name    = "AWSAccess"
   gw_name         = "vpnGWforELB"
   vpc_id          = "vpc-0086065966b807866"
   subnet          = "10.0.2.0/24"

@@ -3,7 +3,7 @@
 
 resource "aviatrix_gateway" "peeringGW1" {
   cloud_type          = 1
-  account_name        = "AnthonyPrimaryAccess"
+  account_name        = "AWSAccess"
   gw_name             = "peeringGW1"
   vpc_id              = "vpc-0086065966b807866"
   vpc_reg             = "us-east-1"
@@ -17,7 +17,7 @@ resource "aviatrix_gateway" "peeringGW1" {
 
 resource "aviatrix_gateway" "peeringGW2" {
   cloud_type          = 1
-  account_name        = "AnthonyPrimaryAccess"
+  account_name        = "AWSAccess"
   gw_name             = "peeringGW2"
   vpc_id              = "vpc-04ca29a568bf2b35f"
   vpc_reg             = "us-east-1"

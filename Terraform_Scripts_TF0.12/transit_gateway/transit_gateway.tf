@@ -1,6 +1,6 @@
 resource "aviatrix_transit_gateway" "insane_transit_gw" {
   cloud_type          = 1
-  account_name        = "AnthonyPrimaryAccess"
+  account_name        = "AWSAccess"
   gw_name             = "insaneTransitGW1"
 
   vpc_id              = "vpc-0c32b9c3a144789ef"

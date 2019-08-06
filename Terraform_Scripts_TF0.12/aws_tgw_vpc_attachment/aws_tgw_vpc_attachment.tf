@@ -1,6 +1,6 @@
 resource "aviatrix_aws_tgw" "test_aws_tgw2" {
   tgw_name                = "testAWSTGW2"
-  account_name            = "AnthonyPrimaryAccess"
+  account_name            = "AWSAccess"
   region                  = "eu-central-1"
   aws_side_as_number      = "65412"
 

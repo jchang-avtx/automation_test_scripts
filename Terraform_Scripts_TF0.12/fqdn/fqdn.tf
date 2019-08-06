@@ -2,7 +2,7 @@
 
 resource "aviatrix_gateway" "FQDN-GW" {
   cloud_type    = 1
-  account_name  = "AnthonyPrimaryAccess"
+  account_name  = "AWSAccess"
   gw_name       = "FQDN-GW"
   vpc_id        = "vpc-0086065966b807866"
   vpc_reg       = "us-east-1"
@@ -13,7 +13,7 @@ resource "aviatrix_gateway" "FQDN-GW" {
 
 resource "aviatrix_gateway" "FQDN-GW2" {
   cloud_type    = 1
-  account_name  = "AnthonyPrimaryAccess"
+  account_name  = "AWSAccess"
   gw_name       = "FQDN-GW2"
   vpc_id        = "vpc-04ca29a568bf2b35f"
   vpc_reg       = "us-east-1"

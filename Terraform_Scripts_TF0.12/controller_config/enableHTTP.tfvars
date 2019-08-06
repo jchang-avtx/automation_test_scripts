@@ -2,5 +2,5 @@
 
 toggle_http_access    = true
 toggle_fqdn_exception = true
-sg_account_name       = "AnthonyPrimaryAccess"
+sg_account_name       = "AWSAccess"
 toggle_sg_management  = true

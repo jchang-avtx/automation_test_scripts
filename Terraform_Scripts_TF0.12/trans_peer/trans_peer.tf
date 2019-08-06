@@ -1,7 +1,7 @@
 
 resource "aviatrix_gateway" "test_gateway1" {
   cloud_type      = 1
-  account_name    = "AnthonyPrimaryAccess"
+  account_name    = "AWSAccess"
   gw_name         = "NAT-gw1"
   vpc_id          = "vpc-ba3c12dd"
   vpc_reg         = "us-west-1"
@@ -12,7 +12,7 @@ resource "aviatrix_gateway" "test_gateway1" {
 
 resource "aviatrix_gateway" "test_gateway2" {
   cloud_type      = 1
-  account_name    = "AnthonyPrimaryAccess"
+  account_name    = "AWSAccess"
   gw_name         = "NAT-gw2"
   vpc_id          = "vpc-0cbdc7571b2fd28bf"
   vpc_reg         = "us-west-1"
