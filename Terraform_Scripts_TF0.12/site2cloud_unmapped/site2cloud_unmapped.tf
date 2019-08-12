@@ -3,7 +3,7 @@
 # Create Aviatrix AWS gateway to act as our "Local"
 resource "aviatrix_gateway" "test_gateway1" {
   cloud_type          = 1
-  account_name        = "AnthonyPrimaryAccess"
+  account_name        = "AWSAccess"
   gw_name             = "avxPrimaryGwName"
   vpc_id              = "vpc-0529919b6ad00473e"
   vpc_reg             = "us-east-1"
@@ -21,7 +21,7 @@ resource "aviatrix_gateway" "test_gateway1" {
 # Create Aviatrix AWS gateway to act as our on-prem / "Remote" server
 resource "aviatrix_gateway" "test_gateway2" {
   cloud_type          = 1
-  account_name        = "AnthonyPrimaryAccess"
+  account_name        = "AWSAccess"
   gw_name             = "onPremRemoteGW"
   vpc_id              = "vpc-04ca29a568bf2b35f"
   vpc_reg             = "us-east-1"
@@ -39,7 +39,7 @@ resource "aviatrix_gateway" "test_gateway2" {
 ## Test case: with 3 gateways/ more than 2 connections
 resource "aviatrix_gateway" "test_gateway3" {
   cloud_type          = 1
-  account_name        = "AnthonyPrimaryAccess"
+  account_name        = "AWSAccess"
   gw_name             = "gateway3"
   vpc_id              = "vpc-0ac608ef969f34cbd"
   vpc_reg             = "us-east-1"

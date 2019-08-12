@@ -2,7 +2,7 @@
 
 resource "aviatrix_vpc" "firenet_vpc" {
   cloud_type = 1
-  account_name = "AnthonyPrimaryAccess"
+  account_name = "AWSAccess"
   region = "us-west-1"
   name = "firenetVPC"
   cidr = "15.15.15.0/24"
@@ -12,7 +12,7 @@ resource "aviatrix_vpc" "firenet_vpc" {
 
 resource "aviatrix_transit_vpc" "firenet_transit_gw" {
   cloud_type          = 1
-  account_name        = "AnthonyPrimaryAccess"
+  account_name        = "AWSAccess"
   gw_name             = "firenetTransitGW"
   vpc_id              = aviatrix_vpc.firenet_vpc.vpc_id
   vpc_reg             = "us-west-1"

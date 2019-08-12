@@ -2,7 +2,7 @@
 
 resource "aviatrix_gateway" "testGW4" {
   cloud_type              = 1
-  account_name            = "AnthonyPrimaryAccess"
+  account_name            = "AWSAccess"
   gw_name                 = "testGW4"
   vpc_id                  = "vpc-0086065966b807866"
   vpc_reg                 = "us-east-1"

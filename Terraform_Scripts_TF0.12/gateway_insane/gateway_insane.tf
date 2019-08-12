@@ -2,7 +2,7 @@
 
 resource "aviatrix_gateway" "insane_aws_gw" {
   cloud_type                = 1
-  account_name              = "AnthonyPrimaryAccess"
+  account_name              = "AWSAccess"
   gw_name                   = "insaneAWSGW"
   vpc_id                    = "vpc-ba3c12dd"
   vpc_reg                   = "us-west-1"

@@ -2,7 +2,7 @@
 
 resource "aviatrix_transit_gateway" "test_transit_gw1" {
   cloud_type      = 1
-  account_name    = "AnthonyPrimaryAccess"
+  account_name    = "AWSAccess"
   gw_name         = "transitGW1forSpoke"
   vpc_id          = "vpc-0c32b9c3a144789ef"
   vpc_reg         = "us-east-1"
@@ -19,7 +19,7 @@ resource "aviatrix_transit_gateway" "test_transit_gw1" {
 ## Create a 2nd transitGW to test "updateTransitGW.tfvars test case"
 resource "aviatrix_transit_gateway" "test_transit_gw2" {
   cloud_type      = 1
-  account_name    = "AnthonyPrimaryAccess"
+  account_name    = "AWSAccess"
   gw_name         = "transitGW2forSpoke"
   vpc_id          = "vpc-0cbdc7571b2fd28bf"
   vpc_reg         = "us-west-1"
@@ -35,7 +35,7 @@ resource "aviatrix_transit_gateway" "test_transit_gw2" {
 
 resource "aviatrix_spoke_gateway" "test_spoke_gateway" {
   cloud_type        = 1
-  account_name      = "AnthonyPrimaryAccess"
+  account_name      = "AWSAccess"
   gw_name           = "spoke-gw-01"
   vpc_id            = "vpc-06b5b670e792e3462"
   vpc_reg           = "us-east-1"
@@ -49,6 +49,11 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway" {
   ha_subnet         = "172.0.2.64/26"
   ha_gw_size        = var.aviatrix_ha_gw_size
   enable_snat       = false
+
+  allocate_new_eip  = false
+  eip               = "34.239.41.40"
+  ha_eip            = "3.213.178.197"
+
   transit_gw        = var.aviatrix_transit_gw
   tag_list          = ["k1:v1", "k2:v2"]
   depends_on        = ["aviatrix_transit_gateway.test_transit_gw1", "aviatrix_transit_gateway.test_transit_gw2"]

@@ -1,6 +1,6 @@
 # Create a new VPC
 resource "aviatrix_vpc" "test_vpc" {
-  account_name          = "AnthonyPrimaryAccess"
+  account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
   cidr                  = "11.11.11.11/24"
@@ -10,7 +10,7 @@ resource "aviatrix_vpc" "test_vpc" {
 }
 
 resource "aviatrix_vpc" "test_vpc2" {
-  account_name          = "AnthonyPrimaryAccess"
+  account_name          = "AWSAccess"
   aviatrix_transit_vpc  = true
   aviatrix_firenet_vpc  = false
   cidr                  = "10.10.10.10/20"
@@ -20,7 +20,7 @@ resource "aviatrix_vpc" "test_vpc2" {
 }
 
 resource "aviatrix_vpc" "test_vpc3" {
-  account_name          = "AnthonyPrimaryAccess"
+  account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = true
   cidr                  = "13.13.13.13/24"

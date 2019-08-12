@@ -1,5 +1,5 @@
-avx_account_name_1 = "AnthonyPrimaryAccess"
-avx_account_name_2 = "AnthonyPrimaryAccess"
+avx_account_name_1 = "AWSAccess"
+avx_account_name_2 = "AWSAccess"
 
 aws_vpc_id_1       = "vpc-0cbdc7571b2fd28bf"
 aws_vpc_id_2       = "vpc-ba3c12dd"
