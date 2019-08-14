@@ -25,8 +25,9 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway_arm" {
   vpc_reg           = "Central US"
   gw_size           = var.arm_gw_size
 
-  insane_mode       = true
-  subnet            = "10.3.2.64/26"
+  # insane_mode       = true
+  # subnet            = "10.3.2.64/26"
+  subnet            = "10.3.0.0/24" # non-insane
 
   ha_subnet         = var.arm_ha_gw_subnet
   ha_gw_size        = var.arm_ha_gw_size

@@ -5,3 +5,4 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
 
 - Due to Terraform 0.12 not being backwards-compatible, please see ```Terraform_Scripts``` for 0.11 and below
 - **Note:** Terraform 0.12 is compatible with Aviatrix Controller 4.7+, Terraform R1.12+
+- **Note:** Current scripts are updated for R2.0+

@@ -6,7 +6,7 @@
 ```
   terraform init
   terraform apply -var-file=/path/provider_cred.tfvars -auto-approve
-  terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
+  terraform plan -var-file=/path/provider_cred.tfvars
   terraform show
 
   terraform state rm aviatrix_controller_config.test_controller_config
