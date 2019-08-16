@@ -44,11 +44,11 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway" {
   # insane_mode       = true
   # insane_mode_az    = "us-east-1a"
   # subnet            = "172.0.2.0/26"
-  subnet            = "172.0.2.0/24" # non-insane
+  subnet            = "172.0.0.0/24" # non-insane
 
   # ha_insane_mode_az = "us-east-1b"
   # ha_subnet         = "172.0.2.64/26"
-  ha_subnet         = "172.0.2.0/24" # non-insane
+  ha_subnet         = "172.0.1.0/24" # non-insane
   ha_gw_size        = var.aviatrix_ha_gw_size
   enable_snat       = false
 
