@@ -11,8 +11,8 @@ resource "aviatrix_transit_gateway" "test_transit_gw1" {
   gw_size           = "t2.micro"
   subnet            = "10.0.1.32/28"
 
-  enable_hybrid_connection  = false
-  connected_transit         = true
+  enable_hybrid_connection = false
+  connected_transit = true
 }
 
 resource "aviatrix_transit_gateway" "test_transit_gw2" {
