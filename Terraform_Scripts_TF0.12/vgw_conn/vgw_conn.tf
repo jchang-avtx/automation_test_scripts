@@ -18,6 +18,8 @@ resource "aviatrix_vgw_conn" "test_vgw_conn" {
   gw_name                           = aviatrix_transit_gateway.test_transit_gw.gw_name
   vpc_id                            = aviatrix_transit_gateway.test_transit_gw.vpc_id
   bgp_vgw_id                        = "vgw-0cf3a3302ac5857a8"
+  bgp_vgw_account                   = aviatrix_transit_gateway.test_transit_gw.account_name
+  bgp_vgw_region                    = aviatrix_transit_gateway.test_transit_gw.vpc_reg
   bgp_local_as_num                  = 100
   enable_advertise_transit_cidr     = var.toggle_advertise_transit_cidr
   bgp_manual_spoke_advertise_cidrs  = var.bgp_manual_spoke_advertise_cidrs_list

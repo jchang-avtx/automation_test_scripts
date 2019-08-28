@@ -25,5 +25,6 @@ resource "aviatrix_transit_gateway" "firenet_transit_gw" {
   enable_firenet_interfaces   = var.toggle_firenet
   enable_hybrid_connection    = true
   connected_transit           = true
+  enable_active_mesh          = false
   depends_on                  = ["aviatrix_vpc.firenet_vpc"]
 }

@@ -11,6 +11,7 @@ resource "aviatrix_transit_gateway" "test_transit_gw" {
 
   enable_hybrid_connection    = true
   connected_transit           = true
+  enable_active_mesh          = false
 }
 
 resource "aviatrix_vgw_conn" "test_vgw_conn" {
@@ -18,6 +19,8 @@ resource "aviatrix_vgw_conn" "test_vgw_conn" {
   gw_name               = aviatrix_transit_gateway.test_transit_gw.gw_name
   vpc_id                = aviatrix_transit_gateway.test_transit_gw.vpc_id
   bgp_vgw_id            = "vgw-041baa40dfbf28c9a"
+  bgp_vgw_account       = aviatrix_transit_gateway.test_transit_gw.account_name
+  bgp_vgw_region        = aviatrix_transit_gateway.test_transit_gw.vpc_reg
   bgp_local_as_num      = "65001"
   depends_on            = ["aviatrix_transit_gateway.test_transit_gw"]
 }
@@ -57,6 +60,9 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
   }
   security_domains {
     security_domain_name = var.security_domain_name_list[1]
+    aviatrix_firewall    = true
+    native_egress        = false
+    native_firewall      = false
   }
 
   manage_vpc_attachment = true # default is true; if false, must use vpc_attachment resource
