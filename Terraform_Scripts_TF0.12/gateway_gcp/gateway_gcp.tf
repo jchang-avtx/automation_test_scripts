@@ -3,7 +3,7 @@ resource "aviatrix_gateway" "gcloud_gw" {
   account_name    = "GCPAccess"
   gw_name         = "gcloudgw"
   vpc_id          = "gcptestvpc"
-  vpc_reg         = "us-west2-b"
+  vpc_reg         = "us-west2-c"
   gw_size         = "n1-standard-1"
   subnet          = "10.168.0.0/20"
 
