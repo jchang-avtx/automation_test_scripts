@@ -5,11 +5,12 @@ resource "aviatrix_spoke_gateway" "gcloud_spoke_gw" {
   account_name    = "GCPAccess"
   gw_name         = "gcloudspokegw"
   vpc_id          = "default"
-  vpc_reg         = "us-west2-a"
+  vpc_reg         = "us-west2-c"
   gw_size         = var.gcp_instance_size
   subnet          = "10.168.0.0/20"
 
   ha_zone         = var.gcp_ha_gw_zone
   ha_gw_size      = var.gcp_ha_gw_size
   enable_snat     = var.toggle_snat
+  enable_active_mesh = false
 }
