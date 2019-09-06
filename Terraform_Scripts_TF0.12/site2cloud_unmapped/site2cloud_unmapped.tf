@@ -61,7 +61,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   connection_name               = "s2c_test_conn_name"
   connection_type               = "unmapped"
   remote_gateway_type           = "avx"
-  tunnel_type                   = "tcp"
+  tunnel_type                   = "udp"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway1.gw_name
@@ -86,7 +86,7 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   connection_name               = "s2c_test_conn_name_2"
   connection_type               = "unmapped"
   remote_gateway_type           = "avx"
-  tunnel_type                   = "tcp"
+  tunnel_type                   = "udp"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway2.gw_name
@@ -111,7 +111,7 @@ resource "aviatrix_site2cloud" "s2c_test3" {
   connection_name               = "s2c_test_conn_name_3"
   connection_type               = "unmapped"
   remote_gateway_type           = "avx"
-  tunnel_type                   = "tcp"
+  tunnel_type                   = "udp"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway3.gw_name
@@ -133,7 +133,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   connection_name               = "s2c_test_conn_name_4"
   connection_type               = "unmapped"
   remote_gateway_type           = "avx"
-  tunnel_type                   = "tcp"
+  tunnel_type                   = "udp"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway1.gw_name
