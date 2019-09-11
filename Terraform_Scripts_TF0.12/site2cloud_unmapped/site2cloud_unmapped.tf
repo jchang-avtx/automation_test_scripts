@@ -100,7 +100,7 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   remote_subnet_cidr            = aviatrix_gateway.test_gateway1.subnet
   local_subnet_cidr             = aviatrix_gateway.test_gateway2.subnet
 
-  ssl_server_pool               = "192.168.45.0/24"
+  # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = true
 
   depends_on                    = ["aviatrix_site2cloud.s2c_test"]
@@ -122,7 +122,7 @@ resource "aviatrix_site2cloud" "s2c_test3" {
   remote_subnet_cidr            = aviatrix_gateway.test_gateway1.subnet
   local_subnet_cidr             = aviatrix_gateway.test_gateway3.subnet
 
-  ssl_server_pool               = "192.168.45.0/24"
+  # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = false
 
   depends_on                    = ["aviatrix_site2cloud.s2c_test2"]
@@ -144,7 +144,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   remote_subnet_cidr            = aviatrix_gateway.test_gateway3.subnet
   local_subnet_cidr             = aviatrix_gateway.test_gateway1.subnet
 
-  ssl_server_pool               = "192.168.45.0/24"
+  # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = false
 
   depends_on = ["aviatrix_site2cloud.s2c_test3"]
