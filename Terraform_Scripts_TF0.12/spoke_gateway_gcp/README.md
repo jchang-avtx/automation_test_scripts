@@ -30,6 +30,14 @@
                   -var-file=updateHAGWSize.tfvars \
                   -auto-approve
   terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=attachTransitGW.tfvars \
+                  -auto-approve
+  terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=switchTransitGW.tfvars \
+                  -auto-approve
+  terraform show
 
   terraform destroy -var-file=/path/provider_cred.tfvars -auto-approve
 ```
