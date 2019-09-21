@@ -7,7 +7,7 @@ resource "aviatrix_transit_gateway" "gcp_transit_gateway" {
   gw_size       = var.gcp_gw_size
   subnet        = "10.128.0.0/20"
 
-  ha_subnet     = "10.128.0.0/20"
+  ha_zone       = var.gcp_ha_gw_zone
   ha_gw_size    = var.gcp_ha_gw_size
 
   enable_snat   = var.enable_snat
