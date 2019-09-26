@@ -1,6 +1,8 @@
 .DS_Store
 *_cred.tfvars
 *.json
+*.pem
+.terraform
 
 Jenkinsfile
 user_emails.tfvars
