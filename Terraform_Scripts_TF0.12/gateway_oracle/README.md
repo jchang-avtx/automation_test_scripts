@@ -10,7 +10,7 @@
   terraform show
 
   terraform state rm aviatrix_gateway.oci_gateway
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_gateway.oci-gateway oci-gw
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_gateway.oci_gateway oci-gw
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
