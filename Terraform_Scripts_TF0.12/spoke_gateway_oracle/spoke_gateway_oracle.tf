@@ -14,11 +14,29 @@ resource "aviatrix_transit_gateway" "oci_transit_gateway1" {
   gw_size             = "VM.Standard2.2"
   subnet              = "123.101.0.0/16"
 
-  # ha_subnet           = "123.101.0.0/16"
-  # ha_gw_size          = "VM.Standard2.2"
+  ha_subnet           = "123.101.0.0/16"
+  ha_gw_size          = "VM.Standard2.2"
 
-  enable_hybrid_connection  = false
-  connected_transit         = true
+  enable_hybrid_connection  = false # only supports cloud type 1
+  connected_transit         = true # (optional) specify connected transit status (yes or no)
+  enable_active_mesh        = false
+}
+
+resource "aviatrix_transit_gateway" "oci_transit_gateway2" {
+  cloud_type          = 16
+  account_name        = "OCIAccess"
+  gw_name             = "oci-transit-gw-for-spoke2"
+
+  vpc_id              = "OCI-VCN"
+  vpc_reg             = "us-ashburn-1"
+  gw_size             = "VM.Standard2.2"
+  subnet              = "123.101.0.0/16"
+
+  ha_subnet           = "123.101.0.0/16"
+  ha_gw_size          = "VM.Standard2.2"
+
+  enable_hybrid_connection  = false # only supports cloud type 1
+  connected_transit         = true # (optional) specify connected transit status (yes or no)
   enable_active_mesh        = false
 }
 
@@ -34,11 +52,11 @@ resource "aviatrix_spoke_gateway" "oci_spoke_gateway" {
   subnet            = "169.69.0.0/16"
   single_az_ha      = true
 
-  # ha_subnet         = "169.69.0.0/16"
-  # ha_gw_size        = var.ha_gw_size
-  enable_snat       = false
+  ha_subnet         = "169.69.0.0/16"
+  ha_gw_size        = var.ha_gw_size
+  enable_snat       = false # (Please disable AWS NAT instance before enabling this feature); not supported w insane mode
   enable_active_mesh= false
 
-  transit_gw        = var.transit_gw
-  depends_on        = ["aviatrix_transit_gateway.oci_transit_gateway1"]
+  transit_gw        = var.transit_gw # optional; comment out if want to test Update from no transitGW attachment to yes
+  depends_on        = ["aviatrix_transit_gateway.oci_transit_gateway1", "aviatrix_transit_gateway.oci_transit_gateway2"]
 }
