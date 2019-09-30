@@ -8,3 +8,4 @@ variable "aws_gateway_tag_list" {
   type = "list"
 }
 variable "enable_snat" {}
+variable "enable_vpc_dns_server" {}

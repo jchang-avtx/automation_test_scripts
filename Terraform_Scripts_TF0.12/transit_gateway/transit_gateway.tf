@@ -21,4 +21,5 @@ resource "aviatrix_transit_gateway" "insane_transit_gw" {
   enable_hybrid_connection  = var.tgw_enable_hybrid
   connected_transit         = var.tgw_enable_connected_transit
   enable_active_mesh        = false
+  enable_vpc_dns_server     = var.enable_vpc_dns_server
 }
