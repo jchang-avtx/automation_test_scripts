@@ -9,6 +9,11 @@ resource "aviatrix_gateway" "FQDN-GW" {
   gw_size       = "t2.micro"
   subnet        = "10.0.0.0/24"
   enable_snat   = true
+  enable_vpc_dns_server = false
+
+  lifecycle {
+    ignore_changes = [enable_vpc_dns_server]
+  }
 }
 
 resource "aviatrix_gateway" "FQDN-GW2" {
@@ -20,6 +25,11 @@ resource "aviatrix_gateway" "FQDN-GW2" {
   gw_size       = "t2.micro"
   subnet        = "10.202.0.0/16"
   enable_snat   = true
+  enable_vpc_dns_server = false
+
+  lifecycle {
+    ignore_changes = [enable_vpc_dns_server]
+  }
 }
 
 resource "aviatrix_fqdn" "FQDN-tag1" {

@@ -38,3 +38,5 @@ aviatrix_firewall_policy_port             = ["69",
                                              "65535",
                                              "0:65535",
                                              "0:100"]
+
+aviatrix_firewall_policy_description      = "icmp firewall rule #1"

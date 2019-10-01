@@ -9,3 +9,5 @@ variable "aviatrix_ha_gw_size" {}
 
 variable "tgw_enable_hybrid" {}
 variable "tgw_enable_connected_transit" {}
+
+variable "enable_vpc_dns_server" {}

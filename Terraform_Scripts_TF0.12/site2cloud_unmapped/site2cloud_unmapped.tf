@@ -61,7 +61,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   connection_name               = "s2c_test_conn_name"
   connection_type               = "unmapped"
   remote_gateway_type           = "avx"
-  tunnel_type                   = "tcp"
+  tunnel_type                   = "udp"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway1.gw_name
@@ -86,7 +86,7 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   connection_name               = "s2c_test_conn_name_2"
   connection_type               = "unmapped"
   remote_gateway_type           = "avx"
-  tunnel_type                   = "tcp"
+  tunnel_type                   = "udp"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway2.gw_name
@@ -100,7 +100,7 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   remote_subnet_cidr            = aviatrix_gateway.test_gateway1.subnet
   local_subnet_cidr             = aviatrix_gateway.test_gateway2.subnet
 
-  ssl_server_pool               = "192.168.45.0/24"
+  # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = true
 
   depends_on                    = ["aviatrix_site2cloud.s2c_test"]
@@ -111,7 +111,7 @@ resource "aviatrix_site2cloud" "s2c_test3" {
   connection_name               = "s2c_test_conn_name_3"
   connection_type               = "unmapped"
   remote_gateway_type           = "avx"
-  tunnel_type                   = "tcp"
+  tunnel_type                   = "udp"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway3.gw_name
@@ -122,7 +122,7 @@ resource "aviatrix_site2cloud" "s2c_test3" {
   remote_subnet_cidr            = aviatrix_gateway.test_gateway1.subnet
   local_subnet_cidr             = aviatrix_gateway.test_gateway3.subnet
 
-  ssl_server_pool               = "192.168.45.0/24"
+  # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = false
 
   depends_on                    = ["aviatrix_site2cloud.s2c_test2"]
@@ -133,7 +133,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   connection_name               = "s2c_test_conn_name_4"
   connection_type               = "unmapped"
   remote_gateway_type           = "avx"
-  tunnel_type                   = "tcp"
+  tunnel_type                   = "udp"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway1.gw_name
@@ -144,7 +144,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   remote_subnet_cidr            = aviatrix_gateway.test_gateway3.subnet
   local_subnet_cidr             = aviatrix_gateway.test_gateway1.subnet
 
-  ssl_server_pool               = "192.168.45.0/24"
+  # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = false
 
   depends_on = ["aviatrix_site2cloud.s2c_test3"]

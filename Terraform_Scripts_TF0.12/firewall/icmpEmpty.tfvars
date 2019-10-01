@@ -1,4 +1,4 @@
-## initial creation
+## test case 1: change to icmp and test empty port as well as update description
 
 aviatrix_firewall_base_policy     = "allow-all"
 aviatrix_firewall_packet_logging  = true
@@ -38,3 +38,5 @@ aviatrix_firewall_policy_port             = ["69",
                                              "65535",
                                              "0:65535",
                                              ""]
+
+aviatrix_firewall_policy_description      = "icmp firewall rule UPDATED"

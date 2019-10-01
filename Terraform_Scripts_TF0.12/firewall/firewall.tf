@@ -87,6 +87,7 @@ resource "aviatrix_firewall" "test_firewall_icmp" {
     port        = var.aviatrix_firewall_policy_port[6]
     action      = var.aviatrix_firewall_policy_action[0]
     log_enabled = var.aviatrix_firewall_policy_log_enable[0]
+    description = var.aviatrix_firewall_policy_description
   }
   depends_on = ["aviatrix_gateway.test_gateway2"]
 }

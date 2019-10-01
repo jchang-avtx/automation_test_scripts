@@ -23,3 +23,4 @@ variable "aviatrix_firewall_policy_action" {
 variable "aviatrix_firewall_policy_log_enable" {
   type = "list"
 }
+variable "aviatrix_firewall_policy_description" {}

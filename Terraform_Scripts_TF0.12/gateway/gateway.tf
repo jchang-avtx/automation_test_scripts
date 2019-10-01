@@ -18,4 +18,6 @@ resource "aviatrix_gateway" "testGW1" {
   peering_ha_subnet   = "10.0.2.0/24"
   peering_ha_gw_size  = var.aws_ha_gw_size
   peering_ha_eip      = "18.204.25.144"
+
+  enable_vpc_dns_server = var.enable_vpc_dns_server
 }

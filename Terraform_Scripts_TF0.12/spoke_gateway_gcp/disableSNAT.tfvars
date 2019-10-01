@@ -6,3 +6,4 @@ gcp_ha_gw_zone    = ""
 gcp_ha_gw_size    = ""
 
 toggle_snat       = false
+attached_transit_gw = ""
