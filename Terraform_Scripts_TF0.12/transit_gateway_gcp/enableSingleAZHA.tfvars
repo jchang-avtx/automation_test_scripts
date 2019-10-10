@@ -1,9 +1,9 @@
-# case 4: enable active mesh
+# case 1: enable single AZHA
 
-enable_snat               = false
+enable_snat               = true
 single_az_ha              = true
-enable_connected_transit  = false
-enable_active_mesh        = true
+enable_connected_transit  = true
+enable_active_mesh        = false
 
 gcp_gw_size     = "n1-standard-1"
 gcp_ha_gw_size  = "n1-standard-1"
