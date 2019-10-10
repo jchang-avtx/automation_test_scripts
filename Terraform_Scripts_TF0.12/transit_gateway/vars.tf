@@ -6,6 +6,7 @@ variable "gw_size" {}
 
 ## HA-related parameters
 variable "aviatrix_ha_gw_size" {}
+variable "single_az_ha" {}
 
 variable "tgw_enable_hybrid" {}
 variable "tgw_enable_connected_transit" {}
