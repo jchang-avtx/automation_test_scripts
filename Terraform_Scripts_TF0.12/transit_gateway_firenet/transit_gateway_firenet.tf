@@ -17,8 +17,8 @@ resource "aviatrix_transit_gateway" "firenet_transit_gw" {
   vpc_id              = aviatrix_vpc.firenet_vpc.vpc_id
   vpc_reg             = "us-west-1"
   gw_size             = "c5.xlarge"
-  subnet              = aviatrix_vpc.firenet_vpc.subnets.1.cidr
-  ha_subnet           = aviatrix_vpc.firenet_vpc.subnets.2.cidr
+  subnet              = aviatrix_vpc.firenet_vpc.public_subnets.2.cidr
+  ha_subnet           = aviatrix_vpc.firenet_vpc.public_subnets.4.cidr
   ha_gw_size          = "c5.xlarge"
 
   enable_snat                 = false
@@ -26,5 +26,4 @@ resource "aviatrix_transit_gateway" "firenet_transit_gw" {
   enable_hybrid_connection    = true
   connected_transit           = true
   enable_active_mesh          = false
-  depends_on                  = ["aviatrix_vpc.firenet_vpc"]
 }
