@@ -10,6 +10,7 @@ resource "aviatrix_transit_gateway" "oci_transit_gateway" {
   gw_size             = var.gw_size
   subnet              = "123.101.0.0/16"
 
+  single_az_ha        = var.single_az_ha
   ha_subnet           = "123.101.0.0/16"
   ha_gw_size          = var.ha_gw_size
 

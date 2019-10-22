@@ -22,7 +22,7 @@ resource "aviatrix_transit_vpc" "firenet_transit_gw" {
   ha_gw_size          = "c5.xlarge"
 
   enable_nat                  = "no"
-  enable_firenet_interfaces   = var.toggle_firenet
+  enable_firenet   = var.toggle_firenet
   enable_hybrid_connection    = true
   connected_transit           = "yes"
   depends_on                  = ["aviatrix_vpc.firenet_vpc"]

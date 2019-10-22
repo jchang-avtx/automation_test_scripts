@@ -11,6 +11,7 @@ resource "aviatrix_transit_gateway" "gcp_transit_gateway" {
   ha_gw_size    = var.gcp_ha_gw_size
 
   enable_snat   = var.enable_snat
+  single_az_ha  = var.single_az_ha
 
   connected_transit   = var.enable_connected_transit
   enable_active_mesh  = var.enable_active_mesh

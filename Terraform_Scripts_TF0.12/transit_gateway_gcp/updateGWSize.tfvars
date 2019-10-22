@@ -1,6 +1,7 @@
-# case 4: update GW size
+# case 5: update GW size
 
 enable_snat               = false
+single_az_ha              = true
 enable_connected_transit  = false
 enable_active_mesh        = true
 

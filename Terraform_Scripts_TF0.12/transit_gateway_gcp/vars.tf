@@ -3,6 +3,7 @@ variable "aviatrix_controller_username" {}
 variable "aviatrix_controller_password" {}
 
 variable "enable_snat" {}
+variable "single_az_ha" {}
 variable "enable_connected_transit" {}
 variable "enable_active_mesh" {}
 

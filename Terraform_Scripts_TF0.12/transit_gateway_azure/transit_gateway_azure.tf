@@ -14,6 +14,7 @@ resource "aviatrix_transit_gateway" "azure_transit_gw" {
   ha_subnet           = "10.2.2.64/26"
   ha_gw_size          = var.arm_ha_gw_size
   enable_snat         = false # insane mode does not support SNAT
+  single_az_ha        = var.single_az_ha
 
   insane_mode               = true
   enable_hybrid_connection  = var.tgw_enable_hybrid

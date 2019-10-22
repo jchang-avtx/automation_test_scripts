@@ -1,6 +1,7 @@
-# case 1: disable SNAT
+# case 2: disable SNAT
 
 enable_snat               = false
+single_az_ha              = true
 enable_connected_transit  = true
 enable_active_mesh        = false
 

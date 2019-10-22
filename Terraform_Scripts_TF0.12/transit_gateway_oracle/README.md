@@ -15,6 +15,9 @@
   terraform show
 
   terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=enableSingleAZHA.tfvars \
+                  -auto-approve
+  terraform show  terraform apply -var-file=/path/provider_cred.tfvars \
                   -var-file=switchConnectedTransit.tfvars \
                   -auto-approve
   terraform show

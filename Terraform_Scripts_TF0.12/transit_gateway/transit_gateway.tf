@@ -8,6 +8,7 @@ resource "aviatrix_transit_gateway" "insane_transit_gw" {
   gw_size             = var.gw_size
   subnet              = "10.0.1.128/26"
 
+  single_az_ha        = var.single_az_ha
   insane_mode         = true
   insane_mode_az      = "us-east-1a"
   ha_subnet           = "10.0.1.192/26"
