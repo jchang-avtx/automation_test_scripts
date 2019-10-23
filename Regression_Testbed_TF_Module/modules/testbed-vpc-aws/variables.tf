@@ -52,6 +52,11 @@ variable "ubuntu_ami" {
 	type				= string
 	description = "AMI of the ubuntu instances"
 }
+variable "instance_size" {
+	type 				= string
+	description = "Size of AWS instance."
+	default 		= "t2.micro"
+}
 variable "termination_protection" {
 	type				= bool
 	description	= "Whether to disable api termination for the ubuntu instances."

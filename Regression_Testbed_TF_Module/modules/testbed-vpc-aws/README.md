@@ -79,6 +79,10 @@ Private subnet availability zone.
 
 AMI of the ubuntu instances
 
+- **instance_size**
+
+Size of AWS instances. Default is "t2.micro".
+
 - **termination_protection**
 
 Boolean value to enable termination protection of the ubuntu instances.
