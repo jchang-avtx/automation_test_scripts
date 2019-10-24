@@ -1,5 +1,5 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# BE SURE TO CHANGE THE SOURCE PATH IN EACH MODULE
+# BE SURE TO CHANGE THE SOURCE ARGUMENT IN EACH MODULE BLOCK
 # TO POINT TO THE CORRECT TESTBED MODULE FOLDER
 # FROM WHERE YOUR .TF FILE IS LOCATED
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,7 +79,7 @@ module "testbed-basic" {
 	controller_vpc_cidr         = "10.22.0.0/16"
 	controller_subnet_cidr			= "10.22.23.0/24"
 	controller_public_key       = local.public_key
-	controller_sg_source_ip     = "0.0.0.0/0"
+	controller_sg_source_ip     = ["0.0.0.0/0"]
 
 	# Aviatrix controller
 	admin_email                 = ""
@@ -94,7 +94,7 @@ module "testbed-basic" {
   windows_subnet_cidr         = "20.5.1.0/24"
   windows_public_key          = local.public_key
   windows_ami                 = "ami-0069635df219ce9e5"
-	windows_sg_source_ip        = "0.0.0.0/0"
+	windows_sg_source_ip        = ["0.0.0.0/0"]
 }
 
 ## AWS Cross account and Azure Vnet modules are optional.

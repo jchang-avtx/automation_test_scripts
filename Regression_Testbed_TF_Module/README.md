@@ -28,6 +28,8 @@ This folder contains instructions and modules to create a Regression Testbed usi
 
 ### Usage
 Look into the "examples" folder for example .tf files
+- **be sure to change the source argument for each of the module blocks in example_filled.tf**
+- [Module Sources doc](https://www.terraform.io/docs/modules/sources.html)
 
 There are 3 Phases:
 - **1st:** Regression Baseline create
