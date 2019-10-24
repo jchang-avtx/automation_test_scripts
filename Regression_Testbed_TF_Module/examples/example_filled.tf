@@ -1,3 +1,9 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# BE SURE TO CHANGE THE SOURCE PATH IN EACH MODULE
+# TO POINT TO THE CORRECT TESTBED MODULE FOLDER
+# FROM WHERE YOUR .TF FILE IS LOCATED
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # AWS Basic Creation module
@@ -127,6 +133,47 @@ module "testbed-basic" {
 #}
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# AWS Gov Account Module (Optional)
+# - VPCs with Ubuntu instance in AWS Gov account
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#module "aws-vpc-gov" {
+#  source          	          = "./Regression_Testbed_TF_module/modules/testbed-vpc-aws-gov"
+#  termination_protection      = local.terminal_protection
+#  resource_name_label         = local.resource_name_label
+#
+#  # AWS Gov Account
+#  aws_gov_access_key          = ""
+#  aws_gov_secret_key          = ""
+#
+#  # AWS Gov VPC setup
+#  vpc_public_key              = local.public_key
+#  pub_hostnum                 = local.pub_hostnum
+#  pri_hostnum                 = local.pri_hostnum
+#
+#  # US Gov West 1
+#  vpc_count_gov_west          = 1
+#  vpc_cidr_gov_west           = ["10.50.0.0/16"]
+#  pub_subnet1_cidr_gov_west   = ["10.50.5.0/24"]
+#  pub_subnet2_cidr_gov_west   = ["10.50.6.0/24"]
+#  pri_subnet_cidr_gov_west    = ["10.50.7.0/24"]
+#  pub_subnet1_az_gov_west     = ["us-gov-west-1b"]
+#  pub_subnet2_az_gov_west     = ["us-gov-west-1b"]
+#  pri_subnet_az_gov_west      = ["us-gov-west-1c"]
+#  ubuntu_ami_gov_west         = "ami-12531d73"
+#
+#  # US Gov East 1
+#  vpc_count_gov_east          = 1
+#  vpc_cidr_gov_east           = ["10.30.0.0/16"]
+#  pub_subnet1_cidr_gov_east   = ["10.30.5.0/24"]
+#  pub_subnet2_cidr_gov_east   = ["10.30.6.0/24"]
+#  pri_subnet_cidr_gov_east    = ["10.30.7.0/24"]
+#  pub_subnet1_az_gov_east     = ["us-gov-east-1a"]
+#  pub_subnet2_az_gov_east     = ["us-gov-east-1a"]
+#  pri_subnet_az_gov_east      = ["us-gov-east-1b"]
+#  ubuntu_ami_gov_east         = "ami-5ae2022b"
+#}
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Azure Vnet Module (Optional)
 # - VNETs with Ubuntu instances in specified region
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -160,7 +207,7 @@ module "testbed-basic" {
 #  region      = "us-central1"
 #}
 #
-#module "testbed-gcp" {
+#module "gcp-vpc" {
 #  source = "./Regression_Testbed_TF_Module/modules/testbed-vpc-gcp"
 #  vpc_count             = 1
 #  resource_name_label   = local.resource_name_label

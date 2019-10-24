@@ -21,6 +21,7 @@ This folder contains instructions and modules to create a Regression Testbed usi
 | [testbed-onprem](./modules/testbed-onprem) | Sets up an Aviatrix site2cloud connection with AWS VGW and onprem. | <ul><li>Public Key,</li><li>Aviatrix controller,</li><li>AWS account</li></ul> |
 | [testbed-vnet-arm](./modules/testbed-vnet-arm) | Creates an Azure RM VNET testbed environment | <ul><li>Public Key,</li><li>Azure RM account</li></ul> |
 | [testbed-vpc-aws](./modules/testbed-vpc-aws) | Creates an AWS VPC testbed environment | <ul><li>Public Key,</li><li>AWS account</li></ul> |
+| [testbed-vpc-aws-gov](./modules/testbed-vpc-aws-gov) | Creates an AWS GOV VPC testbed environment | <ul><li>Public Key,</li><li>AWS Gov account</li></ul> |
 | [testbed-vpc-gcp](./modules/testbed-vpc-gcp) | Creates a GCP VPC testbed environment | <ul><li>Public Key,</li><li>GCP account</li></ul> |
 | [testbed-windows-instance](./modules/testbed-windows-instance) | Creates an AWS VPC to launch a windows instance for RDP | <ul><li>Public Key,</li><li>AWS account</li></ul> |
 
@@ -36,8 +37,8 @@ There are 3 Phases:
   - Read the testbed-basic README.md for more information
   - initial `terraform apply`
 
-- **2nd:** Add Cross AWS/Azure RM vpcs.
-  - **optional**, uncomment  cross aws/arm modules and outputs to use
+- **2nd:** Add Cross AWS/AWS Gov/Azure RM vpcs.
+  - **optional**, uncomment  cross aws/aws gov/arm modules and outputs to use
 
 - **3rd:** Aviatrix tests
   - Add Aviatrix access accounts to Aviatrix controller

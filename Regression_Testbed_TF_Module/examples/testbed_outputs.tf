@@ -55,9 +55,9 @@ output "windows_key" {
  value = module.testbed-basic.windows_key
 }
 
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## AWS Cross Account Module (Optional)
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# AWS Cross Account Module (Optional)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #output "cross_aws_vpc_info" {
 #	value = [
 #    module.aws-cross-acct.vpc_name,
@@ -79,9 +79,27 @@ output "windows_key" {
 #  ]
 #}
 #
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## Azure Vnet Module (Optional)
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# AWS Gov Account Module (Optional)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#output "us-gov-west" {
+#  value = concat(
+#    module.aws-vpc-gov.gov_west_vpc_info,
+#    module.aws-vpc-gov.gov_west_subnet_info,
+#    module.aws-vpc-gov.gov_west_ubuntu_info
+#  )
+#}
+#output "us-gov-east" {
+#  value = concat(
+#    module.aws-vpc-gov.gov_east_vpc_info,
+#    module.aws-vpc-gov.gov_east_subnet_info,
+#    module.aws-vpc-gov.gov_east_ubuntu_info
+#  )
+#}
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Azure Vnet Module (Optional)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #output "arm_vnet_info" {
 #	value = [
 #    module.arm-vnet.vnet_name,
@@ -108,22 +126,22 @@ output "windows_key" {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #output "gcp_vpc_info" {
 #  value = [
-#    module.testbed-gcp.vpc_name,
-#    module.testbed-gcp.vpc_id
+#    module.gcp-vpc.vpc_name,
+#    module.gcp-vpc.vpc_id
 #  ]
 #}
 #output "gcp_subnet_info" {
 #	value = [
-#    module.testbed-gcp.subnet_name,
-#    module.testbed-gcp.subnet_cidr
+#    module.gcp-vpc.subnet_name,
+#    module.gcp-vpc.subnet_cidr
 #  ]
 #}
 #output "gcp_ubuntu_info" {
 #	value = [
-#    module.testbed-gcp.ubuntu_name,
-#    module.testbed-gcp.ubuntu_id,
-#    module.testbed-gcp.ubuntu_public_ip,
-#    module.testbed-gcp.ubuntu_private_ip
+#    module.gcp-vpc.ubuntu_name,
+#    module.gcp-vpc.ubuntu_id,
+#    module.gcp-vpc.ubuntu_public_ip,
+#    module.gcp-vpc.ubuntu_private_ip
 #  ]
 #}
 
