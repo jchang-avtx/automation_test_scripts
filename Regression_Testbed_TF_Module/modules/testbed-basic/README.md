@@ -10,9 +10,6 @@ This Terraform configuration creates an AWS VPC testbed environment with ubuntu 
 - Existing AWS Key Pair
 - AMI with private key already within ubuntu instances
 
-### Set up Environment and Install terraform
-- To download and install Terraform, follow the Step 1 of the [Terraform tutorial on the Aviatrix documentation page](https://docs.aviatrix.com/HowTos/tf_aviatrix_howto.html).
-
 ### Usage
 
 1. Create testbed.tf and testbed_outputs.tf
@@ -22,7 +19,7 @@ This Terraform configuration creates an AWS VPC testbed environment with ubuntu 
 module "testbed-basic" {
   source = "<<main module path>> ie: ./testbed-basic"
   termination_protection      = <<true/false>>
-  resource_name_label         = ""<<input label for all resources>>"
+  resource_name_label         = "<<input label for all resources>>"
 
   # AWS Primary Account
   aws_primary_acct_access_key = "<<your aws primary access key>>"
@@ -349,54 +346,26 @@ Source IP that Windows instance security group will allow.
 AMI for the Windows instance to be created.
 
 ### Outputs
-- **us-west-1_vpc_id**
-- **us-west-2_vpc_id**
-- **us-east-1_vpc_id**
-- **us-east-2_vpc_id**
+- **west1_vpc_info**
+- **west2_vpc_info**
+- **east1_vpc_info**
+- **east2_vpc_info**
 
-Outputs the ID for all vpc's in the given regions.
+Outputs the vpc info (ID and name) for all vpc's in the given regions.
 
-- **us-west-1_vpc_name**
-- **us-west-2_vpc_name**
-- **us-east-1_vpc_name**
-- **us-east-2_vpc_name**
+- **west1_subnet_info**
+- **west2_subnet_info**
+- **east1_subnet_info**
+- **east2_subnet_info**
 
-Outputs the name for all vpc's in the given regions.
+Outputs the subnet info (name and cidr) for all subnets in the given regions.
 
-- **us-west-1_subnet_name**
-- **us-west-2_subnet_name**
-- **us-east-1_subnet_name**
-- **us-east-2_subnet_name**
+- **west1_ubuntu_info**
+- **west2_ubuntu_info**
+- **east1_ubuntu_info**
+- **east2_ubuntu_info**
 
-Outputs the name for all subnets in the given regions.
-
-- **us-west-1_subnet_cidr**
-- **us-west-2_subnet_cidr**
-- **us-east-1_subnet_cidr**
-- **us-east-2_subnet_cidr**
-
-Outputs the cidr for all subnets in the given regions.
-
-- **us-west-1_ubuntu_public_ip**
-- **us-west-2_ubuntu_public_ip**
-- **us-east-1_ubuntu_public_ip**
-- **us-east-2_ubuntu_public_ip**
-
-Outputs the public IP of the public ubuntu instances in the given regions.
-
-- **us-west-1_ubuntu_private_ip**
-- **us-west-2_ubuntu_private_ip**
-- **us-east-1_ubuntu_private_ip**
-- **us-east-2_ubuntu_private_ip**
-
-Outputs the private IP of the ubuntu instances in the given regions.
-
-- **us-west-1_ubuntu_id**
-- **us-west-2_ubuntu_id**
-- **us-east-1_ubuntu_id**
-- **us-east-2_ubuntu_id**
-
-Outputs the instance ID of the ubuntus in the given regions.
+Outputs the ubuntu info (name, id, public ip, and private ip) for all instances in the given regions.
 
 - **controller_public_ip**
 
