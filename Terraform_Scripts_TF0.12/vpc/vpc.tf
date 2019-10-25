@@ -1,4 +1,4 @@
-# Create a new VPC
+## Create a new VPC
 resource "aviatrix_vpc" "test_vpc" {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
@@ -27,4 +27,20 @@ resource "aviatrix_vpc" "test_vpc3" {
   cloud_type            = 1
   name                  = "createVPCTest3"
   region                = "us-west-2"
+}
+
+resource "aviatrix_vpc" "gcp_vpc" {
+  account_name          = "GCPAccess"
+  cloud_type            = 4
+  name                  = "creategcpvpc"
+  subnets {
+    name    = "us-east1-subnet"
+    region  = "us-east1"
+    cidr    = "172.17.0.0/16"
+  }
+  subnets {
+    name    = "asia-east1-subnet"
+    region  = "asia-east1"
+    cidr    = "172.16.0.0/16"
+  }
 }
