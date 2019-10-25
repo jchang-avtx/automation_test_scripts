@@ -75,6 +75,15 @@ There are 3 Phases:
  ```
  ssh ubuntu@<<pri_ubuntu_private_ip>>
  ```
+#### SSH into AZURE
+```
+$ ssh -i <private key> azureuser@<ip>
+```
+
+#### SSH into csr
+```
+$ ssh -i <private key> ec2-user@<ip>
+```
 
 #### Setting up Aviatrix access accounts
 For GCP access account, you will need to provide an absolute filepath to the gcp credentials file stored on your local machine.
