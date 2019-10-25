@@ -89,5 +89,14 @@ resource "aviatrix_firewall" "test_firewall_icmp" {
     log_enabled = var.aviatrix_firewall_policy_log_enable[0]
     description = var.aviatrix_firewall_policy_description
   }
+  policy {
+    src_ip      = var.aviatrix_firewall_policy_source_ip[7]
+    dst_ip      = var.aviatrix_firewall_policy_destination_ip[7]
+    protocol    = var.aviatrix_firewall_policy_protocol[7]
+    port        = var.aviatrix_firewall_policy_port[7]
+    action      = var.aviatrix_firewall_policy_action[2]
+    log_enabled = var.aviatrix_firewall_policy_log_enable[0]
+    description = "force-dropping these fools"
+  }
   depends_on = ["aviatrix_gateway.test_gateway2"]
 }
