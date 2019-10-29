@@ -42,6 +42,10 @@
                   -var-file=updateMaxConn.tfvars \
                   -auto-approve
   terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=disableVPNNAT.tfvars \
+                  -auto-approve
+  terraform show
 
   terraform destroy -var-file=/path/provider_cred.tfvars -auto-approve
 ```

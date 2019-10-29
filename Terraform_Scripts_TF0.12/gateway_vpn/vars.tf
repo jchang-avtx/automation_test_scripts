@@ -4,6 +4,7 @@ variable "aviatrix_controller_password" {}
 
 variable "aviatrix_vpn_cidr" {}
 variable "aviatrix_vpn_max_conn" {}
+variable "aviatrix_vpn_nat" {}
 
 variable "aviatrix_vpn_split_tunnel" {}
 variable "aviatrix_vpn_split_tunnel_search_domain_list" {}
