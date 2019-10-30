@@ -16,5 +16,6 @@ resource "aviatrix_gateway" "azure_gw" {
   vpn_cidr        = "192.168.43.0/24"
   enable_elb      = true
   elb_name        = "azureelb"
+  enable_vpn_nat  = var.aviatrix_vpn_nat
   max_vpn_conn    = 100
 }

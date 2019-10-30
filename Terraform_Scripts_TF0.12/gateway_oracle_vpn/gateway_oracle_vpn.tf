@@ -15,6 +15,7 @@ resource "aviatrix_gateway" "oci_vpn_gateway" {
   # enable_elb          = true ## not supported by OCI
   # elb_name            = "elb-oci-vpn-gw"
   max_vpn_conn        = var.aviatrix_vpn_max_conn
+  enable_vpn_nat      = var.aviatrix_vpn_nat
 
   split_tunnel        = var.aviatrix_vpn_split_tunnel
   search_domains      = var.aviatrix_vpn_split_tunnel_search_domain_list

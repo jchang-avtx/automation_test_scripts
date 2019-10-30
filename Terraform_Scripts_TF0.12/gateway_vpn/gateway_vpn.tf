@@ -1,9 +1,9 @@
 ## Test case: test vpn gateway
 
-resource "aviatrix_gateway" "testGW2" {
+resource "aviatrix_gateway" "vpnGWunderELB" {
   cloud_type        = 1
   account_name      = "AWSAccess"
-  gw_name           = "testGW2"
+  gw_name           = "vpnGWunderELB"
   vpc_id            = "vpc-ba3c12dd"
   vpc_reg           = "us-west-1"
   gw_size           = "t2.micro"
@@ -15,7 +15,8 @@ resource "aviatrix_gateway" "testGW2" {
   vpn_access        = true
   vpn_cidr          = var.aviatrix_vpn_cidr
   enable_elb        = true
-  elb_name          = "elb-testgw2-vpn"
+  enable_vpn_nat    = var.aviatrix_vpn_nat
+  elb_name          = "elb-vpngwunderelb"
   max_vpn_conn      = var.aviatrix_vpn_max_conn
 
   split_tunnel      = var.aviatrix_vpn_split_tunnel
@@ -57,3 +58,24 @@ resource "aviatrix_gateway" "testGW2" {
 #   saml_enabled      = true
 #
 # }
+
+## no elb
+resource "aviatrix_gateway" "testcase3VPN" {
+  cloud_type        = 1
+  account_name      = "AWSAccess"
+  gw_name           = "testcase3VPN"
+  vpc_id            = "vpc-0e2e824ec2ab6787e"
+  vpc_reg           = "us-west-1"
+  gw_size           = "t2.micro"
+  subnet            = "202.20.64.0/20"
+
+  single_az_ha      = true
+  allocate_new_eip  = true
+
+  vpn_access        = true
+  vpn_cidr          = "192.168.43.0/24"
+  enable_elb        = false
+  enable_vpn_nat    = var.aviatrix_vpn_nat
+
+  max_vpn_conn  = 100
+}
