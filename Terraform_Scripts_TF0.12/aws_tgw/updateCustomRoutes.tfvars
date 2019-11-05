@@ -1,4 +1,4 @@
-## Test case 2: Updating VPC id
+## Test case 3: Updating customized routes
 
 connected_domains_list1   = ["Default_Domain", "Shared_Service_Domain", "SDN1"]
 connected_domains_list2   = ["Aviatrix_Edge_Domain", "Shared_Service_Domain", "SDN1"] # << EDITED CONNECTED DOMAIN NAME
@@ -8,5 +8,5 @@ connected_domains_list4   = ["Aviatrix_Edge_Domain", "Default_Domain"] # << EDIT
 security_domain_name_list = ["SDN1", "SDN2"]
 aws_vpc_id                = ["vpc-08e3715762bda00fc", "vpc-0b730945d29ccfa9e", "vpc-0b730945d29ccfa9e", "vpc-00119a5b202c81d97"] # << EDITED 2nd VPC ID TO TGWVPC3 FROM 2
 
-custom_routes_list              = "10.8.0.0/16,10.9.0.0/16"
+custom_routes_list              = "10.8.0.0/16" # << EDITED ROUTES
 disable_local_route_propagation = true

@@ -23,3 +23,5 @@ variable "connected_domains_list4" {
 variable "aws_vpc_id" {
   type = "list"
 }
+variable "custom_routes_list" {}
+variable "disable_local_route_propagation" {}

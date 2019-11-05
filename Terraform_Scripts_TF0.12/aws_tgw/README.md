@@ -22,6 +22,14 @@
                   -var-file=switchVPC.tfvars \
                   -auto-approve
   terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=updateCustomRoutes.tfvars \
+                  -auto-approve
+  terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=enableLocalRouteProp.tfvars \
+                  -auto-approve
+  terraform show
 
   // do not destroy; use for tgw_vpn_conn
   // terraform destroy -var-file=/path/provider_cred.tfvars -auto-approve
