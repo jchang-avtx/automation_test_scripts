@@ -60,9 +60,14 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
   }
   security_domains {
     security_domain_name = var.security_domain_name_list[1]
-    aviatrix_firewall    = true
-    native_egress        = false
-    native_firewall      = false
+    attached_vpc {
+      vpc_account_name    = aviatrix_transit_gateway.test_transit_gw.account_name
+      vpc_id              = var.aws_vpc_id[2]
+      vpc_region          = aviatrix_transit_gateway.test_transit_gw.vpc_reg
+
+      customized_routes               = var.custom_routes_list
+      disable_local_route_propagation = var.disable_local_route_propagation
+    }
   }
 
   manage_vpc_attachment = true # default is true; if false, must use vpc_attachment resource
