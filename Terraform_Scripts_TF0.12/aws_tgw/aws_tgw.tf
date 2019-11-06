@@ -22,7 +22,6 @@ resource "aviatrix_vgw_conn" "test_vgw_conn" {
   bgp_vgw_account       = aviatrix_transit_gateway.test_transit_gw.account_name
   bgp_vgw_region        = aviatrix_transit_gateway.test_transit_gw.vpc_reg
   bgp_local_as_num      = "65001"
-  depends_on            = ["aviatrix_transit_gateway.test_transit_gw"]
 }
 
 resource "aviatrix_aws_tgw" "test_aws_tgw" {

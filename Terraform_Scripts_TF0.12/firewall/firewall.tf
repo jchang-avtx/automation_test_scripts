@@ -71,7 +71,6 @@ resource "aviatrix_firewall" "test_firewall" {
     action      = var.aviatrix_firewall_policy_action[1]
     log_enabled = var.aviatrix_firewall_policy_log_enable[1]
   }
-  depends_on = ["aviatrix_gateway.test_gateway1"]
 }
 
 ## Use to test ICMP and port case
@@ -98,5 +97,4 @@ resource "aviatrix_firewall" "test_firewall_icmp" {
     log_enabled = var.aviatrix_firewall_policy_log_enable[0]
     description = "force-dropping these fools"
   }
-  depends_on = ["aviatrix_gateway.test_gateway2"]
 }

@@ -28,7 +28,6 @@ resource "aviatrix_vpn_user" "test_vpn_user1" {
   user_name         = "testdummy1"
   user_email        = var.vpn_user_email[0]
   saml_endpoint     = "saml_test_endpoint"
-  depends_on        = ["aviatrix_gateway.vpn_gateway"]
 }
 
 resource "aviatrix_vpn_user" "test_vpn_user2" {
@@ -37,7 +36,6 @@ resource "aviatrix_vpn_user" "test_vpn_user2" {
   user_name         = "testdummy2"
   user_email        = var.vpn_user_email[1]
   saml_endpoint     = "saml_test_endpoint"
-  depends_on        = ["aviatrix_gateway.vpn_gateway"]
 }
 
 resource "aviatrix_vpn_user" "test_vpn_user3" {
@@ -46,7 +44,6 @@ resource "aviatrix_vpn_user" "test_vpn_user3" {
   user_name         = "testdummy3"
   user_email        = var.vpn_user_email[2]
   saml_endpoint     = "saml_test_endpoint"
-  depends_on        = ["aviatrix_gateway.vpn_gateway"]
 }
 
 resource "aviatrix_vpn_user" "test_vpn_user4" {
@@ -55,5 +52,4 @@ resource "aviatrix_vpn_user" "test_vpn_user4" {
   user_name         = "testdummy4"
   user_email        = var.vpn_user_email[3]
   saml_endpoint     = "saml_test_endpoint"
-  depends_on        = ["aviatrix_gateway.vpn_gateway"]
 }
