@@ -26,7 +26,6 @@ resource "aviatrix_gateway" "test_gateway2" {
 resource "aviatrix_tunnel" "encrypted-peering"{
   gw_name1      = aviatrix_gateway.test_gateway1.gw_name
   gw_name2      = aviatrix_gateway.test_gateway2.gw_name
-  depends_on    = ["aviatrix_gateway.test_gateway1", "aviatrix_gateway.test_gateway2"]
 }
 
 resource "aviatrix_trans_peer" "transitive-peering" {

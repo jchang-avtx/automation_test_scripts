@@ -34,5 +34,4 @@ resource "aviatrix_tunnel" "peeringTunnel"{
   gw_name1      = aviatrix_gateway.peeringGW1.gw_name
   gw_name2      = aviatrix_gateway.peeringGW2.gw_name
   enable_ha     = true
-  depends_on    = ["aviatrix_gateway.peeringGW1", "aviatrix_gateway.peeringGW2"]
 }
