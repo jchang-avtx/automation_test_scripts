@@ -84,12 +84,12 @@ $ ssh -i <private key> azureuser@<ip>
 ```
 $ ssh -i <private key> <username>@<ip>
 ```
-- <username> is the username of the user connecting to the instance. If you manually created your SSH keys, this must be the username you specified when you created the SSH key.
+- \<username> is the username of the user connecting to the instance. If you manually created your SSH keys, this must be the username you specified when you created the SSH key.
 - **Username can be found at the end of the .pub file** you used for the public key.
   - ```
   ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC37Ov/8um94v29KXKbQRzHViLRYWcRNbgSmglKhFmzkwkN62Q9TBJCuvy1IurF/V/ZKZZRW/PebQFCyEAF5b0jmMpNzokZ7YHZGTwVKM9mayVOGZviaVpqZSJz67CHQ74sZ5Vz/F72CWK0gJtkNmfl39TaxLZcrMHOiLWSWr+1C5555116s7IzKNlG+n1NPn3dCuUOtAFqPbYTOHckqu+viZ0zPwQ3nI5KyPevs96tfRdaVahxrdokgX9+eGPmUUv1ukyiANNS/M16BjTu1veR7VIUAsROUzN4W4ZTfJw/J/8Tqe/7H58YbFonjoFjGQT8OuNA4kKADBkt4PnoP8bSCKb5aWk1MC8MJbcYNAFx4t/LXZLFLJIZuhtSGkfnrVjyUhZ0VwU/n9GS35vJ/0oUFAI/F2BQnmv+EpnYlk2hucsuU72H9CANR9i6YjwtRXp4FxsBiYF6UgJ4bHHrWTLWGVQmac+bYv5f7jaflKY4ihjpC+zbFjYSo368zBn4rAewIIWu/7LBhxnrdOOAUq29K078DDZdta7rsVT5c+7yhAJCDg0CVYzbNaQTtRP4I5vWXjiuy3PrVVxG9D0RelL/H/KIz0KN6Xue9lEhqlsNZNeQXkEv7gOZUFde6+IGI8f/WNoJD/nLkfX56IA3wmL/A28z8Kcg5EHLsxFBXOkgoQ== matthew@LAPTOP-LOG24N2S
   ```
-  - <username> would be `matthew`
+  - \<username> would be `matthew`
 
 
 #### SSH into csr
