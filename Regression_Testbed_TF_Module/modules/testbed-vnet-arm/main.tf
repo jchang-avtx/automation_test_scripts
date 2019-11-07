@@ -136,7 +136,7 @@ resource "azurerm_public_ip" "public_ip" {
 	name								= "${var.resource_name_label}-public-ip${count.index}"
 	location						= azurerm_resource_group.rg[0].location
 	resource_group_name	= azurerm_resource_group.rg[0].name
-	allocation_method		= "Dynamic"
+	allocation_method		= "Static"
 
 	tags	= {
 		environment	= "${var.resource_name_label}-Testbed-${count.index}"
