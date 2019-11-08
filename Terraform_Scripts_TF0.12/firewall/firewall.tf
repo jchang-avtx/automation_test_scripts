@@ -1,25 +1,27 @@
-resource "aviatrix_gateway" "test_gateway1" {
-  cloud_type    = 1
-  account_name  = "AWSAccess"
-  gw_name       = "firewallGW"
-  vpc_id        = "vpc-ba3c12dd"
-  vpc_reg       = "us-west-1"
-  gw_size       = "t2.micro"
-  subnet        = "172.31.0.0/20"
+variable "test_gateway" {
+  description = "Map for test_gateways' parameters"
+  type = "map"
+  default = {
+    "firewallGW1" = "172.31.0.0/20"
+    "firewallGW2" = "172.31.16.0/20"
+    "firewallGW3" = "172.31.0.0/20"
+  }
 }
 
-resource "aviatrix_gateway" "test_gateway2" {
+resource "aviatrix_gateway" "test_gateway" {
+  for_each = var.test_gateway
   cloud_type    = 1
   account_name  = "AWSAccess"
-  gw_name       = "firewallGW2"
+  gw_name       = each.key
   vpc_id        = "vpc-ba3c12dd"
   vpc_reg       = "us-west-1"
+
   gw_size       = "t2.micro"
-  subnet        = "172.31.16.0/20"
+  subnet        = each.value
 }
 
 resource "aviatrix_firewall" "test_firewall" {
-  gw_name           = aviatrix_gateway.test_gateway1.gw_name
+  gw_name           = aviatrix_gateway.test_gateway["firewallGW1"].gw_name
   base_policy       = var.aviatrix_firewall_base_policy
   base_log_enabled  = var.aviatrix_firewall_packet_logging
 
@@ -75,7 +77,7 @@ resource "aviatrix_firewall" "test_firewall" {
 
 ## Use to test ICMP and port case
 resource "aviatrix_firewall" "test_firewall_icmp" {
-  gw_name           = aviatrix_gateway.test_gateway2.gw_name
+  gw_name           = aviatrix_gateway.test_gateway["firewallGW2"].gw_name
   base_policy       = var.aviatrix_firewall_base_policy
   base_log_enabled  = var.aviatrix_firewall_packet_logging
 
