@@ -32,12 +32,6 @@ resource "azurerm_route_table" "private_rtb" {
 	resource_group_name         	= azurerm_resource_group.rg[0].name
 	disable_bgp_route_propagation	= false
 
-#	route {
-#		name 					 = "denyInternetRoute"
-#		address_prefix = "0.0.0.0/0"
-#		next_hop_type  = "None"
-#	}
-
 route {
 	# to private subnet
 	name 						= "${var.resource_name_label}-private-route-${count.index}"
