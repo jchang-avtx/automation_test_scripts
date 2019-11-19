@@ -1,4 +1,4 @@
-## Test case 3: disable local route propogation
+## Test case 3: disable local route propagation
 
 ## TGW-related
 connected_domains_list1   = ["Default_Domain", "Shared_Service_Domain", "SDN1"]
