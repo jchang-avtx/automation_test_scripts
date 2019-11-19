@@ -34,4 +34,6 @@ resource "aviatrix_aws_tgw_vpc_attachment" "tgw_vpc_attach_test" {
   security_domain_name  = var.tgw_sec_domain
   vpc_account_name      = aviatrix_aws_tgw.test_aws_tgw2.account_name
   vpc_id                = "vpc-00119a5b202c81d97"
+  customized_routes     = "10.10.0.0/16,10.11.0.0/16"
+  disable_local_route_propagation = true
 }

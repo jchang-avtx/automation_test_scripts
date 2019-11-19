@@ -18,6 +18,14 @@
                   -var-file=updateSecurityDomain.tfvars \
                   -auto-approve
   terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=updateCustomRoutes.tfvars \
+                  -auto-approve
+  terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=disableLocalRouteProp.tfvars \
+                  -auto-approve
+  terraform show
 
   terraform destroy -var-file=/path/provider_cred.tfvars -auto-approve
 ```
