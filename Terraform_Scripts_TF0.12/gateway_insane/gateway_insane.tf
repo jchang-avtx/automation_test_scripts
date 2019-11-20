@@ -12,7 +12,7 @@ resource "aviatrix_gateway" "insane_aws_gw" {
   insane_mode_az            = "us-west-1a"
   gw_size                   = "c5.large"
 
-  peering_ha_subnet         = "172.31.32.64/26"
+  peering_ha_subnet         = "172.31.32.192/26"
   peering_ha_insane_mode_az = "us-west-1b"
   peering_ha_gw_size        = "c5.large"
 }
