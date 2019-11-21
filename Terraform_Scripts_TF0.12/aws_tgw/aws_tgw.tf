@@ -51,11 +51,6 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
       vpc_id             = var.aws_vpc_id[0]
       vpc_region         = aviatrix_transit_gateway.test_transit_gw.vpc_reg
     }
-    attached_vpc {
-      vpc_account_name   = aviatrix_transit_gateway.test_transit_gw.account_name
-      vpc_id             = var.aws_vpc_id[1]
-      vpc_region         = aviatrix_transit_gateway.test_transit_gw.vpc_reg
-    }
   }
   security_domains {
     security_domain_name = var.security_domain_name_list[1]
