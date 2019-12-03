@@ -22,7 +22,7 @@ resource "aws_subnet" "public_subnet1" {
 	count							= var.vpc_count
 	vpc_id						= aws_vpc.vpc[count.index].id
 	cidr_block				= var.pub_subnet1_cidr[count.index]
-	availability_zone = var.pub_subnet1_az[count.index]
+	availability_zone = var.pub_subnet1_az[count.index] != "" ? var.pub_subnet1_az[count.index] : ""
 	tags	= {
 		Name			= "${var.resource_name_label}_vpc${count.index}_public1_${var.pub_subnet1_az[count.index]}"
 	}
@@ -32,7 +32,7 @@ resource "aws_subnet" "public_subnet2" {
 	count							= var.vpc_count
 	vpc_id						= aws_vpc.vpc[count.index].id
 	cidr_block				=	var.pub_subnet2_cidr[count.index]
-	availability_zone = var.pub_subnet2_az[count.index]
+	availability_zone = var.pub_subnet2_az[count.index] != "" ? var.pub_subnet2_az[count.index] : ""
 	tags	= {
 		Name			=	"${var.resource_name_label}_vpc${count.index}_public2_${var.pub_subnet2_az[count.index]}"
 	}
@@ -42,7 +42,7 @@ resource "aws_subnet" "private_subnet" {
 	count							= var.vpc_count
 	vpc_id						= aws_vpc.vpc[count.index].id
 	cidr_block				= var.pri_subnet_cidr[count.index]
-	availability_zone = var.pri_subnet_az[count.index]
+	availability_zone = var.pri_subnet_az[count.index] != "" ? var.pri_subnet_az[count.index] : ""
 	tags	= {
 		Name			= "${var.resource_name_label}_vpc${count.index}_private_${var.pri_subnet_az[count.index]}"
 	}
@@ -114,7 +114,7 @@ resource "aws_key_pair" "key_pair" {
 resource "aws_instance" "public_instance" {
 	# Ubuntu
 	count												= var.vpc_count
-	ami													= var.ubuntu_ami
+	ami													= var.ubuntu_ami != "" ? var.ubuntu_ami : local.ubuntu_ami[data.aws_region.current[0].name]
 	instance_type								= var.instance_size
 	disable_api_termination			= var.termination_protection
 	associate_public_ip_address = true
@@ -130,7 +130,7 @@ resource "aws_instance" "public_instance" {
 resource "aws_instance" "private_instance" {
 	# Ubuntu
   count                       = var.vpc_count
-  ami                         = var.ubuntu_ami
+	ami													= var.ubuntu_ami != "" ? var.ubuntu_ami : local.ubuntu_ami[data.aws_region.current[0].name]
   instance_type               = var.instance_size
 	disable_api_termination     = var.termination_protection
   subnet_id                   = aws_subnet.private_subnet[count.index].id

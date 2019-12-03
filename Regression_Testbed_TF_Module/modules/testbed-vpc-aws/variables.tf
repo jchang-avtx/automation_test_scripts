@@ -39,19 +39,21 @@ variable "pri_subnet_cidr" {
 variable "pub_subnet1_az" {
 	type				= list(string)
   description = "The availability zone for public subnet 1."
+	default 		= ["", "", "", "", ""]
 }
 variable "pub_subnet2_az" {
 	type				= list(string)
   description = "The availability zone for public subnet 2."
+	default 		= ["", "", "", "", ""]
 }
 variable "pri_subnet_az" {
 	type				= list(string)
 	description = "The availability zone for a private subnet."
+	default 		= ["", "", "", "", ""]
 }
 variable "ubuntu_ami" {
 	type				= string
 	description = "AMI of the ubuntu instances"
-	default  		= local.ubuntu_ami[data.aws_region.current.name]
 }
 variable "instance_size" {
 	type 				= string
