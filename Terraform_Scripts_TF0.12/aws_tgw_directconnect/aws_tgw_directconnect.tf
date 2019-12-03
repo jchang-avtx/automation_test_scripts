@@ -7,3 +7,7 @@ resource "aviatrix_aws_tgw_directconnect" "aws_tgw_dc" {
   security_domain_name        = "SDN1"
   allowed_prefix              = var.prefix
 }
+
+output "aws_tgw_dc_id" {
+  value = aviatrix_aws_tgw_directconnect.aws_tgw_dc.id
+}

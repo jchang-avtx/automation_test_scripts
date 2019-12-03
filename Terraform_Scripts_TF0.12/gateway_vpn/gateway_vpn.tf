@@ -29,35 +29,35 @@ resource "aviatrix_gateway" "vpnGWunderELB" {
 }
 
 ## (11332) vpn gw needs to support workflow for multiple gw under same ELB
-# resource "aviatrix_gateway" "vpnGWunderELB2" {
-#   cloud_type        = 1
-#   account_name      = "AWSAccess"
-#   gw_name           = "vpnGWunderELB2"
-#   vpc_id            = aviatrix_gateway.vpnGWunderELB.vpc_id
-#   vpc_reg           = aviatrix_gateway.vpnGWunderELB.vpc_reg
-#
-#   # v2
-#   gw_size           = "t2.micro"
-#   subnet            = aviatrix_gateway.vpnGWunderELB.subnet
-#
-#   single_az_ha      = true
-#   allocate_new_eip  = true
-#
-#   vpn_access        = true
-#   vpn_cidr          = "192.168.44.0/24"
-#   enable_elb        = true
-#   enable_vpn_nat    = true
-#   elb_name          = aviatrix_gateway.vpnGWunderELB.elb_name
-#   max_vpn_conn      = var.aviatrix_vpn_max_conn
-#
-#   split_tunnel      = var.aviatrix_vpn_split_tunnel
-#   search_domains    = var.aviatrix_vpn_split_tunnel_search_domain_list
-#   additional_cidrs  = var.aviatrix_vpn_split_tunnel_additional_cidrs_list
-#   name_servers      = var.aviatrix_vpn_split_tunnel_name_servers_list
-#
-#   saml_enabled      = true
-#
-# }
+resource "aviatrix_gateway" "vpnGWunderELB2" {
+  cloud_type        = 1
+  account_name      = "AWSAccess"
+  gw_name           = "vpnGWunderELB2"
+  vpc_id            = aviatrix_gateway.vpnGWunderELB.vpc_id
+  vpc_reg           = aviatrix_gateway.vpnGWunderELB.vpc_reg
+
+  # v2
+  gw_size           = "t2.micro"
+  subnet            = aviatrix_gateway.vpnGWunderELB.subnet
+
+  single_az_ha      = true
+  allocate_new_eip  = true
+
+  vpn_access        = true
+  vpn_cidr          = "192.168.45.0/24" # must be non-overlapping CIDR
+  enable_elb        = true
+  enable_vpn_nat    = true
+  elb_name          = null # do not specify
+  max_vpn_conn      = var.aviatrix_vpn_max_conn
+
+  split_tunnel      = var.aviatrix_vpn_split_tunnel
+  search_domains    = var.aviatrix_vpn_split_tunnel_search_domain_list
+  additional_cidrs  = var.aviatrix_vpn_split_tunnel_additional_cidrs_list
+  name_servers      = var.aviatrix_vpn_split_tunnel_name_servers_list
+
+  saml_enabled      = true
+
+}
 
 ## no elb
 resource "aviatrix_gateway" "testcase3VPN" {

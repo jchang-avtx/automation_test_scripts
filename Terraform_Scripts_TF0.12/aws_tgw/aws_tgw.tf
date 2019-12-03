@@ -67,3 +67,7 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
   manage_vpc_attachment = true # default is true; if false, must use vpc_attachment resource
   depends_on            = ["aviatrix_vgw_conn.test_vgw_conn"]
 }
+
+output "test_aws_tgw_id" {
+  value = aviatrix_aws_tgw.test_aws_tgw.id
+}

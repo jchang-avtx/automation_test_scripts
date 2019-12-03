@@ -24,3 +24,11 @@ resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn2" {
   public_ip            = "70.0.0.0"
   remote_cidr          = "10.0.0.0/16,10.1.0.0/16"
 }
+
+output "test_aws_tgw_vpn_conn1_id" {
+  value = aviatrix_aws_tgw_vpn_conn.test_aws_tgw_vpn_conn1.id
+}
+
+output "test_aws_tgw_vpn_conn2_id" {
+  value = aviatrix_aws_tgw_vpn_conn.test_aws_tgw_vpn_conn2.id
+}

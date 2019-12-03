@@ -37,3 +37,7 @@ resource "aviatrix_aws_tgw_vpc_attachment" "tgw_vpc_attach_test" {
   customized_routes     = var.customized_routes
   disable_local_route_propagation = var.disable_local_route_propagation
 }
+
+output "tgw_vpc_attach_test_id" {
+  value = aviatrix_aws_tgw_vpc_attachment.tgw_vpc_attach_test.id
+}
