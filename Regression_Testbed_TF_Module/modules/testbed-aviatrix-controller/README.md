@@ -16,6 +16,7 @@ module "aviatrix-controller" {
   resource_name_label    = "<<insert resource_name_label>>"
   vpc_cidr               = "<<insert vpc cidr here>> ie: 10.10.0.0/16"
   subnet_cidr            = "<<insert subnet cidr>> ie: 10.10.5.0/24"
+  subnet_az              = "<<insert subnet az>> ie: us-west-1a"
   sg_source_ip           = ["<<insert source ip to allow ssh and https>>"]
   public_key             = "<<insert public key contents>>"
   admin_email            = "<<insert admin email>> ie: user@aviatrix.com"
@@ -30,7 +31,7 @@ module "aviatrix-controller" {
 
 - **deploy_controller**
 
-Whether to launch Aviatrix controller as part of regression testbed.
+Whether to launch Aviatrix controller as part of regression testbed. Default is true.
 
 - **vpc_cidr**
 
@@ -39,6 +40,10 @@ VPC cidr to launch Aviatrix controller in.
 - **subnet_cidr**
 
 Public subnet cidr to launch Aviatrix controller in.
+
+- **subnet_az**
+
+Availability zone of the public subnet. Optional.
 
 - **sg_source_ip**
 

@@ -11,9 +11,10 @@ resource "aws_vpc" "vpc" {
 }
 
 resource "aws_subnet" "public_subnet" {
-  count       = var.deploy_controller ? 1 : 0
-  vpc_id      = aws_vpc.vpc[0].id
-  cidr_block  = var.subnet_cidr
+  count             = var.deploy_controller ? 1 : 0
+  vpc_id            = aws_vpc.vpc[0].id
+  cidr_block        = var.subnet_cidr
+  availability_zone = var.subnet_az
   tags  = {
     Name      = "${var.resource_name_label}_controller-public_subnet"
   }
