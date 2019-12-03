@@ -66,6 +66,9 @@ resource "aws_route_table" "public_rtb" {
 	tags	= {
 		Name			= "${var.resource_name_label}_vpc${count.index}_public-rtb_${data.aws_region.current[0].name}"
 	}
+	lifecycle {
+		ignore_changes = all
+	}
 }
 
 resource "aws_route_table" "private_rtb" {
@@ -73,6 +76,9 @@ resource "aws_route_table" "private_rtb" {
 	vpc_id			=	aws_vpc.vpc[count.index].id
 	tags	= {
 		Name			= "${var.resource_name_label}_vpc${count.index}_private-rtb_${data.aws_region.current[0].name}"
+	}
+	lifecycle {
+		ignore_changes = all
 	}
 }
 
