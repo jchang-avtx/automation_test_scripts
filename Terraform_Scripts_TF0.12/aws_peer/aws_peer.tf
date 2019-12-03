@@ -11,3 +11,7 @@ resource "aviatrix_aws_peer" "test_awspeer" {
   rtb_list1     = var.aws_vpc_rtb_1
   rtb_list2     = var.aws_vpc_rtb_2
 }
+
+output "test_awspeer_id" {
+  value = aviatrix_aws_peer.test_awspeer.id
+}

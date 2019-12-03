@@ -7,3 +7,7 @@ resource "aviatrix_arm_peer" "test_armpeer" {
   vnet_reg1                 = var.vnet_reg1
   vnet_reg2                 = var.vnet_reg2
 }
+
+output "test_armpeer_id" {
+  value = aviatrix_arm_peer.test_armpeer.id
+}
