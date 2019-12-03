@@ -209,20 +209,21 @@ data "aws_lambda_invocation" "example" {
   input = <<JSON
 { "ResourceProperties":
 {
-  "PrefixStringParam"                : "avx",
-  "LambdaInvokerTypeParam"           : "terraform",
-  "AWS_Account_ID"                   : "${data.aws_caller_identity.current.account_id}",
-  "KeywordForCloudWatchLogParam"     : "avx-log",
-  "DelimiterForCloudWatchLogParam"   : "---",
-  "ControllerPublicIpParam"          : "${aws_eip.controller_eip[0].public_ip}",
-  "AviatrixApiVersionParam"          : "v1",
-  "AviatrixApiRouteParam"            : "api/",
-  "ControllerPrivateIpParam"         : "${aws_instance.aviatrixcontroller[0].private_ip}",
-  "ControllerAdminPasswordParam"     : "${var.admin_password}",
-  "ControllerAdminEmailParam"        : "${var.admin_email}",
-  "ControllerVersionParam"           : "latest",
-  "ControllerAccessAccountNameParam" : "${var.access_account}",
-  "AviatrixCustomerLicenseIdParam"   : "${var.customer_id}"
+  "PrefixStringParam"                  : "avx",
+  "LambdaInvokerTypeParam"             : "terraform",
+  "AWS_Account_ID"                     : "${data.aws_caller_identity.current.account_id}",
+  "KeywordForCloudWatchLogParam"       : "avx-log",
+  "DelimiterForCloudWatchLogParam"     : "---",
+  "ControllerPublicIpParam"            : "${aws_eip.controller_eip[0].public_ip}",
+  "AviatrixApiVersionParam"            : "v1",
+  "AviatrixApiRouteParam"              : "api/",
+  "ControllerPrivateIpParam"           : "${aws_instance.aviatrixcontroller[0].private_ip}",
+  "ControllerAdminPasswordParam"       : "${var.admin_password}",
+  "ControllerAdminEmailParam"          : "${var.admin_email}",
+  "ControllerVersionParam"             : "latest",
+  "ControllerAccessAccountNameParam"   : "${var.access_account}",
+  "AviatrixCustomerLicenseIdParam"     : "${var.customer_id}",
+  "_SecondsToWaitForApacheToBeUpParam" : "${var.controller_launch_wait_time}"
 }
 }
 JSON
