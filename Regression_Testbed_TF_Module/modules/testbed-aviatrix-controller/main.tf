@@ -79,7 +79,7 @@ resource "aws_network_interface" "eni-controller" {
   subnet_id       = aws_subnet.public_subnet[0].id
   security_groups = [aws_security_group.AviatrixSecurityGroup[0].id]
   tags            = {
-    Name      = "${format("%s%s : %d", "${var.resource_name_label}-", "Aviatrix Controller interface", count.index)}"
+    Name      = format("%s%s : %d", "${var.resource_name_label}-", "Aviatrix Controller interface", count.index)
     Createdby = "Terraform+Aviatrix"
   }
 }
@@ -103,7 +103,7 @@ resource "aws_instance" "aviatrixcontroller" {
   }
 
   tags = {
-    Name      = "${format("%s%s-%d", "${var.resource_name_label}-", "AviatrixController", count.index)}"
+    Name      = format("%s%s-%d", "${var.resource_name_label}-", "AviatrixController", count.index)
     Createdby = "Terraform+Aviatrix"
   }
 }
@@ -163,7 +163,7 @@ data "aws_caller_identity" "current" {
 
 resource "aws_iam_role" "iam_for_lambda" {
   count = var.deploy_controller ? 1 : 0
-  name = "${replace("iam_for_lambda_${aws_eip.controller_eip[0].public_ip}",".","-")}"
+  name = replace("iam_for_lambda_${aws_eip.controller_eip[0].public_ip}",".","-")
 
   assume_role_policy = <<EOF
 {
@@ -194,7 +194,7 @@ resource "aws_lambda_function" "lambda" {
   count         = var.deploy_controller ? 1 : 0
   s3_bucket     = "aviatrix-lambda-${data.aws_region.current.name}"
   s3_key        = "run_controller_init_setup.zip"
-  function_name = "${replace("AvxLambda_${aws_eip.controller_eip[0].public_ip}",".","-")}"
+  function_name = replace("AvxLambda_${aws_eip.controller_eip[0].public_ip}",".","-")
   role          = aws_iam_role.iam_for_lambda[0].arn
   handler       = "run_controller_init_setup.lambda_handler"
   runtime       = "python3.7"
@@ -209,20 +209,21 @@ data "aws_lambda_invocation" "example" {
   input = <<JSON
 { "ResourceProperties":
 {
-  "PrefixStringParam"                : "avx",
-  "LambdaInvokerTypeParam"           : "terraform",
-  "AWS_Account_ID"                   : "${data.aws_caller_identity.current.account_id}",
-  "KeywordForCloudWatchLogParam"     : "avx-log",
-  "DelimiterForCloudWatchLogParam"   : "---",
-  "ControllerPublicIpParam"          : "${aws_eip.controller_eip[0].public_ip}",
-  "AviatrixApiVersionParam"          : "v1",
-  "AviatrixApiRouteParam"            : "api/",
-  "ControllerPrivateIpParam"         : "${aws_instance.aviatrixcontroller[0].private_ip}",
-  "ControllerAdminPasswordParam"     : "${var.admin_password}",
-  "ControllerAdminEmailParam"        : "${var.admin_email}",
-  "ControllerVersionParam"           : "latest",
-  "ControllerAccessAccountNameParam" : "${var.access_account}",
-  "AviatrixCustomerLicenseIdParam"   : "${var.customer_id}"
+  "PrefixStringParam"                  : "avx",
+  "LambdaInvokerTypeParam"             : "terraform",
+  "AWS_Account_ID"                     : "${data.aws_caller_identity.current.account_id}",
+  "KeywordForCloudWatchLogParam"       : "avx-log",
+  "DelimiterForCloudWatchLogParam"     : "---",
+  "ControllerPublicIpParam"            : "${aws_eip.controller_eip[0].public_ip}",
+  "AviatrixApiVersionParam"            : "v1",
+  "AviatrixApiRouteParam"              : "api/",
+  "ControllerPrivateIpParam"           : "${aws_instance.aviatrixcontroller[0].private_ip}",
+  "ControllerAdminPasswordParam"       : "${var.admin_password}",
+  "ControllerAdminEmailParam"          : "${var.admin_email}",
+  "ControllerVersionParam"             : "latest",
+  "ControllerAccessAccountNameParam"   : "${var.access_account}",
+  "AviatrixCustomerLicenseIdParam"     : "${var.customer_id}",
+  "_SecondsToWaitForApacheToBeUpParam" : "${var.controller_launch_wait_time}"
 }
 }
 JSON

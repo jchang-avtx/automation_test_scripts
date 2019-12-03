@@ -61,6 +61,9 @@ variable "customer_id" {
 	description		= "Customer license ID for the Aviatrix controller, if using BYOL controller."
 }
 
+variable "controller_launch_wait_time" {
+  default = 300
+}
 # Local values
 locals {
   images_metered = {

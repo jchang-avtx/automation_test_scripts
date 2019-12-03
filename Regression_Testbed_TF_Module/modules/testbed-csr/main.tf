@@ -126,7 +126,7 @@ resource "aws_instance" "csr_instance2" {
 	vpc_security_group_ids			= [aws_security_group.sg[count.index].id]
 	key_name										= aws_key_pair.key_pair[0].key_name
   tags  = {
-    Name        = "${var.resource_name_label}_csr-instance2_${count.index}_${aws_subnet.private_subnet[count.index].availability_zone}"
+    Name        = "${var.resource_name_label}_csr-instance2_${count.index}_${aws_subnet.public_subnet2[count.index].availability_zone}"
   }
 }
 
