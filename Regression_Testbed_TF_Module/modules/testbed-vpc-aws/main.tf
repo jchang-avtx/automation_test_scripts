@@ -22,9 +22,9 @@ resource "aws_subnet" "public_subnet1" {
 	count							= var.vpc_count
 	vpc_id						= aws_vpc.vpc[count.index].id
 	cidr_block				= var.pub_subnet1_cidr[count.index]
-	availability_zone = var.pub_subnet1_az[count.index] != "" ? var.pub_subnet1_az[count.index] : ""
+	availability_zone = var.pub_subnet1_az != null ? var.pub_subnet1_az[count.index] : ""
 	tags	= {
-		Name			= "${var.resource_name_label}_vpc${count.index}_public1_${var.pub_subnet1_az[count.index]}"
+		Name			= var.pub_subnet1_az != null ? "${var.resource_name_label}_vpc${count.index}_public1_${var.pub_subnet1_az[count.index]}" : "${var.resource_name_label}_vpc${count.index}_public1_${data.aws_region.current[0].name}"
 	}
 }
 
@@ -32,9 +32,9 @@ resource "aws_subnet" "public_subnet2" {
 	count							= var.vpc_count
 	vpc_id						= aws_vpc.vpc[count.index].id
 	cidr_block				=	var.pub_subnet2_cidr[count.index]
-	availability_zone = var.pub_subnet2_az[count.index] != "" ? var.pub_subnet2_az[count.index] : ""
+	availability_zone = var.pub_subnet2_az != null ? var.pub_subnet2_az[count.index] : ""
 	tags	= {
-		Name			=	"${var.resource_name_label}_vpc${count.index}_public2_${var.pub_subnet2_az[count.index]}"
+		Name			= var.pub_subnet2_az != null ? "${var.resource_name_label}_vpc${count.index}_public2_${var.pub_subnet2_az[count.index]}" : "${var.resource_name_label}_vpc${count.index}_public2_${data.aws_region.current[0].name}"
 	}
 }
 
@@ -42,9 +42,9 @@ resource "aws_subnet" "private_subnet" {
 	count							= var.vpc_count
 	vpc_id						= aws_vpc.vpc[count.index].id
 	cidr_block				= var.pri_subnet_cidr[count.index]
-	availability_zone = var.pri_subnet_az[count.index] != "" ? var.pri_subnet_az[count.index] : ""
+	availability_zone = var.pri_subnet_az != null ? var.pri_subnet_az[count.index] : ""
 	tags	= {
-		Name			= "${var.resource_name_label}_vpc${count.index}_private_${var.pri_subnet_az[count.index]}"
+		Name			= var.pri_subnet_az != null ? "${var.resource_name_label}_vpc${count.index}_private_${var.pri_subnet_az[count.index]}" : "${var.resource_name_label}_vpc${count.index}_private_${data.aws_region.current[0].name}"
 	}
 }
 

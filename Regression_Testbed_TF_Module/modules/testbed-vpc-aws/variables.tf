@@ -39,17 +39,17 @@ variable "pri_subnet_cidr" {
 variable "pub_subnet1_az" {
 	type				= list(string)
   description = "The availability zone for public subnet 1."
-	default 		= ["", "", "", "", ""]
+	default 		= null
 }
 variable "pub_subnet2_az" {
 	type				= list(string)
   description = "The availability zone for public subnet 2."
-	default 		= ["", "", "", "", ""]
+	default 		= null
 }
 variable "pri_subnet_az" {
 	type				= list(string)
 	description = "The availability zone for a private subnet."
-	default 		= ["", "", "", "", ""]
+	default 		= null
 }
 variable "ubuntu_ami" {
 	type				= string
