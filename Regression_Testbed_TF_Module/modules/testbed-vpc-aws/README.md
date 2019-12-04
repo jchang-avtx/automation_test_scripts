@@ -16,9 +16,9 @@ module "aws-vpc" {
   pub_subnet1_cidr    = ["<<insert subnet cidr ie: 10.10.5.0/24>>"]
   pub_subnet2_cidr    = ["<<insert subnet cidr ie: 10.10.5.0/24>>"]
   pri_subnet_cidr     = ["<<insert subnet cidr ie: 10.10.5.0/24>>"]
-  pub_subnet1_az    = ["<<insert az>> ie: "us-west-1a"]
-  pub_subnet2_az    = ["<<insert az>> ie: "us-west-1a"]
-  pri_subnet_az     = ["<<insert az>> ie: "us-west-1a"]
+  pub_subnet1_az    = ["<<insert az>> ie: us-west-1a"]
+  pub_subnet2_az    = ["<<insert az>> ie: us-west-1a"]
+  pri_subnet_az     = ["<<insert az>> ie: us-west-1a"]
   ubuntu_ami		      = "<<insert ami of ubuntu instance>>"
   public_key      	  = "<<insert public key>>"
   termination_protection = <<true/false>>
@@ -65,19 +65,19 @@ Private subnet cidr
 
 - **pub_subnet1_az**
 
-Public subnet availability zone.
+Public subnet availability zone. Optional
 
 - **pub_subnet2_az**
 
-Public subnet availability zone.
+Public subnet availability zone. Optional
 
 - **pri_subnet_az**
 
-Private subnet availability zone.
+Private subnet availability zone. Optional
 
 - **ubuntu_ami**
 
-AMI of the ubuntu instances
+AMI of the ubuntu instances. Default is Ubuntu 18.04 ami for region
 
 - **instance_size**
 
