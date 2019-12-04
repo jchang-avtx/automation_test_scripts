@@ -1,7 +1,7 @@
 ## Test case: stress test to verify high volume of firewall policy rules
 
 variable "max_rule" {
-  default = 320
+  default = 100
 }
 
 resource "random_integer" "src_ip1" {
@@ -46,14 +46,18 @@ resource "aviatrix_firewall" "stress_firewall" {
   base_log_enabled = true
 
   dynamic "policy" {
-     for_each = range(var.max_rule)
-     content {
-       src_ip = "${random_integer.src_ip1[policy.value].result}.${random_integer.src_ip2[policy.value].result}.0.0/16"
-       dst_ip = "${random_integer.dst_ip1[policy.value].result}.${random_integer.dst_ip2[policy.value].result}.0.0/16"
-       protocol = random_shuffle.protocol[policy.value].result[0]
-       port = random_integer.port[policy.value].result
-       action = "allow"
-       log_enabled = true
-     }
+    for_each = range(var.max_rule)
+    content {
+      src_ip = "${random_integer.src_ip1[policy.value].result}.${random_integer.src_ip2[policy.value].result}.0.0/16"
+      dst_ip = "${random_integer.dst_ip1[policy.value].result}.${random_integer.dst_ip2[policy.value].result}.0.0/16"
+      protocol = random_shuffle.protocol[policy.value].result[0]
+      port = random_integer.port[policy.value].result
+      action = "allow"
+      log_enabled = true
+    }
   }
+}
+
+output "stress_firewall_id" {
+  value = aviatrix_firewall.stress_firewall.id
 }

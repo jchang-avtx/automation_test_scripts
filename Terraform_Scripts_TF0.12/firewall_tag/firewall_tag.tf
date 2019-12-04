@@ -36,3 +36,7 @@ resource "aviatrix_firewall_tag" "fw_tag_test" {
     cidr          = var.cidr_list_cidr[7]
   }
 }
+
+output "fw_tag_test_id" {
+  value = aviatrix_firewall_tag.fw_tag_test.id
+}
