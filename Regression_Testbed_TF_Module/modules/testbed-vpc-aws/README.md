@@ -65,15 +65,15 @@ Private subnet cidr
 
 - **pub_subnet1_az**
 
-Public subnet availability zone.
+Public subnet availability zone. Optional
 
 - **pub_subnet2_az**
 
-Public subnet availability zone.
+Public subnet availability zone. Optional
 
 - **pri_subnet_az**
 
-Private subnet availability zone.
+Private subnet availability zone. Optional
 
 - **ubuntu_ami**
 
