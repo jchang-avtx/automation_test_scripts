@@ -3,6 +3,7 @@
 variable "deploy_controller" {
 	type 					= bool
 	description 	= "Whether to launch Aviatrix controller as part of regression testbed."
+	default 			= true
 }
 
 # Controller VPC Set up
@@ -13,6 +14,11 @@ variable "vpc_cidr" {
 variable "subnet_cidr" {
 	type					= string
 	description		= "Public subnet cidr of the vpc being created for the Aviatrix controller."
+}
+variable "subnet_az" {
+	type 					= string
+	description 	= "Availability zone of the public subnet."
+	default 			= ""
 }
 variable "public_key" {
 	type					= string
