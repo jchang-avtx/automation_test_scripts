@@ -144,7 +144,7 @@ module "aviatrix-controller" {
     aws = aws.controller
   }
 	deploy_controller 		 = var.deploy_controller
-	controller_type 			 = var.controller_type
+	type 						 			 = var.controller_type
   vpc_cidr       				 = var.controller_vpc_cidr
   subnet_cidr    				 = var.controller_subnet_cidr
 	subnet_az 						 = var.controller_subnet_az
