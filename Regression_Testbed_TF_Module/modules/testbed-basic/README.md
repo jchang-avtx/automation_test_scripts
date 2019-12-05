@@ -76,6 +76,7 @@ module "testbed-basic" {
 
   # AWS VPC for controller
   deploy_controller           = <<true/false>>
+  controller_type             = <<BYOL/metered>>
   controller_region           = "<<insert region to launch controller>>"
   controller_vpc_cidr         = "<<insert vpc cidr for controller>>"
   controller_subnet_cidr      = "<<insert subnet cidr for controller>>"
@@ -290,6 +291,10 @@ AMI of the ubuntu instances.
 
 Whether to launch Aviatrix controller as part of the regression testbed.
 
+- **controller_type**
+
+Type of Aviatrix Controller. Valid values are 'BYOL' or 'metered'. Default is 'BYOL'.
+
 - **controller_vpc_cidr**
 
 AWS VPC cidr being created for Aviatrix controller.
@@ -297,6 +302,10 @@ AWS VPC cidr being created for Aviatrix controller.
 - **controller_subnet_cidr**
 
 Public subnet cidr of the vpc being created for the Aviatrix controller.
+
+- **controller_subnet_az**
+
+Availability zone of the subnet for Aviatrix controller. Optional.
 
 - **controller_public_key**
 
@@ -312,7 +321,7 @@ Admin email to be used for the Aviatrix controller.
 
 - **admin_password**
 
-Admin password to be used for logging into te Aviatrix controller.
+Admin password to be used for logging into the Aviatrix controller.
 
 - **access_account**
 

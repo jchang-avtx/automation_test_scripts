@@ -194,6 +194,11 @@ variable "deploy_controller" {
   type        = bool
   description = "Whether to launch Aviatrix controller as part of the regression testbed."
 }
+variable "controller_type" {
+  type        = string
+  description = "Type of Aviatrix Controller. Valid values are 'BYOL' or 'metered'. Default is 'BYOL'"
+  default     = "BYOL"
+}
 variable "controller_region" {
 	type				= string
 	description	= "Region to launch Aviatrix controller."
