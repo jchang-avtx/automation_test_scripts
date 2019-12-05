@@ -69,6 +69,7 @@ variable "pri_subnet_az_west1" {
 variable "ubuntu_ami_west1" {
   type        = string
   description = "AMI of the ubuntu instances"
+  default     = ""
 }
 
 # US-WEST-2 Region
@@ -107,6 +108,7 @@ variable "pri_subnet_az_west2" {
 variable "ubuntu_ami_west2" {
   type        = string
   description = "AMI of the ubuntu instances"
+  default     = ""
 }
 
 # US-EAST-1 Region
@@ -145,6 +147,7 @@ variable "pri_subnet_az_east1" {
 variable "ubuntu_ami_east1" {
   type        = string
   description = "AMI of the ubuntu instances"
+  default     = ""
 }
 
 # US-EAST-2 Region
@@ -183,6 +186,7 @@ variable "pri_subnet_az_east2" {
 variable "ubuntu_ami_east2" {
   type        = string
   description = "AMI of the ubuntu instances"
+  default     = ""
 }
 
 # Aviatrix Controller
