@@ -163,6 +163,10 @@ data "aws_caller_identity" "current" {
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
+  depends_on = [
+    aws_instance.aviatrixcontroller,
+    aws_eip_association.eip_assoc
+  ]
   count = var.deploy_controller ? 1 : 0
   name = replace("iam_for_lambda_${aws_eip.controller_eip[0].public_ip}",".","-")
 
@@ -184,6 +188,10 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "attach-policy" {
+  depends_on = [
+    aws_instance.aviatrixcontroller,
+    aws_eip_association.eip_assoc
+  ]
   count      = var.deploy_controller ? 1 : 0
   role       = aws_iam_role.iam_for_lambda[0].name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
@@ -192,6 +200,10 @@ resource "aws_iam_role_policy_attachment" "attach-policy" {
 data "aws_region" "current" {}
 
 resource "aws_lambda_function" "lambda" {
+  depends_on = [
+    aws_instance.aviatrixcontroller,
+    aws_eip_association.eip_assoc
+  ]
   count         = var.deploy_controller ? 1 : 0
   s3_bucket     = "aviatrix-lambda-${data.aws_region.current.name}"
   s3_key        = "run_controller_init_setup.zip"
@@ -204,6 +216,10 @@ resource "aws_lambda_function" "lambda" {
 }
 
 data "aws_lambda_invocation" "example" {
+  depends_on = [
+    aws_instance.aviatrixcontroller,
+    aws_eip_association.eip_assoc
+  ]
   count         = var.deploy_controller ? 1 : 0
   function_name = aws_lambda_function.lambda[0].function_name
 
