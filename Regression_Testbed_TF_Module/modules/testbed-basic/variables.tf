@@ -206,6 +206,11 @@ variable "controller_subnet_cidr" {
   type          = string
   description   = "Public subnet cidr of the vpc being created for the Aviatrix controller."
 }
+variable "controller_subnet_az" {
+  type          = string
+  description   = "Availability zone for the subnet for Aviatrix controller. Optional"
+  default       = ""
+}
 variable "controller_public_key" {
   type          = string
   description   = "Public key to create a new key pair for the controller."

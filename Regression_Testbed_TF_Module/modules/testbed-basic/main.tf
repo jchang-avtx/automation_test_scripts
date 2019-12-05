@@ -146,6 +146,7 @@ module "aviatrix-controller" {
 	deploy_controller 		 = var.deploy_controller
   vpc_cidr       				 = var.controller_vpc_cidr
   subnet_cidr    				 = var.controller_subnet_cidr
+	subnet_az 						 = var.controller_subnet_az
   sg_source_ip   				 = var.controller_sg_source_ip
   public_key     				 = var.controller_public_key
   admin_email    				 = var.admin_email

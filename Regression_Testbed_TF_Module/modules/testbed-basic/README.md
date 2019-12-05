@@ -79,6 +79,7 @@ module "testbed-basic" {
   controller_region           = "<<insert region to launch controller>>"
   controller_vpc_cidr         = "<<insert vpc cidr for controller>>"
   controller_subnet_cidr      = "<<insert subnet cidr for controller>>"
+  controller_subnet_az        = "<<insert subnet az>>"
   controller_public_key       = "<<insert your public key to access controller>>""
   controller_sg_source_ip     = ["<<insert controller source ip>>"]
 
