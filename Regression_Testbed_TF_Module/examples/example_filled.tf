@@ -75,9 +75,11 @@ module "testbed-basic" {
 
 	# AWS VPC for controller
   deploy_controller           = true
+  controller_type             = "BYOL"
   controller_region           = "us-west-1"
 	controller_vpc_cidr         = "10.22.0.0/16"
 	controller_subnet_cidr			= "10.22.23.0/24"
+  controller_subnet_az        = "us-west-1a"
 	controller_public_key       = local.public_key
 	controller_sg_source_ip     = ["0.0.0.0/0"]
 

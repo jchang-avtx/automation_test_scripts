@@ -54,6 +54,7 @@ variable "pri_subnet_az" {
 variable "ubuntu_ami" {
 	type				= string
 	description = "AMI of the ubuntu instances"
+	default 		= ""
 }
 variable "instance_size" {
 	type 				= string

@@ -69,6 +69,7 @@ variable "pri_subnet_az_west1" {
 variable "ubuntu_ami_west1" {
   type        = string
   description = "AMI of the ubuntu instances"
+  default     = ""
 }
 
 # US-WEST-2 Region
@@ -107,6 +108,7 @@ variable "pri_subnet_az_west2" {
 variable "ubuntu_ami_west2" {
   type        = string
   description = "AMI of the ubuntu instances"
+  default     = ""
 }
 
 # US-EAST-1 Region
@@ -145,6 +147,7 @@ variable "pri_subnet_az_east1" {
 variable "ubuntu_ami_east1" {
   type        = string
   description = "AMI of the ubuntu instances"
+  default     = ""
 }
 
 # US-EAST-2 Region
@@ -183,12 +186,18 @@ variable "pri_subnet_az_east2" {
 variable "ubuntu_ami_east2" {
   type        = string
   description = "AMI of the ubuntu instances"
+  default     = ""
 }
 
 # Aviatrix Controller
 variable "deploy_controller" {
   type        = bool
   description = "Whether to launch Aviatrix controller as part of the regression testbed."
+}
+variable "controller_type" {
+  type        = string
+  description = "Type of Aviatrix Controller. Valid values are 'BYOL' or 'metered'. Default is 'BYOL'"
+  default     = "BYOL"
 }
 variable "controller_region" {
 	type				= string
@@ -201,6 +210,11 @@ variable "controller_vpc_cidr" {
 variable "controller_subnet_cidr" {
   type          = string
   description   = "Public subnet cidr of the vpc being created for the Aviatrix controller."
+}
+variable "controller_subnet_az" {
+  type          = string
+  description   = "Availability zone for the subnet for Aviatrix controller. Optional"
+  default       = ""
 }
 variable "controller_public_key" {
   type          = string
