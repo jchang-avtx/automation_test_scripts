@@ -79,3 +79,7 @@ resource "aviatrix_gateway" "testcase3VPN" {
 
   max_vpn_conn  = 100
 }
+
+output "vpnGWunderELB_id" {
+  value = aviatrix_gateway.vpnGWunderELB.id
+}

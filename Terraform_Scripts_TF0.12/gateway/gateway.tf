@@ -21,3 +21,7 @@ resource "aviatrix_gateway" "testGW1" {
 
   enable_vpc_dns_server = var.enable_vpc_dns_server
 }
+
+output "testGW1_id" {
+  value = aviatrix_gateway.testGW1.id
+}

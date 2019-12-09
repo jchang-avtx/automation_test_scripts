@@ -19,3 +19,7 @@ resource "aviatrix_gateway" "azure_gw" {
   enable_vpn_nat  = var.aviatrix_vpn_nat
   max_vpn_conn    = 100
 }
+
+output "azure_gw_id" {
+  value = aviatrix_gateway.azure_gw.id
+}
