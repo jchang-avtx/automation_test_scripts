@@ -21,3 +21,7 @@ resource "aviatrix_transit_gateway" "azure_transit_gw" {
   connected_transit         = var.tgw_enable_connected_transit
   enable_active_mesh        = false
 }
+
+output "azure_transit_gw_id" {
+  value = aviatrix_transit_gateway.azure_transit_gw.id
+}

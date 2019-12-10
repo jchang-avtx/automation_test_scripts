@@ -24,3 +24,7 @@ resource "aviatrix_transit_gateway" "insane_transit_gw" {
   enable_active_mesh        = false
   enable_vpc_dns_server     = var.enable_vpc_dns_server
 }
+
+output "insane_transit_gw_id" {
+  value = aviatrix_transit_gateway.insane_transit_gw.id
+}

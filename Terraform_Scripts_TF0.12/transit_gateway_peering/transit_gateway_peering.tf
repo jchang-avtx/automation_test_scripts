@@ -33,3 +33,7 @@ resource "aviatrix_transit_gateway_peering" "test_transit_gw_peering" {
   transit_gateway_name1 = aviatrix_transit_gateway.test_transit_gw1.gw_name
   transit_gateway_name2 = aviatrix_transit_gateway.test_transit_gw2.gw_name
 }
+
+output "test_transit_gw_peering_id" {
+  value = aviatrix_transit_gateway_peering.test_transit_gw_peering.id
+}
