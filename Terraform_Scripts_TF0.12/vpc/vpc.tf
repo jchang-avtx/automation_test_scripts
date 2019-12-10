@@ -44,3 +44,23 @@ resource "aviatrix_vpc" "gcp_vpc" {
     cidr    = "172.16.0.0/16"
   }
 }
+
+#######################
+## OUTPUTS
+#######################
+
+output "test_vpc_id" {
+  value = aviatrix_vpc.test_vpc.id
+}
+
+output "test_vpc2_id" {
+  value = aviatrix_vpc.test_vpc2.id
+}
+
+output "test_vpc3_id" {
+  value = aviatrix_vpc.test_vpc3.id
+}
+
+output "gcp_vpc_id" {
+  value = aviatrix_vpc.gcp_vpc.id
+}

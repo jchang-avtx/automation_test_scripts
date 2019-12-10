@@ -14,3 +14,11 @@ resource "aviatrix_saml_endpoint" "custom_saml_endpoint" {
   custom_entity_id      = "customID"
   custom_saml_request_template = "${base64decode(var.saml_template)}"
 }
+
+output "text_saml_endpoint_id" {
+  value = aviatrix_saml_endpoint.text_saml_endpoint.id
+}
+
+output "custom_saml_endpoint_id" {
+  value = aviatrix_saml_endpoint.custom_saml_endpoint.id
+}

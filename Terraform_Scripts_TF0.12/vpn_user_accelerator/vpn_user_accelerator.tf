@@ -16,7 +16,11 @@
 
 
 resource "aviatrix_vpn_user_accelerator" "test_vpn_user_accel" {
-  elb_name        = aviatrix_gateway.vpn_gw_for_elb.elb_name
+  elb_name        = "elb-for-vpn-user-accel"
 
-  depends_on      = ["aviatrix_gateway.vpn_gw_for_elb"]
+  # depends_on      = ["aviatrix_gateway.vpn_gw_for_elb"]
+}
+
+output "test_vpn_user_accel_id" {
+  value = aviatrix_vpn_user_accelerator.test_vpn_user_accel.id
 }
