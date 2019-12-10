@@ -64,3 +64,7 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway" {
   enable_vpc_dns_server = var.enable_vpc_dns_server
   depends_on        = ["aviatrix_transit_gateway.test_transit_gw1", "aviatrix_transit_gateway.test_transit_gw2"]
 }
+
+output "test_spoke_gateway_id" {
+  value = aviatrix_spoke_gateway.test_spoke_gateway.id
+}

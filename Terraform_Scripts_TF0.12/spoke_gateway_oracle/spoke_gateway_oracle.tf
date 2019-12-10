@@ -60,3 +60,7 @@ resource "aviatrix_spoke_gateway" "oci_spoke_gateway" {
   transit_gw        = var.transit_gw # optional; comment out if want to test Update from no transitGW attachment to yes
   depends_on        = ["aviatrix_transit_gateway.oci_transit_gateway1", "aviatrix_transit_gateway.oci_transit_gateway2"]
 }
+
+output "oci_spoke_gateway_id" {
+  value = aviatrix_spoke_gateway.oci_spoke_gateway.id
+}

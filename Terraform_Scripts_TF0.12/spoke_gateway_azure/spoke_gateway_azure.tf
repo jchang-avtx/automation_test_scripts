@@ -39,3 +39,7 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway_arm" {
   enable_active_mesh= false
   depends_on        = ["aviatrix_transit_gateway.azure_transit_gw"]
 }
+
+output "test_spoke_gateway_arm_id" {
+  value = aviatrix_spoke_gateway.test_spoke_gateway_arm.id
+}
