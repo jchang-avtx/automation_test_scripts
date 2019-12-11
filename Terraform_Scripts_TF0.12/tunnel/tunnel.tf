@@ -12,7 +12,6 @@ resource "aviatrix_gateway" "peeringGW1" {
 
   peering_ha_subnet   = "10.0.0.0/24"
   peering_ha_gw_size  = "t2.micro"
-  peering_ha_eip      = "3.92.103.18"
 }
 
 resource "aviatrix_gateway" "peeringGW2" {
@@ -26,7 +25,6 @@ resource "aviatrix_gateway" "peeringGW2" {
 
   peering_ha_subnet   = "10.202.0.0/16"
   peering_ha_gw_size  = "t2.micro"
-  peering_ha_eip      = "34.232.45.155"
 }
 
 # Create encrypted peering between two aviatrix gateway

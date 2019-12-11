@@ -16,8 +16,8 @@ resource "aviatrix_transit_gateway" "insane_transit_gw" {
   ha_gw_size          = var.aviatrix_ha_gw_size
 
   allocate_new_eip    = false
-  eip                 = "34.239.41.40"
-  ha_eip              = "3.213.178.197"
+  eip                 = "52.1.80.143"
+  ha_eip              = "54.226.163.231"
 
   enable_hybrid_connection  = var.tgw_enable_hybrid
   connected_transit         = var.tgw_enable_connected_transit
