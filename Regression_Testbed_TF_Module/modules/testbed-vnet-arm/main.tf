@@ -42,6 +42,10 @@ route {
 	tags = {
 		environment 	 = "${var.resource_name_label}-Testbed-${count.index}"
 	}
+
+	lifecycle {
+		ignore_changes = all
+	}
 }
 
 resource "azurerm_subnet_route_table_association" "rtb_associate" {
