@@ -53,3 +53,23 @@ resource "aviatrix_vpn_user" "test_vpn_user4" {
   user_email        = var.vpn_user_email[3]
   saml_endpoint     = "saml_test_endpoint"
 }
+
+#######################
+## OUTPUTS
+#######################
+
+output "test_vpn_user1_id" {
+  value = aviatrix_vpn_user.test_vpn_user1.id
+}
+
+output "test_vpn_user2_id" {
+  value = aviatrix_vpn_user.test_vpn_user2.id
+}
+
+output "test_vpn_user3_id" {
+  value = aviatrix_vpn_user.test_vpn_user3.id
+}
+
+output "test_vpn_user4_id" {
+  value = aviatrix_vpn_user.test_vpn_user4.id
+}

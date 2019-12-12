@@ -12,3 +12,7 @@ resource "aviatrix_gateway" "gcloud_gw" {
 
   allocate_new_eip = true
 }
+
+output "gcloud_gw_id" {
+  value = aviatrix_gateway.gcloud_gw.id
+}

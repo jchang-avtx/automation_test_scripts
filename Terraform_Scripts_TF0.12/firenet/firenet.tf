@@ -250,15 +250,17 @@ resource "aviatrix_firenet" "fqdn_firenet" {
 ##########################
 # Outputs
 ##########################
-output "vpc_id1" {
-  value = aviatrix_vpc.firenet_vpc["us-east-1"].vpc_id
+output "firenet_id" {
+  # value = aviatrix_vpc.firenet_vpc["us-east-1"].vpc_id
+  value = aviatrix_firenet.firenet.id
 }
-output "vpc_id2" {
-  value = aviatrix_vpc.firenet_vpc["eu-west-1"].vpc_id
+output "fqdn_firenet_id" {
+  # value = aviatrix_vpc.firenet_vpc["eu-west-1"].vpc_id
+  value = aviatrix_firenet.fqdn_firenet.id
 }
-output "firewall_instance_id1" {
-  value = aviatrix_firewall_instance.firenet_instance.instance_id
+output "firenet_instance_id" {
+  value = aviatrix_firewall_instance.firenet_instance.id
 }
-output "firewall_instance_id3" {
-  value = aviatrix_gateway.fqdn_gateway.gw_name
+output "firenet_instance3_id" {
+  value = aviatrix_firewall_instance.firenet_instance3.id
 }

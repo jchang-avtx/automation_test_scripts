@@ -16,3 +16,7 @@ resource "aviatrix_transit_gateway" "gcp_transit_gateway" {
   connected_transit   = var.enable_connected_transit
   enable_active_mesh  = var.enable_active_mesh
 }
+
+output "gcp_transit_gateway_id" {
+  value = aviatrix_transit_gateway.gcp_transit_gateway.id
+}

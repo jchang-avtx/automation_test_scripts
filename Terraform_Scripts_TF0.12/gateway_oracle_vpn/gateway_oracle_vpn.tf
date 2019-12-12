@@ -24,3 +24,7 @@ resource "aviatrix_gateway" "oci_vpn_gateway" {
 
   saml_enabled        = true
 }
+
+output "oci_vpn_gateway_id" {
+  value = aviatrix_gateway.oci_vpn_gateway.id
+}

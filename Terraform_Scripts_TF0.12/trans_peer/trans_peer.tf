@@ -34,3 +34,7 @@ resource "aviatrix_trans_peer" "transitive-peering" {
   reachable_cidr  = "55.55.55.0/24"
   depends_on      = ["aviatrix_tunnel.encrypted-peering"]
 }
+
+output "transitive-peering_id" {
+  value = aviatrix_trans_peer.transitive-peering.id
+}

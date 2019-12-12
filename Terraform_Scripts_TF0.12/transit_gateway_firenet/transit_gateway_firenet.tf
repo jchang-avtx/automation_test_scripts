@@ -27,3 +27,7 @@ resource "aviatrix_transit_gateway" "firenet_transit_gw" {
   connected_transit           = true
   enable_active_mesh          = false
 }
+
+output "firenet_transit_gw_id" {
+  value = aviatrix_transit_gateway.firenet_transit_gw.id
+}

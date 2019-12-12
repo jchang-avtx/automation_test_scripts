@@ -68,3 +68,11 @@ resource "aviatrix_vpn_profile" "test_profile2" {
   }
 
 }
+
+output "test_profile1_id" {
+  value = aviatrix_vpn_profile.test_profile1.id
+}
+
+output "test_profile2_id" {
+  value = aviatrix_vpn_profile.test_profile2.id
+}

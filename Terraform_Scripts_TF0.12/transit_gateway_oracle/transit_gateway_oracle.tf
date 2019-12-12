@@ -19,3 +19,7 @@ resource "aviatrix_transit_gateway" "oci_transit_gateway" {
   enable_active_mesh        = false
 
 }
+
+output "oci_transit_gateway_id" {
+  value = aviatrix_transit_gateway.oci_transit_gateway.id
+}

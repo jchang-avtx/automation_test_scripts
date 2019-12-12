@@ -13,11 +13,15 @@ resource "aviatrix_gateway" "testGW1" {
   enable_snat         = var.enable_snat
 
   allocate_new_eip    = false
-  eip                 = "3.92.103.18"
+  eip                 = "52.86.21.117"
 
   peering_ha_subnet   = "10.0.2.0/24"
   peering_ha_gw_size  = var.aws_ha_gw_size
-  peering_ha_eip      = "18.204.25.144"
+  peering_ha_eip      = "52.204.201.204"
 
   enable_vpc_dns_server = var.enable_vpc_dns_server
+}
+
+output "testGW1_id" {
+  value = aviatrix_gateway.testGW1.id
 }

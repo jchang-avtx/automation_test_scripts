@@ -18,3 +18,7 @@ resource "aviatrix_gateway" "oci_gateway" {
 
   single_az_ha        = true
 }
+
+output "oci_gateway_id" {
+  value = aviatrix_gateway.oci_gateway.id
+}

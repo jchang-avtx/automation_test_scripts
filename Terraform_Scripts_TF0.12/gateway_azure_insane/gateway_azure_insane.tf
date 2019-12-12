@@ -16,3 +16,7 @@ resource "aviatrix_gateway" "insane_azure_gw" {
 
 
 }
+
+output "insane_azure_gw_id" {
+  value = aviatrix_gateway.insane_azure_gw.id
+}

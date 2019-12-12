@@ -76,3 +76,7 @@ resource "aviatrix_transit_gateway" "oci_transit_gw" {
   enable_advertise_transit_cidr     = var.toggle_advertise_transit_cidr
   bgp_manual_spoke_advertise_cidrs  = var.bgp_manual_spoke_advertise_cidrs_list
 }
+
+output "test_vgw_conn_id" {
+  value = aviatrix_vgw_conn.test_vgw_conn.id
+}

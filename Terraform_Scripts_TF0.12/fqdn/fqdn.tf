@@ -65,3 +65,7 @@ resource "aviatrix_fqdn" "FQDN-tag1" {
 
   depends_on = ["aviatrix_gateway.FQDN-GW", "aviatrix_gateway.FQDN-GW2"]
 }
+
+output "FQDN-tag1_id" {
+  value = aviatrix_fqdn.FQDN-tag1.id
+}

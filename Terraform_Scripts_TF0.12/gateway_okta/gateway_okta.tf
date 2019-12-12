@@ -24,3 +24,7 @@ resource "aviatrix_gateway" "testGW3" {
 
   allocate_new_eip        = true
 }
+
+output "testGW3_id" {
+  value = aviatrix_gateway.testGW3.id
+}

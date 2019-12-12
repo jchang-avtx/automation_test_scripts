@@ -16,3 +16,7 @@ resource "aviatrix_gateway" "insane_aws_gw" {
   peering_ha_insane_mode_az = "us-west-1b"
   peering_ha_gw_size        = "c5.large"
 }
+
+output "insane_aws_gw_id" {
+  value = aviatrix_gateway.insane_aws_gw.id
+}

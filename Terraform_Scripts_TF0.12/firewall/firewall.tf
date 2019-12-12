@@ -100,3 +100,11 @@ resource "aviatrix_firewall" "test_firewall_icmp" {
     description = "force-dropping these fools"
   }
 }
+
+output "test_firewall_id" {
+  value = aviatrix_firewall.test_firewall.id
+}
+
+output "test_firewall_icmp_id" {
+  value = aviatrix_firewall.test_firewall_icmp.id
+}

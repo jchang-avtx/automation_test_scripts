@@ -32,3 +32,7 @@ resource "aviatrix_gateway" "testGW4" {
 
   allocate_new_eip        = true
 }
+
+output "testGW4_id" {
+  value = aviatrix_gateway.testGW4.id
+}

@@ -149,3 +149,23 @@ resource "aviatrix_site2cloud" "s2c_test4" {
 
   depends_on = ["aviatrix_site2cloud.s2c_test3"]
 }
+
+#################################################
+# Outputs
+#################################################
+
+output "s2c_test_id" {
+  value = aviatrix_site2cloud.s2c_test.id
+}
+
+output "s2c_test2_id" {
+  value = aviatrix_site2cloud.s2c_test2.id
+}
+
+output "s2c_test3_id" {
+  value = aviatrix_site2cloud.s2c_test3.id
+}
+
+output "s2c_test4_id" {
+  value = aviatrix_site2cloud.s2c_test4.id
+}

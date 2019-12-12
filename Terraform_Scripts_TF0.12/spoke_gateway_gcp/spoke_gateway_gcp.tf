@@ -46,3 +46,7 @@ resource "aviatrix_spoke_gateway" "gcloud_spoke_gw" {
   transit_gw      = var.attached_transit_gw
   depends_on      = ["aviatrix_transit_gateway.gcloud_transit_gw1", "aviatrix_transit_gateway.gcloud_transit_gw2"]
 }
+
+output "gcloud_spoke_gw_id" {
+  value = aviatrix_spoke_gateway.gcloud_spoke_gw.id
+}
