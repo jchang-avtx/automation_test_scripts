@@ -1,11 +1,10 @@
 ## Aviatrix - Terrform Modules - Onprem Setup
 
 ### Description
-This Terraform modules sets up a onprem connection for simulation in the Regression Testbed environment. Creates an AWS VPC, AWS VGW, AWS CGW, AWS VPN connection, Aviatrix GW, and Aviatrix Site2Cloud connection.
+This Terraform modules sets up a onprem connection for simulation in the Regression Testbed environment. Creates an AWS VPC with Ubuntu instances, AWS VGW, AWS CGW, AWS VPN connection, Aviatrix GW, and Aviatrix Site2Cloud connection.
 
 ### Pre-requisites
 
-* An existing VPC
 * An Aviatrix controller
 * An Aviatrix access account
 
@@ -13,25 +12,42 @@ This Terraform modules sets up a onprem connection for simulation in the Regress
 To create an onprem connection:
 ```
 module "onprem-connection" {
-  source                 = "./modules/testbed-onprem_s2c"
-  account_name           = "<<insert access account name>>"
+  source                 = "./modules/testbed-onprem-new-vpc`"
+  resource_name_label    = "testbed"
+  gw_name                = "main-onprem-gw"
+  s2c_connection_name    = "main-onprem-s2c"
+  account_name           = "awsRegAccount"
 
-  onprem_vpc_cidr        = "<<insert cidr for vpc>>"
-  pub_subnet_cidr        = "<<insert cidr for subnet>>"
-  pri_subnet_cidr        = "<<insert cidr for subnet>>"
-  pub_subnet_az          = "<<insert availability zone>>"
-  pri_subnet_az          = "<<insert availability zone>>"
-  pub_hostnum            = "<<insert public instance hostnum>>"
-  pri_hostnum            = "<<insert private instance hostnum>>"
+  onprem_vpc_cidr        = "10.80.0.0/16"
+  pub_subnet_cidr        = "10.80.0.0/24"
+  pri_subnet_cidr        = "10.80.1.0/24"
+  pub_subnet_az          = "us-west-2b" # optional
+  pri_subnet_az          = "us-west-2c" # optional
+  pub_hostnum            = "10"
+  pri_hostnum            = "8"
+  termination_protection = true
+  public_key             = file("./public_key.pub")
+  ubuntu_ami             = "ami-abcdefg123456" # optional
 
-  termination_protection = <<true/false>>
-  public_key             = file("<<public key filepath")
-  ubuntu_ami             = ""
-  local_subnet_cidr      = "<<insert local subnet cidr for s2c>>"
+  remote_subnet_cidr     = ["28.10.1.0/24", "28.10.0.0/24", "10.28.1.0/24", "10.28.0.0/24"]
+  local_subnet_cidr      = "10.180.0.0/24" # optional
+  static_route_cidr      = ["10.180.0.0/24", "180.10.0.0/24"]
 }
 ```
 
 ### Variables
+- **resource_name_label**
+
+Resource name label for resources created in this module.
+
+- **gw_name**
+
+Name of Aviatrix onprem GW being created. Default is "onprem-gw".
+
+- **s2c_connection_name**
+
+Name of Aviatrix Site2Cloud connection being created. Default is "onprem-s2c".
+
 - **account_name**
 
 Access account name in Aviatrix controller.
@@ -51,7 +67,7 @@ Subnet cidr to launch private ubuntu instance into.
 - **pub_subnet_az**
 - **pri_subnet_az**
 
-Subnet availability zone.
+Subnet availability zone. Optional.
 
 - **pub_hostnum**
 
@@ -59,7 +75,7 @@ Number to be used for public ubuntu instance private ip host part.
 
 - **pri_hostnum**
 
-Number to be usde for private ubuntu instance private ip host part.
+Number to be used for private ubuntu instance private ip host part.
 
 - **termination_protection**
 
@@ -71,11 +87,19 @@ Public key to ssh into ubuntu instances.
 
 - **ubuntu_ami**
 
-AMI of the ubuntu instances.
+AMI of the ubuntu instances. Optional.
+
+- **remote_subnet_cidr**
+
+List of remote subnet cidrs for Site2Cloud connection.
 
 - **local_subnet_cidr**
 
 Local subnet cidr for Site2Cloud connections. Optional.
+
+- **static_route_cidr**
+
+List of static route cidrs for VPN connection.
 
 ### Outputs
 
@@ -139,7 +163,8 @@ Displays the aviatrix gateway name and cloud instance id.
 ```
 onprem_aviatrix_gw_info = [
   "<<gw name>>",
-  "<<gw instance id>>"
+  "<<gw instance id>>",
+  "<<gw public subnet>>"
 ]
 ```
 
@@ -178,6 +203,7 @@ onprem_vpn_info = [
 Displays the aviatrix site2cloud connection name.
 ```
 onprem_s2c_info = [
-  "<<s2c connection name>>"
+  "<<s2c connection name>>",
+  "<<s2c remote subnet cidrs>>"
 ]
 ```

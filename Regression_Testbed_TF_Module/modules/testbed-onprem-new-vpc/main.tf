@@ -5,27 +5,27 @@ resource "aws_vpc" "onprem_vpc" {
 	cidr_block	= var.onprem_vpc_cidr
 
 	tags	= {
-		Name			= "onprem_vpc_${data.aws_region.current.name}"
+		Name			= "${var.resource_name_label}-onprem-vpc-${data.aws_region.current.name}"
 	}
 }
 
 resource "aws_subnet" "public_subnet" {
 	vpc_id						= aws_vpc.onprem_vpc.id
 	cidr_block				= var.pub_subnet_cidr
-	availability_zone = var.pub_subnet_az
+	availability_zone = var.pub_subnet_az != null ? var.pub_subnet_az : ""
 
 	tags	= {
-		Name			= "onprem_public_subnet_${var.pub_subnet_az}"
+		Name			= var.pub_subnet_az != null ? "${var.resource_name_label}-onprem-public-subnet-${var.pub_subnet_az}" : "${var.resource_name_label}-onprem-public-subnet-${data.aws_region.current.name}"
 	}
 }
 
 resource "aws_subnet" "private_subnet" {
 	vpc_id						= aws_vpc.onprem_vpc.id
 	cidr_block				= var.pri_subnet_cidr
-	availability_zone = var.pri_subnet_az
+	availability_zone = var.pri_subnet_az != null ? var.pri_subnet_az : ""
 
 	tags	= {
-		Name			= "onprem_private_subnet_${var.pri_subnet_az}"
+		Name			= var.pri_subnet_az != null ? "${var.resource_name_label}-onprem-private-subnet-${var.pri_subnet_az}" : "${var.resource_name_label}-onprem-private-subnet-${data.aws_region.current.name}"
 	}
 }
 
@@ -33,7 +33,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.onprem_vpc.id
 
 	tags = {
-		Name 			= "onprem_igw_${data.aws_region.current.name}"
+		Name 			= "${var.resource_name_label}-onprem-igw-${data.aws_region.current.name}"
 	}
 }
 
@@ -50,7 +50,7 @@ resource "aws_route_table" "public_rtb" {
 	}
 
 	tags = {
-		Name 			= "onprem_public_rtb_${data.aws_region.current.name}"
+		Name 			= "${var.resource_name_label}-onprem-public-rtb-${data.aws_region.current.name}"
 	}
 }
 
@@ -62,7 +62,7 @@ resource "aws_route_table" "private_rtb" {
 	}
 
 	tags = {
-		Name 			= "onprem_private_rtb_${data.aws_region.current.name}"
+		Name 			= "${var.resource_name_label}-onprem-private-rtb-${data.aws_region.current.name}"
 	}
 }
 
@@ -106,7 +106,7 @@ resource "aws_security_group" "sg" {
 	}
 
 	tags	= {
-		Name			= "onprem_security_group_${data.aws_region.current.name}"
+		Name			= "${var.resource_name_label}-onprem-security-group-${data.aws_region.current.name}"
 	}
 }
 
@@ -116,13 +116,13 @@ resource "random_id" "key_id" {
 
 # Key pair is used for all ubuntu instances
 resource "aws_key_pair" "key_pair" {
-	key_name				= "onprem_ubuntu_key-${random_id.key_id.dec}"
+	key_name				= "${var.resource_name_label}-onprem-ubuntu-key-${random_id.key_id.dec}"
 	public_key			= var.public_key
 }
 
 resource "aws_instance" "public_instance" {
 	# Ubuntu
-	ami													= var.ubuntu_ami
+	ami													= var.ubuntu_ami != null ? var.ubuntu_ami : local.ubuntu_ami[data.aws_region.current.name]
 	instance_type								= "t2.micro"
 	disable_api_termination			= var.termination_protection
 	associate_public_ip_address = true
@@ -132,7 +132,7 @@ resource "aws_instance" "public_instance" {
 	key_name										= aws_key_pair.key_pair.key_name
 
 	tags	= {
-		Name				= "onprem_public_ubuntu_${aws_subnet.public_subnet.availability_zone}"
+		Name				= "${var.resource_name_label}-onprem-public-ubuntu-${aws_subnet.public_subnet.availability_zone}"
 	}
 }
 
@@ -140,13 +140,13 @@ resource "aws_eip" "eip" {
 	instance	= aws_instance.public_instance.id
 	vpc				= true
 	tags	= {
-		Name		= "onprem_public_instance_eip_${data.aws_region.current.name}"
+		Name		= "${var.resource_name_label}-onprem-public-instance-eip-${data.aws_region.current.name}"
 	}
 }
 
 resource "aws_instance" "private_instance" {
 	# Ubuntu
-  ami                         = var.ubuntu_ami
+	ami													= var.ubuntu_ami != null ? var.ubuntu_ami : local.ubuntu_ami[data.aws_region.current.name]
   instance_type               = "t2.micro"
 	disable_api_termination     = var.termination_protection
   subnet_id                   = aws_subnet.private_subnet.id
@@ -155,14 +155,14 @@ resource "aws_instance" "private_instance" {
 	key_name										= aws_key_pair.key_pair.key_name
 
   tags  = {
-    Name        = "onprem_private_ubuntu_${aws_subnet.private_subnet.availability_zone}"
+    Name        = "${var.resource_name_label}-onprem-private-ubuntu-${aws_subnet.private_subnet.availability_zone}"
   }
 }
 
 resource "aviatrix_gateway" "avtx_gw" {
     cloud_type          = 1
     account_name        = var.account_name
-    gw_name             = "onprem-avtx-gw"
+    gw_name             = "${var.resource_name_label}-${var.gw_name}"
     vpc_id              = aws_vpc.onprem_vpc.id
     vpc_reg             = data.aws_region.current.name
     gw_size             = "t3.micro"
@@ -176,13 +176,13 @@ resource "aws_customer_gateway" "aws_cgw" {
   type        = "ipsec.1"
 
   tags  = {
-    Name = "onprem_cgw_${data.aws_region.current.name}"
+    Name = "${var.resource_name_label}-main-cgw-${data.aws_region.current.name}"
   }
 }
 
 resource "aws_vpn_gateway" "aws_vgw" {
     tags  = {
-      Name = "onprem_vgw_${data.aws_region.current.name}"
+      Name = "${var.resource_name_label}-onprem-vgw-${data.aws_region.current.name}"
     }
 }
 
@@ -198,33 +198,25 @@ resource "aws_vpn_connection" "vpn" {
   type                = "ipsec.1"
 
 	tags = {
-		Name 	= "onprem_vpn_${data.aws_region.current.name}"
+		Name 	= "${var.resource_name_label}-onprem-vpn-${data.aws_region.current.name}"
 	}
 }
 
-resource "aws_vpn_connection_route" "route1" {
-	vpn_connection_id 		  = aws_vpn_connection.vpn.id
-	destination_cidr_block 	= aws_subnet.public_subnet.cidr_block
-}
-
-resource "aws_vpn_connection_route" "route2" {
-	vpn_connection_id 		  = aws_vpn_connection.vpn.id
-	destination_cidr_block 	= aws_subnet.private_subnet.cidr_block
+resource "aws_vpn_connection_route" "route" {
+  count                  = length(var.static_route_cidr)
+  vpn_connection_id      = aws_vpn_connection.vpn.id
+  destination_cidr_block = var.static_route_cidr[count.index]
 }
 
 resource "aviatrix_site2cloud" "onprem_s2c" {
   vpc_id  											= aws_vpc.onprem_vpc.id
-  connection_name   						= "onprem_s2c"
+  connection_name   						= "${var.resource_name_label}-${var.s2c_connection_name}"
   connection_type   						= "unmapped"
-  remote_gateway_type  					= "aws"
+  remote_gateway_type  					= "generic"
   tunnel_type   								= "udp"
   primary_cloud_gateway_name  	= aviatrix_gateway.avtx_gw.gw_name
   remote_gateway_ip   					= aws_vpn_connection.vpn.tunnel1_address
   pre_shared_key                = aws_vpn_connection.vpn.tunnel1_preshared_key
-  remote_subnet_cidr  					= aws_subnet.public_subnet.cidr_block
-  local_subnet_cidr   					= var.local_subnet_cidr
-
-	lifecycle {
-		ignore_changes = [remote_subnet_cidr, local_subnet_cidr]
-	}
+  remote_subnet_cidr  					= join(",", var.remote_subnet_cidr)
+	local_subnet_cidr   					= var.local_subnet_cidr
 }

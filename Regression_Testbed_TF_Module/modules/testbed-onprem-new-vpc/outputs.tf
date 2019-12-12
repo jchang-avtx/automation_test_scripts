@@ -40,7 +40,8 @@ output "onprem_private_ubuntu_info" {
 output "onprem_aviatrix_gw_info" {
   value = [
     aviatrix_gateway.avtx_gw.gw_name,
-    aviatrix_gateway.avtx_gw.cloud_instance_id
+    aviatrix_gateway.avtx_gw.cloud_instance_id,
+    aviatrix_gateway.avtx_gw.subnet
   ]
 }
 
@@ -67,6 +68,7 @@ output "onprem_vpn_info" {
 
 output "onprem_s2c_info" {
   value = [
-    aviatrix_site2cloud.onprem_s2c.connection_name
+    aviatrix_site2cloud.onprem_s2c.connection_name,
+    aviatrix_site2cloud.onprem_s2c.remote_subnet_cidr
   ]
 }
