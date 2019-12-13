@@ -6,9 +6,7 @@ This Terraform configuration creates an GCP test environment. Includes VPC, subn
 
 ### Prerequisites
 
-- Have Aviatrix IAM roles
 - Google Cloud Project created
-- GCP Credentials file
 - existing SSH Key
 
 ### Usage
@@ -18,13 +16,14 @@ module "testbed-gcp" {
 
   vpc_count             = 1
   resource_name_label   = "regression"
-  pub_subnet            = "10.20.0.0/24"
-  pri_subnet            = "10.30.0.0/24"
-  pub_instance_zone     = "us-central1-a"
-  pri_instance_zone     = "us-central1-b"
+  pub_subnet            = ["10.20.0.0/24"]
+  pri_subnet            = ["10.30.0.0/24"]
+  pub_instance_zone     = ["us-central1-a"]
+  pri_instance_zone     = ["us-central1-b"]
   pub_hostnum           = 20
   pri_hostnum           = 40
-  public_key            = <<public_key>>
+  ssh_user              = "regression"
+  public_key            = file("~/.ssh/id_rsa.pub")
 }
 ```
 
@@ -39,27 +38,47 @@ Label name for all the resources.
 
 - **pub_subnet**
 
-Public subnet.
+List of public subnets.
 
 - **pri_subnet**
 
-Private subnet.
+List of private subnets.
 
 - **pub_instance_zone**
 
-GCP zone to launch public instance.
+List of GCP zones to launch public instance.
 
 - **pri_instance_zone**
 
-GCP zone to launch private instance.
+List of GCP zones to launch private instance.
+
+- **pub_subnet_region**
+
+Region of public subnet. Optional, use if you want to create in region different than the default region specified in provider.
+
+- **pri_subnet_region**
+
+Region of private subnet. Optional, use if you want to create in region different than the default region specified in provider.
 
 - **pub_hostnum**
 
-Private hostpart of the public Ubuntu instance.
+Public hostpart of the public Ubuntu instance.
 
 - **pri_hostnum**
 
 Private hostnum of the private Ubuntu instance.
+
+- **ubuntu_image**
+
+Name of GCP Image to use for VMs. Default is "ubuntu-1804-lts".
+
+- **ssh_user**
+
+SSH User for ssh into ubuntu instances.
+
+- **public_key**
+
+Public key to ssh into Ubuntu instances.
 
 ### Outputs
 
