@@ -17,7 +17,7 @@
   terraform show
 
   terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=updateVPNCIDR.tfvars \
+                  -var-file=updateELB.tfvars \
                   -auto-approve
   terraform show
 

@@ -29,13 +29,12 @@ resource "aviatrix_gateway" "r53_gw" {
 }
 
 resource "aviatrix_geo_vpn" "test_geo_vpn" {
-  account_name = "AWSAccess"
-  cloud_type = 1
-  domain_name = "avxr53testing.com"
-  service_name = "testvpn"
-  elb_dns_names = [
-    "elb-r53-abc1234def567890.elb.us-east-2.amazonaws.com",
-    "east1elb-abc1234def567890.elb.us-east-1.amazonaws.com"
+  account_name    = "AWSAccess"
+  cloud_type      = 1
+  domain_name     = "avxr53testing.com"
+  service_name    = "testvpn"
+  elb_dns_names   = [
+    aviatrix_gateway.r53_gw.elb_dns_name
   ]
 }
 
