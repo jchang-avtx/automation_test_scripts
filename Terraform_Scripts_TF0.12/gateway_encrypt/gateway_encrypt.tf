@@ -42,6 +42,10 @@ resource "aviatrix_gateway" "aws_ebs_encrypt_gw" {
   single_az_ha            = false
   enable_encrypt_volume   = true
   customer_managed_keys   = aws_kms_key.temp_cust_key.id
+
+  lifecycle {
+    ignore_changes = [customer_managed_keys]
+  }
 }
 
 resource "aviatrix_transit_gateway" "aws_ebs_encrypt_transit" {
@@ -54,6 +58,10 @@ resource "aviatrix_transit_gateway" "aws_ebs_encrypt_transit" {
   subnet                  = aviatrix_vpc.transit_encrypt_vpc.subnets.5.cidr
   enable_encrypt_volume   = true
   customer_managed_keys   = aws_kms_key.temp_cust_key.id
+
+  lifecycle {
+    ignore_changes = [customer_managed_keys]
+  }
 }
 
 resource "aviatrix_spoke_gateway" "aws_ebs_encrypt_spoke" {
@@ -66,6 +74,10 @@ resource "aviatrix_spoke_gateway" "aws_ebs_encrypt_spoke" {
   subnet                  = aviatrix_vpc.spoke_encrypt_vpc.subnets.4.cidr
   enable_encrypt_volume   = true
   customer_managed_keys   = aws_kms_key.temp_cust_key.id
+
+  lifecycle {
+    ignore_changes = [customer_managed_keys]
+  }
 }
 
 output "aws_ebs_encrypt_gw_id" {
