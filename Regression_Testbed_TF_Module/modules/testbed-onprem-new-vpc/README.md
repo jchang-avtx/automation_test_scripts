@@ -12,7 +12,7 @@ This Terraform modules sets up a onprem connection for simulation in the Regress
 To create an onprem connection:
 ```
 module "onprem-connection" {
-  source                 = "./modules/testbed-onprem-new-vpc`"
+  source                 = "./modules/testbed-onprem-new-vpc"
   resource_name_label    = "testbed"
   gw_name                = "main-onprem-gw"
   s2c_connection_name    = "main-onprem-s2c"
@@ -30,7 +30,7 @@ module "onprem-connection" {
   ubuntu_ami             = "ami-abcdefg123456" # optional
 
   remote_subnet_cidr     = ["28.10.1.0/24", "28.10.0.0/24", "10.28.1.0/24", "10.28.0.0/24"]
-  local_subnet_cidr      = "10.180.0.0/24" # optional
+  local_subnet_cidr      = ["10.180.0.0/24"] # optional
   static_route_cidr      = ["10.180.0.0/24", "180.10.0.0/24"]
 }
 ```
@@ -95,7 +95,7 @@ List of remote subnet cidrs for Site2Cloud connection.
 
 - **local_subnet_cidr**
 
-Local subnet cidr for Site2Cloud connections. Optional.
+List of local subnet cidrs for Site2Cloud connections. Optional.
 
 - **static_route_cidr**
 

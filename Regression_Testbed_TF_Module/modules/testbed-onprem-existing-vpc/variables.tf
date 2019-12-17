@@ -37,9 +37,9 @@ variable "remote_subnet_cidr" {
 }
 
 variable "local_subnet_cidr" {
-  type        = string
+  type        = list(string)
   description = "Local subnet cidr for Site2Cloud connection. Optional."
-  default     = ""
+  default     = []
 }
 
 variable "static_route_cidr" {

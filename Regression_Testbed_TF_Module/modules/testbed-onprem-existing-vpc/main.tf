@@ -55,5 +55,5 @@ resource "aviatrix_site2cloud" "onprem_s2c" {
   remote_gateway_ip   					= aws_vpn_connection.vpn.tunnel1_address
   pre_shared_key                = aws_vpn_connection.vpn.tunnel1_preshared_key
   remote_subnet_cidr  					= join(",", var.remote_subnet_cidr)
-  local_subnet_cidr   					= var.local_subnet_cidr
+  local_subnet_cidr   					= join(",", var.local_subnet_cidr)
 }
