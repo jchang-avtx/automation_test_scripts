@@ -46,3 +46,9 @@ variable "static_route_cidr" {
   type        = list(string)
   description = "List of static routes to add to VPN."
 }
+
+variable "asn" {
+  type        = number
+  description = "ASN for the AWS VGW. If you don't specift an ASN, the VGW is created with the default ASN."
+  default     = null
+}

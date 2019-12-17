@@ -23,6 +23,7 @@ resource "aws_customer_gateway" "aws_cgw" {
 }
 
 resource "aws_vpn_gateway" "aws_vgw" {
+    amazon_side_asn = var.asn
     tags  = {
       Name = "${var.resource_name_label}-main-vgw-${data.aws_region.current.name}"
     }

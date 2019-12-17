@@ -23,6 +23,7 @@ module "onprem-connection" {
   remote_subnet_cidr     = ["28.10.1.0/24", "28.10.0.0/24", "10.28.1.0/24", "10.28.0.0/24"]
   local_subnet_cidr      = ["10.180.0.0/24"] # optional
   static_route_cidr      = ["10.180.0.0/24", "180.10.0.0/24"]
+  asn                    = 64512
 }
 ```
 
@@ -62,6 +63,11 @@ List of local subnet cidrs for Site2Cloud connections. Optional.
 - **static_route_cidr**
 
 List of static route cidrs for VPN connection.
+
+- **asn**
+
+ASN for the AWS VGW. Default is 64512.
+
 
 ### Outputs
 

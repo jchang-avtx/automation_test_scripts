@@ -90,6 +90,11 @@ variable "static_route_cidr" {
   description = "List of static routes to add to VPN."
 }
 
+variable "asn" {
+  type        = number
+  description = "ASN for the AWS VGW. Default is 64512."
+  default     = null
+
 # default ubuntu 18.04 ami
 locals {
 	ubuntu_ami = {
