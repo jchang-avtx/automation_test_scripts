@@ -28,11 +28,19 @@ variable "vnet_cidr" {
   type				= list(string)
 	description	= "Cidr for vnets."
 }
-variable "pub_subnet_cidr" {
+variable "pub_subnet1_cidr" {
 	type				= list(string)
-	description	= "Cidr for subnets."
+	description	= "Cidr for public subnet 1."
 }
-variable "pri_subnet_cidr" {
+variable "pub_subnet2_cidr" {
 	type				= list(string)
-	description	= "Cidr for subnets."
+	description	= "Cidr for public subnet 2."
+}
+variable "pri_subnet1_cidr" {
+	type				= list(string)
+	description	= "Cidr for private subnet 1."
+}
+variable "pri_subnet2_cidr" {
+	type				= list(string)
+	description	= "Cidr for private subnet 2."
 }

@@ -12,13 +12,15 @@ provider "azurerm" {
 
 module "arm-vnet" {
   source          	    = "./modules/testbed-vnet-arm"
-  resource_name_label   = "<<insert label>>" 
+  resource_name_label   = "<<insert label>>"
   region                = "<<insert arm region>>"
   vnet_count	  	      = <<insert amount of vnets>> ie: 2
   resource_name_label	  = "<<insert label name>>"
   vnet_cidr        	    = ["<<insert vnet cidr here> ie: 10.10.0.0/16"]
-  pub_subnet_cidr     	= ["<<insert subnet cidr ie: 10.10.5.0/24 >"]
-  pri_subnet_cidr     	= ["<<insert subnet cidr ie: 10.10.5.0/24 >"]
+  pub_subnet1_cidr     	= ["<<insert subnet cidr ie: 10.10.5.0/24 >"]
+  pub_subnet2_cidr     	= ["<<insert subnet cidr ie: 10.10.5.0/24 >"]
+  pri_subnet1_cidr     	= ["<<insert subnet cidr ie: 10.10.5.0/24 >"]
+  pri_subnet2_cidr     	= ["<<insert subnet cidr ie: 10.10.5.0/24 >"]
   public_key            = "<<insert public key>>"
 }
 ```
@@ -49,13 +51,21 @@ The number to be used for private ubuntu instance private ip host part.
 
 ARM VNET cidr.
 
-- **pub_subnet_cidr**
+- **pub_subnet1_cidr**
 
-Public subnet cidr
+Public subnet 1 cidr
 
-- **pri_subnet_cidr**
+- **pri_subnet1_cidr**
 
-Private subnet cidr
+Private subnet 1 cidr
+
+- **pub_subnet2_cidr**
+
+Public subnet 2 cidr
+
+- **pri_subnet2_cidr**
+
+Private subnet 2 cidr
 
 - **public_key**
 
