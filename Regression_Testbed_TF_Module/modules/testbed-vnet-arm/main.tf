@@ -32,17 +32,10 @@ resource "azurerm_route_table" "rtb" {
 	resource_group_name         	= azurerm_resource_group.rg[0].name
 	disable_bgp_route_propagation	= false
 
-#route {
-#	# to private subnet
-#	name 						= "${var.resource_name_label}-private-route-${count.index}"
-#	address_prefix 	= azurerm_subnet.private_subnet1[count.index].address_prefix
-#	next_hop_type   = "VirtualNetworkGateway"
-#}
-#
-#	tags = {
-#		environment 	 = "${var.resource_name_label}-Testbed-${count.index}"
-#	}
-#
+	tags = {
+		environment 	 = "${var.resource_name_label}-Testbed-${count.index}"
+	}
+
 	lifecycle {
 		ignore_changes = all
 	}
