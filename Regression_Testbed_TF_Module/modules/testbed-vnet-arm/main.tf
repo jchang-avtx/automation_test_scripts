@@ -25,46 +25,60 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 # ARM Private route table
-resource "azurerm_route_table" "private_rtb" {
+resource "azurerm_route_table" "rtb" {
 	count 												= var.vnet_count != 0 ? 1 : 0
-	name 													= "${var.resource_name_label}-pri-rtb"
+	name 													= "${var.resource_name_label}-rtb"
 	location 											= azurerm_resource_group.rg[0].location
 	resource_group_name         	= azurerm_resource_group.rg[0].name
 	disable_bgp_route_propagation	= false
 
-route {
-	# to private subnet
-	name 						= "${var.resource_name_label}-private-route-${count.index}"
-	address_prefix 	= azurerm_subnet.private_subnet[count.index].address_prefix
-	next_hop_type   = "VirtualNetworkGateway"
-}
-
 	tags = {
 		environment 	 = "${var.resource_name_label}-Testbed-${count.index}"
 	}
+
+	lifecycle {
+		ignore_changes = all
+	}
 }
 
+##### CHANGE
 resource "azurerm_subnet_route_table_association" "rtb_associate" {
 	count 				 = var.vnet_count
-	subnet_id 		 = azurerm_subnet.private_subnet[count.index].id
-	route_table_id = azurerm_route_table.private_rtb[0].id
+	subnet_id 		 = azurerm_subnet.private_subnet1[count.index].id
+	route_table_id = azurerm_route_table.rtb[0].id
 }
 
 # ARM subnet
-resource "azurerm_subnet" "public_subnet" {
+resource "azurerm_subnet" "public_subnet1" {
 	count									= var.vnet_count
-	name									= "${var.resource_name_label}-pub-subnet${count.index}"
+	name									= "${var.resource_name_label}-pub1-subnet${count.index}"
 	resource_group_name		= azurerm_resource_group.rg[0].name
 	virtual_network_name	= azurerm_virtual_network.vnet[count.index].name
-	address_prefix				= var.pub_subnet_cidr[count.index]
+	address_prefix				= var.pub_subnet1cidr[count.index]
 }
 
-resource "azurerm_subnet" "private_subnet" {
+resource "azurerm_subnet" "public_subnet2" {
 	count									= var.vnet_count
-	name									= "${var.resource_name_label}-pri-subnet${count.index}"
+	name									= "${var.resource_name_label}-pub2-subnet${count.index}"
+	resource_group_name		= azurerm_resource_group.rg[0].name
+	virtual_network_name	= azurerm_virtual_network.vnet[count.index].name
+	address_prefix				= var.pub_subnet2_cidr[count.index]
+}
+
+resource "azurerm_subnet" "private_subnet1" {
+	count									= var.vnet_count
+	name									= "${var.resource_name_label}-pri1-subnet${count.index}"
 	resource_group_name		= azurerm_resource_group.rg[0].name
 	virtual_network_name	=	azurerm_virtual_network.vnet[count.index].name
-	address_prefix				=	var.pri_subnet_cidr[count.index]
+	address_prefix				=	var.pri_subnet1_cidr[count.index]
+}
+
+resource "azurerm_subnet" "private_subnet2" {
+	count									= var.vnet_count
+	name									= "${var.resource_name_label}-pri2-subnet${count.index}"
+	resource_group_name		= azurerm_resource_group.rg[0].name
+	virtual_network_name	=	azurerm_virtual_network.vnet[count.index].name
+	address_prefix				=	var.pri_subnet2_cidr[count.index]
 }
 
 # ARM Network SG
@@ -101,9 +115,9 @@ resource "azurerm_network_interface" "network_interface1" {
 
 	ip_configuration {
 		name													= "${var.resource_name_label}-public-instance-ip-config"
-		subnet_id											= azurerm_subnet.public_subnet[count.index].id
+		subnet_id											= azurerm_subnet.public_subnet1[count.index].id
 		private_ip_address_allocation	= "Static"
-		private_ip_address 						= cidrhost(azurerm_subnet.public_subnet[count.index].address_prefix, var.pub_hostnum)
+		private_ip_address 						= cidrhost(azurerm_subnet.public_subnet1[count.index].address_prefix, var.pub_hostnum)
 		public_ip_address_id					= azurerm_public_ip.public_ip[count.index].id
 	}
 
@@ -121,9 +135,9 @@ resource "azurerm_network_interface" "network_interface2" {
 
 	ip_configuration {
 		name													= "${var.resource_name_label}-private-instance-ip-config"
-		subnet_id											= azurerm_subnet.private_subnet[count.index].id
+		subnet_id											= azurerm_subnet.private_subnet1[count.index].id
 		private_ip_address_allocation	= "Static"
-		private_ip_address 						= cidrhost(azurerm_subnet.private_subnet[count.index].address_prefix, var.pri_hostnum)
+		private_ip_address 						= cidrhost(azurerm_subnet.private_subnet1[count.index].address_prefix, var.pri_hostnum)
 	}
 
 	tags = {
@@ -147,7 +161,7 @@ resource "azurerm_public_ip" "public_ip" {
 # ARM public instance
 resource "azurerm_virtual_machine" "ubuntu_public" {
 		count									= var.vnet_count
-    name                  = "${var.resource_name_label}-ubuntu-public${count.index}"
+    name                  = "${var.resource_name_label}-public-ubuntu${count.index}"
     location              = azurerm_resource_group.rg[0].location
     resource_group_name   = azurerm_resource_group.rg[0].name
     network_interface_ids = [azurerm_network_interface.network_interface1[count.index].id]
@@ -188,7 +202,7 @@ resource "azurerm_virtual_machine" "ubuntu_public" {
 # ARM private instance
 resource "azurerm_virtual_machine" "ubuntu_private" {
 		count									= var.vnet_count
-		name									= "${var.resource_name_label}-ubuntu-private${count.index}"
+		name									= "${var.resource_name_label}-private-ubuntu${count.index}"
 		location							=	azurerm_resource_group.rg[0].location
 		resource_group_name		= azurerm_resource_group.rg[0].name
 		network_interface_ids	= [azurerm_network_interface.network_interface2[count.index].id]
