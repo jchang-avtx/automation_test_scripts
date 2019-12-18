@@ -9,16 +9,16 @@ resource "google_compute_network" "vpc" {
 resource "google_compute_subnetwork" "public_subnet" {
   count         = var.vpc_count
   name          = "${var.resource_name_label}-public-subnet${count.index}"
-  ip_cidr_range = var.pub_subnet
-#  region        = var.pub_subnet_region
+  ip_cidr_range = var.pub_subnet[count.index]
+  region        = var.pub_subnet_region
   network       = google_compute_network.vpc[count.index].self_link
 }
 
 resource "google_compute_subnetwork" "private_subnet" {
   count         = var.vpc_count
   name          = "${var.resource_name_label}-private-subnet${count.index}"
-  ip_cidr_range = var.pri_subnet
-#  region        = var.pri_subnet_region
+  ip_cidr_range = var.pri_subnet[count.index]
+  region        = var.pri_subnet_region
   network       = google_compute_network.vpc[count.index].self_link
 }
 
@@ -43,11 +43,11 @@ resource "google_compute_instance" "public_instance" {
   count         = var.vpc_count
   name          = "${var.resource_name_label}-public-instance${count.index}"
   machine_type  = "f1-micro"
-  zone          = var.pub_instance_zone
+  zone          = var.pub_instance_zone[count.index]
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-1804-lts"
+      image = var.ubuntu_image
     }
   }
 
@@ -60,7 +60,7 @@ resource "google_compute_instance" "public_instance" {
   }
 
   metadata = {
-    ssh-keys = var.public_key
+    ssh-keys = "${var.ssh_user}:${var.public_key}"
   }
 }
 
@@ -68,11 +68,11 @@ resource "google_compute_instance" "private_instance" {
   count         = var.vpc_count
   name          = "${var.resource_name_label}-private-instance${count.index}"
   machine_type  = "f1-micro"
-  zone          = var.pri_instance_zone
+  zone          = var.pri_instance_zone[count.index]
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-1804-lts"
+      image = var.ubuntu_image
     }
   }
 
@@ -82,6 +82,6 @@ resource "google_compute_instance" "private_instance" {
   }
 
   metadata = {
-    ssh-keys = var.public_key
+    ssh-keys = "${var.ssh_user}:${var.public_key}"
   }
 }
