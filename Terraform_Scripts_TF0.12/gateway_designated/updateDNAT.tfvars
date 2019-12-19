@@ -10,7 +10,6 @@ aws_dnat_policy_connection    = "None"
 aws_dnat_policy_mark          = 71
 aws_dnat_policy_new_src_ip    = "23.0.0.0"
 aws_dnat_policy_new_src_port  = 55
-aws_dnat_policy_exclude_rtb   = data.aws_route_table.design_rtb.id
 
 arm_dnat_policy_src_ip        = "21.0.0.0/24"
 arm_dnat_policy_src_port      = 53
