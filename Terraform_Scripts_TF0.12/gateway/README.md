@@ -19,7 +19,15 @@
                   -auto-approve
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=addTagList.tfvars \
+                  -auto-approve
+  terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
                   -var-file=updateTagList.tfvars \
+                  -auto-approve
+  terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=deleteTagList.tfvars \
                   -auto-approve
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \
