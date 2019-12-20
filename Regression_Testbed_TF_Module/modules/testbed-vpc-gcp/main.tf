@@ -81,6 +81,8 @@ resource "google_compute_instance" "private_instance" {
     network_ip = cidrhost(google_compute_subnetwork.private_subnet[count.index].ip_cidr_range, var.pri_hostnum)
   }
 
+  tags = ["avx-snat-noip"]
+
   metadata = {
     ssh-keys = "${var.ssh_user}:${var.public_key}"
   }
