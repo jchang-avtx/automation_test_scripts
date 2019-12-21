@@ -65,7 +65,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway1.gw_name
-  backup_gateway_name           = "${aviatrix_gateway.test_gateway1.gw_name}-hagw"
+  backup_gateway_name           = join("-", [aviatrix_gateway.test_gateway1.gw_name, "hagw"])
   remote_gateway_ip             = aviatrix_gateway.test_gateway2.eip
   backup_remote_gateway_ip      = aviatrix_gateway.test_gateway2.peering_ha_eip
 
@@ -75,7 +75,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   remote_subnet_cidr            = aviatrix_gateway.test_gateway2.subnet
   local_subnet_cidr             = aviatrix_gateway.test_gateway1.subnet
 
-  ssl_server_pool               = "192.168.45.0/24"
+  # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = true
 
   depends_on                    = ["aviatrix_gateway.test_gateway1", "aviatrix_gateway.test_gateway2", "aviatrix_gateway.test_gateway3"]
@@ -90,7 +90,7 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway2.gw_name
-  backup_gateway_name           = "${aviatrix_gateway.test_gateway2.gw_name}-hagw"
+  backup_gateway_name           = join("-", [aviatrix_gateway.test_gateway2.gw_name, "hagw"])
   remote_gateway_ip             = aviatrix_gateway.test_gateway1.eip
   backup_remote_gateway_ip      = aviatrix_gateway.test_gateway1.peering_ha_eip
 
@@ -115,7 +115,7 @@ resource "aviatrix_site2cloud" "s2c_test3" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway3.gw_name
-  backup_gateway_name           = "${aviatrix_gateway.test_gateway3.gw_name}-hagw"
+  backup_gateway_name           = join("-", [aviatrix_gateway.test_gateway3.gw_name, "hagw"])
   remote_gateway_ip             = aviatrix_gateway.test_gateway1.eip
   backup_remote_gateway_ip      = aviatrix_gateway.test_gateway1.peering_ha_eip
 
@@ -137,7 +137,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.test_gateway1.gw_name
-  backup_gateway_name           = "${aviatrix_gateway.test_gateway1.gw_name}-hagw"
+  backup_gateway_name           = join("-", [aviatrix_gateway.test_gateway1.gw_name, "hagw"])
   remote_gateway_ip             = aviatrix_gateway.test_gateway3.eip
   backup_remote_gateway_ip      = aviatrix_gateway.test_gateway3.peering_ha_eip
 
