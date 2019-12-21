@@ -35,7 +35,7 @@ resource "aviatrix_vpc" "firenet_vpc" {
   cloud_type            = 1
   account_name          = "AWSAccess"
   region                = each.key
-  name                  = "firenetVPC-${each.key}"
+  name                  = join("-", ["firenetVPC", each.key])
   cidr                  = each.value
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = true
@@ -178,7 +178,7 @@ resource "aviatrix_firewall_instance" "firenet_instance" {
 
 resource "aviatrix_firewall_instance" "firenet_instance2" {
   vpc_id                = aviatrix_vpc.firenet_vpc["us-east-1"].vpc_id
-  firenet_gw_name       = "${aviatrix_transit_gateway.firenet_transit_gateway.gw_name}-hagw"
+  firenet_gw_name       = join("-", [aviatrix_transit_gateway.firenet_transit_gateway.gw_name, "hagw"])
   firewall_name         = "firenetInstanceName2"
   firewall_image        = "Palo Alto Networks VM-Series Next-Generation Firewall Bundle 1"
   firewall_size         = "m5.xlarge"
@@ -223,7 +223,7 @@ resource "aviatrix_firenet" "firenet" {
   }
 
   firewall_instance_association {
-    firenet_gw_name       = "${aviatrix_transit_gateway.firenet_transit_gateway.gw_name}-hagw"
+    firenet_gw_name       = join("-", [aviatrix_transit_gateway.firenet_transit_gateway.gw_name, "hagw"])
     vendor_type           = "Generic"
     firewall_name         = aviatrix_firewall_instance.firenet_instance2.firewall_name
     instance_id           = aviatrix_firewall_instance.firenet_instance2.instance_id
@@ -251,11 +251,9 @@ resource "aviatrix_firenet" "fqdn_firenet" {
 # Outputs
 ##########################
 output "firenet_id" {
-  # value = aviatrix_vpc.firenet_vpc["us-east-1"].vpc_id
   value = aviatrix_firenet.firenet.id
 }
 output "fqdn_firenet_id" {
-  # value = aviatrix_vpc.firenet_vpc["eu-west-1"].vpc_id
   value = aviatrix_firenet.fqdn_firenet.id
 }
 output "firenet_instance_id" {

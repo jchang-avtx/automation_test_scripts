@@ -12,7 +12,7 @@ resource "aviatrix_saml_endpoint" "custom_saml_endpoint" {
   idp_metadata_type     = "Text"
   idp_metadata          = "sample saml text part 2"
   custom_entity_id      = "customID"
-  custom_saml_request_template = "${base64decode(var.saml_template)}"
+  custom_saml_request_template = base64decode(var.saml_template)
 }
 
 output "text_saml_endpoint_id" {

@@ -46,21 +46,11 @@ resource "aviatrix_spoke_gateway" "sdnat_spoke_aws_gw" {
   vpc_id            = aviatrix_vpc.sdnat_spoke_aws_vpc.vpc_id
   vpc_reg           = aviatrix_vpc.sdnat_spoke_aws_vpc.region
   gw_size           = "t2.micro"
-
-  # insane_mode       = true
-  # insane_mode_az    = "us-east-1a"
-  # subnet            = "172.0.2.0/26"
-  subnet            = aviatrix_vpc.sdnat_spoke_aws_vpc.subnets.3.cidr # non-insane
-  # single_az_ha      = true # for manual testing
-  # ha_insane_mode_az = "us-east-1b"
-  # ha_subnet         = "172.0.2.64/26" # (optional) Setting to empty/unset will disable HA. Setting to valid will create an HA gateway in the subnet
-  # ha_subnet         = "172.0.1.0/24" # non-insane
-  # ha_gw_size        = "t2.micro"
+  subnet            = aviatrix_vpc.sdnat_spoke_aws_vpc.subnets.3.cidr
 
   enable_active_mesh  = false # activemesh does not support DNAT
   transit_gw          = aviatrix_transit_gateway.random_transit.gw_name
 
-  # enable_vpc_dns_server = true
   enable_snat       = true # disable AWS NAT instance before enabling; not supported w insane mode
   snat_mode         = "custom"
   snat_policy {
@@ -153,7 +143,6 @@ resource "aviatrix_spoke_gateway" "sdnat_spoke_arm_gw" {
     mark          = var.arm_snat_policy_mark
     new_src_ip    = var.arm_snat_policy_new_src_ip
     new_src_port  = var.arm_snat_policy_new_src_port
-    # exclude_rtb   = "${data.azurerm_route_table.sdnat_spoke_arm_rtb.name}:${data.azurerm_route_table.sdnat_spoke_arm_rtb.resource_group_name}"
     exclude_rtb   = join(":", [data.azurerm_route_table.sdnat_spoke_arm_rtb.name, data.azurerm_route_table.sdnat_spoke_arm_rtb.resource_group_name])
   }
 
