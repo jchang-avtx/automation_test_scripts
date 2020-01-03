@@ -23,3 +23,14 @@ terraform show
 terraform destroy -var-file=provider_cred.tfvars -auto-approve
 ```
 
+### Test Duration
+
+Total Test Time = \~16 min (Create=\~4min Destroy=\~12min)
+
+### Test Result
+
+Check result.txt file in the same terraform script location. It should say "PASS" or "FAIL".
+
+### Troubleshoot
+
+If test result is "FAIL" or user needs to check more info, check log.txt file in the same terraform script location after the run.
