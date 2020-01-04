@@ -10,7 +10,7 @@ This Terraform configuration creates AWS VPC testbed environment with ubuntu ins
 
 2) Provide the location of the public_key as variable in provider_cred.tfvars file.
 
-3) Provide the location of the private_key as local variable in fqdn.tf file
+3) Provide the location of the private_key as local variable in fqdn.tf file. Also, add the private_key on the local machine where terraform is going to run. For example, ssh-add ~/Downloads/sshkey
 
 4) Provide other info such as controller_ip, aws_access_key, etc as necessary in provider_cred.tfvars file.
 
@@ -29,8 +29,8 @@ Total Test Time = \~16 min (Create=\~4min Destroy=\~12min)
 
 ### Test Result
 
-Check result.txt file in the same terraform script location. It should say "PASS" or "FAIL".
+Check **result.txt** file in the same terraform script location. It should say **"PASS"** or **"FAIL"**.
 
 ### Troubleshoot
 
-If test result is "FAIL" or user needs to check more info, check log.txt file in the same terraform script location after the run.
+If test result is "FAIL" or user needs to check more info, check **log.txt** file in the same terraform script location after the run.
