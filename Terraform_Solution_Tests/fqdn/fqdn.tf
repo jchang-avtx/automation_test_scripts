@@ -132,5 +132,5 @@ variable "ssh_user" {
 }
 
 locals {
-  private_key     = "~/Downloads/sshkey"
+  private_key     = "/home/ubuntu/.ssh/id_rsa"
 }
