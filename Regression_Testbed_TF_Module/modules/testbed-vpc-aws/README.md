@@ -120,3 +120,7 @@ Private IP of the Ubuntu instances.
 - **ubuntu_id**
 
 Instance ID of the Ubuntu instances.
+
+- **instance_state**
+
+Instance state of the Ubuntu instances.

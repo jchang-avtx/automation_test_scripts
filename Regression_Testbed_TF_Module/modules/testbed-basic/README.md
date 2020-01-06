@@ -375,7 +375,7 @@ Outputs the subnet info (name and cidr) for all subnets in the given regions.
 - **east1_ubuntu_info**
 - **east2_ubuntu_info**
 
-Outputs the ubuntu info (name, id, public ip, and private ip) for all instances in the given regions.
+Outputs the ubuntu info (name, id, public ip, private ip, and instance state) for all instances in the given regions.
 
 - **controller_public_ip**
 

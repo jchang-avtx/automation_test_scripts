@@ -48,3 +48,10 @@ output "ubuntu_id" {
     aws_instance.private_instance[*].id
   )
 }
+
+output "instance_state" {
+  value = concat(
+    aws_instance.public_instance[*].instance_state,
+    aws_instance.private_instance[*].instance_state
+  )
+}
