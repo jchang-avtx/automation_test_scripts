@@ -14,6 +14,7 @@ To create an onprem connection:
 ```
 module "onprem-connection" {
   source                 = "./modules/testbed-onprem-existing-vpc"
+  owner                  = "matthew"
   resource_name_label    = "testbed"
   gw_name                = "main-onprem-gw" # optional
   s2c_connection_name    = "main-onprem-s2c" # optional
@@ -28,6 +29,10 @@ module "onprem-connection" {
 ```
 
 ### Variables
+- **owner**
+
+Name of the owner for the AWS resources. Optional.
+
 - **resource_name_label**
 
 Resource name label for resources created in this module.

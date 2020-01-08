@@ -4,6 +4,12 @@ variable "resource_name_label" {
   description = "Resource name label."
 }
 
+variable "owner" {
+	type 				= string
+	description = "Name of the owner for the AWS resources. Optional."
+	default 		= null
+}
+
 variable "gw_name" {
   type        = string
   description = "Name of Aviatrix Onprem GW. Default is 'onprem-gw'."
