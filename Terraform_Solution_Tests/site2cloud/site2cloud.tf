@@ -126,7 +126,7 @@ resource "null_resource" "ping" {
 
   provisioner "remote-exec" {
     inline = [
-      "/tmp/site2cloud.py --ping_list ${join(",",[for i in range(1,4,2): module.aws-vpc.ubuntu_private_ip[i]])}"
+      "python3 /tmp/site2cloud.py --ping_list ${join(",",[for i in range(1,4,2): module.aws-vpc.ubuntu_private_ip[i]])}"
     ]
     connection {
       type = "ssh"
