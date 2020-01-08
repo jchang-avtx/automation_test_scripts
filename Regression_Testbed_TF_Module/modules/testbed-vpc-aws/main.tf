@@ -15,6 +15,7 @@ resource "aws_vpc" "vpc" {
 	cidr_block	= var.vpc_cidr[count.index]
 	tags	= {
 		Name			= "${var.resource_name_label}_vpc${count.index}_${data.aws_region.current[0].name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -25,6 +26,7 @@ resource "aws_subnet" "public_subnet1" {
 	availability_zone = var.pub_subnet1_az != null ? var.pub_subnet1_az[count.index] : ""
 	tags	= {
 		Name			= var.pub_subnet1_az != null ? "${var.resource_name_label}_vpc${count.index}_public1_${var.pub_subnet1_az[count.index]}" : "${var.resource_name_label}_vpc${count.index}_public1_${data.aws_region.current[0].name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -35,6 +37,7 @@ resource "aws_subnet" "public_subnet2" {
 	availability_zone = var.pub_subnet2_az != null ? var.pub_subnet2_az[count.index] : ""
 	tags	= {
 		Name			= var.pub_subnet2_az != null ? "${var.resource_name_label}_vpc${count.index}_public2_${var.pub_subnet2_az[count.index]}" : "${var.resource_name_label}_vpc${count.index}_public2_${data.aws_region.current[0].name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -45,6 +48,7 @@ resource "aws_subnet" "private_subnet" {
 	availability_zone = var.pri_subnet_az != null ? var.pri_subnet_az[count.index] : ""
 	tags	= {
 		Name			= var.pri_subnet_az != null ? "${var.resource_name_label}_vpc${count.index}_private_${var.pri_subnet_az[count.index]}" : "${var.resource_name_label}_vpc${count.index}_private_${data.aws_region.current[0].name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -53,6 +57,7 @@ resource "aws_internet_gateway" "igw" {
 	vpc_id			= aws_vpc.vpc[count.index].id
 	tags	= {
 		Name			= "${var.resource_name_label}_vpc${count.index}_igw_${data.aws_region.current[0].name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -65,6 +70,7 @@ resource "aws_route_table" "public_rtb" {
 	}
 	tags	= {
 		Name			= "${var.resource_name_label}_vpc${count.index}_public-rtb_${data.aws_region.current[0].name}"
+		Owner 		= var.owner
 	}
 	lifecycle {
 		ignore_changes = all
@@ -76,6 +82,7 @@ resource "aws_route_table" "private_rtb" {
 	vpc_id			=	aws_vpc.vpc[count.index].id
 	tags	= {
 		Name			= "${var.resource_name_label}_vpc${count.index}_private-rtb_${data.aws_region.current[0].name}"
+		Owner 		= var.owner
 	}
 	lifecycle {
 		ignore_changes = all
@@ -124,6 +131,7 @@ resource "aws_instance" "public_instance" {
 	key_name										= aws_key_pair.key_pair[0].key_name
 	tags	= {
 		Name				= "${var.resource_name_label}_public-ubuntu${count.index}_${aws_subnet.public_subnet1[count.index].availability_zone}"
+		Owner 			= var.owner
 	}
 }
 
@@ -139,6 +147,7 @@ resource "aws_instance" "private_instance" {
 	key_name										= aws_key_pair.key_pair[0].key_name
   tags  = {
     Name        = "${var.resource_name_label}_private-ubuntu${count.index}_${aws_subnet.private_subnet[count.index].availability_zone}"
+		Owner 			= var.owner
   }
 }
 
@@ -163,9 +172,6 @@ resource "aws_security_group" "sg" {
 	protocol		= "icmp"
 	cidr_blocks = ["0.0.0.0/0"]
 	}
-	tags	= {
-		Name			= "${var.resource_name_label}_security-group${count.index}_${data.aws_region.current[0].name}"
-	}
 
 	egress {
 	# Allow all
@@ -173,6 +179,11 @@ resource "aws_security_group" "sg" {
 	to_port 		= 0
 	protocol 		= "-1"
 	cidr_blocks = ["0.0.0.0/0"]
+	}
+
+	tags	= {
+		Name			= "${var.resource_name_label}_security-group${count.index}_${data.aws_region.current[0].name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -182,5 +193,6 @@ resource "aws_eip" "eip" {
 	vpc				= true
 	tags	= {
 		Name		= "${var.resource_name_label}_public-instance-eip${count.index}_${data.aws_region.current[0].name}"
+		Owner 	= var.owner
 	}
 }

@@ -39,3 +39,9 @@ variable "resource_name_label" {
 	type					= string
 	description		= "The label for the resource name."
 }
+
+variable "owner" {
+	type 				= string
+	description = "Name of the owner for the AWS resources. Optional."
+	default 		= null
+}

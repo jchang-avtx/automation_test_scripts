@@ -10,6 +10,7 @@ To create a CSR VPC:
 module "aws-vpc" {
   source          	     = "./modules/testbed-vpc-aws"
   vpc_count	        	   = "<<insert amount of vpcs>> ie: 2"
+  owner                  = "<<insert your name>>"
   resource_name_label    = "<<insert label name>>"
   pub_hostnum		         = "<<insert host number part>>"
   vpc_cidr        	     = ["<<insert vpc cidr here> ie: 10.10.0.0/16"]
@@ -30,7 +31,11 @@ module "aws-vpc" {
 
 The number of vpcs to create in the given aws region.
 
--**resource_name_label**
+- **owner**
+
+Name of the owner for the AWS resources. Optional.
+
+- **resource_name_label**
 
 The label for the resource name.
 

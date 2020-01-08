@@ -5,8 +5,10 @@
 resource "aws_vpc" "vpc" {
   count       = var.deploy_controller ? 1 : 0
   cidr_block  = var.vpc_cidr
+
   tags  = {
     Name      = "${var.resource_name_label}_controller_vpc"
+    Owner     = var.owner
   }
 }
 
@@ -15,28 +17,35 @@ resource "aws_subnet" "public_subnet" {
   vpc_id            = aws_vpc.vpc[0].id
   cidr_block        = var.subnet_cidr
   availability_zone = var.subnet_az
+
   tags  = {
     Name      = "${var.resource_name_label}_controller-public_subnet"
+    Owner     = var.owner
   }
 }
 
 resource "aws_internet_gateway" "igw" {
   count       = var.deploy_controller ? 1 : 0
   vpc_id      = aws_vpc.vpc[0].id
+
   tags  = {
     Name		  = "${var.resource_name_label}_controller-igw"
+    Owner     = var.owner
   }
 }
 
 resource "aws_route_table" "public_rtb" {
   count       = var.deploy_controller ? 1 : 0
   vpc_id      = aws_vpc.vpc[0].id
+
   route {
     cidr_block  = "0.0.0.0/0"
     gateway_id  = aws_internet_gateway.igw[0].id
   }
+
   tags  = {
     Name      = "${var.resource_name_label}_controller-public_rtb"
+    Owner     = var.owner
   }
 }
 
@@ -79,9 +88,11 @@ resource "aws_network_interface" "eni-controller" {
   count           = var.deploy_controller ? 1 : 0
   subnet_id       = aws_subnet.public_subnet[0].id
   security_groups = [aws_security_group.AviatrixSecurityGroup[0].id]
+
   tags            = {
     Name      = format("%s%s : %d", "${var.resource_name_label}-", "Aviatrix Controller interface", count.index)
     Createdby = "Terraform+Aviatrix"
+    Owner     = var.owner
   }
 }
 
@@ -106,6 +117,7 @@ resource "aws_instance" "aviatrixcontroller" {
   tags = {
     Name      = format("%s%s-%d", "${var.resource_name_label}-", "AviatrixController", count.index)
     Createdby = "Terraform+Aviatrix"
+    Owner     = var.owner
   }
 }
 
@@ -119,6 +131,7 @@ resource "aws_security_group" "AviatrixSecurityGroup" {
   tags = {
     Name      = "${var.resource_name_label}-AviatrixSecurityGroup"
     Createdby = "Terraform+Aviatrix"
+    Owner     = var.owner
   }
 }
 

@@ -65,6 +65,11 @@ variable "termination_protection" {
 	type				= bool
 	description	= "Whether to disable api termination for the ubuntu instances."
 }
+variable "owner" {
+	type 				= string
+	description = "Name of the owner for the AWS resources. Optional."
+	default 		= null
+}
 
 locals {
 	ubuntu_ami = {
