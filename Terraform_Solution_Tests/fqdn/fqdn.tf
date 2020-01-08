@@ -110,7 +110,7 @@ resource "null_resource" "ping" {
   # Python script will test end-to-end traffic on private instance
   provisioner "remote-exec" {
     inline = [
-      "/tmp/fqdn.py --domain ${join(",", var.aviatrix_fqdn_domain)} --proto ${join(",", var.aviatrix_fqdn_protocol)} --port ${join(",", var.aviatrix_fqdn_port)} --mode ${var.aviatrix_fqdn_mode} --instance ${module.aws-vpc.ubuntu_private_ip[1]}"
+      "python3 /tmp/fqdn.py --domain ${join(",", var.aviatrix_fqdn_domain)} --proto ${join(",", var.aviatrix_fqdn_protocol)} --port ${join(",", var.aviatrix_fqdn_port)} --mode ${var.aviatrix_fqdn_mode} --instance ${module.aws-vpc.ubuntu_private_ip[1]}"
     ]
     connection {
       type = "ssh"

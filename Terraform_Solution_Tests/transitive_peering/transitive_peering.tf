@@ -143,7 +143,7 @@ resource "null_resource" "ping" {
 
   provisioner "remote-exec" {
     inline = [
-      "/tmp/transitive_peering.py --ping_list ${join(",",[module.aws-vpc.ubuntu_private_ip[1],module.aws-vpc.ubuntu_private_ip[3]])}"
+      "python3 /tmp/transitive_peering.py --ping_list ${join(",",[module.aws-vpc.ubuntu_private_ip[1],module.aws-vpc.ubuntu_private_ip[3]])}"
     ]
     connection {
       type = "ssh"
