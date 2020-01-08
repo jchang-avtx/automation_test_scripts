@@ -286,22 +286,47 @@ module "testbed-basic" {
 #  access_key 		= ""
 #  secret_key 		= ""
 #}
+
+#### USE THIS MODULE FOR ONPREM IF YOU NEED TO CREATE NEW VPC
 #module "testbed-onprem" {
-#	source = "./Regression_Testbed_TF_Module/modules/testbed-onprem"
+#	source = "./Regression_Testbed_TF_Module/modules/testbed-onprem-new-vpc"
 #	providers = {
 #		aws = aws.onprem
 #	}
+#	resource_name_label		 = local.resource_name_label
 #  account_name           = module.testbed-basic.primary_access_account
-#  onprem_vpc_cidr        = "10.70.0.0/16"
-#  pub_subnet_cidr        = "10.70.5.0/24"
-#  pri_subnet_cidr        = "10.70.36.0/24"
-#  pub_subnet_az          = "us-west-2b"
-#  pri_subnet_az          = "us-west-2b"
+#	gw_name 							 = "test-onprem-gw" # optional
+#	s2c_connection_name		 = "test-onprem-s2c" # optional
+#  onprem_vpc_cidr        = "10.90.0.0/24"
+#  pub_subnet_cidr        = "10.90.0.0/28"
+#  pri_subnet_cidr        = "10.90.0.250/28"
+#  pub_subnet_az          = "us-east-1a" 
+#  pri_subnet_az          = "us-east-1b"
 #  pub_hostnum            = local.pub_hostnum
 #  pri_hostnum            = local.pri_hostnum
 #  termination_protection = local.termination_protection
 #  public_key             = local.public_key
-#  ubuntu_ami             = "ami-0eaedb5f9e4e556f4"
+#  ubuntu_ami             = ""
+#	remote_subnet_cidr 		 = ["28.10.1.0/24", "28.10.0.0/24", "10.28.1.0/24", "10.28.0.0/24"]
+#	local_subnet_cidr 		 = "10.90.0.0/16"
+#	static_route_cidr			 = ["10.90.0.0/24", "90.10.0.0/24"]
+#}
+
+#### USE THIS MODULE FOR ONPREM IF YOU ALREADY HAVE VPC
+#module "testbed-onprem" {
+#	source = "./Regression_Testbed_TF_Module/modules/testbed-onprem-existing-vpc"
+#	providers = {
+#		aws = aws.onprem
+#	}
+#	resource_name_label		 = local.resource_name_label
+#  account_name           = module.testbed-basic.primary_access_account
+#	gw_name 							 = "main-onprem-gw"
+#	s2c_connection_name		 = "main-onprem-s2c"
+#  onprem_vpc_id	         = module.testbed-basic.east1_vpc_info[1][4] #"10.180.0.0/24"
+#  pub_subnet_cidr        = module.testbed-basic.east1_subnet_info[1][4] #"10.180.0.0/28"
+#	remote_subnet_cidr 		 = ["28.10.1.0/24", "28.10.0.0/24", "10.28.1.0/24", "10.28.0.0/24"]
+#	local_subnet_cidr 		 = "10.180.0.0/24"
+#	static_route_cidr			 = ["10.180.0.0/24", "180.10.0.0/24"]
 #}
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

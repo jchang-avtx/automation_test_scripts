@@ -18,7 +18,8 @@ This folder contains instructions and modules to create a Regression Testbed usi
 | [testbed-aviatrix-controller](./modules/testbed-aviatrix-controller) | Builds and initializes an Aviatrix controller in an AWS VPC | <ul><li>Existing VPC,</li><li>Public subnet,</li><li>An AWS Key Pair,</li><li>IAM roles created</li></ul> |
 | [testbed-basic](./modules/testbed-basic) | Creates an AWS VPC testbed environment. Optionally builds and initializes Aviatrix controller. Optionally creates windows instance for RDP. | <ul><li>Public Key,</li><li>IAM roles created,</li><li>AWS account</li></ul> |
 | [testbed-csr](./modules/testbed-csr) | Sets up an AWS VPC with two Cisco Cloud Services Router instances. | <ul><li>Public Key,</li><li>AWS account</li></ul> |
-| [testbed-onprem](./modules/testbed-onprem) | Sets up an Aviatrix site2cloud connection with AWS VGW and onprem. | <ul><li>Public Key,</li><li>Aviatrix controller,</li><li>AWS account</li></ul> |
+| [testbed-onprem-existing-vpc](./modules/testbed-onprem-existing-vpc) | Sets up an Aviatrix site2cloud connection with AWS VGW and onprem. | </li><li>Aviatrix controller,</li><li>AWS account</li></ul> |
+| [testbed-onprem-new-vpc](./modules/testbed-onprem-new-vpc) | Sets up an Aviatrix site2cloud connection with AWS VGW and onprem; creates an AWS VPC with ubuntu instances. | <ul><li>Public Key,</li><li>Aviatrix controller,</li><li>AWS account</li></ul> |
 | [testbed-vnet-arm](./modules/testbed-vnet-arm) | Creates an Azure RM VNET testbed environment | <ul><li>Public Key,</li><li>Azure RM account</li></ul> |
 | [testbed-vpc-aws](./modules/testbed-vpc-aws) | Creates an AWS VPC testbed environment | <ul><li>Public Key,</li><li>AWS account</li></ul> |
 | [testbed-vpc-aws-gov](./modules/testbed-vpc-aws-gov) | Creates an AWS GOV VPC testbed environment | <ul><li>Public Key,</li><li>AWS Gov account</li></ul> |
