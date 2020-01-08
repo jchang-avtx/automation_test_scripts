@@ -14,6 +14,7 @@
 module "testbed-basic" {
   source = "./Regression_Testbed_TF_Module/modules/testbed-basic"
 	termination_protection			= local.termination_protection
+  owner                       = local.owner
   resource_name_label         = local.resource_name_label
 
   # AWS Primary Account
@@ -119,6 +120,7 @@ module "testbed-basic" {
 #    aws = aws.cross_aws_acc
 #  }
 #  vpc_count              = 1
+#  owner                       = local.owner
 #  resource_name_label    = local.resource_name_label
 #	pub_hostnum						 = local.pub_hostnum
 #  pri_hostnum            = local.pri_hostnum
@@ -141,6 +143,7 @@ module "testbed-basic" {
 #module "aws-vpc-gov" {
 #  source          	          = "./Regression_Testbed_TF_module/modules/testbed-vpc-aws-gov"
 #  termination_protection      = local.terminal_protection
+#  owner                       = local.owner
 #  resource_name_label         = local.resource_name_label
 #
 #  # AWS Gov Account
@@ -240,6 +243,7 @@ module "testbed-basic" {
 #    aws = aws.csr
 #  }
 #  vpc_count	        	= 1
+#  owner                       = local.owner
 #  resource_name_label	= local.resource_name_label
 #	pub_hostnum		      = local.pub_hostnum
 #  vpc_cidr        	  = ["10.88.0.0/16"]
@@ -293,6 +297,7 @@ module "testbed-basic" {
 #	providers = {
 #		aws = aws.onprem
 #	}
+# owner                  = local.owner
 #	resource_name_label		 = local.resource_name_label
 #  account_name           = module.testbed-basic.primary_access_account
 #	gw_name 							 = "test-onprem-gw" # optional
@@ -300,7 +305,7 @@ module "testbed-basic" {
 #  onprem_vpc_cidr        = "10.90.0.0/24"
 #  pub_subnet_cidr        = "10.90.0.0/28"
 #  pri_subnet_cidr        = "10.90.0.250/28"
-#  pub_subnet_az          = "us-east-1a" 
+#  pub_subnet_az          = "us-east-1a"
 #  pri_subnet_az          = "us-east-1b"
 #  pub_hostnum            = local.pub_hostnum
 #  pri_hostnum            = local.pri_hostnum
@@ -318,6 +323,7 @@ module "testbed-basic" {
 #	providers = {
 #		aws = aws.onprem
 #	}
+# owner                  = local.owner
 #	resource_name_label		 = local.resource_name_label
 #  account_name           = module.testbed-basic.primary_access_account
 #	gw_name 							 = "main-onprem-gw"
@@ -333,6 +339,7 @@ module "testbed-basic" {
 # LOCALS
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 locals {
+  owner                  = "matthew"
 	resource_name_label	 	 = "regression"
 	pub_hostnum						 = 20
 	pri_hostnum						 = 40

@@ -13,6 +13,7 @@ To create an Aviatrix controller:
 module "aviatrix-controller" {
   source                 = "./modules/testbed-aviatrix-controller"
   deploy_controller      = <<true/false>>
+  owner                  = "<<insert your name>>"
   resource_name_label    = "<<insert resource_name_label>>"
   vpc_cidr               = "<<insert vpc cidr here>> ie: 10.10.0.0/16"
   subnet_cidr            = "<<insert subnet cidr>> ie: 10.10.5.0/24"
@@ -76,6 +77,10 @@ Whether termination protection is enabled for the controller.
 - **resource_name_label**
 
 The label for the resource name.
+
+- **owner**
+
+Name of the owner for the AWS resources. Optional.
 
 ### Outputs
 

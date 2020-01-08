@@ -20,6 +20,7 @@ module "aws-vpc-gov-west" {
     aws = aws.gov-west
   }
   vpc_count             = var.vpc_count_gov_west
+  owner                 = var.owner
   resource_name_label   = var.resource_name_label
 	pub_hostnum						= var.pub_hostnum
   pri_hostnum           = var.pri_hostnum
@@ -49,6 +50,7 @@ module "aws-vpc-gov-east" {
     aws = aws.gov-east
   }
   vpc_count             = var.vpc_count_gov_east
+  owner                 = var.owner
   resource_name_label   = var.resource_name_label
 	pub_hostnum						= var.pub_hostnum
   pri_hostnum           = var.pri_hostnum

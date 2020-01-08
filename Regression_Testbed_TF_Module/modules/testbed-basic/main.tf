@@ -60,6 +60,7 @@ module "aws-vpc-west1" {
     aws = aws.west1
   }
   vpc_count             = var.vpc_count_west1
+	owner 								= var.owner
   resource_name_label   = var.resource_name_label
 	pub_hostnum						= var.pub_hostnum
   pri_hostnum           = var.pri_hostnum
@@ -81,6 +82,7 @@ module "aws-vpc-west2" {
     aws = aws.west2
   }
   vpc_count             = var.vpc_count_west2
+	owner 								= var.owner
   resource_name_label   = var.resource_name_label
 	pub_hostnum						= var.pub_hostnum
   pri_hostnum           = var.pri_hostnum
@@ -102,6 +104,7 @@ module "aws-vpc-east1" {
     aws = aws.east1
   }
   vpc_count             = var.vpc_count_east1
+	owner 								= var.owner
   resource_name_label   = var.resource_name_label
 	pub_hostnum						= var.pub_hostnum
   pri_hostnum           = var.pri_hostnum
@@ -123,6 +126,7 @@ module "aws-vpc-east2" {
     aws = aws.east2
   }
   vpc_count             = var.vpc_count_east2
+	owner 								= var.owner
   resource_name_label   = var.resource_name_label
 	pub_hostnum						= var.pub_hostnum
   pri_hostnum           = var.pri_hostnum
@@ -155,6 +159,7 @@ module "aviatrix-controller" {
   access_account 				 = var.access_account
   customer_id    				 = var.customer_id
 	termination_protection = var.termination_protection
+	owner 								 = var.owner
 	resource_name_label		 = var.resource_name_label
 }
 
@@ -170,5 +175,6 @@ module "windows-instance" {
   sg_source_ip  	= var.windows_sg_source_ip
   ami   					= var.windows_ami
   termination_protection = var.termination_protection
+	owner 								 = var.owner
 	resource_name_label		 = var.resource_name_label
 }

@@ -17,6 +17,7 @@ To create a Windows instance:
 module "windows-instance" {
   source  	= "./modules/testbed-windows-instance"
   deploy_windows         = <<true/false>>
+  owner                  = "<<insert your name>>"
   resource_name_label    = "<<insert label>>"
   vpc_cidr	  	         = "<<insert cidr>> ie: 10.0.0.0/16"
   subnet_cidr  	         = "<<insert cidr>> ie: 10.0.0.0/24"
@@ -60,6 +61,10 @@ Whether to enable termination protection for Windows instance.
 - **resource_name_label**
 
 The label for the resource name.
+
+- **owner**
+
+Name of the owner for the AWS resources. Optional.
 
 ### Outputs
 

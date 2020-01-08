@@ -20,7 +20,8 @@ output "west1_ubuntu_info" {
 		module.aws-vpc-west1.ubuntu_name,
 		module.aws-vpc-west1.ubuntu_id,
 		module.aws-vpc-west1.ubuntu_public_ip,
-		module.aws-vpc-west1.ubuntu_private_ip
+		module.aws-vpc-west1.ubuntu_private_ip,
+		module.aws-vpc-west1.instance_state
 	]
 }
 
@@ -42,7 +43,8 @@ output "west2_ubuntu_info" {
 		module.aws-vpc-west2.ubuntu_name,
 		module.aws-vpc-west2.ubuntu_id,
 		module.aws-vpc-west2.ubuntu_public_ip,
-		module.aws-vpc-west2.ubuntu_private_ip
+		module.aws-vpc-west2.ubuntu_private_ip,
+		module.aws-vpc-west2.instance_state
 	]
 }
 
@@ -64,7 +66,8 @@ output "east1_ubuntu_info" {
 		module.aws-vpc-east1.ubuntu_name,
 		module.aws-vpc-east1.ubuntu_id,
 		module.aws-vpc-east1.ubuntu_public_ip,
-		module.aws-vpc-east1.ubuntu_private_ip
+		module.aws-vpc-east1.ubuntu_private_ip,
+		module.aws-vpc-east1.instance_state
 	]
 }
 
@@ -86,7 +89,8 @@ output "east2_ubuntu_info" {
 		module.aws-vpc-east2.ubuntu_name,
 		module.aws-vpc-east2.ubuntu_id,
 		module.aws-vpc-east2.ubuntu_public_ip,
-		module.aws-vpc-east2.ubuntu_private_ip
+		module.aws-vpc-east2.ubuntu_private_ip,
+		module.aws-vpc-east2.instance_state
 	]
 }
 

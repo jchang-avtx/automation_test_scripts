@@ -9,6 +9,7 @@ To create a filled AWS GOV VPC:
 module "aws-vpc-gov" {
   source          	  = "./modules/testbed-vpc-aws-gov"
   termination_protection      = <<true/false>>
+  owner                       = "<<insert your name>>"
   resource_name_label         = "<<input label for all resources>>"
 
   # AWS Gov Account
@@ -57,6 +58,10 @@ AWS Gov account's  secret key.
 - **termination_protection**
 
 Whether to enable termination protection for ec2 instances.
+
+- **owner**
+
+Name of the owner for the AWS resources. Optional.
 
 - **resource_name_label**
 

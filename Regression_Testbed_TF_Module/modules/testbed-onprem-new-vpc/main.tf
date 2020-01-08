@@ -6,6 +6,7 @@ resource "aws_vpc" "onprem_vpc" {
 
 	tags	= {
 		Name			= "${var.resource_name_label}-onprem-vpc-${data.aws_region.current.name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -16,6 +17,7 @@ resource "aws_subnet" "public_subnet" {
 
 	tags	= {
 		Name			= var.pub_subnet_az != null ? "${var.resource_name_label}-onprem-public-subnet-${var.pub_subnet_az}" : "${var.resource_name_label}-onprem-public-subnet-${data.aws_region.current.name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -26,6 +28,7 @@ resource "aws_subnet" "private_subnet" {
 
 	tags	= {
 		Name			= var.pri_subnet_az != null ? "${var.resource_name_label}-onprem-private-subnet-${var.pri_subnet_az}" : "${var.resource_name_label}-onprem-private-subnet-${data.aws_region.current.name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -34,6 +37,7 @@ resource "aws_internet_gateway" "igw" {
 
 	tags = {
 		Name 			= "${var.resource_name_label}-onprem-igw-${data.aws_region.current.name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -51,6 +55,7 @@ resource "aws_route_table" "public_rtb" {
 
 	tags = {
 		Name 			= "${var.resource_name_label}-onprem-public-rtb-${data.aws_region.current.name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -63,6 +68,7 @@ resource "aws_route_table" "private_rtb" {
 
 	tags = {
 		Name 			= "${var.resource_name_label}-onprem-private-rtb-${data.aws_region.current.name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -107,6 +113,7 @@ resource "aws_security_group" "sg" {
 
 	tags	= {
 		Name			= "${var.resource_name_label}-onprem-security-group-${data.aws_region.current.name}"
+		Owner 		= var.owner
 	}
 }
 
@@ -132,7 +139,8 @@ resource "aws_instance" "public_instance" {
 	key_name										= aws_key_pair.key_pair.key_name
 
 	tags	= {
-		Name				= "${var.resource_name_label}-onprem-public-ubuntu-${aws_subnet.public_subnet.availability_zone}"
+		Name			= "${var.resource_name_label}-onprem-public-ubuntu-${aws_subnet.public_subnet.availability_zone}"
+		Owner 		= var.owner
 	}
 }
 
@@ -141,6 +149,7 @@ resource "aws_eip" "eip" {
 	vpc				= true
 	tags	= {
 		Name		= "${var.resource_name_label}-onprem-public-instance-eip-${data.aws_region.current.name}"
+		Owner 	= var.owner
 	}
 }
 
@@ -156,6 +165,7 @@ resource "aws_instance" "private_instance" {
 
   tags  = {
     Name        = "${var.resource_name_label}-onprem-private-ubuntu-${aws_subnet.private_subnet.availability_zone}"
+		Owner 			= var.owner
   }
 }
 
@@ -176,21 +186,19 @@ resource "aws_customer_gateway" "aws_cgw" {
   type        = "ipsec.1"
 
   tags  = {
-    Name = "${var.resource_name_label}-main-cgw-${data.aws_region.current.name}"
+    Name 	= "${var.resource_name_label}-main-cgw-${data.aws_region.current.name}"
+		Owner = var.owner
   }
 }
 
 resource "aws_vpn_gateway" "aws_vgw" {
     amazon_side_asn = var.asn
+
     tags  = {
-      Name = "${var.resource_name_label}-onprem-vgw-${data.aws_region.current.name}"
+      Name 	= "${var.resource_name_label}-onprem-vgw-${data.aws_region.current.name}"
+			Owner = var.owner
     }
 }
-
-#resource "aws_vpn_gateway_route_propagation" "vgw_route_propagate" {
-#	vpn_gateway_id = aws_vpn_gateway.aws_vgw.id
-#	route_table_id = aws_route_table.public_rtb.id
-#}
 
 resource "aws_vpn_connection" "vpn" {
   customer_gateway_id = aws_customer_gateway.aws_cgw.id
@@ -200,6 +208,7 @@ resource "aws_vpn_connection" "vpn" {
 
 	tags = {
 		Name 	= "${var.resource_name_label}-onprem-vpn-${data.aws_region.current.name}"
+		Owner = var.owner
 	}
 }
 

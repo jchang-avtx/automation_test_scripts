@@ -9,6 +9,7 @@ To create a filled AWS VPC:
 module "aws-vpc" {
   source          	  = "./modules/testbed-vpc-aws"
   vpc_count	        	= "<<insert amount of vpcs>> ie: 2"
+  owner             = "<<insert your name>>"
   resource_name_label	= "<<insert label name>>"
   pub_hostnum		      = "<<insert host number part>>"
   pri_hostnum		      = "<<insert host number part>>"
@@ -87,6 +88,10 @@ Size of AWS instances. Default is "t2.micro".
 
 Boolean value to enable termination protection of the ubuntu instances.
 
+- **owner**
+
+Name of the owner for the AWS resources. Optional.
+
 ### Outputs
 
 - **vpc_id**
@@ -120,3 +125,7 @@ Private IP of the Ubuntu instances.
 - **ubuntu_id**
 
 Instance ID of the Ubuntu instances.
+
+- **instance_state**
+
+Instance state of the Ubuntu instances.

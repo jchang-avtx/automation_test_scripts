@@ -6,6 +6,7 @@ resource "aws_vpc" "vpc" {
   cidr_block  = var.vpc_cidr
   tags  = {
     Name      = "${var.resource_name_label}_windows-vpc"
+    Owner     = var.owner
   }
 }
 
@@ -15,6 +16,7 @@ resource "aws_subnet" "subnet" {
   cidr_block  = var.subnet_cidr
   tags  = {
     Name      = "${var.resource_name_label}_windows-public_subnet"
+    Owner     = var.owner
   }
 }
 
@@ -23,6 +25,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id      = aws_vpc.vpc[0].id
   tags  = {
     Name		  = "${var.resource_name_label}_windows-igw"
+    Owner     = var.owner
   }
 }
 
@@ -35,6 +38,7 @@ resource "aws_route_table" "rtb" {
   }
   tags  = {
     Name      = "${var.resource_name_label}_windows-public_rtb"
+    Owner     = var.owner
   }
 }
 
@@ -61,15 +65,13 @@ resource "aws_security_group" "sg" {
   name        = "allow_rdp"
   description = "Allow RDP to windows instance"
   vpc_id      = aws_vpc.vpc[0].id
+
   ingress {
- #RDP
+  #RDP
   from_port   = 3389
   to_port     = 3389
   protocol    = "tcp"
   cidr_blocks = var.sg_source_ip
-  }
-  tags  = {
-    Name      = "${var.resource_name_label}_windows-security_group"
   }
 
   egress {
@@ -78,6 +80,11 @@ resource "aws_security_group" "sg" {
   to_port 		= 0
   protocol 		= "-1"
   cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags  = {
+    Name      = "${var.resource_name_label}_windows-security_group"
+    Owner     = var.owner
   }
 }
 
@@ -92,6 +99,7 @@ resource "aws_instance" "instance" {
  vpc_security_group_ids  = [aws_security_group.sg[0].id]
  tags  = {
    Name      = "${var.resource_name_label}_windows-instance"
+   Owner     = var.owner
  }
 }
 
@@ -101,5 +109,6 @@ resource "aws_eip" "eip" {
  vpc       = true
  tags  = {
    Name      = "${var.resource_name_label}_windows-eip"
+   Owner     = var.owner
  }
 }
