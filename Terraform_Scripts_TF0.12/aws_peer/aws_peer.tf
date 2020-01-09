@@ -1,15 +1,56 @@
+resource "random_integer" "vpc1_cidr_int" {
+  count = 3
+  min = 1
+  max = 255
+}
+
+resource "random_integer" "vpc2_cidr_int" {
+  count = 3
+  min = 1
+  max = 255
+}
+
 ## Create Aviatrix AWS Peering
+resource "aviatrix_vpc" "aws_vpc_peer_1" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, random_integer.vpc1_cidr_int[2].result, "0/24"])
+  cloud_type            = 1
+  name                  = "awsVPCpeer1"
+  region                = "us-west-1"
+}
+
+resource "aviatrix_vpc" "aws_vpc_peer_2" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc2_cidr_int[0].result, random_integer.vpc2_cidr_int[1].result, random_integer.vpc2_cidr_int[2].result, "0/24"])
+  cloud_type            = 1
+  name                  = "awsVPCpeer2"
+  region                = "us-west-1"
+}
+
+data "aws_route_table" "aws_vpc_peer_1_rtb" {
+  vpc_id      = aviatrix_vpc.aws_vpc_peer_1.vpc_id
+  subnet_id   = aviatrix_vpc.aws_vpc_peer_1.subnets.3.subnet_id
+}
+
+data "aws_route_table" "aws_vpc_peer_2_rtb" {
+  vpc_id      = aviatrix_vpc.aws_vpc_peer_2.vpc_id
+  subnet_id   = aviatrix_vpc.aws_vpc_peer_2.subnets.3.subnet_id
+}
 
 resource "aviatrix_aws_peer" "test_awspeer" {
-  account_name1 = var.avx_account_name_1
-  account_name2 = var.avx_account_name_2
+  account_name1 = "AWSAccess"
+  account_name2 = "AWSAccess"
 
-  vpc_id1       = var.aws_vpc_id_1
-  vpc_id2       = var.aws_vpc_id_2
-  vpc_reg1      = var.aws_vpc_region_1
-  vpc_reg2      = var.aws_vpc_region_2
-  rtb_list1     = var.aws_vpc_rtb_1
-  rtb_list2     = var.aws_vpc_rtb_2
+  vpc_id1       = aviatrix_vpc.aws_vpc_peer_1.vpc_id
+  vpc_id2       = aviatrix_vpc.aws_vpc_peer_2.vpc_id
+  vpc_reg1      = aviatrix_vpc.aws_vpc_peer_1.region
+  vpc_reg2      = aviatrix_vpc.aws_vpc_peer_2.region
+  rtb_list1     = [data.aws_route_table.aws_vpc_peer_1_rtb.id]
+  rtb_list2     = [data.aws_route_table.aws_vpc_peer_2_rtb.id]
 }
 
 output "test_awspeer_id" {

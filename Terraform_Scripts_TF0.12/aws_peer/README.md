@@ -1,5 +1,6 @@
 ## aviatrix_aws_peer
 
+* must export AWS provider credentials in script
 ---
 
 ### Usage
@@ -10,7 +11,7 @@
   terraform show
 
   terraform state rm aviatrix_aws_peer.test_awspeer
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_aws_peer.test_awspeer vpc-0cbdc7571b2fd28bf~vpc-ba3c12dd
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_aws_peer.test_awspeer vpc-abc123~vpc-def456
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
