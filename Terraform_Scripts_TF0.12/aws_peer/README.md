@@ -15,7 +15,5 @@
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
-  // terraform apply -var-file=/path/provider_cred.tfvars -auto-approve // no changes made. fixing rtb diffs
-
   terraform destroy -var-file=/path/provider_cred.tfvars -auto-approve
 ```

@@ -1,3 +1,5 @@
+## Create Aviatrix AWS Peering
+
 resource "random_integer" "vpc1_cidr_int" {
   count = 3
   min = 1
@@ -10,7 +12,6 @@ resource "random_integer" "vpc2_cidr_int" {
   max = 255
 }
 
-## Create Aviatrix AWS Peering
 resource "aviatrix_vpc" "aws_vpc_peer_1" {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
