@@ -3,3 +3,7 @@ provider "aviatrix"  {
   username      = var.aviatrix_controller_username
   password      = var.aviatrix_controller_password
 }
+
+provider "aws" {
+  region = "us-west-1"
+}

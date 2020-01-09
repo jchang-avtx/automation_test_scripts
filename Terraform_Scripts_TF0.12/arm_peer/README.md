@@ -10,7 +10,7 @@
   terraform show
 
   terraform state rm aviatrix_arm_peer.test_armpeer
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_arm_peer.test_armpeer TransitVNet:TransitRG~SpokeVNet:SpokeRG
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_arm_peer.test_armpeer Vnet1:RG1~Vnet2:RG2
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
