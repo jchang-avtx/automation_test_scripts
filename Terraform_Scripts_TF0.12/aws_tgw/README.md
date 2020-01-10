@@ -10,7 +10,7 @@
   terraform show
 
   terraform state rm aviatrix_aws_tgw.test_aws_tgw
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_aws_tgw.test_aws_tgw testAWSTGW
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_aws_tgw.test_aws_tgw test-aws-tgw
   terraform plan -var-file=/path/provider_cred.tfvars
   terraform show
 
