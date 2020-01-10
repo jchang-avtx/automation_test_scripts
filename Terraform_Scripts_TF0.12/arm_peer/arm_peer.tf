@@ -3,13 +3,13 @@
 resource "random_integer" "vnet1_cidr_int" {
   count = 3
   min = 1
-  max = 255
+  max = 223
 }
 
 resource "random_integer" "vnet2_cidr_int" {
   count = 3
   min = 1
-  max = 255
+  max = 223
 }
 
 resource "aviatrix_vpc" "arm_vnet_1" {
