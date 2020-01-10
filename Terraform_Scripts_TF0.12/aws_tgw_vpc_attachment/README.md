@@ -10,7 +10,7 @@
   terraform show
 
   terraform state rm aviatrix_aws_tgw_vpc_attachment.tgw_vpc_attach_test
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_aws_tgw_vpc_attachment.tgw_vpc_attach_test testAWSTGW2~SDN1~vpc-00119a5b202c81d97
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_aws_tgw_vpc_attachment.tgw_vpc_attach_test tgw_name~sec_domain~vpc-abc123
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
