@@ -5,3 +5,7 @@ resource "aviatrix_account" "gov_root" {
   awsgov_access_key       = var.awsgov_access_key
   awsgov_secret_key       = var.awsgov_secret_key
 }
+
+output "gov_root_id" {
+  value = aviatrix_account.gov_root.id
+}
