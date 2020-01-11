@@ -6,3 +6,7 @@ resource "aviatrix_account_user" "test_accountuser" {
   email           = var.aviatrix_account_user_email
   password        = var.aviatrix_account_user_password
 }
+
+output "test_accountuser_id" {
+  value = aviatrix_account_user.test_accountuser.id
+}
