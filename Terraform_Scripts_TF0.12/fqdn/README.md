@@ -10,7 +10,7 @@
   terraform show
 
   terraform state rm aviatrix_fqdn.FQDN-tag1
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_fqdn.FQDN-tag1 anthony-fqdn-TAG
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_fqdn.FQDN-tag1 fqdn-tag-1
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
