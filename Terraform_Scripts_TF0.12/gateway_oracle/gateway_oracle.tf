@@ -29,7 +29,7 @@ resource "aviatrix_gateway" "oci_gateway" {
 
   allocate_new_eip    = true
 
-  peering_ha_subnet   = var.oci_ha_gw_subnet
+  peering_ha_subnet   = aviatrix_vpc.oci_gw_vnet_1.subnets.0.cidr
   peering_ha_gw_size  = var.oci_ha_gw_size
 
   single_az_ha        = true
