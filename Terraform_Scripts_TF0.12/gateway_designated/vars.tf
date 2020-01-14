@@ -1,7 +1,3 @@
-variable "aviatrix_controller_ip" {}
-variable "aviatrix_controller_username" {}
-variable "aviatrix_controller_password" {}
-
 variable "additional_cidrs" {
   description = "If route entries falls within these ranges; gw will maintain route table internally and entries will not be added"
   default = "10.10.0.0/16,10.8.0.0/16,10.9.0.0/16,10.11.0.0/16"
