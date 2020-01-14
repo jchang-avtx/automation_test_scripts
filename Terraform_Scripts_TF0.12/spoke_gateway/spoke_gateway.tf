@@ -1,15 +1,63 @@
 # Launch a spoke VPC, and join with transit VPC.
 
+resource "random_integer" "vpc1_cidr_int" {
+  count = 2
+  min = 1
+  max = 223
+}
+
+resource "random_integer" "vpc2_cidr_int" {
+  count = 2
+  min = 1
+  max = 223
+}
+
+resource "random_integer" "vpc3_cidr_int" {
+  count = 2
+  min = 1
+  max = 223
+}
+
+resource "aviatrix_vpc" "aws_transit_vpc_1" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = true
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, "0.0/16"])
+  cloud_type            = 1
+  name                  = "aws-transit-vpc-1"
+  region                = "us-east-1"
+}
+
+resource "aviatrix_vpc" "aws_transit_vpc_2" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = true
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc2_cidr_int[0].result, random_integer.vpc2_cidr_int[1].result, "0.0/16"])
+  cloud_type            = 1
+  name                  = "aws-transit-vpc-2"
+  region                = "us-west-1"
+}
+
+resource "aviatrix_vpc" "aws_spoke_vpc_1" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc3_cidr_int[0].result, random_integer.vpc3_cidr_int[1].result, "0.0/16"])
+  cloud_type            = 1
+  name                  = "aws-spoke-vpc-1"
+  region                = "us-east-1"
+}
+
 resource "aviatrix_transit_gateway" "test_transit_gw1" {
   cloud_type      = 1
   account_name    = "AWSAccess"
   gw_name         = "transitGW1forSpoke"
-  vpc_id          = "vpc-0c32b9c3a144789ef"
-  vpc_reg         = "us-east-1"
+  vpc_id          = aviatrix_vpc.aws_transit_vpc_1.vpc_id
+  vpc_reg         = aviatrix_vpc.aws_transit_vpc_1.region
   gw_size         = "t2.micro"
-  subnet          = "10.0.1.32/28"
+  subnet          = aviatrix_vpc.aws_transit_vpc_1.subnets.4.cidr
 
-  ha_subnet       = "10.0.1.32/28"
+  ha_subnet       = aviatrix_vpc.aws_transit_vpc_1.subnets.5.cidr
   ha_gw_size      = "t2.micro"
 
   enable_hybrid_connection  = false
@@ -22,12 +70,12 @@ resource "aviatrix_transit_gateway" "test_transit_gw2" {
   cloud_type      = 1
   account_name    = "AWSAccess"
   gw_name         = "transitGW2forSpoke"
-  vpc_id          = "vpc-0cbdc7571b2fd28bf"
-  vpc_reg         = "us-west-1"
+  vpc_id          = aviatrix_vpc.aws_transit_vpc_2.vpc_id
+  vpc_reg         = aviatrix_vpc.aws_transit_vpc_2.region
   gw_size         = "t2.micro"
-  subnet          = "100.200.0.0/16"
+  subnet          = aviatrix_vpc.aws_transit_vpc_2.subnets.4.cidr
 
-  ha_subnet       = "100.200.0.0/16"
+  ha_subnet       = aviatrix_vpc.aws_transit_vpc_2.subnets.5.cidr
   ha_gw_size      = "t2.micro"
 
   enable_hybrid_connection  = false
@@ -39,17 +87,17 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway" {
   cloud_type        = 1
   account_name      = "AWSAccess"
   gw_name           = "spoke-gw-01"
-  vpc_id            = "vpc-06b5b670e792e3462"
-  vpc_reg           = "us-east-1"
+  vpc_id            = aviatrix_vpc.aws_spoke_vpc_1.vpc_id
+  vpc_reg           = aviatrix_vpc.aws_spoke_vpc_1.region
   gw_size           = var.gw_size
 
   insane_mode       = true
   insane_mode_az    = "us-east-1a"
-  subnet            = "172.0.2.0/26"
+  subnet            = join(".", [random_integer.vpc3_cidr_int[0].result, random_integer.vpc3_cidr_int[1].result, "2.0/26"])
   # subnet            = "172.0.0.0/24" # non-insane
 
   ha_insane_mode_az = "us-east-1b"
-  ha_subnet         = "172.0.2.64/26"
+  ha_subnet         = join(".", [random_integer.vpc3_cidr_int[0].result, random_integer.vpc3_cidr_int[1].result, "2.64/26"])
   # ha_subnet         = "172.0.1.0/24" # non-insane
   ha_gw_size        = var.aviatrix_ha_gw_size
   enable_snat       = false

@@ -1,9 +1,21 @@
+resource "random_integer" "vpc1_cidr_int" {
+  count = 3
+  min = 1
+  max = 223
+}
+
+resource "random_integer" "vpc2_cidr_int" {
+  count = 3
+  min = 1
+  max = 223
+}
+
 resource "aviatrix_vpc" "sdnat_spoke_aws_vpc" {
   cloud_type              = 1
   account_name            = "AWSAccess"
   region                  = "us-east-2"
   name                    = "sdnat-spoke-aws-vpc"
-  cidr                    = "9.214.88.0/24"
+  cidr                    = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, random_integer.vpc1_cidr_int[2].result, "0/24"])
   aviatrix_transit_vpc    = false
   aviatrix_firenet_vpc    = false
 }
@@ -13,7 +25,7 @@ resource "aviatrix_vpc" "sdnat_spoke_arm_vpc" {
   account_name            = "AzureAccess"
   region                  = "Central US"
   name                    = "sdnat-spoke-arm-vpc"
-  cidr                    = "58.3.52.0/24"
+  cidr                    = join(".", [random_integer.vpc2_cidr_int[0].result, random_integer.vpc2_cidr_int[1].result, random_integer.vpc2_cidr_int[2].result, "0/24"])
   aviatrix_transit_vpc    = false
   aviatrix_firenet_vpc    = false
 }
