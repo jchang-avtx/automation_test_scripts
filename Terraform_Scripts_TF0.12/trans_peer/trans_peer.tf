@@ -1,12 +1,44 @@
+resource "random_integer" "vpc1_cidr_int" {
+  count = 3
+  min = 1
+  max = 223
+}
+
+resource "random_integer" "vpc2_cidr_int" {
+  count = 3
+  min = 1
+  max = 223
+}
+
+resource "aviatrix_vpc" "aws_tunnel_vpc_1" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, random_integer.vpc1_cidr_int[2].result, "0/24"])
+  cloud_type            = 1
+  name                  = "aws-tunnel-vpc-1"
+  region                = "us-east-1"
+}
+
+resource "aviatrix_vpc" "aws_tunnel_vpc_2" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc2_cidr_int[0].result, random_integer.vpc2_cidr_int[1].result, random_integer.vpc2_cidr_int[2].result, "0/24"])
+  cloud_type            = 1
+  name                  = "aws-tunnel-vpc-2"
+  region                = "us-west-1"
+}
+
 
 resource "aviatrix_gateway" "test_gateway1" {
   cloud_type      = 1
   account_name    = "AWSAccess"
   gw_name         = "NAT-gw1"
-  vpc_id          = "vpc-ba3c12dd"
-  vpc_reg         = "us-west-1"
+  vpc_id          = aviatrix_vpc.aws_tunnel_vpc_1.vpc_id
+  vpc_reg         = aviatrix_vpc.aws_tunnel_vpc_1.region
   gw_size         = "t2.micro"
-  subnet          = "172.31.0.0/20"
+  subnet          = aviatrix_vpc.aws_tunnel_vpc_1.subnets.6.cidr
   enable_snat     = true
 }
 
@@ -14,10 +46,10 @@ resource "aviatrix_gateway" "test_gateway2" {
   cloud_type      = 1
   account_name    = "AWSAccess"
   gw_name         = "NAT-gw2"
-  vpc_id          = "vpc-0cbdc7571b2fd28bf"
-  vpc_reg         = "us-west-1"
+  vpc_id          = aviatrix_vpc.aws_tunnel_vpc_2.vpc_id
+  vpc_reg         = aviatrix_vpc.aws_tunnel_vpc_2.region
   gw_size         = "t2.micro"
-  subnet          = "100.200.0.0/16"
+  subnet          = aviatrix_vpc.aws_tunnel_vpc_2.subnets.6.cidr
   enable_snat     = true
 }
 
