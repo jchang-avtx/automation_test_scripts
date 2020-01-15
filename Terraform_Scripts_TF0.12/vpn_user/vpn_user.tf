@@ -1,15 +1,31 @@
 # Creates a VPN user in Aviatrix Controller
 
+resource "random_integer" "vpc1_cidr_int" {
+  count = 3
+  min = 1
+  max = 223
+}
+
+resource "aviatrix_vpc" "vpn_user_gw_vpc_1" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, random_integer.vpc1_cidr_int[2].result, "0/24"])
+  cloud_type            = 1
+  name                  = "vpn-user-gw-vpc-1"
+  region                = "us-east-1"
+}
+
 ## VPN user needs VPN GW
 resource "aviatrix_gateway" "vpn_gateway" {
   cloud_type        = 1
   account_name      = "AWSAccess"
   gw_name           = "testGW-VPN"
 
-  vpc_id            = "vpc-0086065966b807866"
-  vpc_reg           = "us-east-1"
+  vpc_id            = aviatrix_vpc.vpn_user_gw_vpc_1.vpc_id
+  vpc_reg           = aviatrix_vpc.vpn_user_gw_vpc_1.region
   gw_size           = "t2.micro"
-  subnet            = "10.0.0.0/24"
+  subnet            = aviatrix_vpc.vpn_user_gw_vpc_1.subnets.6.cidr
 
   vpn_access        = true
   saml_enabled      = true
