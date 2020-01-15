@@ -10,7 +10,7 @@
   terraform show
 
   terraform state rm aviatrix_aws_tgw_directconnect.aws_tgw_dc
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_aws_tgw_directconnect.aws_tgw_dc testAWSTGW2~629dddaa-cc3d-41da-b54e-83bb43b6934b
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_aws_tgw_directconnect.aws_tgw_dc testAWSTGW2~aws-dx-gw-id
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 

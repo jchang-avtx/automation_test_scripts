@@ -1,7 +1,3 @@
-variable "aviatrix_controller_ip" {}
-variable "aviatrix_controller_username" {}
-variable "aviatrix_controller_password" {}
-
 ## TGW-related
 variable "security_domain_name_list" {
   type = "list"

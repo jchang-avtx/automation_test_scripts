@@ -2,7 +2,7 @@
 
    aviatrix_fqdn_mode   = "black"
  aviatrix_fqdn_status   = false
-    aviatrix_fqdn_tag   = "anthony-fqdn-TAG"
+    aviatrix_fqdn_tag   = "fqdn-tag-1"
 aviatrix_fqdn_gateway   = "FQDN-GW2"
 
 aviatrix_fqdn_source_ip_list  = ["173.31.0.0/16", "174.31.0.0/20"] ## updated source IP list

@@ -11,12 +11,24 @@ resource "aws_kms_alias" "temp_cust_key_alias" {
   target_key_id   = aws_kms_key.temp_cust_key.id
 }
 
+resource "random_integer" "vpc1_cidr_int" {
+  count = 2
+  min = 1
+  max = 223
+}
+
+resource "random_integer" "vpc2_cidr_int" {
+  count = 2
+  min = 1
+  max = 223
+}
+
 resource "aviatrix_vpc" "transit_encrypt_vpc" {
   cloud_type            = 1
   account_name          = "AWSAccess"
   region                = "us-east-2"
   name                  = "transit-encrypt-vpc"
-  cidr                  = "172.34.0.0/16"
+  cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, "0.0/16"])
   aviatrix_transit_vpc  = true
   aviatrix_firenet_vpc  = false
 }
@@ -26,7 +38,7 @@ resource "aviatrix_vpc" "spoke_encrypt_vpc" {
   account_name          = "AWSAccess"
   region                = "us-east-2"
   name                  = "spoke-encrypt-vpc"
-  cidr                  = "172.35.0.0/16"
+  cidr                  = join(".", [random_integer.vpc2_cidr_int[0].result, random_integer.vpc2_cidr_int[1].result, "0.0/16"])
   aviatrix_transit_vpc  = true
   aviatrix_firenet_vpc  = false
 }

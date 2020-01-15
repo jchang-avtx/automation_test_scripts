@@ -1,17 +1,33 @@
+resource "random_integer" "vpc1_cidr_int" {
+  count = 2
+  min = 1
+  max = 223
+}
+
+resource "aviatrix_vpc" "insane_transit_gw_vpc" {
+  cloud_type            = 1
+  account_name          = "AWSAccess"
+  region                = "us-east-1"
+  name                  = "insane-transit-gw-vpc"
+  cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, "0.0/16"])
+  aviatrix_transit_vpc  = true
+  aviatrix_firenet_vpc  = false
+}
+
 resource "aviatrix_transit_gateway" "insane_transit_gw" {
   cloud_type          = 1
   account_name        = "AWSAccess"
   gw_name             = "insaneTransitGW1"
 
-  vpc_id              = "vpc-0c32b9c3a144789ef"
-  vpc_reg             = "us-east-1"
+  vpc_id              = aviatrix_vpc.insane_transit_gw_vpc.vpc_id
+  vpc_reg             = aviatrix_vpc.insane_transit_gw_vpc.region
   gw_size             = var.gw_size
-  subnet              = "10.0.1.128/26"
+  subnet              = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, "1.128/26"])
 
   single_az_ha        = var.single_az_ha
   insane_mode         = true
   insane_mode_az      = "us-east-1a"
-  ha_subnet           = "10.0.1.192/26"
+  ha_subnet           = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, "1.192/26"])
   ha_insane_mode_az   = "us-east-1a"
   ha_gw_size          = var.aviatrix_ha_gw_size
 

@@ -1,11 +1,17 @@
 # Manage Aviatrix Transit Gateway with Firewall Network feature
 
+resource "random_integer" "vpc1_cidr_int" {
+  count = 3
+  min = 1
+  max = 223
+}
+
 resource "aviatrix_vpc" "firenet_vpc" {
   cloud_type = 1
   account_name = "AWSAccess"
   region = "us-west-1"
   name = "firenetVPC"
-  cidr = "15.15.15.0/24"
+  cidr = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, random_integer.vpc1_cidr_int[2].result, "0/24"])
   aviatrix_transit_vpc = false
   aviatrix_firenet_vpc = true
 }

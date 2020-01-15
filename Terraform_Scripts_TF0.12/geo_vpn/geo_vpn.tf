@@ -1,9 +1,15 @@
+resource "random_integer" "vpc1_cidr_int" {
+  count = 2
+  min = 1
+  max = 223
+}
+
 resource "aviatrix_vpc" "r53_vpc" {
   cloud_type            = 1
   account_name          = "AWSAccess"
   region                = "us-east-2"
   name                  = "r53VPC"
-  cidr                  = "153.147.0.0/16"
+  cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, "0.0/16"])
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
 }

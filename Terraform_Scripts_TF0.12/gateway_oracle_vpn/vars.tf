@@ -1,7 +1,3 @@
-variable "aviatrix_controller_ip" {}
-variable "aviatrix_controller_username" {}
-variable "aviatrix_controller_password" {}
-
 variable "aviatrix_vpn_cidr" {}
 variable "aviatrix_vpn_max_conn" {}
 variable "aviatrix_vpn_nat" {}

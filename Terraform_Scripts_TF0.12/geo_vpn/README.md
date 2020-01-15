@@ -11,8 +11,8 @@
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
-  terraform state rm aviatrix_gateway.testGW2
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_gateway.testGW2 testGW2
+  terraform state rm aviatrix_geo_vpn.test_geo_vpn
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_geo_vpn.test_geo_vpn `terraform output test_geo_vpn_id`
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 

@@ -1,5 +1,8 @@
 ## aviatrix_site2cloud (mapped)
 
+## DEPRECATED
+* test stage integrated with **site2cloud_unmapped** module
+
 ---
 
 ### Usage

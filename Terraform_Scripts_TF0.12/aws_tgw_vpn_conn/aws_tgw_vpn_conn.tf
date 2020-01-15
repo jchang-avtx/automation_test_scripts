@@ -3,7 +3,7 @@
 
 ## Dynamic connection
 resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn1" {
-  tgw_name             = "testAWSTGW"
+  tgw_name             = "test-aws-tgw"
   route_domain_name    = "Default_Domain"
   connection_name      = "tgw_vpn_conn1"
   public_ip            = "69.0.0.0"
@@ -18,7 +18,7 @@ resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn1" {
 
 ## Static connection
 resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn2" {
-  tgw_name             = "testAWSTGW"
+  tgw_name             = "test-aws-tgw"
   route_domain_name    = "Default_Domain"
   connection_name      = "tgw_vpn_conn2"
   public_ip            = "70.0.0.0"
