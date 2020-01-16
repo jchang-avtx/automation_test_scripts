@@ -37,6 +37,8 @@ resource "google_compute_firewall" "firewall" {
     protocol = "tcp"
     ports    = ["22"]
   }
+
+  target_tags = ["test-ubuntu"]
 }
 
 resource "google_compute_instance" "public_instance" {
@@ -62,6 +64,8 @@ resource "google_compute_instance" "public_instance" {
   metadata = {
     ssh-keys = "${var.ssh_user}:${var.public_key}"
   }
+
+  tags = ["test-ubuntu"]
 }
 
 resource "google_compute_instance" "private_instance" {
@@ -81,7 +85,7 @@ resource "google_compute_instance" "private_instance" {
     network_ip = cidrhost(google_compute_subnetwork.private_subnet[count.index].ip_cidr_range, var.pri_hostnum)
   }
 
-  tags = ["avx-snat-noip"]
+  tags = ["avx-snat-noip", "test-ubuntu"]
 
   metadata = {
     ssh-keys = "${var.ssh_user}:${var.public_key}"
