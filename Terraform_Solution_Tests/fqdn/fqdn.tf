@@ -24,7 +24,7 @@ resource "aviatrix_gateway" "FQDN-GW" {
   account_name  = var.aviatrix_aws_access_account
   gw_name       = "FQDN-GW"
   vpc_id        = module.aws-vpc.vpc_id[0]
-  vpc_reg       = "us-east-1"
+  vpc_reg       = var.aws_region
   gw_size       = "t2.micro"
   subnet        = module.aws-vpc.subnet_cidr[0]
   enable_snat   = true

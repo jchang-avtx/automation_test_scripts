@@ -1,8 +1,10 @@
-## FQDN Test
+## Transit Solution Test with HA (Spoke-to-Spoke and Spoke-to-OnPrem)
 
 ### Description
 
-This Terraform configuration creates AWS VPC testbed environment with ubuntu instances, sets up Aviatrix gateway, configures FQDN filters, and then tests end-to-end traffic to make sure FQDN filters are working. After test is done, copy the result output from the remote host to the local machine.
+This Terraform configuration creates 2 Spoke VPCs, 1 Transit VPC, 1 onPrem VPC, Aviatrix Transit GW with HA and ActiveMesh, Aviatrix Spoke GWs with HA and ActiveMesh, and ubuntu instances. And then, it  attaches Spoke VPCs to Transit VPC. Also, it makes connection between Aviatrix Transit GW and OnPrem AWS VGW. After that, end-to-end traffic is tested between ubuntu instances in order to verify Spoke-Spoke and Spoke-OnPrem connectivities are working. After test is done, copy the result output from the remote host to the local machine.
+
+> ***Note***: This test requires to assign 4 VPCs and 9 Elastic IP addresses. Before start testing, please make sure the target AWS region can accommodate enough resources. If there are not enough resources, you may also request a service limit increase by creating an AWS support case.
 
 ### Prerequisites
 
@@ -10,7 +12,7 @@ This Terraform configuration creates AWS VPC testbed environment with ubuntu ins
 
 2) Provide the location of the public_key as variable in provider_cred.tfvars file.
 
-3) Provide the location of the private_key as local variable in fqdn.tf file. Also, add the private_key on the local machine where terraform is going to run. For example, ssh-add ~/Downloads/sshkey
+3) Add the private_key on the local machine where terraform is going to run. For example, ssh-add ~/Downloads/sshkey
 
 4) Provide other info such as controller_ip, aws_access_key, etc as necessary in provider_cred.tfvars file.
 > aws_region     = "Enter_AWS_region"  
@@ -21,13 +23,7 @@ This Terraform configuration creates AWS VPC testbed environment with ubuntu ins
 > aviatrix_controller_password = "Enter_your_controller_password"  
 > aviatrix_aws_access_account  = "Enter_your_AWS_access_account"  
 > public_key = "~/Downloads/sshkey.pub"
-
-5) (Optional) Different type of FQDN feature test can be done by modifying terraform.tfvars file. In the example below, FQDN mode is "white" list and it can be changed to "black" for testing black-list. Also, FQDN domain, protocol and port info are passed as lists and it can be modified for customized testing. In the example below, "*.facebook.com" FQDN filter entry is tested along with TCP port 443. 
-
-> aviatrix_fqdn_mode   = "white"  
-> aviatrix_fqdn_domain = ["*.facebook.com", "*.google.com", "twitter.com", "www.apple.com"]  
-> aviatrix_fqdn_protocol = ["tcp", "tcp", "udp", "icmp"]  
-> aviatrix_fqdn_port     = ["443", "80", "480", "ping"]
+ 
 
 ### Usage
 ```
@@ -40,7 +36,7 @@ terraform destroy -var-file=provider_cred.tfvars -auto-approve
 
 ### Test Duration
 
-Total Test Time = \~16 min (Create=\~4min Destroy=\~12min)
+Total Test Time = \~28min (Create=\~18min Destroy=\~10min)
 
 ### Test Result
 
