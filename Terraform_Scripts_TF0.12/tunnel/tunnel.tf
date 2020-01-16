@@ -53,9 +53,9 @@ resource "aviatrix_gateway" "peeringGW2" {
   vpc_id              = aviatrix_vpc.aws_tunnel_vpc_2.vpc_id
   vpc_reg             = aviatrix_vpc.aws_tunnel_vpc_2.region
   gw_size             = "t2.micro"
-  subnet              = aviatrix_vpc.aws_tunnel_vpc_2.subnets.6.cidr
+  subnet              = aviatrix_vpc.aws_tunnel_vpc_2.subnets.2.cidr
 
-  peering_ha_subnet   = aviatrix_vpc.aws_tunnel_vpc_2.subnets.7.cidr
+  peering_ha_subnet   = aviatrix_vpc.aws_tunnel_vpc_2.subnets.3.cidr
   peering_ha_gw_size  = "t2.micro"
 }
 
