@@ -1,7 +1,7 @@
 # Create Aviatrix Azure ARM account
 
-resource "aviatrix_account" "azure_access_account1" {
-  account_name         = "AzureAccess"
+resource "aviatrix_account" "azure_access_account_1" {
+  account_name         = "azure-access-account1"
   cloud_type           = 8
   arm_subscription_id  = var.arm_sub_id
   arm_directory_id     = var.arm_dir_id
@@ -9,6 +9,6 @@ resource "aviatrix_account" "azure_access_account1" {
   arm_application_key  = var.arm_app_key
 }
 
-output "azure_access_account1_id" {
-  value = aviatrix_account.azure_access_account1.id
+output "azure_access_account_1_id" {
+  value = aviatrix_account.azure_access_account_1.id
 }
