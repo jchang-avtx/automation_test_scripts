@@ -21,3 +21,13 @@ variable "aws_vpc_id" {
 }
 variable "custom_routes_list" {}
 variable "disable_local_route_propagation" {}
+
+variable "adv_subnets" {
+  default = "subnet-05827995c52de2d76"
+}
+variable "adv_rtb" {
+  default = "rtb-024a3b4ff2b9cf333"
+}
+variable "adv_custom_route_advertisement" {
+  default = "10.60.0.0/24"
+}

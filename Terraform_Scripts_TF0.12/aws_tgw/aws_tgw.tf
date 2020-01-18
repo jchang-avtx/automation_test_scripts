@@ -92,6 +92,10 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
 
       customized_routes               = var.custom_routes_list
       disable_local_route_propagation = var.disable_local_route_propagation
+
+      subnets                         = var.adv_subnets
+      route_tables                    = var.adv_rtb
+      customized_route_advertisement  = var.adv_custom_route_advertisement
     }
   }
 
