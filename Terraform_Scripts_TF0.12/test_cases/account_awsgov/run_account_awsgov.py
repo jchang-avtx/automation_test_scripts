@@ -1,7 +1,7 @@
 """
-run_aws_peer.py
+run_account_awsgov.py
 
-Test case for aws_peer Terraform resource/ use-case
+Test case for account (AWS Gov) Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -40,7 +40,7 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS peering solution")
+log.info("      2. Create AWS GovCloud account")
 log.info("      3. Perform terraform import to identify deltas")
 log.info("      4. Tear down infrastructure\n")
 
@@ -69,7 +69,7 @@ log.info("      Set environment credentials: PASS\n")
 
 try:
     log.info("Creating infrastructure...")
-    tf.create_verify()
+    tf.create_verify("awsgov_acc_cred")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
@@ -80,7 +80,7 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("aws_peer", "test_awspeer")
+    tf.import_test("account", "aws_gov_root_1", "awsgov_acc_cred")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test: FAIL\n")
@@ -96,7 +96,7 @@ log.info("     update_test(): SKIPPED\n")
 
 try:
     log.info("Verifying destroy functionality...")
-    tf.destroy_test()
+    tf.destroy_test("awsgov_acc_cred")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     destroy_test(): FAIL\n")
