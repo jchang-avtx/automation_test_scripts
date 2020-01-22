@@ -82,7 +82,7 @@ try:
     tf.import_test("account", "azure_access_account_1", "azure_acc_cred")
 except:
     log.info("-------------------- RESULT --------------------")
-    log.error("     import_test: FAIL\n")
+    log.error("     import_test(): FAIL\n")
     sys.exit()
 log.info("-------------------- RESULT --------------------")
 log.info("      import_test(): PASS\n")
@@ -90,11 +90,11 @@ log.info("      import_test(): PASS\n")
 
 try:
     log.info("Verifying update functionality...")
-    log.info("Switching Azure credentials to another Azure account...")
+    log.debug("     switchApp: Switching Azure credentials to another Azure account...")
     tf.update_test("switchApp_cred")
 except:
     log.info("-------------------- RESULT --------------------")
-    log.error("     update_test: FAIL\n")
+    log.error("     update_test(): FAIL\n")
     sys.exit()
 log.info("-------------------- RESULT --------------------")
 log.info("      update_test(): PASS\n")

@@ -82,7 +82,7 @@ try:
     tf.import_test("account_user", "test_accountuser", "acc_user_cred")
 except:
     log.info("-------------------- RESULT --------------------")
-    log.error("     import_test: FAIL\n")
+    log.error("     import_test(): FAIL\n")
     sys.exit()
 log.info("-------------------- RESULT --------------------")
 log.info("      import_test(): PASS\n")
