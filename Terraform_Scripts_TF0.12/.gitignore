@@ -3,6 +3,8 @@
 *.json
 *.pem
 .terraform
+*.log
+*.tfstate*
 
 Jenkinsfile
 user_emails.tfvars
