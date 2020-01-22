@@ -1,7 +1,7 @@
 """
-resource_subcategory.py
+run_account_iam.py
 
-Template for test case for each Terraform resource/ use-case
+Test case for account (AWS using IAM) Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -13,9 +13,7 @@ Template for test case for each Terraform resource/ use-case
 import os
 
 import sys
-print(sys.path)
 sys.path.insert(1, '/file_path/aviatrix_terraform_regression/py_libs')
-print(sys.path)
 import terraform_fx as tf
 
 import logging
@@ -35,21 +33,24 @@ logging.basicConfig(level=LOGLEVEL,
                     ])
 log = logging.getLogger()
 
+log.info("\n")
 log.info("============================================================")
 log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
-log.info("      1. Some step")
-log.info("      2. Some next step")
+log.info("      1. Set up environment variables/ credentials")
+log.info("      2. Create AWS access account using IAM role/ policies")
+log.info("      3. Perform terraform import to identify deltas")
+log.info("      4. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")
     log.debug("     placeholder_ip: %s", str(os.environ["AVIATRIX_CONTROLLER_IP"]))
     log.debug("     placeholder_user: %s", str(os.environ["AVIATRIX_USERNAME"]))
     log.debug("     placeholder_pass: %s", str(os.environ["AVIATRIX_PASSWORD"]))
-    avx_controller_ip = os.environ["avx_ip_1"]
-    avx_controller_user = os.environ["avx_user_1"]
-    avx_controller_pass = os.environ["avx_pass_1"]
+    avx_controller_ip = os.environ["avx_ip_2"]
+    avx_controller_user = os.environ["avx_user_2"]
+    avx_controller_pass = os.environ["avx_pass_2"]
     log.info("Setting new variable values as follows...")
     log.debug("     avx_controller_ip: %s", avx_controller_ip)
     log.debug("     avx_controller_user: %s", avx_controller_user)
@@ -61,35 +62,37 @@ except:
     log.info("-------------------- RESULT --------------------")
     log.error("     Failed to properly set environment credentials!")
     sys.exit()
+log.info("-------------------- RESULT --------------------")
+log.info("      Set environment credentials: PASS\n")
+
 
 try:
     log.info("Creating infrastructure...")
-    tf.create_verify()
+    tf.create_verify("aws_iam_acc_cred")
 except:
     log.info("-------------------- RESULT --------------------")
-    log.error("     Infrastructure creation failed!")
+    log.error("     create_verify(): FAIL\n")
     sys.exit()
+log.info("-------------------- RESULT --------------------")
+log.info("      create_verify(): PASS\n")
 
-try:
-    log.info("Verifying import functionality...")
-    tf.import_test(resource, name, varfile)
-except:
-    log.info("-------------------- RESULT --------------------")
-    log.error("     Import test failed!")
-    sys.exit()
 
-try:
-    log.info("Verifying update functionality...")
-    tf.update_test(varfile)
-except:
-    log.info("-------------------- RESULT --------------------")
-    log.error("     Update test cases failed!")
-    sys.exit()
+log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support import functionality...")
+log.info("-------------------- RESULT --------------------")
+log.info("     import_test(): SKIPPED\n")
+
+
+log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
+log.info("-------------------- RESULT --------------------")
+log.info("     update_test(): SKIPPED\n")
+
 
 try:
     log.info("Verifying destroy functionality...")
-    tf.destroy_test()
+    tf.destroy_test("aws_iam_acc_cred")
 except:
     log.info("-------------------- RESULT --------------------")
-    log.error("     Destroy failed!")
+    log.error("     destroy_test(): FAIL\n")
     sys.exit()
+log.info("-------------------- RESULT --------------------")
+log.info("      destroy_test(): PASS\n")

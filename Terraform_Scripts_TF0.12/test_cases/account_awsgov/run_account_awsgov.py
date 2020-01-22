@@ -6,6 +6,7 @@ Test case for account (AWS Gov) Terraform resource/ use-case
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
     - create/ import/ update/ destroy test functions and respective arguments
+    - update "#" in "avx_ip_#", "avx_user_#", "avx_pass_#" accordingly
 - place xxx.py in respective test_cases/xxx/ directory
 """
 
