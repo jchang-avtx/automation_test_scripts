@@ -1,7 +1,7 @@
 """
-run_aws_peer.py
+run_account_azure.py
 
-Test case for aws_peer Terraform resource/ use-case
+Test case for account (Azure) Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -38,7 +38,7 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS peering solution")
+log.info("      2. Create Azure access account")
 log.info("      3. Perform terraform import to identify deltas")
 log.info("      4. Tear down infrastructure\n")
 
@@ -67,7 +67,7 @@ log.info("      Set environment credentials: PASS\n")
 
 try:
     log.info("Creating infrastructure...")
-    tf.create_verify()
+    tf.create_verify("azure_acc_cred")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
@@ -78,7 +78,7 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("aws_peer", "test_awspeer")
+    tf.import_test("account", "azure_access_account_1", "azure_acc_cred")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test: FAIL\n")
@@ -87,14 +87,21 @@ log.info("-------------------- RESULT --------------------")
 log.info("      import_test(): PASS\n")
 
 
-log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
+try:
+    log.info("Verifying update functionality...")
+    log.info("Switching Azure credentials to another Azure account...")
+    tf.update_test("switchApp_cred")
+except:
+    log.info("-------------------- RESULT --------------------")
+    log.error("     update_test: FAIL\n")
+    sys.exit()
 log.info("-------------------- RESULT --------------------")
-log.info("     update_test(): SKIPPED\n")
+log.info("      update_test(): PASS\n")
 
 
 try:
     log.info("Verifying destroy functionality...")
-    tf.destroy_test()
+    tf.destroy_test("switchApp_cred")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     destroy_test(): FAIL\n")

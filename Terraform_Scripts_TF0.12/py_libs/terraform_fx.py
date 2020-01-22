@@ -52,7 +52,7 @@ def destroy_test(varfile=None):
             os.system('terraform destroy -auto-approve')
             os.system('terraform show')
         elif varfile:
-            os.system('terraform destroy -var-file=provider' + varfile + '.tfvars -auto-approve')
+            os.system('terraform destroy -var-file=' + varfile + '.tfvars -auto-approve')
             os.system('terraform show')
         else:
             raise Exception('Too many arguments: destroy_test()')

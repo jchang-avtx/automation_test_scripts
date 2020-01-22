@@ -12,9 +12,7 @@ Test case for account (AWS Gov) Terraform resource/ use-case
 import os
 
 import sys
-print(sys.path)
 sys.path.insert(1, '/file_path/aviatrix_terraform_regression/py_libs')
-print(sys.path)
 import terraform_fx as tf
 
 import logging
