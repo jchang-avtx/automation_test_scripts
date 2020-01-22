@@ -1,7 +1,7 @@
 """
-run_aws_tgw_vpc_attachment.py
+run_firewall_tag.py
 
-Test case for Aviatrix's AWS TGW VPC Attachment Terraform resource/ use-case
+Test case for Stateful Firewall Tags Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,9 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create an AWS TGW and manage VPC attachments separately")
+log.info("      2. Create Stateful firewall tags and other policies")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform update tests involving respective resource")
+log.info("      4. Perform update tests on various attributes")
 log.info("      5. Tear down infrastructure\n")
 
 try:
@@ -80,7 +80,8 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("aws_tgw_vpc_attachment", "tgw_vpc_attach_test")
+    log.debug("     Importing firewall tag and policies...")
+    tf.import_test("firewall_tag", "fw_tag_test")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
@@ -91,8 +92,10 @@ log.info("      import_test(): PASS\n")
 
 try:
     log.info("Verifying update functionality...")
-    log.debug("     updateSecurityDomain: Updating which security domain the VPC should attach to...")
-    tf.update_test("updateSecurityDomain")
+    log.debug("      updateCIDR: Updating one of the tag rule's CIDR...")
+    tf.update_test("updateCIDR")
+    log.debug("     updateCIDRTagName: Updating the tag rule's name...")
+    tf.update_test("updateCIDRTagName")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
@@ -101,6 +104,12 @@ log.info("-------------------- RESULT --------------------")
 log.info("      update_test(): PASS\n")
 
 
-log.info(str(os.path.split(os.getcwd())[1]).upper() + " will not be destroyed until aws_tgw_directconnect concludes...")
+try:
+    log.info("Verifying destroy functionality...")
+    tf.destroy_test()
+except:
+    log.info("-------------------- RESULT --------------------")
+    log.error("     destroy_test(): FAIL\n")
+    sys.exit()
 log.info("-------------------- RESULT --------------------")
-log.info("     destroy_test(): SKIPPED\n")
+log.info("      destroy_test(): PASS\n")

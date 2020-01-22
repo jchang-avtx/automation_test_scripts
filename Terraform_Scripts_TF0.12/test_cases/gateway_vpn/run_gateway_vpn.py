@@ -1,7 +1,7 @@
 """
-run_aws_tgw_vpc_attachment.py
+run_gateway_vpn.py
 
-Test case for Aviatrix's AWS TGW VPC Attachment Terraform resource/ use-case
+Test case for gateway (AWS VPN) Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,9 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create an AWS TGW and manage VPC attachments separately")
+log.info("      2. Create AWS GW (VPN-enabled), testing ELB and non-ELB")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform update tests involving respective resource")
+log.info("      4. Perform update tests on various attributes")
 log.info("      5. Tear down infrastructure\n")
 
 try:
@@ -80,7 +80,7 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("aws_tgw_vpc_attachment", "tgw_vpc_attach_test")
+    tf.import_test("gateway", "vpnGWunderELB")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
@@ -91,8 +91,22 @@ log.info("      import_test(): PASS\n")
 
 try:
     log.info("Verifying update functionality...")
-    log.debug("     updateSecurityDomain: Updating which security domain the VPC should attach to...")
-    tf.update_test("updateSecurityDomain")
+    log.debug("      updateVPNCIDR: Updating the VPN CIDR for uses of accidental overlap with home network...")
+    tf.update_test("updateVPNCIDR")
+    log.debug("     updateSearchDomain: Updating list of domain names that will use the NameServers when specific name not in destination...")
+    tf.update_test("updateSearchDomain")
+    log.debug("     updateCIDRs: Updating list of destination CIDR ranges that will also go through the VPN tunnel...")
+    tf.update_test("updateCIDRs")
+    log.debug("     updateNameServers: Updating the list of DNS servers that VPN gateway will use to resolve domain names...")
+    tf.update_test("updateNameServers")
+    log.debug("     disableSingleAZHA: Disabling Single AZ HA option of the gateway...")
+    tf.update_test("disableSingleAZHA")
+    log.debug("     disableSplitTunnel: Disabling split_tunnel and all consequent attributes...")
+    tf.update_test("disableSplitTunnel")
+    log.debug("     updateMaxConn: Updating the maximum number of VPN users allowed to be connected to the gateway...")
+    tf.update_test("updateMaxConn")
+    log.debug("     disableVPNNAT: Disables VPN connection from using NAT when traffic leaves the gateway...")
+    tf.update_test("disableVPNNAT")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
@@ -101,6 +115,12 @@ log.info("-------------------- RESULT --------------------")
 log.info("      update_test(): PASS\n")
 
 
-log.info(str(os.path.split(os.getcwd())[1]).upper() + " will not be destroyed until aws_tgw_directconnect concludes...")
+try:
+    log.info("Verifying destroy functionality...")
+    tf.destroy_test()
+except:
+    log.info("-------------------- RESULT --------------------")
+    log.error("     destroy_test(): FAIL\n")
+    sys.exit()
 log.info("-------------------- RESULT --------------------")
-log.info("     destroy_test(): SKIPPED\n")
+log.info("      destroy_test(): PASS\n")
