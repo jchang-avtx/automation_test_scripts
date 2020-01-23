@@ -1,5 +1,5 @@
 ## MANTIS 11687: diff on site2cloud backup_gateway_name and backup_remote_gateway_ip
-## CLOSED : they are setting up ha-gw incorrectly. the infrastructure/ setup for failover is incorrect
+## CLOSED : ha-gw incorrectly set up. the infrastructure/ setup for failover is incorrect
 
 # aviatrix_gateway.S2C_GW_Vir_Backup:
 resource "aviatrix_gateway" "S2C_GW_Vir_Backup" {
