@@ -1,7 +1,7 @@
 """
-run_gateway_vpn.py
+run_gateway_encrypt.py
 
-Test case for gateway (AWS VPN SAML) Terraform resource/ use-case
+Test case for AWS Gateway (transit and spoke) with an encrypted EBS volume Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,9 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS GW (VPN-enabled), testing ELB and non-ELB")
+log.info("      2. Create AWS gateway (regular, transit, spoke) with encrypted EBS volume")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform update tests on various attributes")
+log.info("      4. Disable the key to avoid remaking/ security concerns when test not running")
 log.info("      5. Tear down infrastructure\n")
 
 try:
@@ -80,7 +80,12 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("gateway", "vpnGWunderELB")
+    log.debug("     Importing the AWS Encrypted gateway...")
+    tf.import_test("gateway", "aws_ebs_encrypt_gw")
+    log.debug("     Importing the AWS Encrypted transit gateway...")
+    tf.import_test("transit_gateway", "aws_ebs_encrypt_transit")
+    log.debug("     Importing the AWS Encrypted spoke gateway...")
+    tf.import_test("spoke_gateway", "aws_ebs_encrypt_spoke")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
@@ -91,22 +96,8 @@ log.info("      import_test(): PASS\n")
 
 try:
     log.info("Verifying update functionality...")
-    log.debug("     updateVPNCIDR: Updating the VPN CIDR for uses of accidental overlap with home network...")
-    tf.update_test("updateVPNCIDR")
-    log.debug("     updateSearchDomain: Updating list of domain names that will use the NameServers when specific name not in destination...")
-    tf.update_test("updateSearchDomain")
-    log.debug("     updateCIDRs: Updating list of destination CIDR ranges that will also go through the VPN tunnel...")
-    tf.update_test("updateCIDRs")
-    log.debug("     updateNameServers: Updating the list of DNS servers that VPN gateway will use to resolve domain names...")
-    tf.update_test("updateNameServers")
-    log.debug("     disableSingleAZHA: Disabling Single AZ HA option of the gateway...")
-    tf.update_test("disableSingleAZHA")
-    log.debug("     disableSplitTunnel: Disabling split_tunnel and all consequent attributes...")
-    tf.update_test("disableSplitTunnel")
-    log.debug("     updateMaxConn: Updating the maximum number of VPN users allowed to be connected to the gateway...")
-    tf.update_test("updateMaxConn")
-    log.debug("     disableVPNNAT: Disables VPN connection from using NAT when traffic leaves the gateway...")
-    tf.update_test("disableVPNNAT")
+    log.debug("     disableKey: Disabling the key used to encrypt the EBS volume...")
+    tf.update_test("disableKey")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
@@ -117,7 +108,11 @@ log.info("      update_test(): PASS\n")
 
 try:
     log.info("Verifying destroy functionality...")
-    tf.destroy_test()
+    log.debug("     Targeting destroy on the VPCs (and dependent resources), avoiding removing the aws_kms_key...")
+    log.debug("     destroy_target(): spoke_encrypt_vpc")
+    tf.destroy_target("vpc", "spoke_encrypt_vpc")
+    log.debug("     destroy_target(): transit_encrypt_vpc")
+    tf.destroy_target("vpc", "transit_encrypt_vpc")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     destroy_test(): FAIL\n")

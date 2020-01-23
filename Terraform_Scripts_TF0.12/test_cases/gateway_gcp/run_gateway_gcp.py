@@ -1,7 +1,7 @@
 """
-run_gateway_vpn.py
+run_gateway_gcp.py
 
-Test case for gateway (AWS VPN SAML) Terraform resource/ use-case
+Test case for GCP Gateway (HA) Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,9 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS GW (VPN-enabled), testing ELB and non-ELB")
+log.info("      2. Create GCP gateway (HA)")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform update tests on various attributes")
+log.info("      4. Perform update tests")
 log.info("      5. Tear down infrastructure\n")
 
 try:
@@ -80,7 +80,8 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("gateway", "vpnGWunderELB")
+    log.debug("     Importing the GCP gateway...")
+    tf.import_test("gateway", "gcloud_gw")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
@@ -91,22 +92,8 @@ log.info("      import_test(): PASS\n")
 
 try:
     log.info("Verifying update functionality...")
-    log.debug("     updateVPNCIDR: Updating the VPN CIDR for uses of accidental overlap with home network...")
-    tf.update_test("updateVPNCIDR")
-    log.debug("     updateSearchDomain: Updating list of domain names that will use the NameServers when specific name not in destination...")
-    tf.update_test("updateSearchDomain")
-    log.debug("     updateCIDRs: Updating list of destination CIDR ranges that will also go through the VPN tunnel...")
-    tf.update_test("updateCIDRs")
-    log.debug("     updateNameServers: Updating the list of DNS servers that VPN gateway will use to resolve domain names...")
-    tf.update_test("updateNameServers")
-    log.debug("     disableSingleAZHA: Disabling Single AZ HA option of the gateway...")
-    tf.update_test("disableSingleAZHA")
-    log.debug("     disableSplitTunnel: Disabling split_tunnel and all consequent attributes...")
-    tf.update_test("disableSplitTunnel")
-    log.debug("     updateMaxConn: Updating the maximum number of VPN users allowed to be connected to the gateway...")
-    tf.update_test("updateMaxConn")
-    log.debug("     disableVPNNAT: Disables VPN connection from using NAT when traffic leaves the gateway...")
-    tf.update_test("disableVPNNAT")
+    log.debug("     updateHAGWSize: Enabling and creating HA gateway...")
+    tf.update_test("updateHAGWSize")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")

@@ -1,7 +1,7 @@
 """
-run_gateway_vpn.py
+run_gateway.py
 
-Test case for gateway (AWS VPN SAML) Terraform resource/ use-case
+Test case for AWS Gateway Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,7 +39,7 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS GW (VPN-enabled), testing ELB and non-ELB")
+log.info("      2. Create AWS gateway (HA)")
 log.info("      3. Perform terraform import to identify deltas")
 log.info("      4. Perform update tests on various attributes")
 log.info("      5. Tear down infrastructure\n")
@@ -49,9 +49,9 @@ try:
     log.debug("     placeholder_ip: %s", str(os.environ["AVIATRIX_CONTROLLER_IP"]))
     log.debug("     placeholder_user: %s", str(os.environ["AVIATRIX_USERNAME"]))
     log.debug("     placeholder_pass: %s", str(os.environ["AVIATRIX_PASSWORD"]))
-    avx_controller_ip = os.environ["avx_ip_2"]
-    avx_controller_user = os.environ["avx_user_2"]
-    avx_controller_pass = os.environ["avx_pass_2"]
+    avx_controller_ip = os.environ["avx_ip_1"]
+    avx_controller_user = os.environ["avx_user_1"]
+    avx_controller_pass = os.environ["avx_pass_1"]
     log.info("Setting new variable values as follows...")
     log.debug("     avx_controller_ip: %s", avx_controller_ip)
     log.debug("     avx_controller_user: %s", avx_controller_user)
@@ -80,7 +80,7 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("gateway", "vpnGWunderELB")
+    tf.import_test("gateway", "testGW1")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
@@ -91,22 +91,16 @@ log.info("      import_test(): PASS\n")
 
 try:
     log.info("Verifying update functionality...")
-    log.debug("     updateVPNCIDR: Updating the VPN CIDR for uses of accidental overlap with home network...")
-    tf.update_test("updateVPNCIDR")
-    log.debug("     updateSearchDomain: Updating list of domain names that will use the NameServers when specific name not in destination...")
-    tf.update_test("updateSearchDomain")
-    log.debug("     updateCIDRs: Updating list of destination CIDR ranges that will also go through the VPN tunnel...")
-    tf.update_test("updateCIDRs")
-    log.debug("     updateNameServers: Updating the list of DNS servers that VPN gateway will use to resolve domain names...")
-    tf.update_test("updateNameServers")
-    log.debug("     disableSingleAZHA: Disabling Single AZ HA option of the gateway...")
-    tf.update_test("disableSingleAZHA")
-    log.debug("     disableSplitTunnel: Disabling split_tunnel and all consequent attributes...")
-    tf.update_test("disableSplitTunnel")
-    log.debug("     updateMaxConn: Updating the maximum number of VPN users allowed to be connected to the gateway...")
-    tf.update_test("updateMaxConn")
-    log.debug("     disableVPNNAT: Disables VPN connection from using NAT when traffic leaves the gateway...")
-    tf.update_test("disableVPNNAT")
+    log.debug("     disableSNAT: Disabling single IP SNAT...")
+    tf.update_test("disableSNAT")
+    log.debug("     updateTagList: Updating gateway's tags...")
+    tf.update_test("updateTagList")
+    log.debug("     updateGWSize: Updating gateway's size...")
+    tf.update_test("updateGWSize")
+    log.debug("     updateHAGWSize: Updating HA gateway's size...")
+    tf.update_test("updateHAGWSize")
+    log.debug("     enableDNSServer: Enabling feature to remove the default DNS server, in favor of VPC DNS server configured in VPC DHCP option...")
+    tf.update_test("enableDNSServer")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
