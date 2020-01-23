@@ -1,7 +1,7 @@
 """
-run_gateway_azure_insane.py
+run_gateway_insane.py
 
-Test case for Azure Gateway (Insane HA) Terraform resource/ use-case
+Test case for AWS Insane gateway Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,7 +39,7 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create Azure gateway (Insane HA)")
+log.info("      2. Create AWS Insane gateway")
 log.info("      3. Perform terraform import to identify deltas")
 log.info("      4. Tear down infrastructure\n")
 
@@ -48,9 +48,9 @@ try:
     log.debug("     placeholder_ip: %s", str(os.environ["AVIATRIX_CONTROLLER_IP"]))
     log.debug("     placeholder_user: %s", str(os.environ["AVIATRIX_USERNAME"]))
     log.debug("     placeholder_pass: %s", str(os.environ["AVIATRIX_PASSWORD"]))
-    avx_controller_ip = os.environ["avx_ip_1"]
-    avx_controller_user = os.environ["avx_user_1"]
-    avx_controller_pass = os.environ["avx_pass_1"]
+    avx_controller_ip = os.environ["avx_ip_2"]
+    avx_controller_user = os.environ["avx_user_2"]
+    avx_controller_pass = os.environ["avx_pass_2"]
     log.info("Setting new variable values as follows...")
     log.debug("     avx_controller_ip: %s", avx_controller_ip)
     log.debug("     avx_controller_user: %s", avx_controller_user)
@@ -79,8 +79,8 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    log.debug("     Importing the Azure Insane gateway...")
-    tf.import_test("gateway", "insane_azure_gw")
+    log.debug("     Importing the AWS Insane gateway...")
+    tf.import_test("gateway", "insane_aws_gw")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")

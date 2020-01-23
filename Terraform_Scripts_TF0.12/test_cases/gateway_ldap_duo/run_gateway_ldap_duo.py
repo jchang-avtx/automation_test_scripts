@@ -1,7 +1,7 @@
 """
-run_gateway_azure_insane.py
+run_gateway_ldap_duo.py
 
-Test case for Azure Gateway (Insane HA) Terraform resource/ use-case
+Test case for AWS Gateway (LDAP, Duo) Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,10 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create Azure gateway (Insane HA)")
+log.info("      2. Create AWS gateway (LDAP, Duo)")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Tear down infrastructure\n")
+log.info("      4. Perform update tests")
+log.info("      5. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")
@@ -79,8 +80,8 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    log.debug("     Importing the Azure Insane gateway...")
-    tf.import_test("gateway", "insane_azure_gw")
+    log.debug("     Importing the AWS (LDAP, Duo) gateway...")
+    tf.import_test("gateway", "testGW4")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
@@ -89,9 +90,30 @@ log.info("-------------------- RESULT --------------------")
 log.info("      import_test(): PASS\n")
 
 
-log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not update any Insane-related attributes...")
+try:
+    log.info("Verifying update functionality...")
+    log.debug("     duoUpdateIntKey: Updating the Duo Integration Key...")
+    tf.update_test("duoUpdateIntKey")
+    log.debug("     duoUpdateSecretKey: Updating the Duo Secret Key...")
+    tf.update_test("duoUpdateSecretKey")
+    log.debug("     duoUpdatePushMode: Updating the Duo Push Mode...")
+    tf.update_test("duoUpdatePushMode")
+    log.debug("     ldapUpdateServer: Updating the LDAP Server...")
+    tf.update_test("ldapUpdateServer")
+    log.debug("     ldapUpdateBindDN: Updating the LDAP Bind DN...")
+    tf.update_test("ldapUpdateBindDN")
+    log.debug("     ldapUpdatePassword: Updating the LDAP Password...")
+    tf.update_test("ldapUpdatePassword")
+    log.debug("     ldapUpdateBaseDN: Updating the LDAP Base DN...")
+    tf.update_test("ldapUpdateBaseDN")
+    log.debug("     ldapUpdateUsername: Updating the LDAP Username...")
+    tf.update_test("ldapUpdateUsername")
+except:
+    log.info("-------------------- RESULT --------------------")
+    log.error("     update_test(): FAIL\n")
+    sys.exit()
 log.info("-------------------- RESULT --------------------")
-log.info("     update_test(): SKIPPED\n")
+log.info("      update_test(): PASS\n")
 
 
 try:
