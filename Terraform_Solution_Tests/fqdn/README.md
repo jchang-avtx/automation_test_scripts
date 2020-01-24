@@ -18,7 +18,7 @@ This Terraform configuration creates AWS VPC testbed environment with ubuntu ins
 > aviatrix_controller_username = "Enter_your_controller_username"  
 > aviatrix_controller_password = "Enter_your_controller_password"  
 > aviatrix_aws_access_account  = "Enter_your_AWS_access_account"  
-> public_key = "\~/Downloads/sshkey.pub"
+> public_key = "\~/Downloads/sshkey.pub" . 
 > private_key = "\~/Downloads/sshkey"
 
 4) (Optional) Different type of FQDN feature test can be done by modifying terraform.tfvars file. In the example below, FQDN mode is "white" list and it can be changed to "black" for testing black-list. Also, FQDN domain, protocol and port info are passed as lists and it can be modified for customized testing. In the example below, "*.facebook.com" FQDN filter entry is tested along with TCP port 443. 
