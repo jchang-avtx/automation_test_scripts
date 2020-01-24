@@ -1,7 +1,7 @@
 """
-run_account_awsgov.py
+run_fqdn.py
 
-Test case for account (AWS Gov) Terraform resource/ use-case
+Test case for FQDN Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,10 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS GovCloud account")
+log.info("      2. Creating FQDN solution (gw and enabling FQDN setting)")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Tear down infrastructure\n")
+log.info("      4. Perform update tests on various attributes")
+log.info("      5. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")
@@ -68,7 +69,7 @@ log.info("      Set environment credentials: PASS\n")
 
 try:
     log.info("Creating infrastructure...")
-    tf.create_verify("awsgov_acc_cred")
+    tf.create_verify()
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
@@ -79,7 +80,7 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("account", "aws_gov_root_1", "awsgov_acc_cred")
+    tf.import_test("fqdn", "fqdn_tag_1")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
@@ -88,14 +89,33 @@ log.info("-------------------- RESULT --------------------")
 log.info("      import_test(): PASS\n")
 
 
-log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
+try:
+    log.info("Verifying update functionality...")
+    log.debug("     switchDomains: Updating the FQDN Domain filter name...")
+    tf.update_test("switchDomains")
+    log.debug("     switchPorts: Updating port #s of the various Egress rules...")
+    tf.update_test("switchPorts")
+    log.debug("     switchProtocols: Updating the protocols of the various Egress rules...")
+    tf.update_test("switchProtocols")
+    log.debug("     switchMode: Updating the mode from whitelist to blacklist...")
+    tf.update_test("switchMode")
+    log.debug("     switchStatus: Disabling the Egress filtering...")
+    tf.update_test("switchStatus")
+    log.debug("     switchGW: Detaching and attaching the FQDN tag to another gateway...")
+    tf.update_test("switchGW")
+    log.debug("     switchSourceIP: Updating which source IP in the VPC is qualified for a specific tag...")
+    tf.update_test("switchSourceIP")
+except:
+    log.info("-------------------- RESULT --------------------")
+    log.error("     update_test(): FAIL\n")
+    sys.exit()
 log.info("-------------------- RESULT --------------------")
-log.info("     update_test(): SKIPPED\n")
+log.info("      update_test(): PASS\n")
 
 
 try:
     log.info("Verifying destroy functionality...")
-    tf.destroy_test("awsgov_acc_cred")
+    tf.destroy_test()
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     destroy_test(): FAIL\n")

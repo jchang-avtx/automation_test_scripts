@@ -1,7 +1,7 @@
 """
-run_account_awsgov.py
+run_firenet.py
 
-Test case for account (AWS Gov) Terraform resource/ use-case
+Test case for FireNet Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,9 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS GovCloud account")
+log.info("      2. Create FireNet solution with all resources required")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Tear down infrastructure\n")
+log.info("      4. Tear down solution")
 
 try:
     log.info("Setting environment...")
@@ -68,7 +68,7 @@ log.info("      Set environment credentials: PASS\n")
 
 try:
     log.info("Creating infrastructure...")
-    tf.create_verify("awsgov_acc_cred")
+    tf.create_verify()
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
@@ -79,7 +79,14 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("account", "aws_gov_root_1", "awsgov_acc_cred")
+    tf.debug("      Importing firewall_instance for regular transit-gw solution...")
+    tf.import_test("firewall_instance", "firenet_instance")
+    tf.debug("      Importing firewall_instance in different region...")
+    tf.import_test("firewall_instance", "firenet_instance3")
+    tf.debug("      Importing firenet with instance associated for regular transit solution...")
+    tf.import_test("firenet", "firenet")
+    tf.debug("      Importing firenet with instance associated for FQDN solution...")
+    tf.import_test("firenet", "fqdn_firenet")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
@@ -95,7 +102,7 @@ log.info("     update_test(): SKIPPED\n")
 
 try:
     log.info("Verifying destroy functionality...")
-    tf.destroy_test("awsgov_acc_cred")
+    tf.destroy_test()
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     destroy_test(): FAIL\n")

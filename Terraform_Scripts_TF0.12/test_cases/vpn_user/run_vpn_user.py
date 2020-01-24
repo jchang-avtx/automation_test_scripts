@@ -1,7 +1,7 @@
 """
-run_account_awsgov.py
+run_vpn_user.py
 
-Test case for account (AWS Gov) Terraform resource/ use-case
+Test case for Aviatrix VPN User Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,8 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS GovCloud account")
-log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Tear down infrastructure\n")
+log.info("      2. Create VPN users")
+log.info("      3. Perform terraform import to identify deltas\n")
 
 try:
     log.info("Setting environment...")
@@ -68,7 +67,7 @@ log.info("      Set environment credentials: PASS\n")
 
 try:
     log.info("Creating infrastructure...")
-    tf.create_verify("awsgov_acc_cred")
+    tf.create_verify("user_emails")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
@@ -79,7 +78,8 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("account", "aws_gov_root_1", "awsgov_acc_cred")
+    log.debug("     Importing a VPN user...")
+    tf.import_test("vpn_user", "test_vpn_user1", "user_emails")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
@@ -93,12 +93,6 @@ log.info("-------------------- RESULT --------------------")
 log.info("     update_test(): SKIPPED\n")
 
 
-try:
-    log.info("Verifying destroy functionality...")
-    tf.destroy_test("awsgov_acc_cred")
-except:
-    log.info("-------------------- RESULT --------------------")
-    log.error("     destroy_test(): FAIL\n")
-    sys.exit()
+log.info(str(os.path.split(os.getcwd())[1]).upper() + " will not be destroyed until vpn_profile concludes...")
 log.info("-------------------- RESULT --------------------")
-log.info("      destroy_test(): PASS\n")
+log.info("     destroy_test(): SKIPPED\n")

@@ -6,6 +6,7 @@ Test case for aws_peer Terraform resource/ use-case
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
     - create/ import/ update/ destroy test functions and respective arguments
+    - update "#" in "avx_ip_#", "avx_user_#", "avx_pass_#" accordingly
 - place xxx.py in respective test_cases/xxx/ directory
 """
 
@@ -47,9 +48,9 @@ try:
     log.debug("     placeholder_ip: %s", str(os.environ["AVIATRIX_CONTROLLER_IP"]))
     log.debug("     placeholder_user: %s", str(os.environ["AVIATRIX_USERNAME"]))
     log.debug("     placeholder_pass: %s", str(os.environ["AVIATRIX_PASSWORD"]))
-    avx_controller_ip = os.environ["avx_ip_1"]
-    avx_controller_user = os.environ["avx_user_1"]
-    avx_controller_pass = os.environ["avx_pass_1"]
+    avx_controller_ip = os.environ["avx_ip_2"]
+    avx_controller_user = os.environ["avx_user_2"]
+    avx_controller_pass = os.environ["avx_pass_2"]
     log.info("Setting new variable values as follows...")
     log.debug("     avx_controller_ip: %s", avx_controller_ip)
     log.debug("     avx_controller_user: %s", avx_controller_user)
@@ -81,7 +82,7 @@ try:
     tf.import_test("aws_peer", "test_awspeer")
 except:
     log.info("-------------------- RESULT --------------------")
-    log.error("     import_test: FAIL\n")
+    log.error("     import_test(): FAIL\n")
     sys.exit()
 log.info("-------------------- RESULT --------------------")
 log.info("      import_test(): PASS\n")

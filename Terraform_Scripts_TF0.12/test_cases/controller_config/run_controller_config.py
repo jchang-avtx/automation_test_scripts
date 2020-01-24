@@ -1,7 +1,7 @@
 """
-run_account_awsgov.py
+run_controller_config.py
 
-Test case for account (AWS Gov) Terraform resource/ use-case
+Test case for Controller's configuration resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,9 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS GovCloud account")
+log.info("      2. Create a controller_config resource to manage Controller settings")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Tear down infrastructure\n")
+log.info("      4. Perform update tests involving respective resource")
 
 try:
     log.info("Setting environment...")
@@ -68,7 +68,7 @@ log.info("      Set environment credentials: PASS\n")
 
 try:
     log.info("Creating infrastructure...")
-    tf.create_verify("awsgov_acc_cred")
+    tf.create_verify()
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
@@ -79,7 +79,7 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("account", "aws_gov_root_1", "awsgov_acc_cred")
+    tf.import_test("controller_config", "test_controller_config")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
@@ -88,17 +88,24 @@ log.info("-------------------- RESULT --------------------")
 log.info("      import_test(): PASS\n")
 
 
-log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
-log.info("-------------------- RESULT --------------------")
-log.info("     update_test(): SKIPPED\n")
-
-
 try:
-    log.info("Verifying destroy functionality...")
-    tf.destroy_test("awsgov_acc_cred")
+    log.info("Verifying update functionality...")
+    log.debug("     enableHTTP: Enabling HTTP access to controller...")
+    tf.update_test("enableHTTP")
+    log.debug("     disableFQDN: Disabling FQDN Exception rule...")
+    tf.update_test("disableFQDN")
+    log.debug("     disableSG: Disabling Security Group Management...")
+    tf.update_test("disableSG")
+    log.debug("     enableHTTP: Re-enabling HTTP access (to undo all previous changes)")
+    tf.update_test("enableHTTP")
 except:
     log.info("-------------------- RESULT --------------------")
-    log.error("     destroy_test(): FAIL\n")
+    log.error("     update_test(): FAIL\n")
     sys.exit()
 log.info("-------------------- RESULT --------------------")
-log.info("      destroy_test(): PASS\n")
+log.info("      update_test(): PASS\n")
+
+
+log.info(str(os.path.split(os.getcwd())[1]).upper() + " will not be destroyed to maintain settings...")
+log.info("-------------------- RESULT --------------------")
+log.info("     destroy_test(): SKIPPED\n")

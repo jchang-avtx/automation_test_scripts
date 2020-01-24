@@ -82,7 +82,7 @@ try:
     tf.import_test("account", "gcp-access-account-1", "gcloud_acc_cred")
 except:
     log.info("-------------------- RESULT --------------------")
-    log.error("     import_test: FAIL\n")
+    log.error("     import_test(): FAIL\n")
     sys.exit()
 log.info("-------------------- RESULT --------------------")
 log.info("      import_test(): PASS\n")
@@ -90,13 +90,13 @@ log.info("      import_test(): PASS\n")
 
 try:
     log.info("Verifying update functionality...")
-    log.info("Switching GCP credentials to another GCP account...")
+    log.debug("      switchProj_cred: Switching GCP credentials to another GCP account...")
     tf.update_test("switchProj_cred")
-    log.info("Switching GCP credentials back to original...")
+    log.debug("     gcloud_acc_cred: Switching GCP credentials back to original...")
     tf.update_test("gcloud_acc_cred")
 except:
     log.info("-------------------- RESULT --------------------")
-    log.error("     update_test: FAIL\n")
+    log.error("     update_test(): FAIL\n")
     sys.exit()
 log.info("-------------------- RESULT --------------------")
 log.info("      update_test(): PASS\n")
