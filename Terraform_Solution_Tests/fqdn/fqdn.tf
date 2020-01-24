@@ -82,12 +82,12 @@ resource "null_resource" "ping" {
 
   # This provisioner will copy fqdn.py to public VM instance
   provisioner "local-exec" {
-    command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null fqdn.py ${var.ssh_user}@${module.aws-vpc.ubuntu_public_ip[0]}:/tmp/fqdn.py"
+    command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null fqdn.py ${var.ssh_user}@${module.aws-vpc.ubuntu_public_ip[0]}:/tmp/fqdn.py"
   }
 
   # Copy private key to public instance in order to ssh to private instance
   provisioner "local-exec" {
-    command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${local.private_key} ${var.ssh_user}@${module.aws-vpc.ubuntu_public_ip[0]}:~/.ssh/id_rsa"
+    command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${var.private_key} ${var.ssh_user}@${module.aws-vpc.ubuntu_public_ip[0]}:~/.ssh/id_rsa"
   }
 
   # Install python3 modules as necessary to run python script
@@ -100,7 +100,7 @@ resource "null_resource" "ping" {
     connection {
       type = "ssh"
       user = var.ssh_user
-      #private_key = file("~/Downloads/sshkey")
+      private_key = file(var.private_key)
       host = module.aws-vpc.ubuntu_public_ip[0]
       agent = true
     }
@@ -115,7 +115,7 @@ resource "null_resource" "ping" {
     connection {
       type = "ssh"
       user = var.ssh_user
-      #private_key = file("~/Downloads/sshkey")
+      private_key = file(var.private_key)
       host = module.aws-vpc.ubuntu_public_ip[0]
       agent = true
     }
@@ -123,14 +123,7 @@ resource "null_resource" "ping" {
 
   # Once test is done, copy log file and result file back to local
   provisioner "local-exec" {
-    command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${var.ssh_user}@${module.aws-vpc.ubuntu_public_ip[0]}:/tmp/*.txt ."
+    command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${var.ssh_user}@${module.aws-vpc.ubuntu_public_ip[0]}:/tmp/*.txt ."
   }
 }
 
-variable "ssh_user" {
-  default = "ubuntu"
-}
-
-locals {
-  private_key     = "/home/ubuntu/.ssh/id_rsa"
-}
