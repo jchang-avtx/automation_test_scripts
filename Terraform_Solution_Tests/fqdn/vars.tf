@@ -1,6 +1,4 @@
-variable "aws_region" {
-  default = "us-east-1"
-}
+variable "aws_region" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 
@@ -27,4 +25,9 @@ variable "aviatrix_fqdn_port" {
   type = list(string)
 }
 
+variable "ssh_user" {
+  default = "ubuntu"
+}
 variable "public_key" {}
+variable "private_key" {}
+
