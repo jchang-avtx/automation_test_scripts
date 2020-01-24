@@ -8,11 +8,9 @@ This Terraform configuration creates AWS VPC testbed environment with ubuntu ins
 
 1) Create a public_key private_key pair. For example. "ssh-keygen -t rsa" and save the key pair such as ~/Downloads/sshkey and ~/Downloads/sshkey.pub
 
-2) Provide the location of the public_key as variable in provider_cred.tfvars file.
+2) Provide the location of public_key and private_key as variables in provider_cred.tfvars file.
 
-3) Provide the location of the private_key as local variable in fqdn.tf file. Also, add the private_key on the local machine where terraform is going to run. For example, ssh-add ~/Downloads/sshkey
-
-4) Provide other info such as controller_ip, aws_access_key, etc as necessary in provider_cred.tfvars file.
+3) Provide other info such as controller_ip, aws_access_key, etc as necessary in provider_cred.tfvars file.
 > aws_region     = "Enter_AWS_region"  
 > aws_access_key = "Enter_AWS_access_key"  
 > aws_secret_key = "Enter_AWS_secret_key"  
@@ -20,9 +18,10 @@ This Terraform configuration creates AWS VPC testbed environment with ubuntu ins
 > aviatrix_controller_username = "Enter_your_controller_username"  
 > aviatrix_controller_password = "Enter_your_controller_password"  
 > aviatrix_aws_access_account  = "Enter_your_AWS_access_account"  
-> public_key = "~/Downloads/sshkey.pub"
+> public_key = "\~/Downloads/sshkey.pub"
+> private_key = "\~/Downloads/sshkey"
 
-5) (Optional) Different type of FQDN feature test can be done by modifying terraform.tfvars file. In the example below, FQDN mode is "white" list and it can be changed to "black" for testing black-list. Also, FQDN domain, protocol and port info are passed as lists and it can be modified for customized testing. In the example below, "*.facebook.com" FQDN filter entry is tested along with TCP port 443. 
+4) (Optional) Different type of FQDN feature test can be done by modifying terraform.tfvars file. In the example below, FQDN mode is "white" list and it can be changed to "black" for testing black-list. Also, FQDN domain, protocol and port info are passed as lists and it can be modified for customized testing. In the example below, "*.facebook.com" FQDN filter entry is tested along with TCP port 443. 
 
 > aviatrix_fqdn_mode   = "white"  
 > aviatrix_fqdn_domain = ["*.facebook.com", "*.google.com", "twitter.com", "www.apple.com"]  
@@ -36,6 +35,7 @@ terraform plan -var-file=provider_cred.tfvars -detailed-exitcode
 terraform apply -var-file=provider_cred.tfvars -auto-approve
 terraform show
 terraform destroy -var-file=provider_cred.tfvars -auto-approve
+terraform show
 ```
 
 ### Test Duration
