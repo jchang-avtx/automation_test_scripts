@@ -2,13 +2,13 @@
 # SNAT
 ######################
 # AWS
-variable "aws_snat_policy_src_ip" {
+variable "aws_snat_policy_src_cidr" {
   default = "13.0.0.0/24"
 }
 variable "aws_snat_policy_src_port" {
   default = 440
 }
-variable "aws_snat_policy_dst_ip" {
+variable "aws_snat_policy_dst_cidr" {
   default = "14.0.0.0/24"
 }
 variable "aws_snat_policy_dst_port" {
@@ -26,10 +26,10 @@ variable "aws_snat_policy_connection" {
 variable "aws_snat_policy_mark" {
   default = 69
 }
-variable "aws_snat_policy_new_src_ip" {
+variable "aws_snat_policy_snat_ips" {
   default = "15.0.0.0-15.0.0.1"
 }
-variable "aws_snat_policy_new_src_port" {
+variable "aws_snat_policy_snat_port" {
   default = 443
 }
 # variable "aws_snat_policy_exclude_rtb" {
@@ -37,13 +37,13 @@ variable "aws_snat_policy_new_src_port" {
 # }
 
 # ARM
-variable "arm_snat_policy_src_ip" {
+variable "arm_snat_policy_src_cidr" {
   default = "13.0.0.0/24"
 }
 variable "arm_snat_policy_src_port" {
   default = 440
 }
-variable "arm_snat_policy_dst_ip" {
+variable "arm_snat_policy_dst_cidr" {
   default = "14.0.0.0/24"
 }
 variable "arm_snat_policy_dst_port" {
@@ -61,10 +61,10 @@ variable "arm_snat_policy_connection" {
 variable "arm_snat_policy_mark" {
   default = 69
 }
-variable "arm_snat_policy_new_src_ip" {
+variable "arm_snat_policy_snat_ips" {
   default = "15.0.0.0-15.0.0.1"
 }
-variable "arm_snat_policy_new_src_port" {
+variable "arm_snat_policy_snat_port" {
   default = 443
 }
 # variable "arm_snat_policy_exclude_rtb" {
@@ -76,13 +76,13 @@ variable "arm_snat_policy_new_src_port" {
 # DNAT
 ######################
 # AWS
-variable "aws_dnat_policy_src_ip" {
+variable "aws_dnat_policy_src_cidr" {
   default = "19.0.0.0/24"
 }
 variable "aws_dnat_policy_src_port" {
   default = 50
 }
-variable "aws_dnat_policy_dst_ip" {
+variable "aws_dnat_policy_dst_cidr" {
   default = "20.0.0.0/24"
 }
 variable "aws_dnat_policy_dst_port" {
@@ -100,10 +100,10 @@ variable "aws_dnat_policy_connection" {
 variable "aws_dnat_policy_mark" {
   default = 70
 }
-variable "aws_dnat_policy_new_src_ip" {
+variable "aws_dnat_policy_dnat_ips" {
   default = "21.0.0.0"
 }
-variable "aws_dnat_policy_new_src_port" {
+variable "aws_dnat_policy_dnat_port" {
   default = 52
 }
 # variable "aws_dnat_policy_exclude_rtb" {
@@ -111,13 +111,13 @@ variable "aws_dnat_policy_new_src_port" {
 # }
 
 # ARM
-variable "arm_dnat_policy_src_ip" {
+variable "arm_dnat_policy_src_cidr" {
   default = "19.0.0.0/24"
 }
 variable "arm_dnat_policy_src_port" {
   default = 50
 }
-variable "arm_dnat_policy_dst_ip" {
+variable "arm_dnat_policy_dst_cidr" {
   default = "20.0.0.0/24"
 }
 variable "arm_dnat_policy_dst_port" {
@@ -135,10 +135,10 @@ variable "arm_dnat_policy_connection" {
 variable "arm_dnat_policy_mark" {
   default = 70
 }
-variable "arm_dnat_policy_new_src_ip" {
+variable "arm_dnat_policy_dnat_ips" {
   default = "21.0.0.0"
 }
-variable "arm_dnat_policy_new_src_port" {
+variable "arm_dnat_policy_dnat_port" {
   default = 52
 }
 # variable "arm_dnat_policy_exclude_rtb" {

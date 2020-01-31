@@ -103,6 +103,7 @@ try:
     time.sleep(120)
     log.debug("     attachTransitGW: Attaching spoke gateway to transit gateway...")
     tf.update_test("attachTransitGW")
+    # tf.update_test("disableSNAT")
 except:
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
