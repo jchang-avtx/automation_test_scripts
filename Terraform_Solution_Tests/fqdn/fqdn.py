@@ -1,12 +1,12 @@
 #! /usr/bin/python3
- 
+
 import pexpect
 import sys
 import time
 import re
 import os
 import getopt
- 
+
 def main(argv):
   result = 'PASS'
   enabled = 'true'
@@ -84,7 +84,7 @@ def main(argv):
           f.write('Executed cmd >>>>> '+cmd+'\n')
           f.write('Number of Tries: '+str(num_of_tries)+'\n')
           f.write('Will try again. Sleeping for sometime....\n')
-          time.sleep(num_of_tries*6)
+          time.sleep(num_of_tries*60)
         else:
           result = 'FAIL'
           f.write('***************** Following test failed *****************\n')
@@ -98,6 +98,6 @@ def main(argv):
   f.close()
   with open('/tmp/result.txt','w') as result_file:
    result_file.write(result+'\n')
- 
+
 if __name__ == "__main__":
   main(sys.argv[1:])
