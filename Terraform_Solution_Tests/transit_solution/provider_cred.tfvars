@@ -8,3 +8,4 @@ aviatrix_controller_password = <Enter_your_controller_password>
 aviatrix_aws_access_account  = <Enter_your_AWS_account_account>
 
 public_key = "~/Downloads/sshkey.pub"
+private_key = "~/Downloads/sshkey"
