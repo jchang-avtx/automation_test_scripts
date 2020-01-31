@@ -27,10 +27,11 @@ terraform init
 terraform plan -var-file=provider_cred.tfvars -detailed-exitcode
 terraform apply -var-file=provider_cred.tfvars -auto-approve
 terraform show
-terraform destroy -var-file=provider_cred.tfvars -auto-approve -parallelism=5
+terraform destroy -target=aviatrix_trans_peer.test_trans_peer -var-file=provider_cred.tfvars -auto-approve
+terraform destroy -var-file=provider_cred.tfvars -auto-approve
 terraform show
 ```
-> ***Note***: Terraform destroy might timeout in this case. Use parallelism option with 5 to reduce the number of concurrent operations. Default is 10.
+> ***Note***: Due to timing issue, if destroying of GWs started before Transitive Peering tunnel destroy got completed, terraform destroy may face timeout for the rest of the destroy process. It is better to explicitly destroy the target aviatrix_trans_peer.test_trans_peer first. And then, normal terraform destroy may follow. See there are two terraform destroy commands above.
 
 ### Test Duration
 
