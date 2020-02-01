@@ -29,7 +29,7 @@ resource "aviatrix_transit_gateway" "azure_transit_gw" {
   # ha_subnet           = "10.2.0.0/24" # non-insane
   ha_subnet           = join(".", [random_integer.vnet1_cidr_int[0].result, random_integer.vnet1_cidr_int[1].result, "64.64/26"]) # "10.2.2.64/26"
   ha_gw_size          = var.arm_ha_gw_size
-  enable_snat         = false # insane mode does not support SNAT
+  single_ip_snat      = false # insane mode does not support SNAT
   single_az_ha        = var.single_az_ha
 
   insane_mode               = true

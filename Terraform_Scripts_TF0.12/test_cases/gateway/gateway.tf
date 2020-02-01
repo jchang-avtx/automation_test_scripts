@@ -26,7 +26,7 @@ resource "aviatrix_gateway" "testGW1" {
   subnet              = aviatrix_vpc.aws_gw_vpc_1.subnets.6.cidr
 
   tag_list            = var.aws_gateway_tag_list
-  enable_snat         = var.enable_snat
+  single_ip_snat      = var.single_ip_snat
 
   allocate_new_eip    = false
   eip                 = "52.86.21.117"

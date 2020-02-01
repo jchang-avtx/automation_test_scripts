@@ -3,5 +3,5 @@
 aws_instance_size     = "t2.micro"
 aws_ha_gw_size        = "t2.micro"
 aws_gateway_tag_list  = ["k1:v1", "k2:v2"] # added tags
-enable_snat           = false
+single_ip_snat        = false
 enable_vpc_dns_server = false

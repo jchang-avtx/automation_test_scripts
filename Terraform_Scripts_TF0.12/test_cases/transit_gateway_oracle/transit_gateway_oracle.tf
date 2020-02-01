@@ -20,7 +20,7 @@ resource "aviatrix_transit_gateway" "oci_transit_gateway" {
   cloud_type          = 16
   account_name        = "OCIAccess"
   gw_name             = "oci-transit-gw"
-  # enable_snat        = true # updating SNAT not supported by OCI
+  # single_ip_snat        = true # updating SNAT not supported by OCI
   vpc_id              = aviatrix_vpc.oci_transit_gw_vnet_1.name
   vpc_reg             = aviatrix_vpc.oci_transit_gw_vnet_1.region
   gw_size             = var.gw_size

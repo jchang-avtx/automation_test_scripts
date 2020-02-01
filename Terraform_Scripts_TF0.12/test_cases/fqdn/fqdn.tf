@@ -40,7 +40,7 @@ resource "aviatrix_gateway" "FQDN-GW" {
   vpc_reg       = aviatrix_vpc.fqdn_vpc_1.region
   gw_size       = "t2.micro"
   subnet        = aviatrix_vpc.fqdn_vpc_1.subnets.6.cidr
-  enable_snat   = true
+  single_ip_snat   = true
   enable_vpc_dns_server = false
 
   lifecycle {
@@ -56,7 +56,7 @@ resource "aviatrix_gateway" "FQDN-GW2" {
   vpc_reg       = aviatrix_vpc.fqdn_vpc_2.region
   gw_size       = "t2.micro"
   subnet        = aviatrix_vpc.fqdn_vpc_2.subnets.6.cidr
-  enable_snat   = true
+  single_ip_snat   = true
   enable_vpc_dns_server = false
 
   lifecycle {

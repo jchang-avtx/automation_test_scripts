@@ -34,7 +34,7 @@ resource "aviatrix_gateway" "vpn_gateway" {
   split_tunnel      = true
   enable_elb        = true
   elb_name          = "test-elb-name"
-  enable_snat       = false
+  single_ip_snat    = false
   allocate_new_eip  = true
 }
 

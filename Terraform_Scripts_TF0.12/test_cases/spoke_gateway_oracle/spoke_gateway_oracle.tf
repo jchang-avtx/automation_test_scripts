@@ -86,7 +86,7 @@ resource "aviatrix_spoke_gateway" "oci_spoke_gateway" {
 
   ha_subnet         = aviatrix_vpc.oci_vnet_for_spoke_1.subnets.0.cidr
   ha_gw_size        = var.ha_gw_size
-  enable_snat       = false # (Please disable AWS NAT instance before enabling this feature); not supported w insane mode
+  single_ip_snat    = false # (Please disable AWS NAT instance before enabling this feature); not supported w insane mode
   enable_active_mesh= false
 
   transit_gw        = var.transit_gw # optional; comment out if want to test Update from no transitGW attachment to yes

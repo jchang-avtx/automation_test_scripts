@@ -1,6 +1,6 @@
 # case 4: enable active mesh
 
-enable_snat               = false
+single_ip_snat            = false
 single_az_ha              = true
 enable_connected_transit  = false
 enable_active_mesh        = true

@@ -37,7 +37,7 @@ resource "aviatrix_transit_gateway" "test_transit_gw1" {
   cloud_type        = 1
   account_name      = "AWSAccess"
   gw_name           = "test-transit-gw1"
-  enable_snat       = true
+  single_ip_snat    = true
   vpc_id            = aviatrix_vpc.aws_transit_gw_vpc_1.vpc_id
   vpc_reg           = aviatrix_vpc.aws_transit_gw_vpc_1.region
   gw_size           = "t2.micro"
@@ -51,7 +51,7 @@ resource "aviatrix_transit_gateway" "test_transit_gw2" {
   cloud_type        = 1
   account_name      = "AWSAccess"
   gw_name           = "test-transit-gw2"
-  enable_snat       = true
+  single_ip_snat    = true
   vpc_id            = aviatrix_vpc.aws_transit_gw_vpc_2.vpc_id
   vpc_reg           = aviatrix_vpc.aws_transit_gw_vpc_2.region
   gw_size           = "t2.micro"
