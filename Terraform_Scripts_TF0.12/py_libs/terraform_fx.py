@@ -1,18 +1,20 @@
 import os
 import sys
+import subprocess
 
 def create_verify(varfile=None):
     try:
         if varfile == None:
-            os.system('terraform init')
-            os.system('terraform apply -auto-approve')
-            os.system('terraform plan')
-            os.system('terraform show')
+            subprocess.run('terraform init', shell=True)
+            subprocess.run('terraform apply -auto-approve', shell=True, check=True)
+            subprocess.run('terraform plan', shell=True, check=True)
+            subprocess.run('terraform show', shell=True)
         elif varfile:
-            os.system('terraform init')
-            os.system('terraform apply -var-file=' + varfile + '.tfvars -auto-approve')
-            os.system('terraform plan -var-file=' + varfile + '.tfvars')
-            os.system('terraform show')
+            var_arg = '-var-file=' + varfile + '.tfvars'
+            subprocess.run('terraform init', shell=True)
+            subprocess.run(['terraform', 'apply', var_arg, '-auto-approve'], check=True)
+            subprocess.run(['terraform', 'plan', var_arg], check=True)
+            subprocess.run('terraform show', shell=True)
         else:
             raise Exception('Too many arguments: create_verify(). # of args: {}'.format(len(args)))
     except:
@@ -22,15 +24,20 @@ def create_verify(varfile=None):
 def import_test(resource, name, varfile=None):
     try:
         if varfile == None:
-            os.system('terraform state rm aviatrix_' + resource + '.' + name)
-            os.system('terraform import aviatrix_' + resource + '.' + name + ' "$(terraform output ' + name + '_id)"')
-            os.system('terraform plan')
-            os.system('terraform show')
+            resource_name = 'aviatrix_' + resource + '.' + name
+            output_id = '"$(terraform output ' + name + '_id)"'
+            subprocess.run(['terraform', 'state', 'rm', resource_name], check=True)
+            subprocess.run('terraform import ' + resource_name + ' ' + output_id, shell=True, check=True)
+            subprocess.run('terraform plan', shell=True, check=True)
+            subprocess.run('terraform show', shell=True)
         elif varfile:
-            os.system('terraform state rm aviatrix_' + resource + '.' + name)
-            os.system('terraform import aviatrix_' + resource + '.' + name + ' "$(terraform output ' + name + '_id)"')
-            os.system('terraform plan -var-file=' + varfile + '.tfvars')
-            os.system('terraform show')
+            resource_name = 'aviatrix_' + resource + '.' + name
+            output_id = '"$(terraform output ' + name + '_id)"'
+            var_arg = '-var-file=' + varfile + '.tfvars'
+            subprocess.run(['terraform', 'state', 'rm', resource_name], check=True)
+            subprocess.run('terraform import ' + var_arg + ' ' + resource_name + ' ' + output_id, shell=True, check=True)
+            subprocess.run(['terraform', 'plan', var_arg], check=True)
+            subprocess.run('terraform show', shell=True)
         else:
             raise Exception('Too many arguments: import_test()')
     except:
@@ -39,9 +46,10 @@ def import_test(resource, name, varfile=None):
 
 def update_test(varfile):
     try:
-        os.system('terraform apply -var-file=' + varfile + '.tfvars -auto-approve')
-        os.system('terraform plan -var-file=' + varfile + '.tfvars')
-        os.system('terraform show')
+        var_arg = '-var-file=' + varfile + '.tfvars'
+        subprocess.run(['terraform', 'apply', var_arg, '-auto-approve'], check=True)
+        subprocess.run(['terraform', 'plan', var_arg], check=True)
+        subprocess.run('terraform show', shell=True)
     except:
         sys.exit()
 
@@ -49,11 +57,12 @@ def update_test(varfile):
 def destroy_test(varfile=None):
     try:
         if varfile == None:
-            os.system('terraform destroy -auto-approve')
-            os.system('terraform show')
+            subprocess.run('terraform destroy -auto-approve', shell=True)
+            subprocess.run('terraform show', shell=True)
         elif varfile:
-            os.system('terraform destroy -var-file=' + varfile + '.tfvars -auto-approve')
-            os.system('terraform show')
+            var_arg = '-var-file=' + varfile + '.tfvars'
+            subprocess.run(['terraform', 'destroy', var_arg, '-auto-approve'], check=True)
+            subprocess.run('terraform show', shell=True)
         else:
             raise Exception('Too many arguments: destroy_test()')
     except:
@@ -62,7 +71,8 @@ def destroy_test(varfile=None):
 
 def destroy_target(resource, name):
     try:
-        os.system('terraform destroy -target=aviatrix_' + resource + '.' + name + ' -auto-approve')
-        os.system('terraform show')
+        target_arg = '-target=aviatrix_' + resource + '.' + name
+        subprocess.checkoutput(['terraform', 'destroy', target_arg, '-auto-approve'])
+        subprocess.run('terraform show', shell=True)
     except:
         sys.exit()
