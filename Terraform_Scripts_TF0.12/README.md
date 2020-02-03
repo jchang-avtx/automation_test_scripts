@@ -24,27 +24,40 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
     * **Note:** Name of the local Jenkins credentials does not matter, but must be referenced properly under the global ``environment { ... }`` block in the ***Jenkinsfile***
   * AWS requires ``AWS_ACCESS_KEY_ID`` and ``AWS_SECRET_ACCESS_KEY`` to be exported
   * ARM requires ``ARM_CLIENT_ID``, ``ARM_CLIENT_SECRET``, ``ARM_SUBSCRIPTION_ID``, ``ARM_TENANT_ID`` to be exported
-3. Credentials for the Aviatrix Controllers that regression will be running on must be set as environment variables under the Jenkins user in the Jenkins server in the ``.bashrc``
+3. Credentials for the Aviatrix Controllers that regression will be running on must be set as environment variables under the Jenkins Global Properties:
+  * Can be accessed by: **Jenkins -> Manage Jenkins -> Configure System -> Global Properties -> Environment variables**
   * Set ``AVIATRIX_CONTROLLER_IP``, ``AVIATRIX_USERNAME``, ``AVIATRIX_PASSWORD`` with placeholder values
-    * **Example:** In the .bashrc:
+    * **Example:**
       ```
-        export AVIATRIX_CONTROLLER_IP="1.2.3.4"
-        export AVIATRIX_USERNAME="exampleuser"
-        export AVIATRIX_PASSWORD="examplepass"
+        Name    = AVIATRIX_CONTROLLER_IP
+        Value   = 1.2.3.4
+        Name    = AVIATRIX_USERNAME
+        Value   = exampleuser
+        Name    = AVIATRIX_PASSWORD
+        Value   = examplepass
       ```
   * Set the controller (#) credentials as ``avx_ip_1``, ``avx_user_1``, ``avx_pass_1`` and increment as necessary
-    * **Example:** In the .bashrc:
+    * **Example:**
       ```
-        ...
-        export avx_ip_1="174.168.34.16"
-        export avx_user_1="admin"
-        export avx_pass_1="realAdminPassword"
+        Name    = avx_ip_1
+        Value   = 174.168.34.16
+        Name    = avx_user_1
+        Value   = admin
+        Name    = avx_pass_1
+        Value   = realAdminPassword
       ```
   * Regression will take care of transitive switch of the values
 
 ### Infrastructure/ File Structure
 1. You may change which test stage runs with which in parallel, etc by updating the ***Jenkinsfile*** and updating the respective test stage's ***.py***'s reference to which Controller credentials
-2. For ALL account-related test cases (denoted by "account_xxx"), a ***.tfvars*** with the proper credentials for the respective account-type needs to be created and stored locally within the Jenkins server, within the respective directories
+2. For every test case, represented per directory, be sure to input the filepath for the ***terraform_fx.py*** in the respective test stage's ***.py*** file
+  * by default, all Jenkins jobs will be located in ``/var/lib/jenkins/workspace/project-name/py_libs``
+    ```
+      # Example taken from run_aws_peer.py line 16
+
+      sys.path.insert(1, '/var/lib/jenkins/workspace/Terraform-Regression/py_libs')
+    ```
+3. For ALL account-related test cases (denoted by "account_xxx"), a ***.tfvars*** with the proper credentials for the respective account-type needs to be created and stored locally within the Jenkins server, within the respective directories
   * default path where the project is located: ``/var/lib/jenkins/workspace/project-name/``
   * **Example:** For test case "account_azure", an ***azure_acc_cred.tfvars*** is required, with the valid credential values.
     ```
@@ -56,6 +69,6 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
       arm_app_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     ```
   * Please refer to their respective ***vars.tf*** for the variable names and the ***.py*** for what the ***.tfvars*** should be named. You may change these variables and filenames if you wish
-2. **vpn_user_accelerator** test stage requires a pre-existing ELB
+4. **vpn_user_accelerator** test stage requires a pre-existing ELB
   * An Aviatrix VPN gateway with ELB-enabled can be created on the respective controller to satisfy this requirement
   * By default, the terraform file will look for an ELB name: ``elb-vpn-user-accel``, which can be changed as desired within the respective ***.tf*** file

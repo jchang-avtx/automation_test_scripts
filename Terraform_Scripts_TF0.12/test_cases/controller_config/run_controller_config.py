@@ -62,7 +62,7 @@ except Exception as err:
     log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     Failed to properly set environment credentials!")
-    sys.exit()
+    sys.exit(1)
 log.info("-------------------- RESULT --------------------")
 log.info("      Set environment credentials: PASS\n")
 
@@ -74,7 +74,7 @@ except Exception as err:
     log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
-    sys.exit()
+    sys.exit(1)
 log.info("-------------------- RESULT --------------------")
 log.info("      create_verify(): PASS\n")
 
@@ -86,7 +86,7 @@ except Exception as err:
     log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
-    sys.exit()
+    sys.exit(1)
 log.info("-------------------- RESULT --------------------")
 log.info("      import_test(): PASS\n")
 
@@ -105,7 +105,7 @@ except Exception as err:
     log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
-    sys.exit()
+    sys.exit(1)
 log.info("-------------------- RESULT --------------------")
 log.info("      update_test(): PASS\n")
 
