@@ -13,7 +13,7 @@ Test case for account (OCI) Terraform resource/ use-case
 import os
 
 import sys
-sys.path.insert(1, '/file_path/aviatrix_terraform_regression/py_libs')
+sys.path.insert(1, '/var/lib/jenkins/workspace/Terraform-Regression/py_libs')
 import terraform_fx as tf
 
 import logging
@@ -58,7 +58,8 @@ try:
     os.environ["AVIATRIX_CONTROLLER_IP"] = avx_controller_ip
     os.environ["AVIATRIX_USERNAME"] = avx_controller_user
     os.environ["AVIATRIX_PASSWORD"] = avx_controller_pass
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     Failed to properly set environment credentials!")
     sys.exit()
@@ -69,7 +70,8 @@ log.info("      Set environment credentials: PASS\n")
 try:
     log.info("Creating infrastructure...")
     tf.create_verify("oracle_acc_cred")
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
     sys.exit()
@@ -90,7 +92,8 @@ log.info("     update_test(): SKIPPED\n")
 try:
     log.info("Verifying destroy functionality...")
     tf.destroy_test("oracle_acc_cred")
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     destroy_test(): FAIL\n")
     sys.exit()

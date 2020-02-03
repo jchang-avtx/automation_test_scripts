@@ -13,7 +13,7 @@ Test case for Aviatrix's AWS TGW Terraform resource/ use-case
 import os
 
 import sys
-sys.path.insert(1, '/file_path/aviatrix_terraform_regression/py_libs')
+sys.path.insert(1, '/var/lib/jenkins/workspace/Terraform-Regression/py_libs')
 import terraform_fx as tf
 
 import logging
@@ -59,7 +59,8 @@ try:
     os.environ["AVIATRIX_CONTROLLER_IP"] = avx_controller_ip
     os.environ["AVIATRIX_USERNAME"] = avx_controller_user
     os.environ["AVIATRIX_PASSWORD"] = avx_controller_pass
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     Failed to properly set environment credentials!")
     sys.exit()
@@ -70,7 +71,8 @@ log.info("      Set environment credentials: PASS\n")
 try:
     log.info("Creating infrastructure...")
     tf.create_verify()
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
     sys.exit()
@@ -81,7 +83,8 @@ log.info("      create_verify(): PASS\n")
 try:
     log.info("Verifying import functionality...")
     tf.import_test("aws_tgw", "test_aws_tgw")
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
     sys.exit()
@@ -99,7 +102,8 @@ try:
     tf.update_test("updateCustomRoutes")
     log.debug("     enableLocalRouteProp: Enabling admin to propagate the VPC CIDR to the security domain/TGW route table that it is being attached to...")
     tf.update_test("enableLocalRouteProp")
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
     sys.exit()

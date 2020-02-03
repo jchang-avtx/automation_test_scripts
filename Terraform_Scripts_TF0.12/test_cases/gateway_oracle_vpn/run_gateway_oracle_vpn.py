@@ -13,7 +13,7 @@ Test case for OCI Gateway (VPN) Terraform resource/ use-case
 import os
 
 import sys
-sys.path.insert(1, '/file_path/aviatrix_terraform_regression/py_libs')
+sys.path.insert(1, '/var/lib/jenkins/workspace/Terraform-Regression/py_libs')
 import terraform_fx as tf
 
 import logging
@@ -59,7 +59,8 @@ try:
     os.environ["AVIATRIX_CONTROLLER_IP"] = avx_controller_ip
     os.environ["AVIATRIX_USERNAME"] = avx_controller_user
     os.environ["AVIATRIX_PASSWORD"] = avx_controller_pass
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     Failed to properly set environment credentials!")
     sys.exit()
@@ -70,7 +71,8 @@ log.info("      Set environment credentials: PASS\n")
 try:
     log.info("Creating infrastructure...")
     tf.create_verify()
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
     sys.exit()
@@ -82,7 +84,8 @@ try:
     log.info("Verifying import functionality...")
     log.debug("     Importing the OCI gateway...")
     tf.import_test("gateway", "oci_vpn_gateway")
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
     sys.exit()
@@ -108,7 +111,8 @@ try:
     tf.update_test("updateMaxConn")
     log.debug("     disableVPNNAT: Disables VPN connection from using NAT when traffic leaves the gateway...")
     tf.update_test("disableVPNNAT")
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
     sys.exit()
@@ -119,7 +123,8 @@ log.info("      update_test(): PASS\n")
 try:
     log.info("Verifying destroy functionality...")
     tf.destroy_test()
-except:
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     destroy_test(): FAIL\n")
     sys.exit()

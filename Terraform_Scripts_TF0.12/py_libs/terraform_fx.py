@@ -18,7 +18,7 @@ def create_verify(varfile=None):
         else:
             raise Exception('Too many arguments: create_verify(). # of args: {}'.format(len(args)))
     except:
-        sys.exit()
+        sys.exit(1)
 
 
 def import_test(resource, name, varfile=None):
@@ -41,7 +41,7 @@ def import_test(resource, name, varfile=None):
         else:
             raise Exception('Too many arguments: import_test()')
     except:
-        sys.exit()
+        sys.exit(1)
 
 
 def update_test(varfile):
@@ -51,7 +51,7 @@ def update_test(varfile):
         subprocess.run(['terraform', 'plan', var_arg], check=True)
         subprocess.run('terraform show', shell=True)
     except:
-        sys.exit()
+        sys.exit(1)
 
 
 def destroy_test(varfile=None):
@@ -66,7 +66,7 @@ def destroy_test(varfile=None):
         else:
             raise Exception('Too many arguments: destroy_test()')
     except:
-        sys.exit()
+        sys.exit(1)
 
 
 def destroy_target(resource, name):
@@ -75,4 +75,4 @@ def destroy_target(resource, name):
         subprocess.checkoutput(['terraform', 'destroy', target_arg, '-auto-approve'])
         subprocess.run('terraform show', shell=True)
     except:
-        sys.exit()
+        sys.exit(1)
