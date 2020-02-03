@@ -69,6 +69,7 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
       arm_app_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     ```
   * Please refer to their respective ***vars.tf*** for the variable names and the ***.py*** for what the ***.tfvars*** should be named. You may change these variables and filenames if you wish
+  * **NOTE:** For test stages **account_gcp** and **account_oracle**, two (2) ***.json*** Gcloud project credentials and the (1) OCI API Private Key ***.pem*** are required to be stored in their directories, respectively.
 4. **vpn_user_accelerator** test stage requires a pre-existing ELB
   * An Aviatrix VPN gateway with ELB-enabled can be created on the respective controller to satisfy this requirement
   * By default, the terraform file will look for an ELB name: ``elb-vpn-user-accel``, which can be changed as desired within the respective ***.tf*** file
