@@ -72,7 +72,7 @@ def destroy_test(varfile=None):
 def destroy_target(resource, name):
     try:
         target_arg = '-target=aviatrix_' + resource + '.' + name
-        subprocess.checkoutput(['terraform', 'destroy', target_arg, '-auto-approve'])
+        subprocess.run(['terraform', 'destroy', target_arg, '-auto-approve'], check=True)
         subprocess.run('terraform show', shell=True)
     except:
         sys.exit(1)

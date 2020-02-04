@@ -82,10 +82,14 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    log.debug("     Importing spoke gateway (AWS)...")
-    tf.import_test("spoke_gateway", "sdnat_spoke_aws_gw")
-    log.debug("     Importing spoke gateway (ARM)...")
-    tf.import_test("spoke_gateway", "sdnat_spoke_arm_gw")
+    log.debug("     Importing spoke gateway (AWS)'s SNAT policies...")
+    tf.import_test("gateway_snat", "custom_snat_aws")
+    log.debug("     Importing spoke gateway (ARM)'s SNAT policies...")
+    tf.import_test("gateway_snat", "custom_snat_arm")
+    log.debug("     Importing spoke gateway (AWS)'s DNAT policies...")
+    tf.import_test("gateway_dnat", "custom_dnat_aws")
+    log.debug("     Importing spoke gateway (ARM)'s DNAT policies...")
+    tf.import_test("gateway_dnat", "custom_dnat_arm")
 except Exception as err:
     log.exception(str(err))
     log.info("-------------------- RESULT --------------------")

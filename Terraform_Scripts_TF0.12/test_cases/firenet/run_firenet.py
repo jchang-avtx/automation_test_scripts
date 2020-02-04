@@ -81,13 +81,13 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.debug("      Importing firewall_instance for regular transit-gw solution...")
+    log.debug("      Importing firewall_instance for regular transit-gw solution...")
     tf.import_test("firewall_instance", "firenet_instance")
-    tf.debug("      Importing firewall_instance in different region...")
+    log.debug("      Importing firewall_instance in different region...")
     tf.import_test("firewall_instance", "firenet_instance3")
-    tf.debug("      Importing firenet with instance associated for regular transit solution...")
+    log.debug("      Importing firenet with instance associated for regular transit solution...")
     tf.import_test("firenet", "firenet")
-    tf.debug("      Importing firenet with instance associated for FQDN solution...")
+    log.debug("      Importing firenet with instance associated for FQDN solution...")
     tf.import_test("firenet", "fqdn_firenet")
 except Exception as err:
     log.exception(str(err))

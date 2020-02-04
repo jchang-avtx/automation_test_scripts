@@ -82,10 +82,10 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    log.debug("     Importing the AWS Designated gateway...")
-    tf.import_test("gateway", "design_gw")
-    log.debug("     Importing the Azure Designated gateway...")
-    tf.import_test("gateway", "design_arm_gw")
+    log.debug("     Importing the AWS Designated gateway's DNAT policy...")
+    tf.import_test("gateway_dnat", "design_aws_dnat")
+    log.debug("     Importing the Azure Designated gateway's DNAT policy...")
+    tf.import_test("gateway_dnat", "design_arm_dnat")
 except Exception as err:
     log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
