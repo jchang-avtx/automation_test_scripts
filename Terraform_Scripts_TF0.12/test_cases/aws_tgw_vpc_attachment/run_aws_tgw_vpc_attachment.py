@@ -1,7 +1,7 @@
 """
 run_aws_tgw_vpc_attachment.py
 
-Test case for Aviatrix's AWS TGW VPC Attachment Terraform resource/ use-case
+Test case for Aviatrix's AWS TGW VPC Attachment + TGW DxC Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py

@@ -1,7 +1,7 @@
 """
 run_aws_tgw.py
 
-Test case for Aviatrix's AWS TGW Terraform resource/ use-case
+Test case for Aviatrix's AWS TGW + TGW VPN Conn Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py

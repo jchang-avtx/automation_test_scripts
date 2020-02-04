@@ -73,3 +73,14 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
 4. **vpn_user_accelerator** test stage requires a pre-existing ELB
   * An Aviatrix VPN gateway with ELB-enabled can be created on the respective controller to satisfy this requirement
   * By default, the terraform file will look for an ELB name: ``elb-vpn-user-accel``, which can be changed as desired within the respective ***.tf*** file
+5. **vpn_user** test stage requires a pre-existing SAML endpoint on whichever Controller this stage will run on
+  * By default, the terraform file will look for a SAML endpoint name: ``saml_test_endpoint``, which can be changed as desired within the respective ***.tf*** file
+  * Also requires a ***user_emails.tfvars*** with a list of 4 emails to be corresponded to the 4 VPN users being created
+    ```
+    # user_emails.tfvars
+
+    vpn_user_email = ["testdavtx1@gmail.com",
+                      "testdavtx2@gmail.com",
+                      "testdavtx3@gmail.com",
+                      "testdavtx4@gmail.com"]
+    ```
