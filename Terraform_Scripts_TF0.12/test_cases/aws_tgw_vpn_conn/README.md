@@ -1,5 +1,7 @@
 ## aviatrix_aws_tgw_vpn_conn
 
+## DEPRECATED
+* test stage integrated with **aws_tgw** module
 ---
 
 ### Usage

@@ -1,5 +1,7 @@
 ## aviatrix_aws_tgw_directconnect
 
+## DEPRECATED
+* test stage integrated with **aws_tgw_vpc_attachment** module
 ---
 
 ### Usage

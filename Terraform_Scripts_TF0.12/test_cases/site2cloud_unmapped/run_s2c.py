@@ -112,6 +112,10 @@ log.info("      destroy_target(): PASS\n")
 
 
 log.info("Continuing to site2cloud: Mapped...")
+log.info("\n")
+log.info("============================================================")
+log.debug("RUNNING STAGE: SITE2CLOUD_MAPPED")
+log.info("============================================================")
 try:
     log.debug("Enabling custom algorithms and creating new S2C connections as Mapped...")
     tf.update_test("enableCustomAlg")

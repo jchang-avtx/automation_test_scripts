@@ -114,3 +114,40 @@ log.info("      update_test(): PASS\n")
 log.info(str(os.path.split(os.getcwd())[1]).upper() + " will not be destroyed until aws_tgw_vpn_conn concludes...")
 log.info("-------------------- RESULT --------------------")
 log.info("     destroy_test(): SKIPPED\n")
+
+
+log.info("Continuing to AWS TGW VPN connection testing...")
+log.info("\n")
+log.info("============================================================")
+log.debug("RUNNING STAGE: AWS_TGW_VPN_CONN")
+log.info("============================================================")
+
+
+try:
+    log.info("Verifying import functionality...")
+    tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn1")
+    tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn2")
+except Exception as err:
+    log.exception(str(err))
+    log.info("-------------------- RESULT --------------------")
+    log.error("     import_test(): FAIL\n")
+    sys.exit(1)
+log.info("-------------------- RESULT --------------------")
+log.info("      import_test(): PASS\n")
+
+
+log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
+log.info("-------------------- RESULT --------------------")
+log.info("     update_test(): SKIPPED\n")
+
+
+try:
+    log.info("Verifying destroy functionality for both TGW and TGW VPN Conn...")
+    tf.destroy_test()
+except Exception as err:
+    log.exception(str(err))
+    log.info("-------------------- RESULT --------------------")
+    log.error("     destroy_test(): FAIL\n")
+    sys.exit(1)
+log.info("-------------------- RESULT --------------------")
+log.info("      destroy_test(): PASS\n")

@@ -108,3 +108,47 @@ log.info("      update_test(): PASS\n")
 log.info(str(os.path.split(os.getcwd())[1]).upper() + " will not be destroyed until aws_tgw_directconnect concludes...")
 log.info("-------------------- RESULT --------------------")
 log.info("     destroy_test(): SKIPPED\n")
+
+
+log.info("Continuing to AWS TGW DirectConnect testing...")
+log.info("\n")
+log.info("============================================================")
+log.debug("RUNNING STAGE: AWS_TGW_DIRECTCONNECT")
+log.info("============================================================")
+
+
+try:
+    log.info("Verifying import functionality...")
+    tf.import_test("aws_tgw_directconnect", "aws_tgw_dc")
+except Exception as err:
+    log.exception(str(err))
+    log.info("-------------------- RESULT --------------------")
+    log.error("     import_test(): FAIL\n")
+    sys.exit(1)
+log.info("-------------------- RESULT --------------------")
+log.info("      import_test(): PASS\n")
+
+
+try:
+    log.info("Verifying update functionality...")
+    log.debug("     updatePrefix: Update list of CIDRs for DxGW to advertise to remote (on-prem)...")
+    tf.update_test("updatePrefix")
+except Exception as err:
+    log.exception(str(err))
+    log.info("-------------------- RESULT --------------------")
+    log.error("     update_test(): FAIL\n")
+    sys.exit(1)
+log.info("-------------------- RESULT --------------------")
+log.info("      update_test(): PASS\n")
+
+
+try:
+    log.info("Verifying destroy functionality for both TGW VPC Attachment and TGW DirectConnect...")
+    tf.destroy_test()
+except Exception as err:
+    log.exception(str(err))
+    log.info("-------------------- RESULT --------------------")
+    log.error("     destroy_test(): FAIL\n")
+    sys.exit(1)
+log.info("-------------------- RESULT --------------------")
+log.info("      destroy_test(): PASS\n")

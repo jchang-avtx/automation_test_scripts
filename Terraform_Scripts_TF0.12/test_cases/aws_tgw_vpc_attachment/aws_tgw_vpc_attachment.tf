@@ -38,6 +38,26 @@ resource "aviatrix_aws_tgw_vpc_attachment" "tgw_vpc_attach_test" {
   disable_local_route_propagation = var.disable_local_route_propagation
 }
 
+## AWS_TGW_DIRECTCONNECT
+# depends on aviatrix_aws_tgw_vpc_attachment's tgw
+resource "aws_dx_gateway" "aws_tgw_dx_gw" {
+  name              = "aws-tgw-dx-gw"
+  amazon_side_asn   = 64512
+}
+
+resource "aviatrix_aws_tgw_directconnect" "aws_tgw_dc" {
+  tgw_name                    = aviatrix_aws_tgw.test_aws_tgw2.tgw_name
+  directconnect_account_name  = "AWSAccess"
+  dx_gateway_id               = aws_dx_gateway.aws_tgw_dx_gw.id
+  security_domain_name        = "SDN1"
+  allowed_prefix              = var.prefix
+}
+
+## OUTPUTS
 output "tgw_vpc_attach_test_id" {
   value = aviatrix_aws_tgw_vpc_attachment.tgw_vpc_attach_test.id
+}
+
+output "aws_tgw_dc_id" {
+  value = aviatrix_aws_tgw_directconnect.aws_tgw_dc.id
 }
