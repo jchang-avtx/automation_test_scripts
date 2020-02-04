@@ -81,7 +81,7 @@ log.info("      create_verify(): PASS\n")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("account", "gcp-access-account-1", "gcloud_acc_cred")
+    tf.import_test("account", "gcp_access_account_1", "gcloud_acc_cred")
 except Exception as err:
     log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
