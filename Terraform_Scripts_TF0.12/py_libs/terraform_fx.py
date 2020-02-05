@@ -1,4 +1,3 @@
-import os
 import sys
 import subprocess
 
@@ -44,12 +43,21 @@ def import_test(resource, name, varfile=None):
         sys.exit(1)
 
 
-def update_test(varfile):
+def update_test(varfile, varfile2=None):
     try:
-        var_arg = '-var-file=' + varfile + '.tfvars'
-        subprocess.run(['terraform', 'apply', var_arg, '-auto-approve'], check=True)
-        subprocess.run(['terraform', 'plan', var_arg], check=True)
-        subprocess.run('terraform show', shell=True)
+        if varfile2 == None:
+            var_arg = '-var-file=' + varfile + '.tfvars'
+            subprocess.run(['terraform', 'apply', var_arg, '-auto-approve'], check=True)
+            subprocess.run(['terraform', 'plan', var_arg], check=True)
+            subprocess.run('terraform show', shell=True)
+        elif varfile2:
+            var_arg = '-var-file=' + varfile + '.tfvars'
+            var_arg2 = '-var-file=' + varfile2 + '.tfvars'
+            subprocess.run(['terraform', 'apply', var_arg, var_arg2, '-auto-approve'], check=True)
+            subprocess.run(['terraform', 'plan', var_arg, var_arg2], check=True)
+            subprocess.run('terraform show', shell=True)
+        else:
+            raise Exception('Too many arguments: update_test()')
     except:
         sys.exit(1)
 
