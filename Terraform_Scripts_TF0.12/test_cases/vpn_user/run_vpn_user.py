@@ -113,7 +113,7 @@ log.info("============================================================")
 try:
     log.info("Verifying import functionality...")
     log.debug("     Importing VPN profile 1...")
-    tf.import_test("vpn_profile", "test_profile1")
+    tf.import_test("vpn_profile", "test_profile1", "user_emails")
     log.debug("     Importing VPN profile 2...")
     tf.import_test("vpn_profile", "test_profile2", "user_emails")
 except Exception as err:

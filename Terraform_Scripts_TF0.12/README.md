@@ -79,8 +79,8 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
     ```
     # user_emails.tfvars
 
-    vpn_user_email = ["testdavtx1@gmail.com",
-                      "testdavtx2@gmail.com",
-                      "testdavtx3@gmail.com",
-                      "testdavtx4@gmail.com"]
+    vpn_user_email = ["testemail1@gmail.com",
+                      "testemail2@gmail.com",
+                      "testemail3@gmail.com",
+                      "testemail4@gmail.com"]
     ```
