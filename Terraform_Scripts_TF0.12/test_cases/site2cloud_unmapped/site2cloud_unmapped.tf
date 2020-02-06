@@ -175,7 +175,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   backup_remote_gateway_latitude = var.custom_alg == true ? 39.0437 : null
   backup_remote_gateway_longitude = var.custom_alg == true ? -77.4875 : null
 
-  depends_on                    = ["aviatrix_gateway.test_gateway1", "aviatrix_gateway.test_gateway2", "aviatrix_gateway.test_gateway3"]
+  depends_on                    = [aviatrix_gateway.test_gateway1, aviatrix_gateway.test_gateway2, aviatrix_gateway.test_gateway3]
 }
 
 resource "aviatrix_site2cloud" "s2c_test2" {
@@ -200,7 +200,10 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = true
 
-  depends_on                    = ["aviatrix_site2cloud.s2c_test"]
+  lifecycle {
+    ignore_changes = [pre_shared_key, backup_pre_shared_key]
+  }
+  depends_on                    = [aviatrix_site2cloud.s2c_test]
 }
 
 resource "aviatrix_site2cloud" "s2c_test3" {
@@ -234,7 +237,7 @@ resource "aviatrix_site2cloud" "s2c_test3" {
   # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = false
 
-  depends_on                    = ["aviatrix_site2cloud.s2c_test2"]
+  depends_on                    = [aviatrix_site2cloud.s2c_test2]
 }
 
 resource "aviatrix_site2cloud" "s2c_test4" {
@@ -267,7 +270,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = false
 
-  depends_on = ["aviatrix_site2cloud.s2c_test3"]
+  depends_on = [aviatrix_site2cloud.s2c_test3]
 }
 
 #################################################

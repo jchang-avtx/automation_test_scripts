@@ -8,7 +8,7 @@ resource "aviatrix_gateway" "S2C_GW_Vir_Backup" {
   cloud_type              = 1
   enable_elb              = false
   enable_ldap             = false
-  enable_snat             = false
+  single_ip_snat          = false
   enable_vpc_dns_server   = false
   enable_vpn_nat          = true
   gw_name                 = "s2c-gw-backup"
@@ -32,7 +32,7 @@ resource "aviatrix_gateway" "S2C_GW_Vir_Primary" {
   cloud_type              = 1
   enable_elb              = false
   enable_ldap             = false
-  enable_snat             = false
+  single_ip_snat          = false
   enable_vpc_dns_server   = false
   enable_vpn_nat          = true
   gw_name                 = "s2c-gw-primary"
@@ -55,7 +55,7 @@ resource "aviatrix_gateway" "onPrem" {
   cloud_type              = 1
   enable_elb              = false
   enable_ldap             = false
-  enable_snat             = false
+  single_ip_snat             = false
   enable_vpc_dns_server   = false
   gw_name                 = "onprem"
   gw_size                 = "t2.micro"
@@ -74,7 +74,7 @@ resource "aviatrix_gateway" "onPrem_backup" {
   cloud_type              = 1
   enable_elb              = false
   enable_ldap             = false
-  enable_snat             = false
+  single_ip_snat          = false
   enable_vpc_dns_server   = false
   gw_name                 = "onprembackup"
   gw_size                 = "t2.micro"

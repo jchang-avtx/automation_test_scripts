@@ -1,6 +1,6 @@
 # initial create
 
-enable_snat               = true
+single_ip_snat            = true
 single_az_ha              = false
 enable_connected_transit  = true
 enable_active_mesh        = false

@@ -25,7 +25,7 @@ resource "aviatrix_gateway" "azure_gw" {
   gw_size         = "Standard_B1s"
   subnet          = aviatrix_vpc.arm_gw_vnet_1.subnets.0.cidr
 
-  enable_snat     = true # do not enable if using peering_ha
+  single_ip_snat  = true # do not enable if using peering_ha
   single_az_ha    = true
 
   vpn_access      = true

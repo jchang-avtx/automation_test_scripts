@@ -23,7 +23,7 @@ resource "aviatrix_gateway" "oci_vpn_gateway" {
   gw_size             = "VM.Standard2.2"
   subnet              = aviatrix_vpc.oci_vpn_gw_vnet_1.subnets.0.cidr
 
-  enable_snat         = true
+  single_ip_snat      = true
   single_az_ha        = var.aviatrix_single_az_ha
 
   vpn_access          = true

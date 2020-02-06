@@ -39,7 +39,7 @@ resource "aviatrix_gateway" "test_gateway1" {
   vpc_reg         = aviatrix_vpc.aws_trans_peer_vpc_1.region
   gw_size         = "t2.micro"
   subnet          = aviatrix_vpc.aws_trans_peer_vpc_1.subnets.6.cidr
-  enable_snat     = true
+  single_ip_snat  = true
 }
 
 resource "aviatrix_gateway" "test_gateway2" {
@@ -50,7 +50,7 @@ resource "aviatrix_gateway" "test_gateway2" {
   vpc_reg         = aviatrix_vpc.aws_trans_peer_vpc_2.region
   gw_size         = "t2.micro"
   subnet          = aviatrix_vpc.aws_trans_peer_vpc_2.subnets.2.cidr
-  enable_snat     = true
+  single_ip_snat  = true
 }
 
 # Create encrypted peering between two GWs

@@ -25,7 +25,7 @@ resource "aviatrix_gateway" "oci_gateway" {
   gw_size             = var.oci_gw_size
   subnet              = aviatrix_vpc.oci_gw_vnet_1.subnets.0.cidr
 
-  enable_snat         = false # updating/ enabling SNAT not supported for OCI (5.0)
+  single_ip_snat      = false # updating/ enabling SNAT not supported for OCI (5.0)
 
   allocate_new_eip    = true
 

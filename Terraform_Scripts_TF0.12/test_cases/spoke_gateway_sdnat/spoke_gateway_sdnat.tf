@@ -64,7 +64,7 @@ resource "aviatrix_spoke_gateway" "sdnat_spoke_aws_gw" {
   enable_active_mesh  = false # activemesh does not support DNAT
   transit_gw          = aviatrix_transit_gateway.random_transit.gw_name
 
-  # enable_snat       = true # disable AWS NAT instance before enabling; not supported w insane mode
+  # single_ip_snat       = true # disable AWS NAT instance before enabling; not supported w insane mode
   # snat_mode         = "custom" # deprecated in R2.10
 }
 resource "aviatrix_gateway_snat" "custom_snat_aws" {
@@ -135,7 +135,7 @@ resource "aviatrix_spoke_gateway" "sdnat_spoke_arm_gw" {
   gw_size         = "Standard_B1s"
   subnet          = aviatrix_vpc.sdnat_spoke_arm_vpc.subnets.0.cidr
 
-  # enable_snat     = true # deprecated in R2.10
+  # single_ip_snat     = true # deprecated in R2.10
   # snat_mode       = "custom"
 }
 resource "aviatrix_gateway_snat" "custom_snat_arm" {

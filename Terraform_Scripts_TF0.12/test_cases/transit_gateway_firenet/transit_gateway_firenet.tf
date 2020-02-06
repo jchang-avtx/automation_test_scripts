@@ -27,7 +27,7 @@ resource "aviatrix_transit_gateway" "firenet_transit_gw" {
   ha_subnet           = aviatrix_vpc.firenet_vpc.subnets.2.cidr
   ha_gw_size          = "c5.xlarge"
 
-  enable_snat                 = false
+  single_ip_snat              = false
   enable_firenet              = var.toggle_firenet
   enable_hybrid_connection    = true
   connected_transit           = true

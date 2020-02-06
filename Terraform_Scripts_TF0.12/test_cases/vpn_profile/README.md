@@ -1,5 +1,8 @@
 ## aviatrix_vpn_profile
 
+## DEPRECATED
+* test stage integrated with **vpn_user** module
+
 ---
 
 ### Usage

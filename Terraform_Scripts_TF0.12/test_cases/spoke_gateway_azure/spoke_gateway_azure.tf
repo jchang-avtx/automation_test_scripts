@@ -27,7 +27,7 @@ resource "aviatrix_transit_gateway" "azure_transit_gw" {
 
   ha_subnet           = aviatrix_vpc.arm_transit_gw_vnet.subnets.2.cidr
   ha_gw_size          = "Standard_B1s"
-  enable_snat         = false
+  single_ip_snat      = false
 
   enable_hybrid_connection  = false
   connected_transit         = true
@@ -49,7 +49,7 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway_arm" {
   ha_subnet         = var.arm_ha_gw_subnet
   ha_gw_size        = var.arm_ha_gw_size
 
-  enable_snat       = false # insane mode does not support SNAT
+  single_ip_snat       = false # insane mode does not support SNAT
   single_az_ha      = var.toggle_single_az_ha
   transit_gw        = var.attached_transit_gw
   enable_active_mesh= false

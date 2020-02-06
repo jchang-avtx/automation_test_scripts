@@ -100,7 +100,7 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway" {
   ha_subnet         = join(".", [random_integer.vpc3_cidr_int[0].result, random_integer.vpc3_cidr_int[1].result, "2.64/26"])
   # ha_subnet         = "172.0.1.0/24" # non-insane
   ha_gw_size        = var.aviatrix_ha_gw_size
-  enable_snat       = false
+  single_ip_snat    = false
   enable_active_mesh= true
 
   allocate_new_eip  = false
