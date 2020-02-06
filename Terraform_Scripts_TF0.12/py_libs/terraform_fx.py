@@ -1,5 +1,8 @@
 import sys
 import subprocess
+import logging
+
+log = logging.getLogger(__name__)
 
 def create_verify(varfile=None):
     try:
@@ -16,7 +19,8 @@ def create_verify(varfile=None):
             subprocess.run('terraform show', shell=True)
         else:
             raise Exception('Too many arguments: create_verify(). # of args: {}'.format(len(args)))
-    except:
+    except Exception as err:
+        log.exception(str(err))
         sys.exit(1)
 
 
@@ -39,7 +43,8 @@ def import_test(resource, name, varfile=None):
             subprocess.run('terraform show', shell=True)
         else:
             raise Exception('Too many arguments: import_test()')
-    except:
+    except Exception as err:
+        log.exception(str(err))
         sys.exit(1)
 
 
@@ -58,7 +63,8 @@ def update_test(varfile, varfile2=None):
             subprocess.run('terraform show', shell=True)
         else:
             raise Exception('Too many arguments: update_test()')
-    except:
+    except Exception as err:
+        log.exception(str(err))
         sys.exit(1)
 
 
@@ -73,7 +79,8 @@ def destroy_test(varfile=None):
             subprocess.run('terraform show', shell=True)
         else:
             raise Exception('Too many arguments: destroy_test()')
-    except:
+    except Exception as err:
+        log.exception(str(err))
         sys.exit(1)
 
 
@@ -82,5 +89,6 @@ def destroy_target(resource, name):
         target_arg = '-target=aviatrix_' + resource + '.' + name
         subprocess.run(['terraform', 'destroy', target_arg, '-auto-approve'], check=True)
         subprocess.run('terraform show', shell=True)
-    except:
+    except Exception as err:
+        log.exception(str(err))
         sys.exit(1)
