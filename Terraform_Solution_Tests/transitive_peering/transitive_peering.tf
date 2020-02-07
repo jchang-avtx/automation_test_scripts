@@ -62,7 +62,7 @@ resource "aviatrix_gateway" "AVX-GW-A" {
   vpc_reg       = var.aws_region
   gw_size       = "t2.micro"
   subnet        = module.aws-vpc.subnet_cidr[0]
-  enable_snat   = false
+  single_ip_snat   = false
   enable_vpc_dns_server = false
   #depends_on    = [module.aws-vpc]
 
@@ -80,7 +80,7 @@ resource "aviatrix_gateway" "AVX-GW-B" {
   vpc_reg       = var.aws_region
   gw_size       = "t2.micro"
   subnet        = aws_subnet.main.cidr_block
-  enable_snat   = true
+  single_ip_snat   = true
   enable_vpc_dns_server = false
   #depends_on    = [aws_subnet.main]
 
@@ -98,7 +98,7 @@ resource "aviatrix_gateway" "AVX-GW-C" {
   vpc_reg       = var.aws_region
   gw_size       = "t2.micro"
   subnet        = module.aws-vpc.subnet_cidr[1]
-  enable_snat   = false
+  single_ip_snat   = false
   enable_vpc_dns_server = false
   #depends_on    = [module.aws-vpc]
 
@@ -150,7 +150,7 @@ resource "null_resource" "ping" {
       user = var.ssh_user
       private_key = file(var.private_key)
       host = module.aws-vpc.ubuntu_public_ip[0]
-      agent = true
+      agent = false
     }
   }
 

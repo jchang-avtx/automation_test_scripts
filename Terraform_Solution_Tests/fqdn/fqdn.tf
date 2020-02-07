@@ -27,7 +27,7 @@ resource "aviatrix_gateway" "FQDN-GW" {
   vpc_reg       = var.aws_region
   gw_size       = "t2.micro"
   subnet        = module.aws-vpc.subnet_cidr[0]
-  enable_snat   = true
+  single_ip_snat   = true
   enable_vpc_dns_server = false
 
   lifecycle {
@@ -102,7 +102,7 @@ resource "null_resource" "ping" {
       user = var.ssh_user
       private_key = file(var.private_key)
       host = module.aws-vpc.ubuntu_public_ip[0]
-      agent = true
+      agent = false
     }
   }
 
@@ -117,7 +117,7 @@ resource "null_resource" "ping" {
       user = var.ssh_user
       private_key = file(var.private_key)
       host = module.aws-vpc.ubuntu_public_ip[0]
-      agent = true
+      agent = false
     }
   }
 

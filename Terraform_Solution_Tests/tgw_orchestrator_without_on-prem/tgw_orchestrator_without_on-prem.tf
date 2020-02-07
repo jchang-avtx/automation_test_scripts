@@ -106,7 +106,7 @@ resource "null_resource" "ping" {
       user = var.ssh_user
       private_key = file(var.private_key)
       host = module.aws-vpc.ubuntu_public_ip[0]
-      agent = true
+      agent = false
     }
   }
 
