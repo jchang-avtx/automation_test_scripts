@@ -113,6 +113,10 @@ resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn1" {
   pre_shared_key_tun_1 = "abc_123.def" # A 8-64 character string with alphanumeric, underscore(_) and dot(.). It cannot start with 0.
   inside_ip_cidr_tun_2 = "169.254.70.70/30"
   pre_shared_key_tun_2 = "def_456.ghi"
+
+  lifecycle {
+    ignore_changes = [pre_shared_key_tun_1, pre_shared_key_tun_2]
+  }
 }
 
 # Static connection
