@@ -12,6 +12,16 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
 ---
 
 ## Setup
+### Prerequisites
+1. **Aviatrix Controller(s)** - nodes that host parallel stage runs in Jenkins
+2. **Jenkins server** - Ubuntu 18.x machine with Jenkins installed - where the regression pipeline will run
+3. **Python3.7** - installed on Jenkins server
+4. **Terraform** - have all items listed below installed under the *Jenkins* user in the **Jenkins server**
+  * Terraform
+  * Aviatrix Terraform provider (sourced locally)
+  * Go
+  * View setup instructions [HERE](https://github.com/terraform-providers/terraform-provider-aviatrix/blob/master/README.md)
+
 ### Credentials
 1. In the Controller, the following access accounts must be created for AWS, ARM, GCP, and OCI with the following names respectively:
   * AWSAccess
