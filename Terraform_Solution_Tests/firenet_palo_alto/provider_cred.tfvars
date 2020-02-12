@@ -9,3 +9,6 @@ aviatrix_aws_access_account  = <Enter_your_AWS_account_account>
 
 public_key = "~/Downloads/sshkey.pub"
 private_key = "~/Downloads/sshkey"
+
+bootstrap_role = "bootstrap-VM-S3-role"
+bootstrap_bucket = "bootstrap-firenet-bucket"

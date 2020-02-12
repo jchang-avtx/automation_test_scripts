@@ -8,11 +8,18 @@ This Terraform configuration creates 3 AWS VPCs (Source, Transitive, Destination
 
 1) Create a public_key private_key pair. For example. "ssh-keygen -t rsa" and save the key pair such as ~/Downloads/sshkey and ~/Downloads/sshkey.pub
 
-2) Provide the location of the public_key as variable in provider_cred.tfvars file.
+2) Provide the location of public_key and private_key as variables in provider_cred.tfvars file.
 
-3) Add the private_key on the local machine where terraform is going to run. For example, ssh-add ~/Downloads/sshkey
-
-4) Provide other info such as controller_ip, aws_access_key, etc as necessary in provider_cred.tfvars file.
+3) Provide other info such as controller_ip, aws_access_key, etc as necessary in provider_cred.tfvars file.
+> aws_region     = "Enter_AWS_region"  
+> aws_access_key = "Enter_AWS_access_key"  
+> aws_secret_key = "Enter_AWS_secret_key"  
+> aviatrix_controller_ip       = "Enter_your_controller_IP"  
+> aviatrix_controller_username = "Enter_your_controller_username"  
+> aviatrix_controller_password = "Enter_your_controller_password"  
+> aviatrix_aws_access_account  = "Enter_your_AWS_access_account"  
+> public_key = "\~/Downloads/sshkey.pub"  
+> private_key = "\~/Downloads/sshkey"  
 
 ### Usage
 ```
@@ -20,9 +27,11 @@ terraform init
 terraform plan -var-file=provider_cred.tfvars -detailed-exitcode
 terraform apply -var-file=provider_cred.tfvars -auto-approve
 terraform show
-terraform destroy -var-file=provider_cred.tfvars -auto-approve -parallelism=5
+terraform destroy -target=aviatrix_trans_peer.test_trans_peer -var-file=provider_cred.tfvars -auto-approve
+terraform destroy -var-file=provider_cred.tfvars -auto-approve
+terraform show
 ```
-> ***Note***: Terraform destroy might timeout in this case. Use parallelism option with 5 to reduce the number of concurrent operations. Default is 10. 
+> ***Note***: Due to timing issue, if destroying of GWs started before Transitive Peering tunnel destroy got completed, terraform destroy may face timeout for the rest of the destroy process. It is better to explicitly destroy the target aviatrix_trans_peer.test_trans_peer first. And then, normal terraform destroy may follow. See there are two terraform destroy commands above.
 
 ### Test Duration
 
