@@ -118,6 +118,10 @@ log.info("      update_test(): PASS\n")
 
 try:
     log.info("Verifying destroy functionality...")
+    log.debug("     Destroying GCP spoke gateway first and sleeping for 30 seconds before continuing cleanup...")
+    tf.destroy_target("spoke_gateway", "gcp_custom_routes_spoke")
+    time.sleep(30)
+    log.debug("     Continuing cleanup...")
     tf.destroy_test()
 except Exception as err:
     log.exception(str(err))
