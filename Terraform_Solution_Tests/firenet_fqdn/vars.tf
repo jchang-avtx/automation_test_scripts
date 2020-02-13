@@ -13,5 +13,9 @@ variable "ssh_user" {
 variable "public_key" {}
 variable "private_key" {}
 
-variable "pre_shared_key" {}
-variable "pre_shared_key_backup" {}
+variable "shared_service_domain_connected_list" {}
+variable "dev_domain_connected_list" {}
+variable "firenet_domain_connected_list" {}
+
+variable "ping_allow_list" {}
+variable "ping_deny_list" {}

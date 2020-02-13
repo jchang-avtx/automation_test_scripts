@@ -13,5 +13,10 @@ variable "ssh_user" {
 variable "public_key" {}
 variable "private_key" {}
 
-variable "pre_shared_key" {}
-variable "pre_shared_key_backup" {}
+variable "edge_domain_connected_list" {}
+variable "shared_service_domain_connected_list" {}
+variable "dev_domain_connected_list" {}
+variable "security_domain_connected_list" {}
+
+variable "bootstrap_role" {}
+variable "bootstrap_bucket" {}

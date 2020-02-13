@@ -46,7 +46,7 @@ resource "aviatrix_transit_gateway" "AVX-Transit-GW" {
   vpc_reg                  = var.aws_region
   gw_size                  = "t2.micro"
   subnet                   = aviatrix_vpc.transit-vpc.subnets[4].cidr
-  enable_snat              = false
+  single_ip_snat           = false
   connected_transit        = true
 }
 
@@ -137,7 +137,7 @@ resource "null_resource" "ping" {
   }
 
   provisioner "local-exec" {
-    command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null transit_solution.py ${var.ssh_user}@${module.aws-vpc.ubuntu_public_ip[0]}:/tmp/"
+    command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null transit_solution.py ${var.ssh_user}@${module.aws-vpc.ubuntu_public_ip[0]}:/tmp/"
   }
 
   provisioner "remote-exec" {
@@ -147,18 +147,14 @@ resource "null_resource" "ping" {
     connection {
       type = "ssh"
       user = var.ssh_user
-      #private_key = file("~/Downloads/Aviatrix-key")
+      private_key = file(var.private_key)
       host = module.aws-vpc.ubuntu_public_ip[0]
-      agent = true
+      agent = false
     }
   }
 
   # Once test is done, copy log file and result file back to local
   provisioner "local-exec" {
-    command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${var.ssh_user}@${module.aws-vpc.ubuntu_public_ip[0]}:/tmp/*.txt ."
+    command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${var.ssh_user}@${module.aws-vpc.ubuntu_public_ip[0]}:/tmp/*.txt ."
   }
-}
-
-variable "ssh_user" {
-  default = "ubuntu"
 }

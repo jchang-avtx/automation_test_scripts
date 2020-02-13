@@ -10,11 +10,9 @@ This Terraform configuration creates 2 Spoke VPCs, 1 Transit VPC, 1 onPrem VPC, 
 
 1) Create a public_key private_key pair. For example. "ssh-keygen -t rsa" and save the key pair such as ~/Downloads/sshkey and ~/Downloads/sshkey.pub
 
-2) Provide the location of the public_key as variable in provider_cred.tfvars file.
+2) Provide the location of public_key and private_key as variables in provider_cred.tfvars file.
 
-3) Add the private_key on the local machine where terraform is going to run. For example, ssh-add ~/Downloads/sshkey
-
-4) Provide other info such as controller_ip, aws_access_key, etc as necessary in provider_cred.tfvars file.
+3) Provide other info such as controller_ip, aws_access_key, etc as necessary in provider_cred.tfvars file.
 > aws_region     = "Enter_AWS_region"  
 > aws_access_key = "Enter_AWS_access_key"  
 > aws_secret_key = "Enter_AWS_secret_key"  
@@ -22,8 +20,8 @@ This Terraform configuration creates 2 Spoke VPCs, 1 Transit VPC, 1 onPrem VPC, 
 > aviatrix_controller_username = "Enter_your_controller_username"  
 > aviatrix_controller_password = "Enter_your_controller_password"  
 > aviatrix_aws_access_account  = "Enter_your_AWS_access_account"  
-> public_key = "~/Downloads/sshkey.pub"
- 
+> public_key = "\~/Downloads/sshkey.pub"  
+> private_key = "\~/Downloads/sshkey"
 
 ### Usage
 ```
@@ -32,6 +30,7 @@ terraform plan -var-file=provider_cred.tfvars -detailed-exitcode
 terraform apply -var-file=provider_cred.tfvars -auto-approve
 terraform show
 terraform destroy -var-file=provider_cred.tfvars -auto-approve
+terraform show
 ```
 
 ### Test Duration

@@ -7,4 +7,8 @@ variable "aviatrix_controller_username" {}
 variable "aviatrix_controller_password" {}
 variable "aviatrix_aws_access_account" {}
 
+variable "ssh_user" {
+  default = "ubuntu"
+}
 variable "public_key" {}
+variable "private_key" {}
