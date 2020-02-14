@@ -45,6 +45,7 @@ resource "aviatrix_gateway" "vpnGWunderELB2" {
 
   vpn_access        = true
   vpn_cidr          = "192.168.45.0/24" # must be non-overlapping CIDR
+  vpn_protocol      = "UDP"
   enable_elb        = true
   enable_vpn_nat    = true
   elb_name          = null # do not specify
