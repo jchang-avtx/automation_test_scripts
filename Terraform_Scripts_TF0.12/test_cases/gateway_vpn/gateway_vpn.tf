@@ -14,6 +14,7 @@ resource "aviatrix_gateway" "vpnGWunderELB" {
 
   vpn_access        = true
   vpn_cidr          = var.aviatrix_vpn_cidr
+  vpn_protocol      = "UDP"
   enable_elb        = true
   enable_vpn_nat    = var.aviatrix_vpn_nat
   elb_name          = "elb-vpngwunderelb"
