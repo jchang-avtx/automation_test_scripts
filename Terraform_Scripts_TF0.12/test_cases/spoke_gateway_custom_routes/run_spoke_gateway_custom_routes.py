@@ -101,11 +101,11 @@ log.info("      import_test(): PASS\n")
 
 try:
     log.info("Verifying update functionality...")
-    log.debug("     updateCustomRoutes: Updating to list of CIDRs to propagate to for spoke VPC...")
+    log.debug("     updateCustomRoutes: Updating list of CIDRs to propagate to for spoke VPC...")
     tf.update_test("updateCustomRoutes")
     log.debug("     updateFilterRoutes: Updating list of unwanted CIDRs to filter on-prem to spoke VPC...")
     tf.update_test("updateFilterRoutes")
-    log.debug("     updateIncludeAdvertiseRoutes: Updating list of VPC CIDRs to exclude from being advertised to on-prem...")
+    log.debug("     updateIncludeAdvertiseRoutes: Updating list of VPC CIDRs to include from being advertised to on-prem...")
     tf.update_test("updateIncludeAdvertiseRoutes")
 except Exception as err:
     log.exception(str(err))

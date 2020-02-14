@@ -106,6 +106,12 @@ try:
     tf.update_test("updateHAGWSize")
     log.debug("     enableDNSServer: Enabling feature to remove the default DNS server, in favor of VPC DNS server configured in VPC DHCP option...")
     tf.update_test("enableDNSServer")
+    log.debug("     updateCustomRoutes: Updating list of CIDRs to propagate to for spoke VPC...")
+    tf.update_test("updateCustomRoutes")
+    log.debug("     updateFilterRoutes: Updating list of unwanted CIDRs to filter on-prem to spoke VPC...")
+    tf.update_test("updateFilterRoutes")
+    log.debug("     updateExcludeAdvertiseRoutes: Updating list of VPC CIDRs to exclude from being advertised to on-prem...")
+    tf.update_test("updateExcludeAdvertiseRoutes")
 except Exception as err:
     log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
