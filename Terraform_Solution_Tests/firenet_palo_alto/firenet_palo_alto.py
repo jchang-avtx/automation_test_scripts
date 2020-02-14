@@ -183,6 +183,7 @@ def main(argv):
 
   with open('/tmp/result.txt','w') as result_file:
     result_file.write(result+'\n')
+  sys.exit(0)
 
 if __name__ == "__main__":
   main(sys.argv[1:])

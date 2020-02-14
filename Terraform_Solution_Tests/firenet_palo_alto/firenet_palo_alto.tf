@@ -217,6 +217,21 @@ resource "aviatrix_firenet" "palo_alto_firenet" {
   }
 }
 
+# Aviatrix FireNet Vendor Integration Data Source
+data "aviatrix_firenet_vendor_integration" "foo" {
+  vpc_id            = aviatrix_vpc.security-vpc.vpc_id
+  instance_id       = aviatrix_firewall_instance.firenet_instance.instance_id
+  vendor_type       = "Palo Alto Networks VM-Series"
+  public_ip         = aviatrix_firewall_instance.firenet_instance.public_ip
+  username          = "avxadmin"
+  password          = "Aviatrix123#"
+  firewall_name     = aviatrix_firewall_instance.firenet_instance.firewall_name
+  save              = true
+  number_of_retries = 2
+  retry_interval    = 600
+  depends_on        = [aviatrix_firenet.palo_alto_firenet]
+}
+
 ########## Test following end-to-end traffic flows for firewall inspection ##########
 # Test East-West traffic flow - Ping from 10.0.2.20 (private instance in SpokeVPC1) to 20.0.0.10 (public instance in SpokeVPC2)
 # Test East-West traffic flow - Ping from 10.0.2.20 (private instance in SpokeVPC1) to 20.0.2.20 (private instance in SpokeVPC2)
@@ -229,7 +244,8 @@ resource "null_resource" "ping" {
     module.aws-vpc.ubuntu_public_ip,
     aviatrix_transit_gateway.AVX-Transit-GW,
     aviatrix_aws_tgw.test_aws_tgw,
-    aviatrix_firenet.palo_alto_firenet
+    aviatrix_firenet.palo_alto_firenet,
+    data.aviatrix_firenet_vendor_integration.foo
   ]
 
   triggers = {
