@@ -54,7 +54,7 @@ def update_test(varfile, varfile2=None):
 
 def destroy_test(varfile=None):
     if varfile == None:
-        subprocess.run('terraform destroy -auto-approve', shell=True)
+        subprocess.run('terraform destroy -auto-approve', shell=True, check=True, capture_output=True)
         subprocess.run('terraform show', shell=True)
     elif varfile:
         var_arg = '-var-file=' + varfile + '.tfvars'
