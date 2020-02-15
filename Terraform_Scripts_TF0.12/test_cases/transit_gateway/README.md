@@ -38,6 +38,18 @@
                   -var-file=enableDNSServer.tfvars \
                   -auto-approve
   terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=updateCustomRoutes.tfvars \
+                  -auto-approve
+  terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=updateFilterRoutes.tfvars \
+                  -auto-approve
+  terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=updateExcludeAdvertiseRoutes.tfvars \
+                  -auto-approve
+  terraform show
 
   terraform destroy -var-file=/path/provider_cred.tfvars -auto-approve
 ```

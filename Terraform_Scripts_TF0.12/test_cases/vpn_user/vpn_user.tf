@@ -17,10 +17,10 @@ resource "aviatrix_vpc" "vpn_user_gw_vpc_1" {
 }
 
 ## VPN user needs VPN GW
-resource "aviatrix_gateway" "vpn_gateway" {
+resource "aviatrix_gateway" "vpn_user_gw" {
   cloud_type        = 1
   account_name      = "AWSAccess"
-  gw_name           = "testGW-VPN"
+  gw_name           = "vpn-user-gw"
 
   vpc_id            = aviatrix_vpc.vpn_user_gw_vpc_1.vpc_id
   vpc_reg           = aviatrix_vpc.vpn_user_gw_vpc_1.region
@@ -33,38 +33,38 @@ resource "aviatrix_gateway" "vpn_gateway" {
   vpn_cidr          = "192.168.43.0/24"
   split_tunnel      = true
   enable_elb        = true
-  elb_name          = "test-elb-name"
+  elb_name          = "vpn-user-gw-elb"
   single_ip_snat    = false
   allocate_new_eip  = true
 }
 
 resource "aviatrix_vpn_user" "test_vpn_user1" {
-  vpc_id            = aviatrix_gateway.vpn_gateway.vpc_id
-  gw_name           = aviatrix_gateway.vpn_gateway.elb_name
+  vpc_id            = aviatrix_gateway.vpn_user_gw.vpc_id
+  gw_name           = aviatrix_gateway.vpn_user_gw.elb_name
   user_name         = "testdummy1"
   user_email        = var.vpn_user_email[0]
   saml_endpoint     = "saml_test_endpoint"
 }
 
 resource "aviatrix_vpn_user" "test_vpn_user2" {
-  vpc_id            = aviatrix_gateway.vpn_gateway.vpc_id
-  gw_name           = aviatrix_gateway.vpn_gateway.elb_name
+  vpc_id            = aviatrix_gateway.vpn_user_gw.vpc_id
+  gw_name           = aviatrix_gateway.vpn_user_gw.elb_name
   user_name         = "testdummy2"
   user_email        = var.vpn_user_email[1]
   saml_endpoint     = "saml_test_endpoint"
 }
 
 resource "aviatrix_vpn_user" "test_vpn_user3" {
-  vpc_id            = aviatrix_gateway.vpn_gateway.vpc_id
-  gw_name           = aviatrix_gateway.vpn_gateway.elb_name
+  vpc_id            = aviatrix_gateway.vpn_user_gw.vpc_id
+  gw_name           = aviatrix_gateway.vpn_user_gw.elb_name
   user_name         = "testdummy3"
   user_email        = var.vpn_user_email[2]
   saml_endpoint     = "saml_test_endpoint"
 }
 
 resource "aviatrix_vpn_user" "test_vpn_user4" {
-  vpc_id            = aviatrix_gateway.vpn_gateway.vpc_id
-  gw_name           = aviatrix_gateway.vpn_gateway.elb_name
+  vpc_id            = aviatrix_gateway.vpn_user_gw.vpc_id
+  gw_name           = aviatrix_gateway.vpn_user_gw.elb_name
   user_name         = "testdummy4"
   user_email        = var.vpn_user_email[3]
   saml_endpoint     = "saml_test_endpoint"
@@ -149,7 +149,7 @@ resource "aviatrix_vpn_profile" "test_profile1" {
 resource "aviatrix_vpn_profile" "test_profile2" {
   name            = "profile Name2"
   base_rule       = "allow_all"
-  users           = ["testdummy3, testdummy4"]
+  users           = ["testdummy3", "testdummy4"]
 
   policy {
     action    = "deny"

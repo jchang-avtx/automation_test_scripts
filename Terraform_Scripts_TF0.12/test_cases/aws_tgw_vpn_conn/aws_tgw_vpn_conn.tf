@@ -4,8 +4,9 @@
 ## Dynamic connection
 resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn1" {
   tgw_name             = "test-aws-tgw"
-  route_domain_name    = "Default_Domain"
+  route_domain_name    = "Shared_Service_Domain"
   connection_name      = "tgw_vpn_conn1"
+  connection_type      = "dynamic"
   public_ip            = "69.0.0.0"
   remote_as_number     = "1234"
 
@@ -21,6 +22,7 @@ resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn2" {
   tgw_name             = "test-aws-tgw"
   route_domain_name    = "Default_Domain"
   connection_name      = "tgw_vpn_conn2"
+  connection_type      = "static"
   public_ip            = "70.0.0.0"
   remote_cidr          = "10.0.0.0/16,10.1.0.0/16"
 }

@@ -1,7 +1,7 @@
 """
-run_transit_gateway.py
+run_spoke_gateway_custom_routes.py
 
-Test case for AWS Transit Gateway (Insane HA) Terraform resource/ use-case
+Test case for Spoke Gateway (HA- custom_routes)(all cloud type) Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,9 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS transit gateway (Insane HA)")
+log.info("      2. Create spoke gateway (HA) for AWS, ARM, GCP, OCI")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform update tests on various attributes")
+log.info("      4. Perform update tests on the custom routes attributes")
 log.info("      5. Tear down infrastructure\n")
 
 try:
@@ -49,9 +49,9 @@ try:
     log.debug("     placeholder_ip: %s", str(os.environ["AVIATRIX_CONTROLLER_IP"]))
     log.debug("     placeholder_user: %s", str(os.environ["AVIATRIX_USERNAME"]))
     log.debug("     placeholder_pass: %s", str(os.environ["AVIATRIX_PASSWORD"]))
-    avx_controller_ip = os.environ["avx_ip_1"]
-    avx_controller_user = os.environ["avx_user_1"]
-    avx_controller_pass = os.environ["avx_pass_1"]
+    avx_controller_ip = os.environ["avx_ip_2"]
+    avx_controller_user = os.environ["avx_user_2"]
+    avx_controller_pass = os.environ["avx_pass_2"]
     log.info("Setting new variable values as follows...")
     log.debug("     avx_controller_ip: %s", avx_controller_ip)
     log.debug("     avx_controller_user: %s", avx_controller_user)
@@ -84,7 +84,14 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("transit_gateway", "insane_transit_gw")
+    log.debug("     Importing AWS spoke...")
+    tf.import_test("spoke_gateway", "aws_custom_routes_spoke")
+    log.debug("     Importing ARM spoke...")
+    tf.import_test("spoke_gateway", "arm_custom_routes_spoke")
+    log.debug("     Importing GCP spoke...")
+    tf.import_test("spoke_gateway", "gcp_custom_routes_spoke")
+    log.debug("     Importing OCI spoke...")
+    tf.import_test("spoke_gateway", "oci_custom_routes_spoke")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -97,24 +104,12 @@ else:
 
 try:
     log.info("Verifying update functionality...")
-    log.debug("     enableSingleAZHA: Enabling single AZHA feature...")
-    tf.update_test("enableSingleAZHA")
-    log.debug("     switchConnectedTransit: Disabling spokes from running traffic to other spokes via transit gateway...")
-    tf.update_test("switchConnectedTransit")
-    log.debug("     disableHybrid: Disabling transit gateway from being used in AWS TGW solution...")
-    tf.update_test("disableHybrid")
-    log.debug("     updateGWSize: Updating gateway's size...")
-    tf.update_test("updateGWSize")
-    log.debug("     updateHAGWSize: Updating HA gateway's size...")
-    tf.update_test("updateHAGWSize")
-    log.debug("     enableDNSServer: Enabling feature to remove the default DNS server, in favor of VPC DNS server configured in VPC DHCP option...")
-    tf.update_test("enableDNSServer")
     log.debug("     updateCustomRoutes: Updating list of CIDRs to propagate to for spoke VPC...")
     tf.update_test("updateCustomRoutes")
     log.debug("     updateFilterRoutes: Updating list of unwanted CIDRs to filter on-prem to spoke VPC...")
     tf.update_test("updateFilterRoutes")
-    log.debug("     updateExcludeAdvertiseRoutes: Updating list of VPC CIDRs to exclude from being advertised to on-prem...")
-    tf.update_test("updateExcludeAdvertiseRoutes")
+    log.debug("     updateIncludeAdvertiseRoutes: Updating list of VPC CIDRs to include from being advertised to on-prem...")
+    tf.update_test("updateIncludeAdvertiseRoutes")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -127,6 +122,10 @@ else:
 
 try:
     log.info("Verifying destroy functionality...")
+    log.debug("     Destroying GCP spoke gateway first and sleeping for 30 seconds before continuing cleanup...")
+    tf.destroy_target("spoke_gateway", "gcp_custom_routes_spoke")
+    time.sleep(30)
+    log.debug("     Continuing cleanup...")
     tf.destroy_test()
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())

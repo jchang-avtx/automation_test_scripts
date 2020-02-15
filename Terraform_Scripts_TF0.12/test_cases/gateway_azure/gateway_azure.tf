@@ -30,6 +30,7 @@ resource "aviatrix_gateway" "azure_gw" {
 
   vpn_access      = true
   vpn_cidr        = "192.168.43.0/24"
+  vpn_protocol    = "TCP"
   enable_elb      = true
   elb_name        = "azureelb"
   enable_vpn_nat  = var.aviatrix_vpn_nat

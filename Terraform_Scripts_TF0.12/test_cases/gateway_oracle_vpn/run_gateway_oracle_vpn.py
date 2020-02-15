@@ -64,33 +64,36 @@ except Exception as err:
     log.info("-------------------- RESULT --------------------")
     log.error("     Failed to properly set environment credentials!")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      Set environment credentials: PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      Set environment credentials: PASS\n")
 
 
 try:
     log.info("Creating infrastructure...")
     tf.create_verify()
-except Exception as err:
-    log.exception(str(err))
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      create_verify(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      create_verify(): PASS\n")
 
 
 try:
     log.info("Verifying import functionality...")
     log.debug("     Importing the OCI gateway...")
     tf.import_test("gateway", "oci_vpn_gateway")
-except Exception as err:
-    log.exception(str(err))
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      import_test(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      import_test(): PASS\n")
 
 
 try:
@@ -111,22 +114,24 @@ try:
     tf.update_test("updateMaxConn")
     log.debug("     disableVPNNAT: Disables VPN connection from using NAT when traffic leaves the gateway...")
     tf.update_test("disableVPNNAT")
-except Exception as err:
-    log.exception(str(err))
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      update_test(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      update_test(): PASS\n")
 
 
 try:
     log.info("Verifying destroy functionality...")
     tf.destroy_test()
-except Exception as err:
-    log.exception(str(err))
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     destroy_test(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      destroy_test(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      destroy_test(): PASS\n")
