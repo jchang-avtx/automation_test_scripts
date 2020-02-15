@@ -73,7 +73,7 @@ try:
     log.info("Creating infrastructure...")
     tf.create_verify()
 except tf.subprocess.CalledProcessError as err:
-    log.exception(str(err))
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
     sys.exit(1)
@@ -86,7 +86,7 @@ try:
     log.info("Verifying import functionality...")
     tf.import_test("aws_tgw_vpc_attachment", "tgw_vpc_attach_test")
 except tf.subprocess.CalledProcessError as err:
-    log.exception(str(err))
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
     sys.exit(1)
@@ -100,7 +100,7 @@ try:
     log.debug("     updateSecurityDomain: Updating which security domain the VPC should attach to...")
     tf.update_test("updateSecurityDomain")
 except tf.subprocess.CalledProcessError as err:
-    log.exception(str(err))
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
     sys.exit(1)
@@ -125,7 +125,7 @@ try:
     log.info("Verifying import functionality...")
     tf.import_test("aws_tgw_directconnect", "aws_tgw_dc")
 except tf.subprocess.CalledProcessError as err:
-    log.exception(str(err))
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
     sys.exit(1)
@@ -139,7 +139,7 @@ try:
     log.debug("     updatePrefix: Update list of CIDRs for DxGW to advertise to remote (on-prem)...")
     tf.update_test("updatePrefix")
 except tf.subprocess.CalledProcessError as err:
-    log.exception(str(err))
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
     sys.exit(1)
@@ -152,7 +152,7 @@ try:
     log.info("Verifying destroy functionality for both TGW VPC Attachment and TGW DirectConnect...")
     tf.destroy_test()
 except tf.subprocess.CalledProcessError as err:
-    log.exception(str(err))
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     destroy_test(): FAIL\n")
     sys.exit(1)
