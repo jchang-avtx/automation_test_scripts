@@ -64,33 +64,36 @@ except Exception as err:
     log.info("-------------------- RESULT --------------------")
     log.error("     Failed to properly set environment credentials!")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      Set environment credentials: PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      Set environment credentials: PASS\n")
 
 
 try:
     log.info("Creating infrastructure...")
     tf.create_verify("user_emails")
-except Exception as err:
-    log.exception(str(err))
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      create_verify(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      create_verify(): PASS\n")
 
 
 try:
     log.info("Verifying import functionality...")
     log.debug("     Importing a VPN user...")
     tf.import_test("vpn_user", "test_vpn_user1", "user_emails")
-except Exception as err:
-    log.exception(str(err))
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      import_test(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      import_test(): PASS\n")
 
 
 log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
@@ -116,13 +119,14 @@ try:
     tf.import_test("vpn_profile", "test_profile1", "user_emails")
     log.debug("     Importing VPN profile 2...")
     tf.import_test("vpn_profile", "test_profile2", "user_emails")
-except Exception as err:
-    log.exception(str(err))
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      import_test(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      import_test(): PASS\n")
 
 
 try:
@@ -137,22 +141,24 @@ try:
     tf.update_test("switchTarget", "user_emails")
     log.debug("     removeUser: Detach user from VPN profile...")
     tf.update_test("removeUser", "user_emails")
-except Exception as err:
-    log.exception(str(err))
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     update_test(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      update_test(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      update_test(): PASS\n")
 
 
 try:
     log.info("Verifying destroy functionality for both VPN users and profiles...")
     tf.destroy_test("user_emails")
-except Exception as err:
-    log.exception(str(err))
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
     log.error("     destroy_test(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      destroy_test(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      destroy_test(): PASS\n")
