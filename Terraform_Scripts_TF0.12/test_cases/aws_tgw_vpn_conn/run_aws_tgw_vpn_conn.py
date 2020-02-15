@@ -63,33 +63,36 @@ except Exception as err:
     log.info("-------------------- RESULT --------------------")
     log.error("     Failed to properly set environment credentials!")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      Set environment credentials: PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      Set environment credentials: PASS\n")
 
 
 try:
     log.info("Creating infrastructure...")
     tf.create_verify()
-except Exception as err:
+except tf.subprocess.CalledProcessError as err:
     log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     create_verify(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      create_verify(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      create_verify(): PASS\n")
 
 
 try:
     log.info("Verifying import functionality...")
     tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn1")
     tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn2")
-except Exception as err:
+except tf.subprocess.CalledProcessError as err:
     log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     import_test(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      import_test(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      import_test(): PASS\n")
 
 
 log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
@@ -100,10 +103,11 @@ log.info("     update_test(): SKIPPED\n")
 try:
     log.info("Verifying destroy functionality...")
     tf.destroy_test()
-except Exception as err:
+except tf.subprocess.CalledProcessError as err:
     log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
     log.error("     destroy_test(): FAIL\n")
     sys.exit(1)
-log.info("-------------------- RESULT --------------------")
-log.info("      destroy_test(): PASS\n")
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      destroy_test(): PASS\n")
