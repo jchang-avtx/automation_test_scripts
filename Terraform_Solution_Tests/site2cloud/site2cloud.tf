@@ -67,6 +67,7 @@ resource "aws_vpn_connection_route" "to_cloud" {
 #Add cloud VPC cidr route to VGW route table
 data "aws_subnet" "selected" {
   cidr_block = module.aws-vpc.subnet_cidr[0]
+  depends_on  = [aviatrix_gateway.AVX-GW]
 }
 data "aws_route_table" "selected" {
   subnet_id   = data.aws_subnet.selected.id
