@@ -63,7 +63,7 @@ def main(argv):
           cmd = 'ping -c 3 ' + domain[i]
       # Traffic test will be done by running corresponding command.
       # If traffric fails, it will re-try up to 3 times.
-      while num_of_tries < 3:
+      while num_of_tries <= 3:
         f.write('Executing command: '+cmd+'\n')
         p.sendline(cmd)
         p.expect('\$ ')
@@ -79,7 +79,7 @@ def main(argv):
           f.write('###########################################################\n')
           break
         num_of_tries += 1
-        if num_of_tries < 3:
+        if num_of_tries <= 3:
           f.write('###################### Traffic Failed ######################\n')
           f.write('Executed cmd >>>>> '+cmd+'\n')
           f.write('Number of Tries: '+str(num_of_tries)+'\n')
@@ -98,6 +98,7 @@ def main(argv):
   f.close()
   with open('/tmp/result.txt','w') as result_file:
    result_file.write(result+'\n')
+  sys.exit(0)
 
 if __name__ == "__main__":
   main(sys.argv[1:])
