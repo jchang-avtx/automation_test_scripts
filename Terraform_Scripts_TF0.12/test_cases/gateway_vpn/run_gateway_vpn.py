@@ -125,6 +125,11 @@ else:
 
 try:
     log.info("Verifying destroy functionality...")
+    log.debug("     target_destroy() the ELB gateway first...") # Mantis (13255)
+    tf.destroy_target("gateway", "vpn_gw_1_under_elb")
+    log.debug("Sleeping for 30 seconds to wait for gateway clean-up...")
+    time.sleep(30)
+    log.debug("     Now running destroy_test() to finish clean-up...")
     tf.destroy_test()
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())

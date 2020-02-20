@@ -9,8 +9,8 @@
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
-  terraform state rm aviatrix_gateway.testGW2
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_gateway.testGW2 testGW2
+  terraform state rm aviatrix_gateway.vpn_gw_1_under_elb
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_gateway.vpn_gw_1_under_elb vpn-gw-1-under-elb
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 

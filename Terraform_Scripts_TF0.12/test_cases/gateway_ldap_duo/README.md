@@ -11,8 +11,8 @@
   terraform show
 
 
-  terraform state rm aviatrix_gateway.testGW4
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_gateway.testGW4 testGW4
+  terraform state rm aviatrix_gateway.aws_ldap_duo_gw
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_gateway.aws_ldap_duo_gw aws-ldap-duo-gw
   terraform plan -var-file=/path/provider_cred.tfvars
   terraform show
 
