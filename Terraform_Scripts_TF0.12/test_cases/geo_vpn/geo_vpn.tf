@@ -8,7 +8,7 @@ resource "aviatrix_vpc" "r53_vpc" {
   cloud_type            = 1
   account_name          = "AWSAccess"
   region                = "us-east-2"
-  name                  = "r53VPC"
+  name                  = "r53-vpc"
   cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, "0.0/16"])
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -17,7 +17,7 @@ resource "aviatrix_vpc" "r53_vpc" {
 resource "aviatrix_gateway" "r53_gw" {
   cloud_type        = 1
   account_name      = "AWSAccess"
-  gw_name           = "r53GW"
+  gw_name           = "r53-gw"
   vpc_id            = aviatrix_vpc.r53_vpc.vpc_id
   vpc_reg           = aviatrix_vpc.r53_vpc.region
   gw_size           = "t2.micro"
