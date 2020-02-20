@@ -10,7 +10,7 @@
   terraform show
 
   terraform state rm aviatrix_gateway.azure_gw
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_gateway.azure_gw azureGW
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_gateway.azure_gw azure-gw
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
