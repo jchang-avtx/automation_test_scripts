@@ -1,13 +1,49 @@
 ## Test case: test vpn gateway
 
-resource "aviatrix_gateway" "vpnGWunderELB" {
+#################################################
+# Infrastructure
+#################################################
+resource "random_integer" "vpc1_cidr_int" {
+  count = 3
+  min = 1
+  max = 223
+}
+resource "random_integer" "vpc2_cidr_int" {
+  count = 3
+  min = 1
+  max = 223
+}
+
+resource "aviatrix_vpc" "aws_vpn_gw_1_vpc" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, random_integer.vpc1_cidr_int[2].result, "0/24"])
+  cloud_type            = 1
+  name                  = "aws-vpn-gw-1-vpc"
+  region                = "us-west-1"
+}
+resource "aviatrix_vpc" "aws_vpn_gw_2_vpc" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc2_cidr_int[0].result, random_integer.vpc2_cidr_int[1].result, random_integer.vpc2_cidr_int[2].result, "0/24"])
+  cloud_type            = 1
+  name                  = "aws-vpn-gw-2-vpc"
+  region                = "us-west-1"
+}
+
+#################################################
+# VPN Gateways
+#################################################
+resource "aviatrix_gateway" "vpn_gw_1_under_elb" {
   cloud_type        = 1
   account_name      = "AWSAccess"
-  gw_name           = "vpnGWunderELB"
-  vpc_id            = "vpc-ba3c12dd"
-  vpc_reg           = "us-west-1"
+  gw_name           = "vpn-gw-1-under-elb"
+  vpc_id            = aviatrix_vpc.aws_vpn_gw_1_vpc.vpc_id
+  vpc_reg           = aviatrix_vpc.aws_vpn_gw_1_vpc.region
   gw_size           = "t2.micro"
-  subnet            = "172.31.0.0/20"
+  subnet            = aviatrix_vpc.aws_vpn_gw_1_vpc.subnets.2.cidr
 
   single_az_ha      = var.aviatrix_single_az_ha
   allocate_new_eip  = true
@@ -17,29 +53,29 @@ resource "aviatrix_gateway" "vpnGWunderELB" {
   vpn_protocol      = "UDP"
   enable_elb        = true
   enable_vpn_nat    = var.aviatrix_vpn_nat
-  elb_name          = "elb-vpngwunderelb"
+  elb_name          = "elb-vpn-gw-1-under-elb"
   max_vpn_conn      = var.aviatrix_vpn_max_conn
 
   split_tunnel      = var.aviatrix_vpn_split_tunnel
-  search_domains    = var.aviatrix_vpn_split_tunnel_search_domain_list
-  additional_cidrs  = var.aviatrix_vpn_split_tunnel_additional_cidrs_list
-  name_servers      = var.aviatrix_vpn_split_tunnel_name_servers_list
+  search_domains    = var.aviatrix_vpn_split_tunnel == false ? null : var.aviatrix_vpn_split_tunnel_search_domain_list
+  additional_cidrs  = var.aviatrix_vpn_split_tunnel == false ? null : var.aviatrix_vpn_split_tunnel_additional_cidrs_list
+  name_servers      = var.aviatrix_vpn_split_tunnel == false ? null : var.aviatrix_vpn_split_tunnel_name_servers_list
 
   saml_enabled      = true
 
 }
 
 ## (11332) vpn gw needs to support workflow for multiple gw under same ELB
-resource "aviatrix_gateway" "vpnGWunderELB2" {
+resource "aviatrix_gateway" "vpn_gw_2_under_elb" {
   cloud_type        = 1
   account_name      = "AWSAccess"
-  gw_name           = "vpnGWunderELB2"
-  vpc_id            = aviatrix_gateway.vpnGWunderELB.vpc_id
-  vpc_reg           = aviatrix_gateway.vpnGWunderELB.vpc_reg
+  gw_name           = "vpn-gw-2-under-elb"
+  vpc_id            = aviatrix_gateway.vpn_gw_1_under_elb.vpc_id
+  vpc_reg           = aviatrix_gateway.vpn_gw_1_under_elb.vpc_reg
 
   # v2
   gw_size           = "t2.micro"
-  subnet            = aviatrix_gateway.vpnGWunderELB.subnet
+  subnet            = aviatrix_gateway.vpn_gw_1_under_elb.subnet
 
   single_az_ha      = true
   allocate_new_eip  = true
@@ -53,23 +89,23 @@ resource "aviatrix_gateway" "vpnGWunderELB2" {
   max_vpn_conn      = var.aviatrix_vpn_max_conn
 
   split_tunnel      = var.aviatrix_vpn_split_tunnel
-  search_domains    = var.aviatrix_vpn_split_tunnel_search_domain_list
-  additional_cidrs  = var.aviatrix_vpn_split_tunnel_additional_cidrs_list
-  name_servers      = var.aviatrix_vpn_split_tunnel_name_servers_list
+  search_domains    = var.aviatrix_vpn_split_tunnel == false ? null : var.aviatrix_vpn_split_tunnel_search_domain_list
+  additional_cidrs  = var.aviatrix_vpn_split_tunnel == false ? null : var.aviatrix_vpn_split_tunnel_additional_cidrs_list
+  name_servers      = var.aviatrix_vpn_split_tunnel == false ? null : var.aviatrix_vpn_split_tunnel_name_servers_list
 
   saml_enabled      = true
 
 }
 
-## no elb
-resource "aviatrix_gateway" "testcase3VPN" {
+## no elb in same region
+resource "aviatrix_gateway" "vpn_gw_3_no_elb" {
   cloud_type        = 1
   account_name      = "AWSAccess"
-  gw_name           = "testcase3VPN"
-  vpc_id            = "vpc-0e2e824ec2ab6787e"
-  vpc_reg           = "us-west-1"
+  gw_name           = "vpn-gw-3-no-elb"
+  vpc_id            = aviatrix_vpc.aws_vpn_gw_2_vpc.vpc_id
+  vpc_reg           = aviatrix_vpc.aws_vpn_gw_2_vpc.region
   gw_size           = "t2.micro"
-  subnet            = "202.20.64.0/20"
+  subnet            = aviatrix_vpc.aws_vpn_gw_2_vpc.subnets.2.cidr
 
   single_az_ha      = true
   allocate_new_eip  = true
@@ -82,6 +118,6 @@ resource "aviatrix_gateway" "testcase3VPN" {
   max_vpn_conn  = 100
 }
 
-output "vpnGWunderELB_id" {
-  value = aviatrix_gateway.vpnGWunderELB.id
+output "vpn_gw_1_under_elb_id" {
+  value = aviatrix_gateway.vpn_gw_1_under_elb.id
 }

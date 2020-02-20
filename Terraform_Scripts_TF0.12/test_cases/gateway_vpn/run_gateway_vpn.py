@@ -84,7 +84,7 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("gateway", "vpnGWunderELB")
+    tf.import_test("gateway", "vpn_gw_1_under_elb")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
