@@ -113,8 +113,8 @@ try:
     log.info("Verifying destroy functionality...")
     log.debug("     destroy_target() the ELB gateway first...") # Mantis (13255)
     tf.destroy_target("gateway", "azure_gw")
-    log.debug("Sleeping for 30 seconds to wait for gateway clean-up...")
-    time.sleep(30)
+    log.debug("Sleeping for 1 minute to wait for gateway clean-up...")
+    time.sleep(60)
     log.debug("     Now running destroy_test() to finish clean-up...")
     tf.destroy_test()
 except tf.subprocess.CalledProcessError as err:

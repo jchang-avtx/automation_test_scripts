@@ -133,7 +133,7 @@ try:
     log.info("Verifying update functionality...")
     log.debug("     switchAction: Updating rules for allow/deny policy...")
     tf.update_test("switchAction", "user_emails")
-    log.debug("     switchPort: Updating ruless' allowed/denied port...")
+    log.debug("     switchPort: Updating rules' allowed/denied port...")
     tf.update_test("switchPort", "user_emails")
     log.debug("     switchProtocol: Updating rules' allowed/denied protocol...")
     tf.update_test("switchProtocol", "user_emails")
