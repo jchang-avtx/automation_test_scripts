@@ -22,7 +22,7 @@ resource "aviatrix_gateway" "aws_ldap_duo_gw" {
   vpc_id                  = aviatrix_vpc.aws_ldap_duo_vpc.vpc_id
   vpc_reg                 = aviatrix_vpc.aws_ldap_duo_vpc.region
   gw_size                 = "t2.micro"
-  subnet                  = aviatrix_vpc.aws_ldap_duo_vpc.subnets.2.cidr
+  subnet                  = aviatrix_vpc.aws_ldap_duo_vpc.subnets.6.cidr
 
   vpn_access              = true
   max_vpn_conn            = 100
