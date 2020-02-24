@@ -153,6 +153,11 @@ else:
 
 try:
     log.info("Verifying destroy functionality for both VPN users and profiles...")
+    log.debug("     destroy_target() the VPN gateway first...") # Mantis (13255)
+    tf.destroy_target("gateway", "vpn_user_gw", "user_emails")
+    log.debug("Sleeping for 2 minutes to wait for gateway clean-up...")
+    time.sleep(120)
+    log.debug("     Now running destroy_test() to finish clean-up...")
     tf.destroy_test("user_emails")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
