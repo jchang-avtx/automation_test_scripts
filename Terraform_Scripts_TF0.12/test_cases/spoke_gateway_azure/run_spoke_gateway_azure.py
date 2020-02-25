@@ -41,8 +41,11 @@ log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
 log.info("      2. Create Azure spoke gateway (Insane HA)")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform update tests on various attributes")
-log.info("      5. Tear down infrastructure\n")
+log.info("      4. Verify single AZ HA functionality")
+log.info("      5. Verify HA functionality")
+log.info("      6. Verify gateway resizing functionality for both primary and HA")
+log.info("      7. Verify transit gateway attachment functionality")
+log.info("      8. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")

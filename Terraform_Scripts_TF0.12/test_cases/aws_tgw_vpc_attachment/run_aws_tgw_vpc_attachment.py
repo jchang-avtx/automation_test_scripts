@@ -41,8 +41,10 @@ log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
 log.info("      2. Create an AWS TGW and manage VPC attachments separately")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform update tests involving respective resource")
-log.info("      5. Tear down infrastructure\n")
+log.info("      4. Verify TGW VPC attachment resource's attachment functionality by swapping Security Domains")
+log.info("      5. Perform import test on TGW DxC resource")
+log.info("      6. Verify TGW DxC CIDR advertisement functionality")
+log.info("      7. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")
