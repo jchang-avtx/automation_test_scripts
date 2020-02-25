@@ -14,13 +14,13 @@ resource "aws_kms_alias" "temp_cust_key_alias" {
 resource "random_integer" "vpc1_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "random_integer" "vpc2_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "aviatrix_vpc" "transit_encrypt_vpc" {

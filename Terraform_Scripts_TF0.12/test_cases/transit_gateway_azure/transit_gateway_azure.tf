@@ -3,7 +3,7 @@
 resource "random_integer" "vnet1_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "aviatrix_vpc" "arm_transit_gw_vnet" {

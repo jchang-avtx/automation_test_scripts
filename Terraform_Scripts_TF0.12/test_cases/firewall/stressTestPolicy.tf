@@ -7,25 +7,25 @@ variable "max_rule" {
 resource "random_integer" "src_ip1" {
   count = var.max_rule
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "random_integer" "src_ip2" {
   count = var.max_rule
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "random_integer" "dst_ip1" {
   count = var.max_rule
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "random_integer" "dst_ip2" {
   count = var.max_rule
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "random_shuffle" "protocol" {

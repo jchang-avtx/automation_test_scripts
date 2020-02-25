@@ -6,17 +6,17 @@
 resource "random_integer" "vpc1_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 resource "random_integer" "vpc2_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 resource "random_integer" "vpc3_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "aws_eip" "eip_aws_spoke_gateway" {

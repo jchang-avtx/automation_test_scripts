@@ -1,7 +1,7 @@
 resource "random_integer" "vpc1_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "aviatrix_vpc" "r53_vpc" {
