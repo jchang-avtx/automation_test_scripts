@@ -1,21 +1,33 @@
 # Launch a spoke VPC, and join with transit VPC.
 
+#################################################
+# Infrastructure
+#################################################
 resource "random_integer" "vpc1_cidr_int" {
   count = 2
   min = 1
   max = 223
 }
-
 resource "random_integer" "vpc2_cidr_int" {
   count = 2
   min = 1
   max = 223
 }
-
 resource "random_integer" "vpc3_cidr_int" {
   count = 2
   min = 1
   max = 223
+}
+
+resource "aws_eip" "eip_aws_spoke_gateway" {
+  lifecycle {
+    ignore_changes = [tags]
+  }
+}
+resource "aws_eip" "eip_aws_spoke_gateway_ha" {
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "aviatrix_vpc" "aws_transit_vpc_1" {
@@ -27,7 +39,6 @@ resource "aviatrix_vpc" "aws_transit_vpc_1" {
   name                  = "aws-transit-vpc-1"
   region                = "us-east-1"
 }
-
 resource "aviatrix_vpc" "aws_transit_vpc_2" {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = true
@@ -37,7 +48,6 @@ resource "aviatrix_vpc" "aws_transit_vpc_2" {
   name                  = "aws-transit-vpc-2"
   region                = "us-west-1"
 }
-
 resource "aviatrix_vpc" "aws_spoke_vpc_1" {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
@@ -48,10 +58,13 @@ resource "aviatrix_vpc" "aws_spoke_vpc_1" {
   region                = "us-east-1"
 }
 
-resource "aviatrix_transit_gateway" "test_transit_gw1" {
+#################################################
+# Transit Network
+#################################################
+resource "aviatrix_transit_gateway" "spoke_transit_gateway_1" {
   cloud_type      = 1
   account_name    = "AWSAccess"
-  gw_name         = "transitGW1forSpoke"
+  gw_name         = "spoke-transit-gateway-1"
   vpc_id          = aviatrix_vpc.aws_transit_vpc_1.vpc_id
   vpc_reg         = aviatrix_vpc.aws_transit_vpc_1.region
   gw_size         = "t2.micro"
@@ -66,10 +79,10 @@ resource "aviatrix_transit_gateway" "test_transit_gw1" {
 }
 
 ## Create a 2nd transitGW to test "updateTransitGW.tfvars test case"
-resource "aviatrix_transit_gateway" "test_transit_gw2" {
+resource "aviatrix_transit_gateway" "spoke_transit_gateway_2" {
   cloud_type      = 1
   account_name    = "AWSAccess"
-  gw_name         = "transitGW2forSpoke"
+  gw_name         = "spoke-transit-gateway-2"
   vpc_id          = aviatrix_vpc.aws_transit_vpc_2.vpc_id
   vpc_reg         = aviatrix_vpc.aws_transit_vpc_2.region
   gw_size         = "t2.micro"
@@ -83,10 +96,10 @@ resource "aviatrix_transit_gateway" "test_transit_gw2" {
   enable_active_mesh        = true
 }
 
-resource "aviatrix_spoke_gateway" "test_spoke_gateway" {
+resource "aviatrix_spoke_gateway" "aws_spoke_gateway" {
   cloud_type        = 1
   account_name      = "AWSAccess"
-  gw_name           = "spoke-gw-01"
+  gw_name           = "aws-spoke-gateway"
   vpc_id            = aviatrix_vpc.aws_spoke_vpc_1.vpc_id
   vpc_reg           = aviatrix_vpc.aws_spoke_vpc_1.region
   gw_size           = var.gw_size
@@ -101,18 +114,21 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway" {
   # ha_subnet         = "172.0.1.0/24" # non-insane
   ha_gw_size        = var.aviatrix_ha_gw_size
   single_ip_snat    = false
-  enable_active_mesh= true
+  enable_active_mesh= var.active_mesh
 
   allocate_new_eip  = false
-  eip               = "34.239.41.40"
-  ha_eip            = "3.213.178.197"
+  eip               = aws_eip.eip_aws_spoke_gateway.public_ip
+  ha_eip            = aws_eip.eip_aws_spoke_gateway_ha.public_ip
 
   transit_gw        = var.aviatrix_transit_gw
   tag_list          = ["k1:v1", "k2:v2"]
   enable_vpc_dns_server = var.enable_vpc_dns_server
-  depends_on        = ["aviatrix_transit_gateway.test_transit_gw1", "aviatrix_transit_gateway.test_transit_gw2"]
+  depends_on        = [aviatrix_transit_gateway.spoke_transit_gateway_1, aviatrix_transit_gateway.spoke_transit_gateway_2]
 }
 
-output "test_spoke_gateway_id" {
-  value = aviatrix_spoke_gateway.test_spoke_gateway.id
+#################################################
+# Output
+#################################################
+output "aws_spoke_gateway_id" {
+  value = aviatrix_spoke_gateway.aws_spoke_gateway.id
 }

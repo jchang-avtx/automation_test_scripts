@@ -84,7 +84,7 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("spoke_gateway", "test_spoke_gateway")
+    tf.import_test("spoke_gateway", "aws_spoke_gateway")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -100,6 +100,10 @@ try:
     log.debug("Sleeping for 2 minutes to wait for infrastructure to be up...")
     time.sleep(120)
     log.debug("     updateTransitGW: Updating to switch transit gateway to attach to the spoke...")
+    tf.update_test("updateTransitGW")
+    log.debug("     detachActive: (Mantis 13210) detach spoke and disable Active Mesh in one step...")
+    tf.update_test("detachActive")
+    log.debug("     updateTransitGW: Re-attaching spoke to transit with correct Active Mesh setting...")
     tf.update_test("updateTransitGW")
     log.debug("     updateGWSize: Updating spoke gateway's size...")
     tf.update_test("updateGWSize")
