@@ -4,13 +4,13 @@ def create_verify(varfile=None):
     if varfile == None:
         subprocess.run('terraform init', shell=True)
         subprocess.run('terraform apply -auto-approve', shell=True, check=True, capture_output=True)
-        subprocess.run('terraform plan', shell=True, check=True, capture_output=True)
+        subprocess.run('terraform plan -detailed-exitcode', shell=True, check=True, capture_output=True)
         subprocess.run('terraform show', shell=True)
     elif varfile:
         var_arg = '-var-file=' + varfile + '.tfvars'
         subprocess.run('terraform init', shell=True)
         subprocess.run(['terraform', 'apply', var_arg, '-auto-approve'], check=True, capture_output=True)
-        subprocess.run(['terraform', 'plan', var_arg], check=True, capture_output=True)
+        subprocess.run(['terraform', 'plan', var_arg, '-detailed-exitcode'], check=True, capture_output=True)
         subprocess.run('terraform show', shell=True)
     else:
         raise Exception('Too many arguments: create_verify(). # of args: {}'.format(len(args)))
@@ -38,12 +38,12 @@ def update_test(varfile, varfile2=None):
     var_arg = '-var-file=' + varfile + '.tfvars'
     if varfile2 == None:
         subprocess.run(['terraform', 'apply', var_arg, '-auto-approve'], check=True, capture_output=True)
-        subprocess.run(['terraform', 'plan', var_arg], check=True, capture_output=True)
+        subprocess.run(['terraform', 'plan', var_arg, '-detailed-exitcode'], check=True, capture_output=True)
         subprocess.run('terraform show', shell=True)
     elif varfile2:
         var_arg2 = '-var-file=' + varfile2 + '.tfvars'
         subprocess.run(['terraform', 'apply', var_arg, var_arg2, '-auto-approve'], check=True, capture_output=True)
-        subprocess.run(['terraform', 'plan', var_arg, var_arg2], check=True, capture_output=True)
+        subprocess.run(['terraform', 'plan', var_arg, var_arg2, '-detailed-exitcode'], check=True, capture_output=True)
         subprocess.run('terraform show', shell=True)
     else:
         raise Exception('Too many arguments: update_test()')
