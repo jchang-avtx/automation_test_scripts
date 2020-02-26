@@ -16,10 +16,10 @@ resource "aviatrix_vpc" "arm_transit_gw_vnet" {
   region                = "Central US"
 }
 
-resource "aviatrix_transit_gateway" "azure_transit_gw" {
+resource "aviatrix_transit_gateway" "arm_transit_gw" {
   cloud_type          = 8
   account_name        = "AzureAccess"
-  gw_name             = "azureTransitGW"
+  gw_name             = "arm-transit-gw"
   vpc_id              = aviatrix_vpc.arm_transit_gw_vnet.vpc_id
   vpc_reg             = aviatrix_vpc.arm_transit_gw_vnet.region
   gw_size             = "Standard_B1s"
@@ -34,10 +34,10 @@ resource "aviatrix_transit_gateway" "azure_transit_gw" {
   enable_active_mesh        = false
 }
 
-resource "aviatrix_spoke_gateway" "test_spoke_gateway_arm" {
+resource "aviatrix_spoke_gateway" "arm_spoke_gw" {
   cloud_type        = 8
   account_name      = "AzureAccess"
-  gw_name           = "azureSpokeGW"
+  gw_name           = "arm-spoke-gw"
   vpc_id            = "SpokeVNet:SpokeRG"
   vpc_reg           = "Central US"
   gw_size           = var.arm_gw_size
@@ -53,9 +53,9 @@ resource "aviatrix_spoke_gateway" "test_spoke_gateway_arm" {
   single_az_ha      = var.toggle_single_az_ha
   transit_gw        = var.attached_transit_gw
   enable_active_mesh= false
-  depends_on        = ["aviatrix_transit_gateway.azure_transit_gw"]
+  depends_on        = [aviatrix_transit_gateway.arm_transit_gw]
 }
 
-output "test_spoke_gateway_arm_id" {
-  value = aviatrix_spoke_gateway.test_spoke_gateway_arm.id
+output "arm_spoke_gw_id" {
+  value = aviatrix_spoke_gateway.arm_spoke_gw.id
 }

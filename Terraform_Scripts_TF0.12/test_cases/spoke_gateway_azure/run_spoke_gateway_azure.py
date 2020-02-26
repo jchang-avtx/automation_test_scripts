@@ -87,7 +87,7 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("spoke_gateway", "test_spoke_gateway_arm")
+    tf.import_test("spoke_gateway", "arm_spoke_gw")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

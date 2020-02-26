@@ -95,7 +95,7 @@ resource "aviatrix_fqdn" "fqdn_tag_1" {
     port   = var.aviatrix_fqdn_port[3]
   }
 
-  depends_on = ["aviatrix_gateway.FQDN-GW", "aviatrix_gateway.FQDN-GW2"]
+  depends_on = [aviatrix_gateway.FQDN-GW, aviatrix_gateway.FQDN-GW2]
 }
 
 output "fqdn_tag_1_id" {

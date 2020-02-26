@@ -103,7 +103,7 @@ resource "aviatrix_gateway" "onPrem_backup" {
 #     remote_subnet_cidr = aviatrix_gateway.onPrem.subnet
 #     tunnel_type = "udp"
 #     vpc_id = aviatrix_gateway.S2C_GW_Vir_Primary.vpc_id
-#     depends_on = ["aviatrix_gateway.S2C_GW_Vir_Backup", "aviatrix_gateway.S2C_GW_Vir_Primary"]
+#     depends_on = [aviatrix_gateway.S2C_GW_Vir_Backup, aviatrix_gateway.S2C_GW_Vir_Primary]
 # }
 
 resource "aviatrix_site2cloud" "test_s2c" {

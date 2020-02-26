@@ -6,7 +6,7 @@ resource "random_integer" "vnet1_cidr_int" {
   max = 126
 }
 
-resource "aviatrix_vpc" "arm_transit_gw_vnet" {
+resource "aviatrix_vpc" "azure_transit_gw_vnet" {
   account_name          = "AzureAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -19,9 +19,9 @@ resource "aviatrix_vpc" "arm_transit_gw_vnet" {
 resource "aviatrix_transit_gateway" "azure_transit_gw" {
   cloud_type          = 8
   account_name        = "AzureAccess"
-  gw_name             = "azureTransitGW"
-  vpc_id              = aviatrix_vpc.arm_transit_gw_vnet.vpc_id
-  vpc_reg             = aviatrix_vpc.arm_transit_gw_vnet.region
+  gw_name             = "azure-transit-gw"
+  vpc_id              = aviatrix_vpc.azure_transit_gw_vnet.vpc_id
+  vpc_reg             = aviatrix_vpc.azure_transit_gw_vnet.region
   gw_size             = var.arm_gw_size
   # subnet              = "10.2.0.0/24" # non-insane
   subnet              = join(".", [random_integer.vnet1_cidr_int[0].result, random_integer.vnet1_cidr_int[1].result, "64.0/26"]) # "10.2.2.0/26"
