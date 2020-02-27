@@ -72,8 +72,6 @@ resource "aviatrix_gateway" "vpn_gw_2_under_elb" {
   gw_name           = "vpn-gw-2-under-elb"
   vpc_id            = aviatrix_gateway.vpn_gw_1_under_elb.vpc_id
   vpc_reg           = aviatrix_gateway.vpn_gw_1_under_elb.vpc_reg
-
-  # v2
   gw_size           = "t2.micro"
   subnet            = aviatrix_gateway.vpn_gw_1_under_elb.subnet
 
@@ -84,7 +82,7 @@ resource "aviatrix_gateway" "vpn_gw_2_under_elb" {
   vpn_cidr          = "192.168.45.0/24" # must be non-overlapping CIDR
   vpn_protocol      = "UDP"
   enable_elb        = true
-  enable_vpn_nat    = true
+  enable_vpn_nat    = var.aviatrix_vpn_nat
   elb_name          = null # do not specify
   max_vpn_conn      = var.aviatrix_vpn_max_conn
 

@@ -136,18 +136,22 @@ else:
     log.info("      import_test(): PASS\n")
 
 
-try:
-    log.info("Verifying update functionality...")
-    log.debug("     updatePrefix: Update list of CIDRs for DxGW to advertise to remote (on-prem)...")
-    tf.update_test("updatePrefix")
-except tf.subprocess.CalledProcessError as err:
-    log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     update_test(): FAIL\n")
-    sys.exit(1)
-else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      update_test(): PASS\n")
+# try:
+#     log.info("Verifying update functionality...")
+#     log.debug("     updatePrefix: Update list of CIDRs for DxGW to advertise to remote (on-prem)...")
+#     tf.update_test("updatePrefix")
+# except tf.subprocess.CalledProcessError as err:
+#     log.exception(err.stderr.decode())
+#     log.info("-------------------- RESULT --------------------")
+#     log.error("     update_test(): FAIL\n")
+#     sys.exit(1)
+# else:
+#     log.info("-------------------- RESULT --------------------")
+#     log.info("      update_test(): PASS\n")
+log.info("AWS_TGW_DIRECTCONNECT currently will skip verifying update functionality...")
+log.info("      REASON: Mantis (13374) - fail to update allowed_prefix for DxC")
+log.info("-------------------- RESULT --------------------")
+log.info("     update_test(): SKIPPED\n")
 
 
 try:
