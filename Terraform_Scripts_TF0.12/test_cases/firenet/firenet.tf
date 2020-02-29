@@ -168,7 +168,7 @@ resource "aviatrix_firewall_instance" "firenet_instance" {
   firenet_gw_name       = aviatrix_transit_gateway.firenet_transit_gateway.gw_name
   firewall_name         = "firenet_Instance_Name"
   firewall_image        = "Palo Alto Networks VM-Series Next-Generation Firewall Bundle 1"
-  firewall_image_version= "9.1.0"
+  firewall_image_version= "9.1.0-h3"
   firewall_size         = "m5.xlarge"
   management_subnet     = aviatrix_vpc.firenet_vpc["us-east-1"].subnets.0.cidr
   egress_subnet         = aviatrix_vpc.firenet_vpc["us-east-1"].subnets.1.cidr
