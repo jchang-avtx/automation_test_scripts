@@ -87,7 +87,7 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("spoke_gateway", "gcloud_spoke_gw")
+    tf.import_test("spoke_gateway", "gcp_spoke_gw")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

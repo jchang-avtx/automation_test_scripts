@@ -10,7 +10,7 @@
   terraform show
 
   terraform state rm aviatrix_transit_gateway.gcp_transit_gateway
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_transit_gateway.gcp_transit_gateway gcloudtransitgw
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_transit_gateway.gcp_transit_gateway gcp-transit-gateway
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 

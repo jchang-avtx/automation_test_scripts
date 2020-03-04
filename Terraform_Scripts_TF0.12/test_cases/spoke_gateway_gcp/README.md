@@ -9,8 +9,8 @@
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
-  terraform state rm aviatrix_spoke_gateway.gcloud_spoke_gw
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_spoke_gateway.gcloud_spoke_gw gcloudspokegw
+  terraform state rm aviatrix_spoke_gateway.gcp_spoke_gw
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_spoke_gateway.gcp_spoke_gw gcp-spoke-gw
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 

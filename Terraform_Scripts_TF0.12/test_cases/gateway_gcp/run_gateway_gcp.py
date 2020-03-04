@@ -98,8 +98,8 @@ else:
 
 try:
     log.info("Verifying update functionality...")
-    log.debug("     updateHAGWSize: Enabling and creating HA gateway...")
-    tf.update_test("updateHAGWSize")
+    log.debug("     enableHA: Enabling and creating HA gateway...")
+    tf.update_test("enableHA")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
