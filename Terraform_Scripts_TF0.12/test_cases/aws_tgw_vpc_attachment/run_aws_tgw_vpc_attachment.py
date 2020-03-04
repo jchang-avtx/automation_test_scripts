@@ -125,7 +125,7 @@ log.info("============================================================")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("aws_tgw_directconnect", "aws_tgw_dc")
+    tf.import_test("aws_tgw_directconnect", "aws_tgw_dc", "updateSecurityDomain")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

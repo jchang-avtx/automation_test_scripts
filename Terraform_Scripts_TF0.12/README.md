@@ -7,7 +7,7 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
 - **Note:** Current scripts are updated for R2.0+
 
 ---
-**STATUS:** Updated for UserConnect 5.2, Terraform R2.10
+**STATUS:** Updated for UserConnect 5.3, Terraform R2.12
 
 ---
 
