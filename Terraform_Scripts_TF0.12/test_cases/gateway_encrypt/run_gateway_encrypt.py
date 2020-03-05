@@ -42,7 +42,7 @@ log.info("      1. Set up environment variables/ credentials")
 log.info("      2. Create AWS gateway (regular, transit, spoke) with encrypted EBS volume")
 log.info("      3. Perform terraform import to identify deltas")
 log.info("      4. Disable the key to avoid remaking/ security concerns when test not running")
-log.info("      5. Tear down infrastructure\n")
+log.info("      5. Tear down infrastructure except key\n")
 
 try:
     log.info("Setting environment...")
@@ -121,6 +121,9 @@ try:
     tf.destroy_target("vpc", "spoke_encrypt_vpc")
     log.debug("     destroy_target(): transit_encrypt_vpc")
     tf.destroy_target("vpc", "transit_encrypt_vpc")
+    log.debug("     destroy_target(): random_integer.vpc1_cidr_int & random_integer.vpc2_cidr_int")
+    tf.destroy_target("random_integer", "vpc1_cidr_int")
+    tf.destroy_target("random_integer", "vpc2_cidr_int")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

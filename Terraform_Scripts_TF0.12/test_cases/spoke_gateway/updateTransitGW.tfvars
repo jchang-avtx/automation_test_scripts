@@ -1,7 +1,3 @@
-## Test case 1: Attach to another transit_vpc / gw
+## Test case 1: Attach to another transit gw
 
-gw_size             = "c5.large"
-aviatrix_ha_gw_size = "c5.large"
-
-aviatrix_transit_gw = "transitGW2forSpoke"
-enable_vpc_dns_server = false
+aviatrix_transit_gw = "spoke-transit-gateway-2"

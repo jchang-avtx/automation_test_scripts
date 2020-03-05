@@ -1,19 +1,34 @@
 ## For regression: Test case: test vpn gateway
 
-resource "aviatrix_gateway" "testGW4" {
+resource "random_integer" "vpc1_cidr_int" {
+  count = 3
+  min = 1
+  max = 126
+}
+resource "aviatrix_vpc" "aws_ldap_duo_vpc" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, random_integer.vpc1_cidr_int[2].result, "0/24"])
+  cloud_type            = 1
+  name                  = "aws-ldap-duo-vpc"
+  region                = "us-east-1"
+}
+
+resource "aviatrix_gateway" "aws_ldap_duo_gw" {
   cloud_type              = 1
   account_name            = "AWSAccess"
-  gw_name                 = "testGW4"
-  vpc_id                  = "vpc-0086065966b807866"
-  vpc_reg                 = "us-east-1"
+  gw_name                 = "aws-ldap-duo-gw"
+  vpc_id                  = aviatrix_vpc.aws_ldap_duo_vpc.vpc_id
+  vpc_reg                 = aviatrix_vpc.aws_ldap_duo_vpc.region
   gw_size                 = "t2.micro"
-  subnet                  = "10.0.2.0/24"
+  subnet                  = aviatrix_vpc.aws_ldap_duo_vpc.subnets.6.cidr
 
   vpn_access              = true
   max_vpn_conn            = 100
   vpn_cidr                = "192.168.44.0/24"
   enable_elb              = true
-  elb_name                = "elb-testgw4-vpn"
+  elb_name                = "elb-aws-ldap-duo-gw"
 
   split_tunnel            = true
 
@@ -33,6 +48,6 @@ resource "aviatrix_gateway" "testGW4" {
   allocate_new_eip        = true
 }
 
-output "testGW4_id" {
-  value = aviatrix_gateway.testGW4.id
+output "aws_ldap_duo_gw_id" {
+  value = aviatrix_gateway.aws_ldap_duo_gw.id
 }

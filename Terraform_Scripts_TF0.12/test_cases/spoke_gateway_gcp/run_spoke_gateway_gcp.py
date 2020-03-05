@@ -41,8 +41,11 @@ log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
 log.info("      2. Create GCP spoke gateway (HA)")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform update tests on various attributes")
-log.info("      5. Tear down infrastructure\n")
+log.info("      4. Verify single IP SNAT functionality")
+log.info("      5. Verify HA functionality")
+log.info("      6. Verify gateway resizing functionality for both primary and HA")
+log.info("      7. Verify various transit gateway attachment functionality")
+log.info("      8. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")
@@ -84,7 +87,7 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("spoke_gateway", "gcloud_spoke_gw")
+    tf.import_test("spoke_gateway", "gcp_spoke_gw")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

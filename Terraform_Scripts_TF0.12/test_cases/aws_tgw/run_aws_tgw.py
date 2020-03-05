@@ -41,8 +41,10 @@ log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
 log.info("      2. Create Aviatrix AWS TGW solution")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform various update tests involving respective resource")
-log.info("      5. Tear down infrastructure\n")
+log.info("      4. Verify TGW Security Domain connection functionality")
+log.info("      5. Verify TGW VPC attachment functionality")
+log.info("      6. Perform import tests on TGW VPN conn resource")
+log.info("      7. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")

@@ -84,7 +84,7 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("gateway", "testGW1")
+    tf.import_test("gateway", "aws_gw_test_1")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

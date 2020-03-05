@@ -1,9 +1,12 @@
 ## Test case: test regular gateway
 
+#######################
+## INFRASTRUCTURE
+#######################
 resource "random_integer" "vpc1_cidr_int" {
   count = 3
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "aviatrix_vpc" "aws_gw_vpc_1" {
@@ -16,10 +19,25 @@ resource "aviatrix_vpc" "aws_gw_vpc_1" {
   region                = "us-east-1"
 }
 
-resource "aviatrix_gateway" "testGW1" {
+resource "aws_eip" "eip_aws_gw_test_1" {
+  lifecycle {
+    ignore_changes = [tags]
+  }
+}
+
+resource "aws_eip" "eip_aws_gw_test_1_ha" {
+  lifecycle {
+    ignore_changes = [tags]
+  }
+}
+
+#######################
+## GATEWAYS
+#######################
+resource "aviatrix_gateway" "aws_gw_test_1" {
   cloud_type          = 1
   account_name        = "AWSAccess"
-  gw_name             = "testGW1"
+  gw_name             = "aws-gw-test-1"
   vpc_id              = aviatrix_vpc.aws_gw_vpc_1.vpc_id
   vpc_reg             = aviatrix_vpc.aws_gw_vpc_1.region
   gw_size             = var.aws_instance_size
@@ -29,15 +47,18 @@ resource "aviatrix_gateway" "testGW1" {
   single_ip_snat      = var.single_ip_snat
 
   allocate_new_eip    = false
-  eip                 = "52.86.21.117"
+  eip                 = aws_eip.eip_aws_gw_test_1.public_ip
 
   peering_ha_subnet   = aviatrix_vpc.aws_gw_vpc_1.subnets.7.cidr
   peering_ha_gw_size  = var.aws_ha_gw_size
-  peering_ha_eip      = "52.204.201.204"
+  peering_ha_eip      = aws_eip.eip_aws_gw_test_1_ha.public_ip
 
   enable_vpc_dns_server = var.enable_vpc_dns_server
 }
 
-output "testGW1_id" {
-  value = aviatrix_gateway.testGW1.id
+#######################
+## OUTPUTS
+#######################
+output "aws_gw_test_1_id" {
+  value = aviatrix_gateway.aws_gw_test_1.id
 }

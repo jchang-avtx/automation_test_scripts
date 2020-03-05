@@ -1,7 +1,7 @@
 """
 run_spoke_gateway_sdnat.py
 
-Test case for poke Gateway with SNAT/ DNAT policies (AWS, ARM) Terraform resource/ use-case
+Test case for Spoke Gateway with SNAT/ DNAT policies (AWS, ARM) Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py

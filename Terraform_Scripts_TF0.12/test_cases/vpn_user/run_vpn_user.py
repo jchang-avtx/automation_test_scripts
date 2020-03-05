@@ -133,7 +133,7 @@ try:
     log.info("Verifying update functionality...")
     log.debug("     switchAction: Updating rules for allow/deny policy...")
     tf.update_test("switchAction", "user_emails")
-    log.debug("     switchPort: Updating ruless' allowed/denied port...")
+    log.debug("     switchPort: Updating rules' allowed/denied port...")
     tf.update_test("switchPort", "user_emails")
     log.debug("     switchProtocol: Updating rules' allowed/denied protocol...")
     tf.update_test("switchProtocol", "user_emails")
@@ -153,6 +153,11 @@ else:
 
 try:
     log.info("Verifying destroy functionality for both VPN users and profiles...")
+    log.debug("     destroy_target() the VPN gateway first...") # Mantis (13255)
+    tf.destroy_target("gateway", "vpn_user_gw", "user_emails")
+    log.debug("Sleeping for 3 minutes to wait for gateway clean-up...")
+    time.sleep(180)
+    log.debug("     Now running destroy_test() to finish clean-up...")
     tf.destroy_test("user_emails")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())

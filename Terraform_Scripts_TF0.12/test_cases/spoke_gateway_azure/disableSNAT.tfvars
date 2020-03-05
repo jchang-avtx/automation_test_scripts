@@ -9,4 +9,4 @@ arm_ha_gw_size      = "Standard_D4_v2" # D3 -> D4
 toggle_snat         = false # yes -> no
 toggle_single_az_ha = false # enabled -> disabled
 
-attached_transit_gw = "azureTransitGW" # blank -> transitGW
+attached_transit_gw = "arm-transit-gw" # blank -> transitGW

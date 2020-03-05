@@ -3,13 +3,13 @@
 resource "random_integer" "vpc1_cidr_int" {
   count = 3
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "random_integer" "vpc2_cidr_int" {
   count = 3
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "aviatrix_vpc" "fqdn_vpc_1" {
@@ -18,7 +18,7 @@ resource "aviatrix_vpc" "fqdn_vpc_1" {
   aviatrix_firenet_vpc  = false
   cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, random_integer.vpc1_cidr_int[2].result, "0/24"])
   cloud_type            = 1
-  name                  = "fqdnVPC1"
+  name                  = "fqdn-vpc-1"
   region                = "us-east-1"
 }
 
@@ -28,14 +28,14 @@ resource "aviatrix_vpc" "fqdn_vpc_2" {
   aviatrix_firenet_vpc  = false
   cidr                  = join(".", [random_integer.vpc2_cidr_int[0].result, random_integer.vpc2_cidr_int[1].result, random_integer.vpc2_cidr_int[2].result, "0/24"])
   cloud_type            = 1
-  name                  = "fqdnVPC2"
+  name                  = "fqdn-vpc-2"
   region                = "us-east-1"
 }
 
-resource "aviatrix_gateway" "FQDN-GW" {
+resource "aviatrix_gateway" "fqdn_gw_1" {
   cloud_type    = 1
   account_name  = "AWSAccess"
-  gw_name       = "FQDN-GW"
+  gw_name       = "fqdn-gw-1"
   vpc_id        = aviatrix_vpc.fqdn_vpc_1.vpc_id
   vpc_reg       = aviatrix_vpc.fqdn_vpc_1.region
   gw_size       = "t2.micro"
@@ -48,10 +48,10 @@ resource "aviatrix_gateway" "FQDN-GW" {
   }
 }
 
-resource "aviatrix_gateway" "FQDN-GW2" {
+resource "aviatrix_gateway" "fqdn_gw_2" {
   cloud_type    = 1
   account_name  = "AWSAccess"
-  gw_name       = "FQDN-GW2"
+  gw_name       = "fqdn-gw-2"
   vpc_id        = aviatrix_vpc.fqdn_vpc_2.vpc_id
   vpc_reg       = aviatrix_vpc.fqdn_vpc_2.region
   gw_size       = "t2.micro"
@@ -95,7 +95,7 @@ resource "aviatrix_fqdn" "fqdn_tag_1" {
     port   = var.aviatrix_fqdn_port[3]
   }
 
-  depends_on = ["aviatrix_gateway.FQDN-GW", "aviatrix_gateway.FQDN-GW2"]
+  depends_on = [aviatrix_gateway.fqdn_gw_1, aviatrix_gateway.fqdn_gw_2]
 }
 
 output "fqdn_tag_1_id" {

@@ -1,20 +1,22 @@
 ## Creates and manages a Aviatrix Site2Cloud connections
 
-# environment
+#################################################
+# Infrastructure
+#################################################
 resource "random_integer" "vpc1_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 resource "random_integer" "vpc2_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 resource "random_integer" "vpc3_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "aviatrix_vpc" "aws_s2c_vpc_1" {
@@ -90,10 +92,10 @@ data "aws_route_table" "aws_s2c_vpc_1_rtb" {
 }
 
 # Create Aviatrix AWS gateway to act as our "Local"
-resource "aviatrix_gateway" "test_gateway1" {
+resource "aviatrix_gateway" "s2c_avx_primary_gw" {
   cloud_type          = 1
   account_name        = "AWSAccess"
-  gw_name             = "avxPrimaryGwName"
+  gw_name             = "s2c-avx-primary-gw"
   vpc_id              = aviatrix_vpc.aws_s2c_vpc_1.vpc_id
   vpc_reg             = aviatrix_vpc.aws_s2c_vpc_1.region
   gw_size             = "t2.micro"
@@ -108,10 +110,10 @@ resource "aviatrix_gateway" "test_gateway1" {
 }
 
 # Create Aviatrix AWS gateway to act as our on-prem / "Remote" server
-resource "aviatrix_gateway" "test_gateway2" {
+resource "aviatrix_gateway" "s2c_avx_onprem_gw" {
   cloud_type          = 1
   account_name        = "AWSAccess"
-  gw_name             = "onPremRemoteGW"
+  gw_name             = "s2c-avx-onprem-gw"
   vpc_id              = aviatrix_vpc.aws_s2c_vpc_2.vpc_id
   vpc_reg             = aviatrix_vpc.aws_s2c_vpc_2.region
   gw_size             = "t2.micro"
@@ -126,10 +128,10 @@ resource "aviatrix_gateway" "test_gateway2" {
 }
 
 ## Test case: with 3 gateways/ more than 2 connections
-resource "aviatrix_gateway" "test_gateway3" {
+resource "aviatrix_gateway" "s2c_avx_site3_gw" {
   cloud_type          = 1
   account_name        = "AWSAccess"
-  gw_name             = "gateway3"
+  gw_name             = "s2c-avx-site3-gw"
   vpc_id              = aviatrix_vpc.aws_s2c_vpc_3.vpc_id
   vpc_reg             = aviatrix_vpc.aws_s2c_vpc_3.region
   gw_size             = "t2.micro"
@@ -144,25 +146,27 @@ resource "aviatrix_gateway" "test_gateway3" {
 }
 
 #################################################
+# Site2Cloud
+#################################################
 
 resource "aviatrix_site2cloud" "s2c_test" {
-  vpc_id                        = aviatrix_gateway.test_gateway1.vpc_id
+  vpc_id                        = aviatrix_gateway.s2c_avx_primary_gw.vpc_id
   connection_name               = "s2c_test_conn_name"
   connection_type               = "unmapped"
   remote_gateway_type           = var.custom_alg == true ? "generic" : "avx"
   tunnel_type                   = "udp"
   ha_enabled                    = true
 
-  primary_cloud_gateway_name    = aviatrix_gateway.test_gateway1.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.test_gateway1.gw_name, "hagw"])
-  remote_gateway_ip             = aviatrix_gateway.test_gateway2.eip
-  backup_remote_gateway_ip      = aviatrix_gateway.test_gateway2.peering_ha_eip
+  primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_primary_gw.gw_name
+  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_primary_gw.gw_name, "hagw"])
+  remote_gateway_ip             = aviatrix_gateway.s2c_avx_onprem_gw.eip
+  backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_onprem_gw.peering_ha_eip
 
   # pre_shared_key = var.pre_shared_key # (Optional) Auto-generated if not specified
   # backup_pre_shared_key = var.pre_shared_key_backup # (Optional)
 
-  remote_subnet_cidr            = aviatrix_gateway.test_gateway2.subnet
-  local_subnet_cidr             = aviatrix_gateway.test_gateway1.subnet
+  remote_subnet_cidr            = aviatrix_gateway.s2c_avx_onprem_gw.subnet
+  local_subnet_cidr             = aviatrix_gateway.s2c_avx_primary_gw.subnet
 
   # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = true
@@ -176,27 +180,27 @@ resource "aviatrix_site2cloud" "s2c_test" {
   backup_remote_gateway_latitude = var.custom_alg == true ? 39.0437 : null
   backup_remote_gateway_longitude = var.custom_alg == true ? -77.4875 : null
 
-  depends_on                    = [aviatrix_gateway.test_gateway1, aviatrix_gateway.test_gateway2, aviatrix_gateway.test_gateway3]
+  depends_on                    = [aviatrix_gateway.s2c_avx_primary_gw, aviatrix_gateway.s2c_avx_onprem_gw, aviatrix_gateway.s2c_avx_site3_gw]
 }
 
 resource "aviatrix_site2cloud" "s2c_test2" {
-  vpc_id                        = aviatrix_gateway.test_gateway2.vpc_id
+  vpc_id                        = aviatrix_gateway.s2c_avx_onprem_gw.vpc_id
   connection_name               = "s2c_test_conn_name_2"
   connection_type               = "unmapped"
   remote_gateway_type           = var.custom_alg == true ? "generic" : "avx"
   tunnel_type                   = "udp"
   ha_enabled                    = true
 
-  primary_cloud_gateway_name    = aviatrix_gateway.test_gateway2.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.test_gateway2.gw_name, "hagw"])
-  remote_gateway_ip             = aviatrix_gateway.test_gateway1.eip
-  backup_remote_gateway_ip      = aviatrix_gateway.test_gateway1.peering_ha_eip
+  primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_onprem_gw.gw_name
+  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_onprem_gw.gw_name, "hagw"])
+  remote_gateway_ip             = aviatrix_gateway.s2c_avx_primary_gw.eip
+  backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_primary_gw.peering_ha_eip
 
   pre_shared_key                = var.pre_shared_key
   backup_pre_shared_key         = var.pre_shared_key_backup
 
-  remote_subnet_cidr            = aviatrix_gateway.test_gateway1.subnet
-  local_subnet_cidr             = aviatrix_gateway.test_gateway2.subnet
+  remote_subnet_cidr            = aviatrix_gateway.s2c_avx_primary_gw.subnet
+  local_subnet_cidr             = aviatrix_gateway.s2c_avx_onprem_gw.subnet
 
   # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = true
@@ -209,23 +213,23 @@ resource "aviatrix_site2cloud" "s2c_test2" {
 }
 
 resource "aviatrix_site2cloud" "s2c_test3" {
-  vpc_id                        = aviatrix_gateway.test_gateway3.vpc_id
+  vpc_id                        = aviatrix_gateway.s2c_avx_site3_gw.vpc_id
   connection_name               = "s2c_test_conn_name_3"
   connection_type               = var.custom_alg == true ? "mapped" : "unmapped"
   remote_gateway_type           = var.custom_alg == true ? "generic" : "avx"
   tunnel_type                   = "udp"
   ha_enabled                    = true
 
-  primary_cloud_gateway_name    = aviatrix_gateway.test_gateway3.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.test_gateway3.gw_name, "hagw"])
-  remote_gateway_ip             = aviatrix_gateway.test_gateway1.eip
-  backup_remote_gateway_ip      = aviatrix_gateway.test_gateway1.peering_ha_eip
+  primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_site3_gw.gw_name
+  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_site3_gw.gw_name, "hagw"])
+  remote_gateway_ip             = aviatrix_gateway.s2c_avx_primary_gw.eip
+  backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_primary_gw.peering_ha_eip
 
-  remote_subnet_cidr            = aviatrix_gateway.test_gateway2.subnet
-  local_subnet_cidr             = aviatrix_gateway.test_gateway3.subnet
+  remote_subnet_cidr            = aviatrix_gateway.s2c_avx_onprem_gw.subnet
+  local_subnet_cidr             = aviatrix_gateway.s2c_avx_site3_gw.subnet
 
   ## mapped testing ##
-  remote_subnet_virtual         = var.custom_alg == true ? aviatrix_gateway.test_gateway2.subnet : null
+  remote_subnet_virtual         = var.custom_alg == true ? aviatrix_gateway.s2c_avx_onprem_gw.subnet : null
   local_subnet_virtual          = var.custom_alg == true ? "100.1.0.0/20" : null
 
   custom_algorithms             = var.custom_alg
@@ -244,23 +248,23 @@ resource "aviatrix_site2cloud" "s2c_test3" {
 }
 
 resource "aviatrix_site2cloud" "s2c_test4" {
-  vpc_id                        = aviatrix_gateway.test_gateway1.vpc_id
+  vpc_id                        = aviatrix_gateway.s2c_avx_primary_gw.vpc_id
   connection_name               = "s2c_test_conn_name_4"
   connection_type               = var.custom_alg == true ? "mapped" : "unmapped"
   remote_gateway_type           = var.custom_alg == true ? "generic" : "avx"
   tunnel_type                   = "udp"
   ha_enabled                    = true
 
-  primary_cloud_gateway_name    = aviatrix_gateway.test_gateway1.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.test_gateway1.gw_name, "hagw"])
-  remote_gateway_ip             = aviatrix_gateway.test_gateway3.eip
-  backup_remote_gateway_ip      = aviatrix_gateway.test_gateway3.peering_ha_eip
+  primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_primary_gw.gw_name
+  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_primary_gw.gw_name, "hagw"])
+  remote_gateway_ip             = aviatrix_gateway.s2c_avx_site3_gw.eip
+  backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_site3_gw.peering_ha_eip
 
-  remote_subnet_cidr            = aviatrix_gateway.test_gateway3.subnet
-  local_subnet_cidr             = aviatrix_gateway.test_gateway2.subnet
+  remote_subnet_cidr            = aviatrix_gateway.s2c_avx_site3_gw.subnet
+  local_subnet_cidr             = aviatrix_gateway.s2c_avx_onprem_gw.subnet
 
   remote_subnet_virtual         = var.custom_alg == true ? "100.1.0.0/20" : null
-  local_subnet_virtual          = var.custom_alg == true ? aviatrix_gateway.test_gateway2.subnet : null
+  local_subnet_virtual          = var.custom_alg == true ? aviatrix_gateway.s2c_avx_onprem_gw.subnet : null
 
   custom_algorithms             = var.custom_alg
   phase_1_authentication        = var.custom_alg == true ? "SHA-384" : null

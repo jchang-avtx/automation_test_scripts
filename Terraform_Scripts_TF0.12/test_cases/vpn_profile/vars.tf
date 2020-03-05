@@ -1,15 +1,15 @@
 variable "aviatrix_vpn_profile_action" {
-  type = "list"
+  type = list(string)
 }
 variable "aviatrix_vpn_profile_protocol" {
-  type = "list"
+  type = list(string)
 }
 variable "aviatrix_vpn_profile_port" {
-  type = "list"
+  type = list(string)
 }
 variable "aviatrix_vpn_profile_target" {
-  type = "list"
+  type = list(string)
 }
 variable "aviatrix_vpn_profile_user_list" {
-  type = "list"
+  type = list(string)
 }

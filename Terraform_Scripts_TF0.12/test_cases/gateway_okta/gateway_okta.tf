@@ -1,19 +1,34 @@
 ## For regression: Test case: test vpn gateway (okta)
 
-resource "aviatrix_gateway" "testGW3" {
+resource "random_integer" "vpc1_cidr_int" {
+  count = 3
+  min = 1
+  max = 126
+}
+resource "aviatrix_vpc" "aws_okta_vpc" {
+  account_name          = "AWSAccess"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = false
+  cidr                  = join(".", [random_integer.vpc1_cidr_int[0].result, random_integer.vpc1_cidr_int[1].result, random_integer.vpc1_cidr_int[2].result, "0/24"])
+  cloud_type            = 1
+  name                  = "aws-okta-vpc"
+  region                = "us-west-1"
+}
+
+resource "aviatrix_gateway" "aws_okta_gw" {
   cloud_type              = 1
   account_name            = "AWSAccess"
-  gw_name                 = "testGW3"
-  vpc_id                  = "vpc-ba3c12dd"
-  vpc_reg                 = "us-west-1"
+  gw_name                 = "aws-okta-gw"
+  vpc_id                  = aviatrix_vpc.aws_okta_vpc.vpc_id
+  vpc_reg                 = aviatrix_vpc.aws_okta_vpc.region
   gw_size                 = "t2.micro"
-  subnet                  = "172.31.0.0/20"
+  subnet                  = aviatrix_vpc.aws_okta_vpc.subnets.2.cidr
 
   vpn_access              = true
   max_vpn_conn            = 100
   vpn_cidr                = "192.168.43.0/24"
   enable_elb              = true
-  elb_name                = "elb-testgw3-vpn"
+  elb_name                = "elb-aws-okta-gw"
 
   split_tunnel            = true
 
@@ -25,6 +40,6 @@ resource "aviatrix_gateway" "testGW3" {
   allocate_new_eip        = true
 }
 
-output "testGW3_id" {
-  value = aviatrix_gateway.testGW3.id
+output "aws_okta_gw_id" {
+  value = aviatrix_gateway.aws_okta_gw.id
 }

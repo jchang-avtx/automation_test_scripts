@@ -41,8 +41,11 @@ log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
 log.info("      2. Create AWS spoke gateway (Insane HA)")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform update tests on various attributes")
-log.info("      5. Tear down infrastructure\n")
+log.info("      4. Verify various transit gateway attachment functionality")
+log.info("      5. Verify attach/detach + Active Mesh order of operations (13210)")
+log.info("      6. Verify gateway resizing functionality for both primary and HA")
+log.info("      7. Verify vpc_dns_server switch functionality")
+log.info("      8. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")
@@ -84,7 +87,7 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("spoke_gateway", "test_spoke_gateway")
+    tf.import_test("spoke_gateway", "aws_spoke_gateway")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -100,6 +103,10 @@ try:
     log.debug("Sleeping for 2 minutes to wait for infrastructure to be up...")
     time.sleep(120)
     log.debug("     updateTransitGW: Updating to switch transit gateway to attach to the spoke...")
+    tf.update_test("updateTransitGW")
+    log.debug("     detachActive: (Mantis 13210) detach spoke and disable Active Mesh in one step...")
+    tf.update_test("detachActive")
+    log.debug("     updateTransitGW: Re-attaching spoke to transit with correct Active Mesh setting...")
     tf.update_test("updateTransitGW")
     log.debug("     updateGWSize: Updating spoke gateway's size...")
     tf.update_test("updateGWSize")

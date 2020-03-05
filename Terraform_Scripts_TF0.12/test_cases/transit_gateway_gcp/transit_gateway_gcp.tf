@@ -1,7 +1,7 @@
 resource "aviatrix_transit_gateway" "gcp_transit_gateway" {
   cloud_type    = 4
   account_name  = "GCPAccess"
-  gw_name       = "gcloudtransitgw"
+  gw_name       = "gcp-transit-gateway"
   vpc_id        = "gcptestvpc"
   vpc_reg       = "us-central1-c"
   gw_size       = var.gcp_gw_size

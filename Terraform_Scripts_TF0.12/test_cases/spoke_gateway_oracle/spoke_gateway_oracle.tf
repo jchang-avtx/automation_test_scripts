@@ -7,13 +7,13 @@
 resource "random_integer" "vpc1_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "random_integer" "vpc2_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "aviatrix_vpc" "oci_vnet_for_transit_1" {

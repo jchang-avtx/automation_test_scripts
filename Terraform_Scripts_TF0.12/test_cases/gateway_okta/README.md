@@ -10,8 +10,8 @@
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
-  terraform state rm aviatrix_gateway.testGW3
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_gateway.testGW3 testGW3
+  terraform state rm aviatrix_gateway.aws_okta_gw
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_gateway.aws_okta_gw aws-okta-gw
   terraform plan -var-file=/path/provider_cred.tfvars
   terraform show
 

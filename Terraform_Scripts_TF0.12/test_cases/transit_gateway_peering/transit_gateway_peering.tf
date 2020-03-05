@@ -4,13 +4,13 @@
 resource "random_integer" "vpc1_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "random_integer" "vpc2_cidr_int" {
   count = 2
   min = 1
-  max = 223
+  max = 126
 }
 
 resource "aviatrix_vpc" "aws_transit_gw_vpc_1" {

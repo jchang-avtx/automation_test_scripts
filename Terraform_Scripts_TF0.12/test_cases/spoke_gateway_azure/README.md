@@ -9,8 +9,8 @@
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
-  terraform state rm aviatrix_spoke_gateway.test_spoke_gateway_arm
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_spoke_gateway.test_spoke_gateway_arm azureSpokeGW
+  terraform state rm aviatrix_spoke_gateway.arm_spoke_gw
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_spoke_gateway.arm_spoke_gw arm-spoke-gw
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 

@@ -101,6 +101,11 @@ log.info("     update_test(): SKIPPED\n")
 
 try:
     log.info("Verifying destroy functionality...")
+    log.debug("     destroy_target() the ELB gateway first...") # Mantis (13255)
+    tf.destroy_target("gateway", "r53_gw")
+    log.debug("Sleeping for 2 minutes to wait for gateway clean-up...")
+    time.sleep(120)
+    log.debug("     Now running destroy_test() to finish clean-up...")
     tf.destroy_test()
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
