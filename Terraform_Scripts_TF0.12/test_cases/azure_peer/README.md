@@ -1,7 +1,4 @@
-## aviatrix_arm_peer
-
-## DEPRECATED
-* test stage moved to **azure_peer** module with the its introduction in **R2.12**
+## aviatrix_azure_peer
 
 ---
 
@@ -12,8 +9,8 @@
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
-  terraform state rm aviatrix_arm_peer.test_armpeer
-  terraform import -var-file=/path/provider_cred.tfvars aviatrix_arm_peer.test_armpeer Vnet1:RG1~Vnet2:RG2
+  terraform state rm aviatrix_azure_peer.azure_test_peer
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_azure_peer.azure_test_peer Vnet1:RG1~Vnet2:RG2
   terraform plan -var-file=/path/provider_cred.tfvars -detailed-exitcode
   terraform show
 
