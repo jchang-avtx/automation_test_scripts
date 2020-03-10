@@ -1,6 +1,14 @@
 ## aviatrix_gateway (Designated Gateway + DNAT) (AWS + ARM)
 
 ---
+### Test cases
+- Designated gateway (AWS)
+- SNAT policies (AWS)
+- DNAT policies (AWS)
+- SNAT policies (Azure)
+- DNAT policies (Azure)
+- Mantis (13505) - DNAT resource creation fails due to existing SNAT policy (incorrect arg reference)
+
 
 ### Usage
 ```
