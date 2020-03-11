@@ -9,7 +9,7 @@ resource "aviatrix_gateway" "avtx_gw" {
     vpc_reg             = data.aws_region.current.name
     gw_size             = "t3.micro"
     subnet              = var.pub_subnet_cidr
-    enable_snat         = true
+    single_ip_snat      = true
 }
 
 resource "aws_customer_gateway" "aws_cgw" {
