@@ -99,7 +99,7 @@ resource "aviatrix_firewall_instance" "arm_transit_firenet_inst" {
 resource "aviatrix_firenet" "arm_firenet" {
   vpc_id              = aviatrix_vpc.arm_transit_firenet_vnet.vpc_id
   inspection_enabled  = true # default true (reversed if FQDN use case)
-  egress_enabled      = false # default false (reversed if FQDN use case)
+  egress_enabled      = true # default false (reversed if FQDN use case)
 
   ## can test updating by creating another firewall instance and attaching
   firewall_instance_association {
