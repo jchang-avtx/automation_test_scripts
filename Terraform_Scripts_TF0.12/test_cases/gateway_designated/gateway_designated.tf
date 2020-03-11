@@ -31,7 +31,7 @@ data "aws_route_table" "design_rtb" {
 
 data "aws_route_table" "design_rtb_13505" {
   vpc_id      = aviatrix_vpc.design_aws_vpc.vpc_id
-  subnet_id   = aviatrix_vpc.design_aws_vpc.subnets.6.subnet_id
+  subnet_id   = aviatrix_vpc.design_aws_vpc.subnets.4.subnet_id
 }
 
 resource "aws_route_table_association" "design_rtb_assoc_13505" {

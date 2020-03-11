@@ -102,6 +102,10 @@ resource "aviatrix_site2cloud" "transit_firenet_s2c_spoke1_transit" {
   local_subnet_cidr           = aviatrix_transit_gateway.aws_transit_firenet_gateway.subnet
   remote_gateway_ip           = aviatrix_spoke_gateway.transit_firenet_spoke_gateway_1.eip
   remote_subnet_cidr          = aviatrix_spoke_gateway.transit_firenet_spoke_gateway_1.subnet
+
+  lifecycle {
+    ignore_changes = [local_subnet_cidr]
+  }
 }
 
 #################################################
