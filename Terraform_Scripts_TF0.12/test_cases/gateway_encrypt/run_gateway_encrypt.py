@@ -28,7 +28,7 @@ logging.basicConfig(level=LOGLEVEL,
                     format=FORMAT,
                     datefmt=DATEFORMAT,
                     handlers=[
-                        logging.FileHandler(filename=TIMESTR + "_regression_result.log"),
+                        logging.FileHandler(filename=os.getcwd() + "/logs/" + TIMESTR + "_regression_result.log"),
                         logging.StreamHandler()
                     ])
 log = logging.getLogger()
