@@ -28,7 +28,7 @@ logging.basicConfig(level=LOGLEVEL,
                     format=FORMAT,
                     datefmt=DATEFORMAT,
                     handlers=[
-                        logging.FileHandler(filename=TIMESTR + "_regression_result.log"),
+                        logging.FileHandler(filename=os.getcwd() + "/logs/" + TIMESTR + "_regression_result.log"),
                         logging.StreamHandler()
                     ])
 log = logging.getLogger()
@@ -39,7 +39,8 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS and Azure Designated gateways (custom DNAT)")
+log.info("      2. Create Designated AWS gateway and Azure gateway, with SNAT/DNAT policies")
+log.info("      2.5 Verify Mantis 13505 - DNAT resource creation failure due to incorrect arg ref")
 log.info("      3. Perform terraform import to identify deltas")
 log.info("      4. Perform update tests on the custom DNAT policies")
 log.info("      5. Tear down infrastructure\n")

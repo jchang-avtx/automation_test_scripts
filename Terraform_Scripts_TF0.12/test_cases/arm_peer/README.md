@@ -1,5 +1,8 @@
 ## aviatrix_arm_peer
 
+## DEPRECATED
+* test stage moved to **azure_peer** module with the its introduction in **R2.12**
+
 ---
 
 ### Usage

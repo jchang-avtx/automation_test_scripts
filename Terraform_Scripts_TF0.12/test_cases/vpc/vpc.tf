@@ -58,7 +58,7 @@ resource "aviatrix_vpc" "test_arm_vnet" {
   account_name          = "AzureAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
-  cidr                  = "47.44.56/24"
+  cidr                  = "47.44.56.0/24"
   cloud_type            = 8
   name                  = "test-arm-vnet"
   region                = "Central US"
