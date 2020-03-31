@@ -131,8 +131,8 @@ log.info("============================================================")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn1")
-    tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn2")
+    tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn1", "switchVPC") # note last state was from switchVPC.tfvars
+    tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn2", "switchVPC")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
