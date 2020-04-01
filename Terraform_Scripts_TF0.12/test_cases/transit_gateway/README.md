@@ -50,6 +50,10 @@
                   -var-file=updateExcludeAdvertiseRoutes.tfvars \
                   -auto-approve
   terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=updateLearnedCIDRApproval.tfvars \
+                  -auto-approve
+  terraform show
 
   terraform destroy -var-file=/path/provider_cred.tfvars -auto-approve
 ```

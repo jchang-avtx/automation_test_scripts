@@ -115,6 +115,8 @@ try:
     tf.update_test("updateFilterRoutes")
     log.debug("     updateExcludeAdvertiseRoutes: Updating list of VPC CIDRs to exclude from being advertised to on-prem...")
     tf.update_test("updateExcludeAdvertiseRoutes")
+    log.debug("     updateLearnedCIDRApproval: Disable approval requirement for Learned CIDRs...")
+    tf.update_test("updateLearnedCIDRApproval")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

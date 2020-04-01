@@ -115,6 +115,8 @@ resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn1" {
   inside_ip_cidr_tun_2 = "169.254.70.70/30"
   pre_shared_key_tun_2 = "def_456.ghi"
 
+  enable_learned_cidrs_approval = var.enable_learned_cidrs_approval
+
   lifecycle {
     ignore_changes = [pre_shared_key_tun_1, pre_shared_key_tun_2]
   }
@@ -125,9 +127,11 @@ resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn2" {
   tgw_name             = aviatrix_aws_tgw.test_aws_tgw.tgw_name
   route_domain_name    = "Default_Domain"
   connection_name      = "tgw_vpn_conn2"
-  connection_type      = "static" 
+  connection_type      = "static"
   public_ip            = "70.0.0.0"
   remote_cidr          = "10.0.0.0/16,10.1.0.0/16"
+
+  enable_learned_cidrs_approval = false
 }
 
 ## OUTPUTS

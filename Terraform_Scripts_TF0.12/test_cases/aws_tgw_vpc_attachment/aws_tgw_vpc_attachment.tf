@@ -51,6 +51,8 @@ resource "aviatrix_aws_tgw_directconnect" "aws_tgw_dc" {
   dx_gateway_id               = aws_dx_gateway.aws_tgw_dx_gw.id
   security_domain_name        = "SDN1"
   allowed_prefix              = var.prefix
+
+  enable_learned_cidrs_approval = var.enable_learned_cidrs_approval
 }
 
 ## OUTPUTS
