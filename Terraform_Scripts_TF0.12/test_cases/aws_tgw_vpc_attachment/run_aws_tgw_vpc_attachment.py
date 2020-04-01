@@ -101,6 +101,10 @@ try:
     log.info("Verifying update functionality...")
     log.debug("     updateSecurityDomain: Updating which security domain the VPC should attach to...")
     tf.update_test("updateSecurityDomain")
+    log.debug("     updateCustomRoutes: Updating customized Spoke VPC routes...")
+    tf.update_test("updateCustomRoutes")
+    log.debug("     disableLocalRouteProp: Disabling admin to propagate the VPC CIDR to the security domain/TGW route table that it is being attached to...")
+    tf.update_test("disableLocalRouteProp")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

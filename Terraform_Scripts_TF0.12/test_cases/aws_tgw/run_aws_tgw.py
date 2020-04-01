@@ -86,7 +86,10 @@ else:
 
 try:
     log.info("Verifying import functionality...")
+    log.debug("     Importing TGW...")
     tf.import_test("aws_tgw", "test_aws_tgw")
+    log.debug("     Importing TGW Transit Gateway Attachment...")
+    tf.import_test("aws_tgw_transit_gateway_attachment", "tgw_transit_att")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
