@@ -86,7 +86,10 @@ else:
 
 try:
     log.info("Verifying import functionality...")
+    log.debug("     Importing TGW...")
     tf.import_test("aws_tgw", "test_aws_tgw")
+    log.debug("     Importing TGW Transit Gateway Attachment...")
+    tf.import_test("aws_tgw_transit_gateway_attachment", "tgw_transit_att")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -131,8 +134,10 @@ log.info("============================================================")
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn1")
-    tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn2")
+    log.debug("     Importing dynamic TGW VPN conn...")
+    tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn1", "switchVPC") # note last state was from switchVPC.tfvars
+    log.debug("     Importing static TGW VPN conn...")
+    tf.import_test("aws_tgw_vpn_conn", "test_aws_tgw_vpn_conn2", "switchVPC")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -143,9 +148,18 @@ else:
     log.info("      import_test(): PASS\n")
 
 
-log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
-log.info("-------------------- RESULT --------------------")
-log.info("     update_test(): SKIPPED\n")
+try:
+    log.info("Verifying update functionality...")
+    log.debug("     updateLearnedCIDRApproval: Disable approval requirement for Learned CIDRs...")
+    tf.update_test("updateLearnedCIDRApproval")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     update_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      update_test(): PASS\n")
 
 
 try:

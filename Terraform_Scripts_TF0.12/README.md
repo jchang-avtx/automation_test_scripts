@@ -7,7 +7,7 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
 - **Note:** Current scripts are updated for R2.0+
 
 ---
-**STATUS:** Updated for UserConnect 5.3, Terraform R2.12
+**STATUS:** Updated for UserConnect 5.4, Terraform R2.13
 
 ---
 
@@ -57,9 +57,17 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
         Value   = realAdminPassword
       ```
   * Regression will take care of transitive switch of the values
+4. Create environment variable for the email address to be used to receive email notifications for Regression task status upon completion:
+  * Can be accessed by: **Jenkins -> Manage Jenkins -> Configure System -> Global Properties -> Environment variables**
+  * Set ``email_recipient`` with desired email address
+    * **Example:**
+      ```
+        Name    = email_recipient
+        Value   = admin@example.com
+      ```
 
 ### Infrastructure/ File Structure
-1. You may change which test stage runs with which in parallel, etc by updating the ***Jenkinsfile*** and updating the respective test stage's ***.py***'s reference to which Controller credentials
+1. You may change which test stage runs with which in parallel, by updating the ***Jenkinsfile*** and updating the respective test stage's ***.py***'s reference to which Controller credentials to use
 2. For every test case, represented per directory, be sure to input the filepath for the ***terraform_fx.py*** in the respective test stage's ***.py*** file
   * by default, all Jenkins jobs will be located in ``/var/lib/jenkins/workspace/project-name/py_libs``
     ```
@@ -67,7 +75,7 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
 
       sys.path.insert(1, '/var/lib/jenkins/workspace/Terraform-Regression/py_libs')
     ```
-3. For ALL account-related test cases (denoted by "account_xxx"), a ***.tfvars*** with the proper credentials for the respective account-type needs to be created and stored locally within the Jenkins server, within the respective directories
+3. For ALL account-related test cases (denoted by "account_xxx")(this includes RBAC, introduced in R2.13), a ***.tfvars*** with the proper credentials for the respective account-type needs to be created and stored locally within the Jenkins server, within the respective directories
   * default path where the project is located: ``/var/lib/jenkins/workspace/project-name/``
   * **Example:** For test case "account_azure", an ***azure_acc_cred.tfvars*** is required, with the valid credential values.
     ```

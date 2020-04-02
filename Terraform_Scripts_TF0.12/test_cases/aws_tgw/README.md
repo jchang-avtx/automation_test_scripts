@@ -14,6 +14,11 @@
   terraform plan -var-file=/path/provider_cred.tfvars
   terraform show
 
+  terraform state rm aviatrix_aws_tgw_transit_gateway_attachment.tgw_transit_att
+  terraform import -var-file=/path/provider_cred.tfvars aviatrix_aws_tgw_transit_gateway_attachment.tgw_transit_att id
+  terraform plan -var-file=/path/provider_cred.tfvars
+  terraform show
+
   terraform apply -var-file=/path/provider_cred.tfvars \
                   -var-file=switchConnectDomain.tfvars \
                   -auto-approve

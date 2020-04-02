@@ -52,7 +52,7 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
   account_name                      = aviatrix_transit_gateway.tgw_transit_gw.account_name
   region                            = aviatrix_transit_gateway.tgw_transit_gw.vpc_reg
   aws_side_as_number                = 65412
-  attached_aviatrix_transit_gateway = [aviatrix_transit_gateway.tgw_transit_gw.gw_name]
+  # attached_aviatrix_transit_gateway = [aviatrix_transit_gateway.tgw_transit_gw.gw_name]
 
   security_domains {
     security_domain_name = "Aviatrix_Edge_Domain"
@@ -96,7 +96,16 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
   }
 
   manage_vpc_attachment = true
+  manage_transit_gateway_attachment = false
   depends_on            = ["aviatrix_vgw_conn.tgw_vgw_conn"]
+}
+
+resource "aviatrix_aws_tgw_transit_gateway_attachment" "tgw_transit_att" {
+  tgw_name                = aviatrix_aws_tgw.test_aws_tgw.tgw_name
+  region                  = aviatrix_aws_tgw.test_aws_tgw.region
+  vpc_account_name        = aviatrix_aws_tgw.test_aws_tgw.account_name
+  vpc_id                  = aviatrix_transit_gateway.tgw_transit_gw.vpc_id
+  transit_gateway_name    = aviatrix_transit_gateway.tgw_transit_gw.gw_name
 }
 
 ## AWS_TGW_VPN_CONN
@@ -115,6 +124,8 @@ resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn1" {
   inside_ip_cidr_tun_2 = "169.254.70.70/30"
   pre_shared_key_tun_2 = "def_456.ghi"
 
+  enable_learned_cidrs_approval = var.enable_learned_cidrs_approval
+
   lifecycle {
     ignore_changes = [pre_shared_key_tun_1, pre_shared_key_tun_2]
   }
@@ -125,14 +136,20 @@ resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn2" {
   tgw_name             = aviatrix_aws_tgw.test_aws_tgw.tgw_name
   route_domain_name    = "Default_Domain"
   connection_name      = "tgw_vpn_conn2"
-  connection_type      = "static" 
+  connection_type      = "static"
   public_ip            = "70.0.0.0"
   remote_cidr          = "10.0.0.0/16,10.1.0.0/16"
+
+  enable_learned_cidrs_approval = false
 }
 
 ## OUTPUTS
 output "test_aws_tgw_id" {
   value = aviatrix_aws_tgw.test_aws_tgw.id
+}
+
+output "tgw_transit_att_id" {
+  value = aviatrix_aws_tgw_transit_gateway_attachment.tgw_transit_att.id
 }
 
 output "test_aws_tgw_vpn_conn1_id" {

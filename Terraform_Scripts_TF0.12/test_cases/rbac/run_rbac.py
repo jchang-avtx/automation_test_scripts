@@ -1,7 +1,7 @@
 """
-run_transit_gateway.py
+run_rbac.py
 
-Test case for AWS Transit Gateway (Insane HA) Terraform resource/ use-case
+Test case for RBAC implementation for Terraform
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,9 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create AWS transit gateway (Insane HA)")
-log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform update tests on various attributes")
+log.info("      2. Create account user in 5.4")
+log.info("      3. Create RBAC group, attach accounts and permissions, and the user created")
+log.info("      4. Run import test to identify deltas")
 log.info("      5. Tear down infrastructure\n")
 
 try:
@@ -49,9 +49,9 @@ try:
     log.debug("     placeholder_ip: %s", str(os.environ["AVIATRIX_CONTROLLER_IP"]))
     log.debug("     placeholder_user: %s", str(os.environ["AVIATRIX_USERNAME"]))
     log.debug("     placeholder_pass: %s", str(os.environ["AVIATRIX_PASSWORD"]))
-    avx_controller_ip = os.environ["avx_ip_1"]
-    avx_controller_user = os.environ["avx_user_1"]
-    avx_controller_pass = os.environ["avx_pass_1"]
+    avx_controller_ip = os.environ["avx_ip_2"]
+    avx_controller_user = os.environ["avx_user_2"]
+    avx_controller_pass = os.environ["avx_pass_2"]
     log.info("Setting new variable values as follows...")
     log.debug("     avx_controller_ip: %s", avx_controller_ip)
     log.debug("     avx_controller_user: %s", avx_controller_user)
@@ -71,7 +71,7 @@ else:
 
 try:
     log.info("Creating infrastructure...")
-    tf.create_verify()
+    tf.create_verify("export_user_cred")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -84,7 +84,21 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("transit_gateway", "insane_transit_gw")
+
+    log.debug("     Verifying import for account_user...")
+    tf.import_test("account_user", "rbac_tf_export_user", "export_user_cred")
+
+    log.debug("     Verifying import for RBAC group...")
+    tf.import_test("rbac_group", "rbac_tf_export_group", "export_user_cred")
+
+    log.debug("     Verifying import for RBAC group access account attachment...")
+    tf.import_test("rbac_group_access_account_attachment", "rbac_tf_export_group_acc_att", "export_user_cred")
+
+    log.debug("     Verifying import for RBAC group permission attachment...")
+    tf.import_test("rbac_group_permission_attachment", "rbac_tf_export_group_permission_att", "export_user_cred")
+
+    log.debug("     Verifying import for RBAC group user attachment...")
+    tf.import_test("rbac_group_user_attachment", "rbac_tf_export_group_user_att", "export_user_cred")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -95,41 +109,14 @@ else:
     log.info("      import_test(): PASS\n")
 
 
-try:
-    log.info("Verifying update functionality...")
-    log.debug("     enableSingleAZHA: Enabling single AZHA feature...")
-    tf.update_test("enableSingleAZHA")
-    log.debug("     switchConnectedTransit: Disabling spokes from running traffic to other spokes via transit gateway...")
-    tf.update_test("switchConnectedTransit")
-    log.debug("     disableHybrid: Disabling transit gateway from being used in AWS TGW solution...")
-    tf.update_test("disableHybrid")
-    log.debug("     updateGWSize: Updating gateway's size...")
-    tf.update_test("updateGWSize")
-    log.debug("     updateHAGWSize: Updating HA gateway's size...")
-    tf.update_test("updateHAGWSize")
-    log.debug("     enableDNSServer: Enabling feature to remove the default DNS server, in favor of VPC DNS server configured in VPC DHCP option...")
-    tf.update_test("enableDNSServer")
-    log.debug("     updateCustomRoutes: Updating list of CIDRs to propagate to for spoke VPC...")
-    tf.update_test("updateCustomRoutes")
-    log.debug("     updateFilterRoutes: Updating list of unwanted CIDRs to filter on-prem to spoke VPC...")
-    tf.update_test("updateFilterRoutes")
-    log.debug("     updateExcludeAdvertiseRoutes: Updating list of VPC CIDRs to exclude from being advertised to on-prem...")
-    tf.update_test("updateExcludeAdvertiseRoutes")
-    log.debug("     updateLearnedCIDRApproval: Disable approval requirement for Learned CIDRs...")
-    tf.update_test("updateLearnedCIDRApproval")
-except tf.subprocess.CalledProcessError as err:
-    log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     update_test(): FAIL\n")
-    sys.exit(1)
-else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      update_test(): PASS\n")
+log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
+log.info("-------------------- RESULT --------------------")
+log.info("     update_test(): SKIPPED\n")
 
 
 try:
     log.info("Verifying destroy functionality...")
-    tf.destroy_test()
+    tf.destroy_test("export_user_cred")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
