@@ -39,7 +39,7 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create 2 TGWs and create peering between the two")
+log.info("      2. Create 2 TGWs (and necessary infra) and create peering between the two")
 log.info("      3. Perform terraform import to identify deltas")
 log.info("      4. Tear down infrastructure\n")
 

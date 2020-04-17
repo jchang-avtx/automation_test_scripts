@@ -3,6 +3,9 @@
 ---
 
 ### Infrastructure
+- 2 VPCs
+- 2 Aviatrix transit gateways in those VPCs
+- 2 VGW + connections
 - 2 AWS TGWs in different regions
 - Peering between the two
 
