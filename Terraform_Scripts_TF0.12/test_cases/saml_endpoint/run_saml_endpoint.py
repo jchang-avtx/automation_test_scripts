@@ -40,8 +40,9 @@ log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
 log.info("      2. Create 2 SAML endpoints (text and custom)")
-log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Tear down infrastructure\n")
+log.info("      3. Create 2 SAML login endpoints (profile_attribute and controller)")
+log.info("      4. Perform terraform import to identify deltas")
+log.info("      5. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")
@@ -87,6 +88,10 @@ try:
     tf.import_test("saml_endpoint", "text_saml_endpoint")
     log.debug("     Importing custom-idp-metadata SAML endpoint...")
     tf.import_test("saml_endpoint", "custom_saml_endpoint")
+    log.debug("     Importing text-login SAML ednpoint, access set by profile_attribute...")
+    tf.import_test("saml_endpoint", "text_login_endpoint")
+    log.debug("     Importing custom-login SAML endpoint, access set by RBAC groups...")
+    tf.import_test("saml_endpoint", "custom_login_endpoint")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
