@@ -1,0 +1,1 @@
+conn_type = "static"
