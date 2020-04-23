@@ -124,19 +124,22 @@ else:
     log.info("      update_test(): PASS\n")
 
 
-try:
-    log.info("Verifying destroy functionality...")
-    log.debug("     destroy_target() the ELB gateway first...") # Mantis (13255)
-    tf.destroy_target("gateway", "aws_ldap_duo_gw")
-    log.debug("Sleeping for 3 minutes to wait for gateway clean-up...")
-    time.sleep(180)
-    log.debug("     Now running destroy_test() to finish clean-up...")
-    tf.destroy_test()
-except tf.subprocess.CalledProcessError as err:
-    log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     destroy_test(): FAIL\n")
-    sys.exit(1)
-else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      destroy_test(): PASS\n")
+for i in range(3):
+    try:
+        log.info("Verifying destroy functionality...")
+        log.debug("     destroy_target() the ELB gateway first...") # Mantis (13255)
+        tf.destroy_target("gateway", "aws_ldap_duo_gw")
+        log.debug("Sleeping for 3 minutes to wait for gateway clean-up...")
+        time.sleep(180)
+        log.debug("     Now running destroy_test() to finish clean-up...")
+        tf.destroy_test()
+    except tf.subprocess.CalledProcessError as err:
+        log.exception(err.stderr.decode())
+        if i == 2:
+            log.info("-------------------- RESULT --------------------")
+            log.error("     destroy_test(): FAIL\n")
+            sys.exit(1)
+    else:
+        log.info("-------------------- RESULT --------------------")
+        log.info("      destroy_test(): PASS\n")
+        sys.exit(0)
