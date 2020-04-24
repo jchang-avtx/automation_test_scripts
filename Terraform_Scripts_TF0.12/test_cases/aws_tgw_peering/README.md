@@ -8,6 +8,9 @@
 - 2 VGW + connections
 - 2 AWS TGWs in different regions
 - Peering between the two
+- 2 Domain connection policies
+  - 1 between the 2 TGWs' domains
+  - 1 between own TGW's domains
 
 ### Test case
 - verify AWS TGW built

@@ -99,6 +99,39 @@ log.info("-------------------- RESULT --------------------")
 log.info("     update_test(): SKIPPED\n")
 
 
+log.info(str(os.path.split(os.getcwd())[1]).upper() + " will not be destroyed until aws_tgw_peering_domain_conn concludes...")
+log.info("-------------------- RESULT --------------------")
+log.info("     destroy_test(): SKIPPED\n")
+
+
+log.info("Continuing to AWS TGW Peering Domain connections testing...")
+log.info("\n")
+log.info("============================================================")
+log.debug("RUNNING STAGE: AWS_TGW_PEERING_DOMAIN_CONN")
+log.info("============================================================")
+
+
+try:
+    log.info("Verifying import functionality...")
+    log.debug("     Importing TGW peering conn between 2 TGWs' domains...")
+    tf.import_test("aws_tgw_peering_domain_conn", "tgw_peer_domain_conn_1")
+    log.debug("     Importing TGW peering conn between 1 TGW's domains...")
+    tf.import_test("aws_tgw_peering_domain_conn", "tgw_peer_domain_conn_2")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     import_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      import_test(): PASS\n")
+
+
+log.info("AWS_TGW_PEERING_DOMAIN_CONN does not support update functionality...")
+log.info("-------------------- RESULT --------------------")
+log.info("     update_test(): SKIPPED\n")
+
+
 try:
     log.info("Verifying destroy functionality...")
     tf.destroy_test()
