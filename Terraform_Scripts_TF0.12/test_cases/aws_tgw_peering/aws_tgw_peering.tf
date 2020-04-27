@@ -133,18 +133,20 @@ resource "aviatrix_aws_tgw" "peer_tgw_2" {
 
 ################################################################
 resource "aviatrix_aws_tgw_peering_domain_conn" "tgw_peer_domain_conn_1" {
-  tgw_name1 = aviatrix_aws_tgw.peer_tgw_1.tgw_name
-  domain_name1 = "Shared_Service_Domain"
-  tgw_name2 = aviatrix_aws_tgw.peer_tgw_2.tgw_name
-  domain_name2 = "Aviatrix_Edge_Domain"
+  tgw_name1       = aviatrix_aws_tgw.peer_tgw_1.tgw_name
+  domain_name1    = "Shared_Service_Domain"
+  tgw_name2       = aviatrix_aws_tgw.peer_tgw_2.tgw_name
+  domain_name2    = "Aviatrix_Edge_Domain"
+
   depends_on = [aviatrix_aws_tgw_peering.tgw_peering]
 }
 
 resource "aviatrix_aws_tgw_peering_domain_conn" "tgw_peer_domain_conn_2" {
-  tgw_name1 = aviatrix_aws_tgw.peer_tgw_1.tgw_name
-  domain_name1 = "Default_Domain"
-  tgw_name2 = aviatrix_aws_tgw.peer_tgw_1.tgw_name
-  domain_name2 = "Aviatrix_Edge_Domain"
+  tgw_name1       = aviatrix_aws_tgw.peer_tgw_1.tgw_name
+  domain_name1    = "Default_Domain"
+  tgw_name2       = aviatrix_aws_tgw.peer_tgw_1.tgw_name
+  domain_name2    = "Aviatrix_Edge_Domain"
+  
   depends_on = [aviatrix_aws_tgw_peering.tgw_peering]
 }
 
