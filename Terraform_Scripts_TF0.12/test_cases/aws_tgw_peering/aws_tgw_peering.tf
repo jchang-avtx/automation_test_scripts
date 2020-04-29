@@ -50,7 +50,9 @@ resource "aviatrix_aws_tgw" "peer_tgw_1" {
   account_name    = "AWSAccess"
   region          = "eu-central-1"
   aws_side_as_number = 65413
-  # attached_aviatrix_transit_gateway = []
+  attached_aviatrix_transit_gateway = [
+    aviatrix_transit_gateway.tgw_peer_transit_gw_1.gw_name
+  ]
   security_domains {
     security_domain_name = "Aviatrix_Edge_Domain"
   }
@@ -61,7 +63,7 @@ resource "aviatrix_aws_tgw" "peer_tgw_1" {
     security_domain_name = "Shared_Service_Domain"
   }
   manage_vpc_attachment                 = false
-  manage_transit_gateway_attachment     = false
+  manage_transit_gateway_attachment     = true
 }
 
 ################################################################
@@ -118,6 +120,9 @@ resource "aviatrix_aws_tgw" "peer_tgw_2" {
   account_name    = "AWSAccess"
   region          = "us-east-1"
   aws_side_as_number = 65414
+  attached_aviatrix_transit_gateway = [
+    aviatrix_transit_gateway.tgw_peer_transit_gw_2.gw_name
+  ]
   security_domains {
     security_domain_name = "Aviatrix_Edge_Domain"
   }
@@ -128,7 +133,7 @@ resource "aviatrix_aws_tgw" "peer_tgw_2" {
     security_domain_name = "Shared_Service_Domain"
   }
   manage_vpc_attachment                 = false
-  manage_transit_gateway_attachment     = false
+  manage_transit_gateway_attachment     = true
 }
 
 ################################################################
@@ -144,9 +149,9 @@ resource "aviatrix_aws_tgw_peering_domain_conn" "tgw_peer_domain_conn_1" {
 resource "aviatrix_aws_tgw_peering_domain_conn" "tgw_peer_domain_conn_2" {
   tgw_name1       = aviatrix_aws_tgw.peer_tgw_1.tgw_name
   domain_name1    = "Default_Domain"
-  tgw_name2       = aviatrix_aws_tgw.peer_tgw_1.tgw_name
+  tgw_name2       = aviatrix_aws_tgw.peer_tgw_2.tgw_name
   domain_name2    = "Aviatrix_Edge_Domain"
-  
+
   depends_on = [aviatrix_aws_tgw_peering.tgw_peering]
 }
 
