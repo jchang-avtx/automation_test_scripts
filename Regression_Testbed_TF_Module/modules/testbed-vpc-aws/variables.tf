@@ -59,7 +59,7 @@ variable "ubuntu_ami" {
 variable "instance_size" {
 	type 				= string
 	description = "Size of AWS instance."
-	default 		= "t2.micro"
+	default 		= "t3.micro"
 }
 variable "termination_protection" {
 	type				= bool
