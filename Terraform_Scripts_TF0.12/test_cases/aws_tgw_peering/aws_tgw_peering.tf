@@ -155,11 +155,11 @@ resource "aviatrix_aws_tgw_peering_domain_conn" "tgw_peer_domain_conn_2" {
   depends_on = [aviatrix_aws_tgw_peering.tgw_peering]
 }
 
-output "tgw_peer_domain_conn_1" {
+output "tgw_peer_domain_conn_1_id" {
   value = aviatrix_aws_tgw_peering_domain_conn.tgw_peer_domain_conn_1.id
 }
 
-output "tgw_peer_domain_conn_2" {
+output "tgw_peer_domain_conn_2_id" {
   value = aviatrix_aws_tgw_peering_domain_conn.tgw_peer_domain_conn_2.id
 }
 

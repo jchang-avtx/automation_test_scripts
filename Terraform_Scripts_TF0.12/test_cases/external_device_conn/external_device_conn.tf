@@ -78,7 +78,7 @@ resource "aviatrix_transit_external_device_conn" "ext_conn" {
   gw_name             = aviatrix_transit_gateway.ext_conn_transit_gw.gw_name
   bgp_local_as_num    = var.conn_type == "bgp" ? 65002 : null
 
-  remote_gateway_ip     = var.dxc_status == true ? aviatrix_gateway.ext_conn_on_prem_router.private_ip : aviatrix_gateway.ext_conn_on_prem_router.public_ip
+  remote_gateway_ip     = var.dxc_status == true ? aviatrix_gateway.ext_conn_on_prem_router.private_ip : aviatrix_gateway.ext_conn_on_prem_router.eip
   bgp_remote_as_num     = var.conn_type == "bgp" ? 65003 : null
 
   remote_subnet = var.conn_type == "static" ? aviatrix_gateway.ext_conn_on_prem_router.subnet : null
@@ -97,7 +97,7 @@ resource "aviatrix_transit_external_device_conn" "ext_conn" {
 
   ha_enabled = true
   backup_direct_connect       = var.dxc_status == true ? true : false
-  backup_remote_gateway_ip    = aviatrix_gateway.ext_conn_on_prem_router.backup_public_ip # no way to get private IP of HA natively yet
+  backup_remote_gateway_ip    = aviatrix_gateway.ext_conn_on_prem_router.peering_ha_eip # no way to get private IP of HA natively yet
   backup_bgp_remote_as_num    = var.conn_type == "bgp" ? 65003 : null # must match primary remote ASN , only for bgp
   backup_pre_shared_key       = "abc-123"
   # backup_local_tunnel_cidr =
