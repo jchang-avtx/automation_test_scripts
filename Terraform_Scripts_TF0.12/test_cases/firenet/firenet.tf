@@ -179,7 +179,7 @@ resource "aviatrix_firewall_instance" "firenet_instance" {
 
 resource "aviatrix_firewall_instance" "firenet_instance2" {
   vpc_id                = aviatrix_vpc.firenet_vpc["us-east-1"].vpc_id
-  firenet_gw_name       = join("-", [aviatrix_transit_gateway.firenet_transit_gateway.gw_name, "hagw"])
+  firenet_gw_name       = aviatrix_transit_gateway.firenet_transit_gateway.ha_gw_name
   firewall_name         = "firenetInstanceName2"
   firewall_image        = "Palo Alto Networks VM-Series Next-Generation Firewall Bundle 1"
   firewall_image_version= "9.0.3.xfr"
@@ -225,7 +225,7 @@ resource "aviatrix_firenet" "firenet" {
   }
 
   firewall_instance_association {
-    firenet_gw_name       = join("-", [aviatrix_transit_gateway.firenet_transit_gateway.gw_name, "hagw"])
+    firenet_gw_name       = aviatrix_transit_gateway.firenet_transit_gateway.ha_gw_name
     vendor_type           = "Generic"
     firewall_name         = aviatrix_firewall_instance.firenet_instance2.firewall_name
     instance_id           = aviatrix_firewall_instance.firenet_instance2.instance_id

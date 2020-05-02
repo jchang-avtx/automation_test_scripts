@@ -158,7 +158,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_primary_gw.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_primary_gw.gw_name, "hagw"])
+  backup_gateway_name           = aviatrix_gateway.s2c_avx_primary_gw.peering_ha_gw_name
   remote_gateway_ip             = aviatrix_gateway.s2c_avx_onprem_gw.eip
   backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_onprem_gw.peering_ha_eip
 
@@ -195,7 +195,7 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_onprem_gw.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_onprem_gw.gw_name, "hagw"])
+  backup_gateway_name           = aviatrix_gateway.s2c_avx_onprem_gw.peering_ha_gw_name
   remote_gateway_ip             = aviatrix_gateway.s2c_avx_primary_gw.eip
   backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_primary_gw.peering_ha_eip
 
@@ -224,7 +224,7 @@ resource "aviatrix_site2cloud" "s2c_test3" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_site3_gw.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_site3_gw.gw_name, "hagw"])
+  backup_gateway_name           = aviatrix_gateway.s2c_avx_site3_gw.peering_ha_gw_name
   remote_gateway_ip             = aviatrix_gateway.s2c_avx_primary_gw.eip
   backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_primary_gw.peering_ha_eip
 
@@ -259,7 +259,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_primary_gw.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_primary_gw.gw_name, "hagw"])
+  backup_gateway_name           = aviatrix_gateway.s2c_avx_primary_gw.peering_ha_gw_name
   remote_gateway_ip             = aviatrix_gateway.s2c_avx_site3_gw.eip
   backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_site3_gw.peering_ha_eip
 
