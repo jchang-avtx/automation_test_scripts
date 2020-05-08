@@ -98,10 +98,10 @@ resource "aviatrix_transit_gateway" "gcp_transit_gw" {
   cloud_type          = 4
   account_name        = "GCPAccess"
   gw_name             = "gcptransitgw"
-  vpc_id              = "gcptestvpc"
-  vpc_reg             = "us-central1-c"
+  vpc_id              = "gcptransitvpc"
+  vpc_reg             = "us-east4-c"
   gw_size             = "n1-standard-1"
-  subnet              = "10.128.0.0/20"
+  subnet              = "172.21.0.0/16"
   single_az_ha        = true
 
   enable_hybrid_connection  = false

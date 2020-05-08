@@ -48,9 +48,9 @@ try:
     log.debug("     placeholder_ip: %s", str(os.environ["AVIATRIX_CONTROLLER_IP"]))
     log.debug("     placeholder_user: %s", str(os.environ["AVIATRIX_USERNAME"]))
     log.debug("     placeholder_pass: %s", str(os.environ["AVIATRIX_PASSWORD"]))
-    avx_controller_ip = os.environ["avx_ip_2"]
-    avx_controller_user = os.environ["avx_user_2"]
-    avx_controller_pass = os.environ["avx_pass_2"]
+    avx_controller_ip = os.environ["avx_ip_1"]
+    avx_controller_user = os.environ["avx_user_1"]
+    avx_controller_pass = os.environ["avx_pass_1"]
     log.info("Setting new variable values as follows...")
     log.debug("     avx_controller_ip: %s", avx_controller_ip)
     log.debug("     avx_controller_user: %s", avx_controller_user)

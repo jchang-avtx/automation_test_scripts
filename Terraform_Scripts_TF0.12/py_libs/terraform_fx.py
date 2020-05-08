@@ -72,3 +72,16 @@ def destroy_target(resource, name, varfile=None):
         subprocess.run('terraform show', shell=True, check=True, capture_output=True)
     else:
         raise Exception('Too many arguments: destroy_target()')
+
+
+def generic_destroy_target(resource, name, varfile=None):
+    target_arg = '-target=' + resource + '.' + name
+    if varfile == None:
+        subprocess.run(['terraform', 'destroy', target_arg, '-auto-approve'], check=True, capture_output=True)
+        subprocess.run('terraform show', shell=True, check=True, capture_output=True)
+    elif varfile:
+        var_arg = '-var-file=' + varfile + '.tfvars'
+        subprocess.run(['terraform', 'destroy', target_arg, var_arg, '-auto-approve'], check=True, capture_output=True)
+        subprocess.run('terraform show', shell=True, check=True, capture_output=True)
+    else:
+        raise Exception('Too many arguments: destroy_target()')

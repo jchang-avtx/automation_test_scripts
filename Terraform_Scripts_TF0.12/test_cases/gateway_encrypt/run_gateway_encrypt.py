@@ -122,8 +122,8 @@ try:
     log.debug("     destroy_target(): transit_encrypt_vpc")
     tf.destroy_target("vpc", "transit_encrypt_vpc")
     log.debug("     destroy_target(): random_integer.vpc1_cidr_int & random_integer.vpc2_cidr_int")
-    tf.destroy_target("random_integer", "vpc1_cidr_int")
-    tf.destroy_target("random_integer", "vpc2_cidr_int")
+    tf.generic_destroy_target("random_integer", "vpc1_cidr_int")
+    tf.generic_destroy_target("random_integer", "vpc2_cidr_int")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

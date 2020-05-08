@@ -7,7 +7,7 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
 - **Note:** Current scripts are updated for R2.0+
 
 ---
-**STATUS:** Updated for UserConnect 5.4, Terraform R2.13
+**STATUS:** Updated for UserConnect 5.4, Terraform R2.14
 
 ---
 
@@ -15,12 +15,14 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
 ### Prerequisites
 1. **Aviatrix Controller(s)** - nodes that host parallel stage runs in Jenkins
 2. **Jenkins server** - Ubuntu 18.x machine with Jenkins installed - where the regression pipeline will run
+    * Set up email notifications by following [this](https://www.youtube.com/watch?v=DULs4Wq4xMg) video UP to 2:25
+    * If having receiving *javax.mail.AuthenticationFailedException* even after enabling the "Allow Less Secure Apps" option, please see link [here](https://accounts.google.com/DisplayUnlockCaptcha)
 3. **Python3.7** - installed on Jenkins server
 4. **Terraform** - have all items listed below installed under the *Jenkins* user in the **Jenkins server**
-  * Terraform
-  * Aviatrix Terraform provider (sourced locally)
-  * Go
-  * View setup instructions [HERE](https://github.com/terraform-providers/terraform-provider-aviatrix/blob/master/README.md)
+    * Terraform
+    * Aviatrix Terraform provider (sourced locally)
+    * Go
+    * View setup instructions [here](https://github.com/terraform-providers/terraform-provider-aviatrix/blob/master/README.md)
 
 ### Credentials
 1. In the Controller, the following access accounts must be created for AWS, ARM, GCP, and OCI with the following names respectively:
@@ -102,3 +104,20 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
                       "testemail3@gmail.com",
                       "testemail4@gmail.com"]
     ```
+6. **gateway_gcp**, **spoke_gateway_gcp**, **transit_gateway_gcp** test stages require pre-existing GCP VPC Networks with the following configurations, due to a limitation of 5 VPC Networks globally per Google account
+  * *gcptestvpc* - This was created with the GCP Console's VPC Network tool
+    * us-central1 - 10.128.0.0/20 - starting CIDR
+    * europe-west1 - 10.132.0.0/20
+    * us-west1 - 10.138.0.0/20
+    * asia-east1 - 10.140.0.0/20
+    * us-east1 - 10.142.0.0/20
+    * asia-northeast1 - 10.146.0.0/20
+    * asia-southeast1 - 10.148.0.0/20
+    * us-east4 - 10.150.0.0/20
+    * ...
+  * *gcpspokevpc* - created using Aviatrix Controller VPC Tool
+    * us-west2 - 172.23.0.0/16
+    * europe-west1 - 172.24.0.0/16
+  * *gcptransitvpc* - created using Aviatrix Controller VPC Tool
+    * us-central1 - 172.20.0.0/16
+    * us-east4 - 172.21.0.0/16

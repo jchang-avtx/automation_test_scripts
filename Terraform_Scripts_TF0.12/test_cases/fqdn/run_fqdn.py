@@ -69,17 +69,20 @@ else:
     log.info("      Set environment credentials: PASS\n")
 
 
-try:
-    log.info("Creating infrastructure...")
-    tf.create_verify()
-except tf.subprocess.CalledProcessError as err:
-    log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     create_verify(): FAIL\n")
-    sys.exit(1)
-else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      create_verify(): PASS\n")
+for i in range(3):
+    try:
+        log.info("Creating infrastructure...")
+        tf.create_verify()
+    except tf.subprocess.CalledProcessError as err:
+        log.exception(err.stderr.decode())
+        if i == 2:
+            log.info("-------------------- RESULT --------------------")
+            log.error("     create_verify(): FAIL\n")
+            sys.exit(1)
+    else:
+        log.info("-------------------- RESULT --------------------")
+        log.info("      create_verify(): PASS\n")
+        break
 
 
 try:

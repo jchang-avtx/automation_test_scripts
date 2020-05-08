@@ -81,10 +81,10 @@ resource "aviatrix_spoke_gateway" "aws_custom_routes_spoke" {
   # ha_subnet    = aviatrix_vpc.aws_custom_routes_vpc.subnets.7.cidr
   # ha_gw_size   = "t2.micro"
   single_ip_snat  = false
-  tag_list     = [
-    "k1:v1",
-    "k2:v2",
-  ]
+  # tag_list     = [
+  #   "k1:v1",
+  #   "k2:v2",
+  # ]
   transit_gw   = null
 
   customized_spoke_vpc_routes = var.custom_spoke_vpc_routes

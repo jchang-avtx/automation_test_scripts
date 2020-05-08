@@ -158,12 +158,12 @@ resource "aviatrix_site2cloud" "s2c_test" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_primary_gw.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_primary_gw.gw_name, "hagw"])
+  backup_gateway_name           = aviatrix_gateway.s2c_avx_primary_gw.peering_ha_gw_name
   remote_gateway_ip             = aviatrix_gateway.s2c_avx_onprem_gw.eip
   backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_onprem_gw.peering_ha_eip
 
-  # pre_shared_key = var.pre_shared_key # (Optional) Auto-generated if not specified
-  # backup_pre_shared_key = var.pre_shared_key_backup # (Optional)
+  pre_shared_key                = var.pre_shared_key # (Optional) Auto-generated if not specified
+  backup_pre_shared_key         = var.pre_shared_key_backup # (Optional)
 
   remote_subnet_cidr            = aviatrix_gateway.s2c_avx_onprem_gw.subnet
   local_subnet_cidr             = aviatrix_gateway.s2c_avx_primary_gw.subnet
@@ -180,6 +180,9 @@ resource "aviatrix_site2cloud" "s2c_test" {
   backup_remote_gateway_latitude = var.custom_alg == true ? 39.0437 : null
   backup_remote_gateway_longitude = var.custom_alg == true ? -77.4875 : null
 
+  lifecycle {
+    ignore_changes = [pre_shared_key, backup_pre_shared_key]
+  }
   depends_on                    = [aviatrix_gateway.s2c_avx_primary_gw, aviatrix_gateway.s2c_avx_onprem_gw, aviatrix_gateway.s2c_avx_site3_gw]
 }
 
@@ -192,7 +195,7 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_onprem_gw.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_onprem_gw.gw_name, "hagw"])
+  backup_gateway_name           = aviatrix_gateway.s2c_avx_onprem_gw.peering_ha_gw_name
   remote_gateway_ip             = aviatrix_gateway.s2c_avx_primary_gw.eip
   backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_primary_gw.peering_ha_eip
 
@@ -221,15 +224,15 @@ resource "aviatrix_site2cloud" "s2c_test3" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_site3_gw.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_site3_gw.gw_name, "hagw"])
+  backup_gateway_name           = aviatrix_gateway.s2c_avx_site3_gw.peering_ha_gw_name
   remote_gateway_ip             = aviatrix_gateway.s2c_avx_primary_gw.eip
   backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_primary_gw.peering_ha_eip
 
-  remote_subnet_cidr            = aviatrix_gateway.s2c_avx_onprem_gw.subnet
+  remote_subnet_cidr            = aviatrix_gateway.s2c_avx_primary_gw.subnet
   local_subnet_cidr             = aviatrix_gateway.s2c_avx_site3_gw.subnet
 
   ## mapped testing ##
-  remote_subnet_virtual         = var.custom_alg == true ? aviatrix_gateway.s2c_avx_onprem_gw.subnet : null
+  remote_subnet_virtual         = var.custom_alg == true ? aviatrix_gateway.s2c_avx_primary_gw.subnet : null
   local_subnet_virtual          = var.custom_alg == true ? "100.1.0.0/20" : null
 
   custom_algorithms             = var.custom_alg
@@ -256,7 +259,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_primary_gw.gw_name
-  backup_gateway_name           = join("-", [aviatrix_gateway.s2c_avx_primary_gw.gw_name, "hagw"])
+  backup_gateway_name           = aviatrix_gateway.s2c_avx_primary_gw.peering_ha_gw_name
   remote_gateway_ip             = aviatrix_gateway.s2c_avx_site3_gw.eip
   backup_remote_gateway_ip      = aviatrix_gateway.s2c_avx_site3_gw.peering_ha_eip
 

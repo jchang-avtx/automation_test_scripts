@@ -1,7 +1,7 @@
 """
-run_geo_vpn.py
+run_external_device_conn.py
 
-Test case for geo_vpn Terraform resource/ use-case
+Test case for Aviatrix External Device Connection Terraform resource/ use-case integrated with Transit Network
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,9 +39,10 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create Geo VPN and Route53 setup")
+log.info("      2. Create transit network and establish connection to external device")
 log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Tear down infrastructure\n")
+log.info("      4. Perform update tests on external device conn's conn_type")
+log.info("      5. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")
@@ -83,7 +84,7 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("geo_vpn", "test_geo_vpn")
+    tf.import_test("transit_external_device_conn", "ext_conn")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -94,41 +95,28 @@ else:
     log.info("      import_test(): PASS\n")
 
 
-log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
-log.info("Testing support of update functionality of ELB/ GeoVPN settings - Mantis (13570)... ")
 try:
-    log.debug("     updateVPN: Updating the ELB/ GeoVPN settings by updating all ELB's VPN settings simultaneously...")
-    tf.update_test("updateVPN")
+    log.info("Verifying update functionality...")
+    log.debug("     updateStatic: Change connection type from BGP to static (ForceNew)...")
+    tf.update_test("updateStatic")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
-    log.info("     update_test(): FAIL\n")
+    log.error("     update_test(): FAIL\n")
     sys.exit(1)
 else:
     log.info("-------------------- RESULT --------------------")
     log.info("      update_test(): PASS\n")
 
 
-for i in range(3):
-    try:
-        log.info("Verifying destroy functionality...")
-        log.debug("     destroy_target() one of the ELB gateway first...") # Mantis (13255)
-        tf.destroy_target("gateway", "r53_gw_3")
-        log.debug("Sleeping for 2 minutes to wait for gateway clean-up...")
-        time.sleep(120)
-        log.debug("     destroy_target() the other ELB gateway...")
-        tf.destroy_target("gateway", "r53_gw_1")
-        log.debug("Sleeping for 2 minutes...")
-        time.sleep(120)
-        log.debug("     Now running destroy_test() to finish clean-up...")
-        tf.destroy_test()
-    except tf.subprocess.CalledProcessError as err:
-        log.exception(err.stderr.decode())
-        if i == 2:
-            log.info("-------------------- RESULT --------------------")
-            log.error("     destroy_test(): FAIL\n")
-            sys.exit(1)
-    else:
-        log.info("-------------------- RESULT --------------------")
-        log.info("      destroy_test(): PASS\n")
-        sys.exit(0)
+try:
+    log.info("Verifying destroy functionality...")
+    tf.destroy_test()
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     destroy_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      destroy_test(): PASS\n")
