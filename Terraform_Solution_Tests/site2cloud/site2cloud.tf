@@ -50,7 +50,7 @@ resource "aws_vpn_gateway" "vpn_gateway" {
 
 resource "aws_customer_gateway" "customer_gateway" {
   bgp_asn    = 65000
-  ip_address = aviatrix_gateway.AVX-GW.public_ip
+  ip_address = data.aviatrix_gateway.ag_data.public_ip
   type       = "ipsec.1"
 }
 
