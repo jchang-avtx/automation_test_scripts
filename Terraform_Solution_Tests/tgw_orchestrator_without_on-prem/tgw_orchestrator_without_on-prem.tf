@@ -24,6 +24,7 @@ module "aws-vpc" {
   public_key      	  = "${file(var.public_key)}"
   termination_protection = false
   ubuntu_ami		      = "" # default empty will set to ubuntu 18.04 ami
+  instance_size       = contains(["us-east-2", "us-east-1"], var.aws_region) == true ? "t2.micro" : "t3.micro"
 }
 
 # Create an Aviatrix AWS TGW

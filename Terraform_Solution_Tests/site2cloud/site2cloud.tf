@@ -37,7 +37,12 @@ resource "aviatrix_gateway" "AVX-GW" {
     ignore_changes = [enable_vpc_dns_server]
   }
 }
-
+    
+data "aviatrix_gateway" "ag_data" {
+  gw_name = "AVX-GW"
+  depends_on = [aviatrix_gateway.AVX-GW]
+}
+    
 #Create AWS VGW and attach to Site VPC
 resource "aws_vpn_gateway" "vpn_gateway" {
   vpc_id = module.aws-vpc.vpc_id[0]
@@ -45,8 +50,9 @@ resource "aws_vpn_gateway" "vpn_gateway" {
 
 resource "aws_customer_gateway" "customer_gateway" {
   bgp_asn    = 65000
-  ip_address = aviatrix_gateway.AVX-GW.public_ip
+  ip_address = data.aviatrix_gateway.ag_data.public_ip
   type       = "ipsec.1"
+  depends_on = [aviatrix_gateway.AVX-GW]
 }
 
 resource "aws_vpn_connection" "main" {
