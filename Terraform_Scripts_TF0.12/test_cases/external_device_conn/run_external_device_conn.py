@@ -99,6 +99,10 @@ try:
     log.info("Verifying update functionality...")
     log.debug("     updateStatic: Change connection type from BGP to static (ForceNew)...")
     tf.update_test("updateStatic")
+    log.debug("     updateDxC: Change connection to use DirectConnect and change remote gateway IP to private IPs...")
+    tf.update_test("updateDxC")
+    log.debug("     updateStatic and updateDxC: Create static connection using DxC...")
+    tf.update_test("updateStatic", "updateDxC")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

@@ -38,6 +38,14 @@ resource "aviatrix_transit_gateway" "ext_conn_transit_gw" {
   enable_active_mesh        = true
 }
 
+resource "aws_vpn_gateway" "ext_conn_transit_vgw" {
+  tags = {
+    Name = "ext-conn-transit-vgw"
+  }
+  amazon_side_asn = 64513
+  vpc_id = aviatrix_vpc.ext_conn_transit_vpc.vpc_id
+}
+
 ###########################################################################
 ## On-prem simulation + router
 resource "random_integer" "vpc2_cidr_int" {
@@ -81,11 +89,11 @@ resource "aviatrix_transit_external_device_conn" "ext_conn" {
   remote_gateway_ip     = var.dxc_status == true ? aviatrix_gateway.ext_conn_on_prem_router.private_ip : aviatrix_gateway.ext_conn_on_prem_router.eip
   bgp_remote_as_num     = var.conn_type == "bgp" ? 65003 : null
 
-  remote_subnet = var.conn_type == "static" ? aviatrix_gateway.ext_conn_on_prem_router.subnet : null
-  direct_connect = var.dxc_status # if true, must specify private IP for router/ remote IP
-  pre_shared_key = "abc-123"
-  # local_tunnel_cidr =
-  # remote_tunnel_cidr =
+  remote_subnet         = var.conn_type == "static" ? aviatrix_gateway.ext_conn_on_prem_router.subnet : null
+  direct_connect        = var.dxc_status # if true, must specify private IP for router/ remote IP
+  pre_shared_key        = "abc-123"
+  local_tunnel_cidr     = "172.17.11.2/30,172.17.11.6/30" # tunnel inside IP addr of tranist gw
+  remote_tunnel_cidr    = "172.17.11.1/30,172.17.11.5/30" # tunnel inside IP addr of external dev
 
   custom_algorithms = true
   phase_1_authentication        = "SHA-512"
@@ -97,11 +105,11 @@ resource "aviatrix_transit_external_device_conn" "ext_conn" {
 
   ha_enabled = true
   backup_direct_connect       = var.dxc_status == true ? true : false
-  backup_remote_gateway_ip    = aviatrix_gateway.ext_conn_on_prem_router.peering_ha_eip # no way to get private IP of HA natively yet
+  backup_remote_gateway_ip    = var.dxc_status == true ? aviatrix_gateway.ext_conn_on_prem_router.peering_ha_private_ip : aviatrix_gateway.ext_conn_on_prem_router.peering_ha_eip
   backup_bgp_remote_as_num    = var.conn_type == "bgp" ? 65003 : null # must match primary remote ASN , only for bgp
   backup_pre_shared_key       = "abc-123"
-  # backup_local_tunnel_cidr =
-  # backup_remote_tunnel_cidr =
+  backup_local_tunnel_cidr    = "172.17.12.2/30,172.17.12.6/30"
+  backup_remote_tunnel_cidr   = "172.17.12.1/30,172.17.12.5/30"
 
   enable_edge_segmentation = true
 
