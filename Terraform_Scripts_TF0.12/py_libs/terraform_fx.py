@@ -34,7 +34,7 @@ def import_test(resource, name, varfile=None):
         raise Exception('Too many arguments: import_test()')
 
 
-def update_test(varfile, varfile2=None, timeout=timeout):
+def update_test(varfile, varfile2=None, timeout=None):
     var_arg = '-var-file=' + varfile + '.tfvars'
     if varfile2 == None:
         subprocess.run(['terraform', 'apply', var_arg, '-auto-approve'], check=True, capture_output=True, timeout=timeout)
