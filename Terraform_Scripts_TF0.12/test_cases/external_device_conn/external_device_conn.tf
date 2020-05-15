@@ -34,8 +34,8 @@ resource "aviatrix_transit_gateway" "ext_conn_transit_gw" {
   ha_subnet           = aviatrix_vpc.ext_conn_transit_vpc.subnets.5.cidr
   ha_gw_size          = "t2.micro"
 
-  connected_transit         = true
-  enable_active_mesh        = true
+  connected_transit         = false
+  enable_active_mesh        = true # active mesh required for BGP. technically allowed, but cannot have more than 1 connection. dead usecase
 }
 
 resource "aws_vpn_gateway" "ext_conn_transit_vgw" {
@@ -77,6 +77,15 @@ resource "aviatrix_gateway" "ext_conn_on_prem_router" {
 }
 
 ###########################################################################
+resource "aviatrix_aws_peer" "transit_router_vpc_peering" {
+  account_name1 = aviatrix_vpc.ext_conn_transit_vpc.account_name
+  account_name2 = aviatrix_vpc.ext_conn_on_prem_vpc.account_name
+  vpc_id1       = aviatrix_vpc.ext_conn_transit_vpc.vpc_id
+  vpc_id2       = aviatrix_vpc.ext_conn_on_prem_vpc.vpc_id
+  vpc_reg1      = aviatrix_vpc.ext_conn_transit_vpc.region
+  vpc_reg2      = aviatrix_vpc.ext_conn_on_prem_vpc.region
+}
+
 ## External device conn
 resource "aviatrix_transit_external_device_conn" "ext_conn" {
   connection_type = var.conn_type
@@ -84,10 +93,10 @@ resource "aviatrix_transit_external_device_conn" "ext_conn" {
   connection_name     = "ext-conn"
   vpc_id              = aviatrix_vpc.ext_conn_transit_vpc.vpc_id
   gw_name             = aviatrix_transit_gateway.ext_conn_transit_gw.gw_name
-  bgp_local_as_num    = var.conn_type == "bgp" ? 65002 : null
+  bgp_local_as_num    = var.conn_type == "bgp" ? 65000 : null
 
   remote_gateway_ip     = var.dxc_status == true ? aviatrix_gateway.ext_conn_on_prem_router.private_ip : aviatrix_gateway.ext_conn_on_prem_router.eip
-  bgp_remote_as_num     = var.conn_type == "bgp" ? 65003 : null
+  bgp_remote_as_num     = var.conn_type == "bgp" ? 65001 : null
 
   remote_subnet         = var.conn_type == "static" ? aviatrix_gateway.ext_conn_on_prem_router.subnet : null
   direct_connect        = var.dxc_status # if true, must specify private IP for router/ remote IP
@@ -106,12 +115,12 @@ resource "aviatrix_transit_external_device_conn" "ext_conn" {
   ha_enabled = true
   backup_direct_connect       = var.dxc_status == true ? true : false
   backup_remote_gateway_ip    = var.dxc_status == true ? aviatrix_gateway.ext_conn_on_prem_router.peering_ha_private_ip : aviatrix_gateway.ext_conn_on_prem_router.peering_ha_eip
-  backup_bgp_remote_as_num    = var.conn_type == "bgp" ? 65003 : null # must match primary remote ASN , only for bgp
+  backup_bgp_remote_as_num    = var.conn_type == "bgp" ? 65001 : null # must match primary remote ASN , only for bgp
   backup_pre_shared_key       = "abc-123"
   backup_local_tunnel_cidr    = "172.17.12.2/30,172.17.12.6/30"
   backup_remote_tunnel_cidr   = "172.17.12.1/30,172.17.12.5/30"
 
-  enable_edge_segmentation = true
+  enable_edge_segmentation = true # only supported for ActiveMesh gateway
 
   lifecycle {
     ignore_changes = [pre_shared_key, backup_pre_shared_key]
