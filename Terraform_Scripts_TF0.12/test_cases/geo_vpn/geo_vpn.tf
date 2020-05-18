@@ -15,6 +15,10 @@ resource "aviatrix_vpc" "r53_vpc_1" {
   aviatrix_firenet_vpc  = false
 }
 
+data "aviatrix_vpc" "r53_vpc_1" {
+  name = aviatrix_vpc.r53_vpc_1.name
+}
+
 resource "aviatrix_gateway" "r53_gw_1" {
   cloud_type        = 1
   account_name      = "AWSAccess"
@@ -22,7 +26,7 @@ resource "aviatrix_gateway" "r53_gw_1" {
   vpc_id            = aviatrix_vpc.r53_vpc_1.vpc_id
   vpc_reg           = aviatrix_vpc.r53_vpc_1.region
   gw_size           = "t2.micro"
-  subnet            = aviatrix_vpc.r53_vpc_1.subnets.3.cidr
+  subnet            = data.aviatrix_vpc.r53_vpc_1.public_subnets.0.cidr
 
   single_az_ha      = false
   allocate_new_eip  = true
@@ -47,7 +51,7 @@ resource "aviatrix_gateway" "r53_gw_2" {
   vpc_id            = aviatrix_vpc.r53_vpc_1.vpc_id
   vpc_reg           = aviatrix_vpc.r53_vpc_1.region
   gw_size           = "t2.micro"
-  subnet            = aviatrix_vpc.r53_vpc_1.subnets.3.cidr
+  subnet            = data.aviatrix_vpc.r53_vpc_1.public_subnets.0.cidr
 
   single_az_ha      = false
   allocate_new_eip  = true
@@ -82,6 +86,10 @@ resource "aviatrix_vpc" "r53_vpc_3" {
   aviatrix_firenet_vpc  = false
 }
 
+data "aviatrix_vpc" "r53_vpc_3" {
+  name = aviatrix_vpc.r53_vpc_3.name
+}
+
 resource "aviatrix_gateway" "r53_gw_3" {
   cloud_type        = 1
   account_name      = "AWSAccess"
@@ -89,7 +97,7 @@ resource "aviatrix_gateway" "r53_gw_3" {
   vpc_id            = aviatrix_vpc.r53_vpc_3.vpc_id
   vpc_reg           = aviatrix_vpc.r53_vpc_3.region
   gw_size           = "t2.micro"
-  subnet            = aviatrix_vpc.r53_vpc_3.subnets.6.cidr
+  subnet            = data.aviatrix_vpc.r53_vpc_3.public_subnets.0.cidr
 
   single_az_ha      = false
   allocate_new_eip  = true
