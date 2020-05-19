@@ -75,6 +75,7 @@ for i in range(3):
         tf.create_verify()
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
+        time.sleep(60 + 60*i)
         if i == 2:
             log.info("-------------------- RESULT --------------------")
             log.error("     create_verify(): FAIL\n")
