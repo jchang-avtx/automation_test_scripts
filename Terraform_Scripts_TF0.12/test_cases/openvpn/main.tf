@@ -55,4 +55,9 @@ resource "null_resource" "ping" {
   provisioner "local-exec" {
     command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${var.private_key} ${var.ssh_user}@${module.aws_vpc_testbed.ubuntu_public_ip[1]}:~/.ssh/id_rsa"
   }
+
+  # copy .py to public VM instance [1] in VPC [1]
+  provisioner "local-exec" {
+    command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null openvpn.py ${var.ssh_user}@${module.aws_vpc_testbed.ubuntu_public_ip[1]}:/tmp/openvpn.py"
+  }
 }
