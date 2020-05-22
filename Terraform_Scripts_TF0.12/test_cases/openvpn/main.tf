@@ -1,6 +1,6 @@
 # this module creates a test environement, you can specify how many vpcs to create
 # each vpc has 1 VM in public subnet 1 and 1 VM in private subnet
-module "aws_vpc" {
+module "aws_vpc_testbed" {
   source = "github.com/AviatrixSystems/automation_test_scripts/Regression_Testbed_TF_Module/modules/testbed-vpc-aws"
   vpc_count               = 2
   resource_name_label     = "splunk-open-vpn"
@@ -19,10 +19,10 @@ resource "aviatrix_gateway" "splunk_avx_vpn_gw" {
   cloud_type        = 1
   account_name      = var.avx_aws_access_account_name
   gw_name           = "splunk-avx-vpn-gw"
-  vpc_id            = module.aws_vpc.vpc_id[0]
+  vpc_id            = module.aws_vpc_testbed.vpc_id[0]
   vpc_reg           = var.aws_region
   gw_size           = "t2.micro"
-  subnet            = module.aws_vpc.subnet_cidr[0]
+  subnet            = module.aws_vpc_testbed.subnet_cidr[0]
 
   allocate_new_eip  = true
 
@@ -41,3 +41,18 @@ resource "aviatrix_gateway" "splunk_avx_vpn_gw" {
 }
 
 # WIP provisioners + .py
+resource "null_resource" "ping" {
+  depends_on = [
+    module.aws_vpc_testbed.instance_state,
+    aviatrix_gateway.splunk_avx_vpn_gw
+  ]
+
+  triggers = {
+    key = uuid()
+  }
+
+  # copy private key to public VM instance [1] in VPC [1]
+  provisioner "local-exec" {
+    command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${var.private_key} ${var.ssh_user}@${module.aws_vpc_testbed.ubuntu_public_ip[1]}:~/.ssh/id_rsa"
+  }
+}
