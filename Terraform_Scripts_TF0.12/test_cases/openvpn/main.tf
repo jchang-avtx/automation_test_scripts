@@ -60,4 +60,18 @@ resource "null_resource" "ping" {
   provisioner "local-exec" {
     command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null openvpn.py ${var.ssh_user}@${module.aws_vpc_testbed.ubuntu_public_ip[1]}:/tmp/openvpn.py"
   }
+
+  # run .py in public VM instance [1] in VPC [1] to ping private VM [0] in VPC [0]
+  provisioner "remote-exec" {
+    inline = [
+      "python3 /tmp/openvpn.py --ping_list ${join(",", [module.aws_vpc_testbed.ubuntu_private_ip[0]])}"
+    ]
+    connection {
+      type = "ssh"
+      user = var.ssh_user
+      private_key = file(var.private_key)
+      host = module.aws_vpc_testbed.ubuntu_public_ip[1]
+      agent = false
+    }
+  }
 }
