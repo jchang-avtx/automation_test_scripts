@@ -85,7 +85,7 @@ resource "null_resource" "ping" {
   # run .py in public VM instance [1] in VPC [1] to ping private VM [0] in VPC [0]
   provisioner "remote-exec" {
     inline = [
-      "python3 /tmp/openvpn.py --ping_list ${join(",", [module.aws_vpc_testbed.ubuntu_private_ip[0]])}"
+      "python3 /tmp/openvpn.py ${join(",", [module.aws_vpc_testbed.ubuntu_private_ip[0]])}"
     ]
     connection {
       type = "ssh"

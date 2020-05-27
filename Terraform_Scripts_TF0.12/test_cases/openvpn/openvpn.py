@@ -28,7 +28,7 @@ log = logging.getLogger(__name__)
 
 def main(argv):
     ping_list = argv
-    log.debug("ping_list" + ping_list)
+    # log.debug("ping_list : " + ping_list)
 
     log.info("\n")
     log.info("Verifying ping_list formatting...")
@@ -39,11 +39,12 @@ def main(argv):
             raise Exception()
     except:
         log.info("-------------------- RESULT --------------------")
-        log.error("     ping_list is NOT a string")
+        log.error("     ping_list is NOT a string\n")
         sys.exit(1)
     else:
         log.info("-------------------- RESULT --------------------")
-        log.debug("     ping_list is string")
+        log.info("      ping_list : " + ping_list)
+        log.info("      ping_list is string\n")
 
     ## REST command to download .ovpn file
 
@@ -57,17 +58,17 @@ def main(argv):
     ping_cmd = 'ping -c 3 ' + ping_list
 
     transmitter.destination = ping_list
-    log.debug(transmitter.destination)
+    # log.debug(transmitter.destination)
     transmitter.count = 2
 
     log.info("\n")
-    log.info("Trying to ping continuously for 8 minutes")
+    log.info("Trying to ping continuously for 8 minutes...")
     for num_tries in range(3):
         try:
             result = transmitter.ping()
             string_dict = json.dumps(ping_parser.parse(result).as_dict())
 
-            # log.debug(json.dumps(ping_parser.parse(result).as_dict(), indent = 4))
+            log.debug(json.dumps(ping_parser.parse(result).as_dict(), indent = 4))
             dict = json.loads(string_dict) # avoid messy handling of regex split of str
             # print(stringdict)
             # packet_loss_rate = re.split('"packet_loss_rate":', stringdict)
@@ -79,27 +80,27 @@ def main(argv):
 
             if packet_loss_rate is None:
                 packet_loss_rate = 100.0
-                log.debug("     packet_loss_rate : " + str(packet_loss_rate))
 
             if packet_loss_rate > 3.0:
+                log.debug("     packet_loss_rate : " + str(packet_loss_rate))
                 raise Exception("Packet loss rate is over 3%")
-            # log.debug("ping_cmd:", str(ping_cmd))
-            # output = subprocess.getoutput(ping_cmd)
-            # log.debug(output)
         except Exception as err:
             log.exception(err)
-            time.sleep(30 + 30 * num_tries)
+            log.info("Trying again in " + str(30 + 30*num_tries) + " seconds...\n")
+            time.sleep(30 + 30*num_tries)
             if num_tries == 2:
                 log.info("-------------------- RESULT --------------------")
                 log.error("     ping_test(): FAIL\n")
                 sys.exit(1)
         else:
             log.info("-------------------- RESULT --------------------")
+            log.info("      packet_loss_rate : " + str(packet_loss_rate))
             log.info("      ping_test(): PASS\n")
             sys.exit(0) # or break
-    # run REST command to call controller upgrade process
 
-    # read the packet loss % . Should always be <3% packet loss
+    ## run REST command to call controller upgrade process
+
+    ## read the packet loss % . Should always be <3% packet loss
 
 if __name__ == "__main__":
     main(sys.argv[1]) # 0 is the program name in argv
