@@ -61,6 +61,22 @@ resource "null_resource" "ping" {
     command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null openvpn.py ${var.ssh_user}@${module.aws_vpc_testbed.ubuntu_public_ip[1]}:/tmp/openvpn.py"
   }
 
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "echo 'Y' | sudo apt-get install openvpn"
+      "echo 'Y' | sudo apt-get install python3-pip" # for pip to install pingparsing
+      "echo 'Y' | sudo pip3 install pingparsing"
+    ]
+    connection {
+      type = "ssh"
+      user = var.ssh_user
+      private_key = file(var.private_key)
+      host = module.aws_vpc_testbed.ubuntu_public_ip[1]
+      agent = false
+    }
+  }
+
   # run .py in public VM instance [1] in VPC [1] to ping private VM [0] in VPC [0]
   provisioner "remote-exec" {
     inline = [

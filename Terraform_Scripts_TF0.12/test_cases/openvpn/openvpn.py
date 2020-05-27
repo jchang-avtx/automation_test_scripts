@@ -40,16 +40,22 @@ def main(argv):
         log.info("-------------------- RESULT --------------------")
         log.debug("     ping_list is string")
 
+    # REST command to download .ovpn file
+
+    # run OpenVPN client using .ovpn file
+
     # send ping continuously
     # ping_cmd = 'ping -c 48 -i 10 ' + ping_list[i]
+    log.info("\n")
+    log.info("Trying to ping continuously for 8 minutes")
+    # can set for interval 10 second and specify packet count for total time
+    # give option when setting up script for variable timing option
     ping_cmd = 'ping -c 3 ' + ping_list
     for num_tries in range(3):
         try:
-            # can set for interval 10 second and specify packet count for total time
-            # give option when setting up script for variable timing option
-            log.info("\n")
-            log.info("Trying to ping continuously for 8 minutes")
+            log.debug("ping_cmd:", str(ping_cmd))
             output = subprocess.getoutput(ping_cmd)
+            log.debug(output)
         except subprocess.CalledProcessError as err:
             log.exception(err)
             time.sleep(30 + 30 * num_tries)
