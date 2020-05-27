@@ -64,8 +64,13 @@ resource "null_resource" "ping" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
-      "echo 'Y' | sudo apt-get install openvpn"
-      "echo 'Y' | sudo apt-get install python3-pip" # for pip to install pingparsing
+      "echo 'Y' | sudo apt install python3.7",
+      "echo 'Y' | sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 1",
+      "echo 'Y' | sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2",
+      "sudo rm /usr/bin/python3",
+      "sudo ln -s python3.7 /usr/bin/python3", # set python3.7 as default
+      "echo 'Y' | sudo apt-get install openvpn",
+      "echo 'Y' | sudo apt-get install python3-pip", # for pip to install pingparsing
       "echo 'Y' | sudo pip3 install pingparsing"
     ]
     connection {

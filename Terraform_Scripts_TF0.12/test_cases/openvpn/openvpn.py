@@ -7,6 +7,10 @@ import json
 import requests
 requests.packages.urllib3.disable_warnings()
 
+import pingparsing
+ping_parser = pingparsing.PingParsing()
+transmitter = pingparsing.PingTransmitter()
+
 import logging
 import logging.handlers
 
@@ -24,6 +28,7 @@ log = logging.getLogger(__name__)
 
 def main(argv):
     ping_list = argv
+    log.debug("ping_list" + ping_list)
 
     log.info("\n")
     log.info("Verifying ping_list formatting...")
@@ -40,23 +45,48 @@ def main(argv):
         log.info("-------------------- RESULT --------------------")
         log.debug("     ping_list is string")
 
-    # REST command to download .ovpn file
+    ## REST command to download .ovpn file
 
-    # run OpenVPN client using .ovpn file
+    ## run OpenVPN client using .ovpn file
 
-    # send ping continuously
-    # ping_cmd = 'ping -c 48 -i 10 ' + ping_list[i]
-    log.info("\n")
-    log.info("Trying to ping continuously for 8 minutes")
+    ## send ping continuously
+    # ping_cmd = 'ping -c 48 -i 10 ' + ping_list[i] # ~ 8 mins
+
     # can set for interval 10 second and specify packet count for total time
     # give option when setting up script for variable timing option
     ping_cmd = 'ping -c 3 ' + ping_list
+
+    transmitter.destination = ping_list
+    log.debug(transmitter.destination)
+    transmitter.count = 2
+
+    log.info("\n")
+    log.info("Trying to ping continuously for 8 minutes")
     for num_tries in range(3):
         try:
-            log.debug("ping_cmd:", str(ping_cmd))
-            output = subprocess.getoutput(ping_cmd)
-            log.debug(output)
-        except subprocess.CalledProcessError as err:
+            result = transmitter.ping()
+            string_dict = json.dumps(ping_parser.parse(result).as_dict())
+
+            # log.debug(json.dumps(ping_parser.parse(result).as_dict(), indent = 4))
+            dict = json.loads(string_dict) # avoid messy handling of regex split of str
+            # print(stringdict)
+            # packet_loss_rate = re.split('"packet_loss_rate":', stringdict)
+            # print(packet_loss_rate[1].split(",")[0])
+
+            # log.debug(dict)
+            packet_loss_rate = dict["packet_loss_rate"]
+            # log.debug(packet_loss_rate)
+
+            if packet_loss_rate is None:
+                packet_loss_rate = 100.0
+                log.debug("     packet_loss_rate : " + str(packet_loss_rate))
+
+            if packet_loss_rate > 3.0:
+                raise Exception("Packet loss rate is over 3%")
+            # log.debug("ping_cmd:", str(ping_cmd))
+            # output = subprocess.getoutput(ping_cmd)
+            # log.debug(output)
+        except Exception as err:
             log.exception(err)
             time.sleep(30 + 30 * num_tries)
             if num_tries == 2:
