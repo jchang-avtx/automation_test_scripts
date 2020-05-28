@@ -40,6 +40,9 @@ resource "aviatrix_gateway" "splunk_avx_vpn_gw" {
   name_servers      = null
 }
 
+## TODO: add VPN user resource
+
+
 # WIP provisioners + .py
 resource "null_resource" "ping" {
   depends_on = [
@@ -61,6 +64,12 @@ resource "null_resource" "ping" {
     command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null openvpn.py ${var.ssh_user}@${module.aws_vpc_testbed.ubuntu_public_ip[1]}:/tmp/openvpn.py"
   }
 
+  # copy credentials.tf.json to public VM instance [1] in VPC [1]
+  provisioner "local-exec" {
+    command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null credentials.tf.json ${var.ssh_user}@${module.aws_vpc_testbed.ubuntu_public_ip[1]}:~/credentials.tf.json"
+  }
+
+  # update and install necessary packages on public VM instance [1] in VPC [1]
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
@@ -85,7 +94,7 @@ resource "null_resource" "ping" {
   # run .py in public VM instance [1] in VPC [1] to ping private VM [0] in VPC [0]
   provisioner "remote-exec" {
     inline = [
-      "python3 /tmp/openvpn.py ${join(",", [module.aws_vpc_testbed.ubuntu_private_ip[0]])}"
+      "python3 /tmp/openvpn.py ${module.aws_vpc_testbed.ubuntu_private_ip[0]} ${module.aws_vpc_testbed.vpc_id[0]}"
     ]
     connection {
       type = "ssh"

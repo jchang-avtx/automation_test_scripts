@@ -1,7 +1,4 @@
 # Aviatrix
-variable "avx_ctrlr_ip" {}
-variable "avx_ctrlr_usr" {}
-variable "avx_ctrlr_pass" {}
 variable "avx_aws_access_account_name" {}
 variable "avx_vpn_cidr" {
   default = "192.168.43.0/24"

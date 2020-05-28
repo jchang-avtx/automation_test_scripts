@@ -27,26 +27,109 @@ logging.basicConfig(level=LOGLEVEL,
 log = logging.getLogger(__name__)
 
 def main(argv):
-    ping_list = argv
+    ping_list = argv[0]
+    vpc_id = argv[1]
     # log.debug("ping_list : " + ping_list)
+    log.debug("vpc_id : " + vpc_id)
 
+    ## Use for REST API calls
+    with open('credentials.tf.json') as cred:
+        cred_dict = json.load(cred)
+    controller_ip = cred_dict["variable"]["avx_ctrlr_ip"]["default"]
+    controller_user = cred_dict["variable"]["avx_ctrlr_usr"]["default"]
+    controller_password = cred_dict["variable"]["avx_ctrlr_pass"]["default"]
+
+    hostname_url = "https://" + controller_ip + "/v1/"
+    api_endpoint_url = hostname_url + "api"
+    payload = {
+        "action": "login",
+        "username": controller_user,
+        "password": controller_password
+    }
+
+    ## Program start
     log.info("\n")
     log.info("Verifying ping_list formatting...")
     try:
         ping_type_check = isinstance(ping_list, str)
+        vpc_type_check = isinstance(vpc_id, str)
 
-        if ping_type_check is False:
+        if ping_type_check is False or vpc_type_check is False:
             raise Exception()
     except:
         log.info("-------------------- RESULT --------------------")
-        log.error("     ping_list is NOT a string\n")
+        log.error("     arguments are NOT a string\n")
         sys.exit(1)
     else:
         log.info("-------------------- RESULT --------------------")
         log.info("      ping_list : " + ping_list)
+        log.info("      vpc_id : " + vpc_id)
         log.info("      ping_list is string\n")
 
+    ## REST command to login
+    log.info("\n")
+    log.info("Attempting to log in to Controller...")
+    try:
+        log.debug("     api_endpoint_url : " + api_endpoint_url)
+        login_call = requests.post(
+            url = api_endpoint_url,
+            data = payload,
+            verify = False
+        )
+        login_output = login_call.json()
+        CID = login_output["CID"]
+    except Exception as err:
+        log.exception(str(err))
+        log.error("Failed to log in to Controller: " + controller_ip)
+        sys.exit(1)
+    else:
+        log.info("Outputting JSON response below...")
+        log.info("----------------------------------------")
+        log.debug("     CID : " + CID)
+        log.debug(login_call.text.encode('utf8'))
+        log.info("----------------------------------------")
+        log.info("Controller login successful!")
+
     ## REST command to download .ovpn file
+    # 1. get VPN config file name
+    log.info("\n")
+    log.info("Requesting VPN config file name for the user...")
+    for i in range(3):
+        try:
+            params = {
+                "action": "get_vpn_ssl_ca_configuration",
+                "CID": CID,
+                "vpc_id": vpc_id,
+                "username": "splunk-user",
+                "lb_name": "elb-splunk-avx-vpn-gw"
+            }
+            request_call = requests.get(
+                url = api_endpoint_url,
+                params = params,
+                verify = False
+            )
+        except Exception as err:
+            log.exception(str(err))
+            log.info("Trying again in " + str(10 + 10*i) + " seconds...\n")
+            time.sleep(10 + 10*i)
+            if i == 2:
+                log.info("Outputting JSON response below...")
+                log.info("----------------------------------------")
+                log.info(request_call.text.encode('utf8'))
+                log.info("----------------------------------------")
+                log.error("Unable to request VPN file")
+                sys.exit(1)
+        else:
+            log.info("Outputting JSON response below...")
+            log.info("----------------------------------------")
+            log.info(request_call.text.encode('utf8'))
+            log.info("----------------------------------------")
+            log.info("Successfully requested VPN config!")
+            break
+
+
+    # 2. download VPN config file
+
 
     ## run OpenVPN client using .ovpn file
 
@@ -103,4 +186,4 @@ def main(argv):
     ## read the packet loss % . Should always be <3% packet loss
 
 if __name__ == "__main__":
-    main(sys.argv[1]) # 0 is the program name in argv
+    main(sys.argv[1:]) # 0 is the program name in argv - take slice of args after prog
