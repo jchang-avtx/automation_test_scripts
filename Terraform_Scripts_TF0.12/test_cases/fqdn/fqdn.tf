@@ -78,21 +78,25 @@ resource "aviatrix_fqdn" "fqdn_tag_1" {
     fqdn   = var.aviatrix_fqdn_domain[0]
     proto  = var.aviatrix_fqdn_protocol[0]
     port   = var.aviatrix_fqdn_port[0]
+    action = var.aviatrix_fqdn_action[0]
   }
   domain_names {
     fqdn   = var.aviatrix_fqdn_domain[1]
     proto  = var.aviatrix_fqdn_protocol[1]
     port   = var.aviatrix_fqdn_port[1]
+    action = var.aviatrix_fqdn_action[1]
   }
   domain_names {
     fqdn   = var.aviatrix_fqdn_domain[2]
     proto  = var.aviatrix_fqdn_protocol[2]
     port   = var.aviatrix_fqdn_port[2]
+    action = var.aviatrix_fqdn_action[2]
   }
   domain_names {
     fqdn   = var.aviatrix_fqdn_domain[3]
     proto  = var.aviatrix_fqdn_protocol[3]
     port   = var.aviatrix_fqdn_port[3]
+    action = var.aviatrix_fqdn_action[3]
   }
 
   depends_on = [aviatrix_gateway.fqdn_gw_1, aviatrix_gateway.fqdn_gw_2]

@@ -107,6 +107,8 @@ try:
     tf.update_test("switchPorts")
     log.debug("     switchProtocols: Updating the protocols of the various Egress rules...")
     tf.update_test("switchProtocols")
+    log.debug("     switchActions: Updating the policy actions...")
+    tf.update_test("switchActions")
     log.debug("     switchMode: Updating the mode from whitelist to blacklist...")
     tf.update_test("switchMode")
     log.debug("     switchStatus: Disabling the Egress filtering...")
