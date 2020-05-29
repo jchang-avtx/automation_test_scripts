@@ -41,7 +41,12 @@ resource "aviatrix_gateway" "splunk_avx_vpn_gw" {
 }
 
 ## TODO: add VPN user resource
-
+resource "aviatrix_vpn_user" "splunk_avx_vpn_user" {
+  vpc_id        = module.aws_vpc_testbed.vpc_id[0]
+  gw_name       = aviatrix_gateway.splunk_avx_vpn_gw.elb_name
+  user_name     = "splunk-user"
+  user_email    = null
+}
 
 # WIP provisioners + .py
 resource "null_resource" "ping" {
