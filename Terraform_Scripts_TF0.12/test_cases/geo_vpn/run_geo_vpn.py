@@ -83,7 +83,10 @@ else:
 
 try:
     log.info("Verifying import functionality...")
+    log.debug("     Importing Geo VPN...")
     tf.import_test("geo_vpn", "test_geo_vpn")
+    log.debug("     Importing Geo VPN user...")
+    tf.import_test("vpn_user", "geo_vpn_user")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -114,12 +117,12 @@ for i in range(3):
         log.info("Verifying destroy functionality...")
         log.debug("     destroy_target() one of the ELB gateway first...") # Mantis (13255)
         tf.destroy_target("gateway", "r53_gw_3")
-        log.debug("Sleeping for 2 minutes to wait for gateway clean-up...")
-        time.sleep(120)
+        log.debug("Sleeping for 1 minute to wait for gateway clean-up...")
+        time.sleep(60)
         log.debug("     destroy_target() the other ELB gateway...")
         tf.destroy_target("gateway", "r53_gw_1")
-        log.debug("Sleeping for 2 minutes...")
-        time.sleep(120)
+        log.debug("Sleeping for 1 minute...")
+        time.sleep(60)
         log.debug("     Now running destroy_test() to finish clean-up...")
         tf.destroy_test()
     except tf.subprocess.CalledProcessError as err:
