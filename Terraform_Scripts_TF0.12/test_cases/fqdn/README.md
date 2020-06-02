@@ -1,5 +1,8 @@
 ## aviatrix_fqdn
 
+### Notes
+- action must be Base Policy unless Protocol is tcp (port 443) or https
+
 ---
 
 ### Usage
