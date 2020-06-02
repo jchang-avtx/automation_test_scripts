@@ -98,8 +98,8 @@ for i in range(3):
     try:
         log.info("Verifying destroy functionality...")
         tf.destroy_target("gateway", "vpn-manage-gw-elb", timeout=180)
-        log.debug("Sleeping for 2 minutes to wait for gateway clean-up...")
-        time.sleep(120)
+        log.debug("Sleeping for 1 minute to wait for gateway clean-up...")
+        time.sleep(60)
         log.debug("     Now running destroy_test() to finish clean-up...")
         tf.destroy_test()
     except tf.subprocess.CalledProcessError as err:
