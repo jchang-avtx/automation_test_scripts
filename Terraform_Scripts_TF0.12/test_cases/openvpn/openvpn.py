@@ -198,7 +198,33 @@ def main(argv):
     ## run REST command to call controller upgrade process
     log.info("\n")
     log.info("Upgrading Controller to latest...")
-    
+    try:
+        params = {
+            "action": "upgrade",
+            "CID": CID,
+        }
+        upgrade_call = requests.post(
+            url = api_endpoint_url,
+            params = params,
+            verify = False
+        )
+
+        if "false" in str(upgrade_call.text.encode('utf8')):
+            raise Exception("UpgradeError")
+    except Exception as err:
+        log.exception(err)
+        log.info("Outputting JSON response below...")
+        log.info("----------------------------------------")
+        log.info(upgrade_call.text.encode('utf8'))
+        log.info("----------------------------------------")
+        log.error("Unable to upgrade controller")
+        sys.exit(1)
+    else:
+        log.info("Outputting JSON response below...")
+        log.info("----------------------------------------")
+        log.info(request_call.text.encode('utf8'))
+        log.info("----------------------------------------")
+        log.info("Successfully updated controller!")
 
     ## read the packet loss % . Should always be <3% packet loss
 
