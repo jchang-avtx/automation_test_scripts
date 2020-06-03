@@ -62,15 +62,15 @@ def main(argv):
         sys.exit(1)
     else:
         log.info("-------------------- RESULT --------------------")
-        log.info("      ping_list : " + ping_list)
-        log.info("      vpc_id : " + vpc_id)
+        log.info("      ping_list : %s", ping_list)
+        log.info("      vpc_id : %s", vpc_id)
         log.info("      ping_list is string\n")
 
     ## REST command to login
     log.info("\n")
     log.info("Attempting to log in to Controller...")
     try:
-        log.debug("     api_endpoint_url : " + api_endpoint_url)
+        log.debug("     api_endpoint_url : %s", api_endpoint_url)
         login_call = requests.post(
             url = api_endpoint_url,
             data = payload,
@@ -80,12 +80,12 @@ def main(argv):
         CID = login_output["CID"]
     except Exception as err:
         log.exception(str(err))
-        log.error("Failed to log in to Controller: " + controller_ip)
+        log.error("Failed to log in to Controller: %s", controller_ip)
         sys.exit(1)
     else:
         log.info("Outputting JSON response below...")
         log.info("----------------------------------------")
-        log.debug("     CID : " + CID)
+        log.debug("     CID : %s", CID)
         log.debug(login_call.text.encode('utf8'))
         log.info("----------------------------------------")
         log.info("Controller login successful!")
