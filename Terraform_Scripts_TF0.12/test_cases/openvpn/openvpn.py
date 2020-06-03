@@ -132,6 +132,20 @@ def main(argv):
 
 
     ## run OpenVPN client using .ovpn file
+    log.info("\n")
+    log.info("Running OpenVPN client to connect to ELB using downloaded .ovpn...")
+    for i in range(3):
+        try:
+            subprocess.run('echo HelloWorld')
+        except Exception as err:
+            log.exception(str(err))
+            log.info("Trying to run OpenVPN client again in " + str(10 + 10*i) + " seconds...\n")
+            time.sleep(10 + 10*i)
+            if i == 2:
+                log.error("Unable to run OpenVPN client")
+                sys.exit(1)
+        else:
+            break
 
     ## send ping continuously
     # ping_cmd = 'ping -c 48 -i 10 ' + ping_list[i] # ~ 8 mins
@@ -145,7 +159,7 @@ def main(argv):
     transmitter.count = 2
 
     log.info("\n")
-    log.info("Trying to ping continuously for 8 minutes...")
+    log.info("Trying to ping continuously for 1 minute...")
     for num_tries in range(3):
         try:
             result = transmitter.ping()
@@ -164,9 +178,9 @@ def main(argv):
             if packet_loss_rate is None:
                 packet_loss_rate = 100.0
 
-            if packet_loss_rate > 3.0:
+            if packet_loss_rate > 0.0:
                 log.debug("     packet_loss_rate : " + str(packet_loss_rate))
-                raise Exception("Packet loss rate is over 3%")
+                raise Exception("Packet loss rate is over 0%")
         except Exception as err:
             log.exception(err)
             log.info("Trying again in " + str(30 + 30*num_tries) + " seconds...\n")
@@ -179,9 +193,12 @@ def main(argv):
             log.info("-------------------- RESULT --------------------")
             log.info("      packet_loss_rate : " + str(packet_loss_rate))
             log.info("      ping_test(): PASS\n")
-            sys.exit(0) # or break
+            break
 
     ## run REST command to call controller upgrade process
+    log.info("\n")
+    log.info("Upgrading Controller to latest...")
+    
 
     ## read the packet loss % . Should always be <3% packet loss
 
