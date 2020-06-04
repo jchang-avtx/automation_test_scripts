@@ -109,4 +109,6 @@ resource "null_resource" "ping" {
       agent = false
     }
   }
+
+  # copy log file back to local machine
 }

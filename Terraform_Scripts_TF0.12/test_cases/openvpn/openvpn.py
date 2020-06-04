@@ -45,6 +45,23 @@ def request_vpn_user(CID, api_endpoint_url, vpc_id):
     else:
         return request_call.text.encode('utf8')
 
+def download_vpn_user(CID, hostname_url, ovpn_filename):
+    params = {
+        "CID": CID,
+        "filename": ovpn_filename
+    }
+    download_call = requests.get(
+        url = hostname_url + "download",
+        params = params,
+        stream = True,
+        verify = False
+    )
+    with open(ovpn_filename, "wb") as output_file_stream:
+        for chunk in download_call.iter_content(chunk_size=256):
+            if chunk:
+                print("     chunk : 256" + str(type(chunk)))
+                output_file_stream.write(chunk)
+
 def main(argv):
     ping_list = argv[0]
     vpc_id = argv[1]
@@ -138,21 +155,7 @@ def main(argv):
     log.info("Downloading .ovpn file for the VPN user...")
     for i in range(3):
         try:
-            params = {
-                "CID": CID,
-                "filename": ovpn_filename
-            }
-            download_call = requests.get(
-                url = hostname_url + "download",
-                params = params,
-                stream = True,
-                verify = False
-            )
-            with open(ovpn_filename, "wb") as output_file_stream:
-                for chunk in download_call.iter_content(chunk_size=256):
-                    if chunk:
-                        print("     chunk : 256" + str(type(chunk)))
-                        output_file_stream.write(chunk)
+            download_vpn_user(CID, hostname_url, ovpn_filename)
         except Exception as err:
             log.exception(str(err))
             log.info("Trying again in " + str(10 + 10*i) + " seconds...\n")
@@ -171,7 +174,7 @@ def main(argv):
     log.info("Running OpenVPN client to connect to ELB using downloaded .ovpn...")
     for i in range(3):
         try:
-            subprocess.run('echo HelloWorld' shell=True)
+            subprocess.run('echo HelloWorld', shell=True)
         except Exception as err:
             log.exception(str(err))
             log.info("Trying to run OpenVPN client again in " + str(10 + 10*i) + " seconds...\n")
