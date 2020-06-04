@@ -107,7 +107,8 @@ def main(argv):
         log.debug("     CID : %s", CID)
         log.debug(login_call.text.encode('utf8'))
         log.info("----------------------------------------")
-        log.info("Controller login successful!")
+        log.info("Controller login successful!\n")
+
 
     ## REST command to download .ovpn file
     # 1. get VPN config file name
@@ -128,7 +129,7 @@ def main(argv):
         else:
             log.info("-------------------- RESULT --------------------")
             log.debug("     ovpn_filename : %s", ovpn_filename)
-            log.info("Successfully requested VPN config!")
+            log.info("Successfully requested VPN config!\n")
             break
 
 
@@ -160,7 +161,8 @@ def main(argv):
                 log.error("Failed to download .ovpn")
                 sys.exit(1)
         else:
-            log.info("Successfully downloaded .ovpn file")
+            log.info("-------------------- RESULT --------------------")
+            log.info("Successfully downloaded .ovpn file!\n")
             break
 
 
@@ -169,7 +171,7 @@ def main(argv):
     log.info("Running OpenVPN client to connect to ELB using downloaded .ovpn...")
     for i in range(3):
         try:
-            subprocess.run('echo HelloWorld')
+            subprocess.run('echo HelloWorld' shell=True)
         except Exception as err:
             log.exception(str(err))
             log.info("Trying to run OpenVPN client again in " + str(10 + 10*i) + " seconds...\n")
@@ -178,6 +180,8 @@ def main(argv):
                 log.error("Unable to run OpenVPN client")
                 sys.exit(1)
         else:
+            log.info("-------------------- RESULT --------------------")
+            log.info("Successfully connected to ELB using .ovpn!\n")
             break
 
     ## send ping continuously
@@ -228,6 +232,7 @@ def main(argv):
             log.info("      ping_test(): PASS\n")
             break
 
+
     ## run REST command to call controller upgrade process
     log.info("\n")
     log.info("Upgrading Controller to latest...")
@@ -246,18 +251,15 @@ def main(argv):
             raise Exception("UpgradeError")
     except Exception as err:
         log.exception(err)
-        log.info("Outputting JSON response below...")
-        log.info("----------------------------------------")
-        log.info(upgrade_call.text.encode('utf8'))
-        log.info("----------------------------------------")
         log.error("Unable to upgrade controller")
         sys.exit(1)
     else:
         log.info("Outputting JSON response below...")
         log.info("----------------------------------------")
-        log.info(request_call.text.encode('utf8'))
+        log.info(upgrade_call.text.encode('utf8'))
         log.info("----------------------------------------")
-        log.info("Successfully updated controller!")
+        log.info("Successfully updated controller!\n")
+
 
     ## read the packet loss % . Should always be <3% packet loss
 
