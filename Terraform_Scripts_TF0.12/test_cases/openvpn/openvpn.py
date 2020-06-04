@@ -26,6 +26,25 @@ logging.basicConfig(level=LOGLEVEL,
                     ])
 log = logging.getLogger(__name__)
 
+def request_vpn_user(CID, api_endpoint_url, vpc_id):
+    params = {
+        "action": "get_vpn_ssl_ca_configuration",
+        "CID": CID,
+        "vpc_id": vpc_id,
+        "username": "splunk-user",
+        "lb_name": "elb-splunk-avx-vpn-gw"
+    }
+    request_call = requests.get(
+        url = api_endpoint_url,
+        params = params,
+        verify = False
+    )
+
+    if "false" in str(request_call.text.encode('utf8')):
+        raise Exception("RequestError: %s", str(request_call.text.encode('utf8')))
+    else:
+        return request_call.text.encode('utf8')
+
 def main(argv):
     ping_list = argv[0]
     vpc_id = argv[1]
@@ -55,7 +74,7 @@ def main(argv):
         vpc_type_check = isinstance(vpc_id, str)
 
         if ping_type_check is False or vpc_type_check is False:
-            raise Exception()
+            raise Exception("TypeError")
     except:
         log.info("-------------------- RESULT --------------------")
         log.error("     arguments are NOT a string\n")
@@ -96,34 +115,19 @@ def main(argv):
     log.info("Requesting VPN config file name for the user...")
     for i in range(3):
         try:
-            params = {
-                "action": "get_vpn_ssl_ca_configuration",
-                "CID": CID,
-                "vpc_id": vpc_id,
-                "username": "splunk-user",
-                "lb_name": "elb-splunk-avx-vpn-gw"
-            }
-            request_call = requests.get(
-                url = api_endpoint_url,
-                params = params,
-                verify = False
-            )
+            result = request_vpn_user(CID, api_endpoint_url, vpc_id)
+            dict = json.loads(result)
+            ovpn_filename = dict["results"]
         except Exception as err:
             log.exception(str(err))
             log.info("Trying again in " + str(10 + 10*i) + " seconds...\n")
             time.sleep(10 + 10*i)
             if i == 2:
-                log.info("Outputting JSON response below...")
-                log.info("----------------------------------------")
-                log.info(request_call.text.encode('utf8'))
-                log.info("----------------------------------------")
                 log.error("Unable to request VPN file")
                 sys.exit(1)
         else:
-            log.info("Outputting JSON response below...")
-            log.info("----------------------------------------")
-            log.info(request_call.text.encode('utf8'))
-            log.info("----------------------------------------")
+            log.info("-------------------- RESULT --------------------")
+            log.debug("     ovpn_filename : %s", ovpn_filename)
             log.info("Successfully requested VPN config!")
             break
 
