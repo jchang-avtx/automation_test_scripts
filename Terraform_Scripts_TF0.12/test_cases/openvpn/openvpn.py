@@ -232,9 +232,9 @@ def main(argv):
 
     # can set for interval 10 second and specify packet count for total time
     # give option when setting up script for variable timing option
-    ping_cmd = 'ping -c 3 ' + ping_list
+    # ping_cmd = 'ping -c 3 ' + ping_list
     log.info("\n")
-    log.info("Trying to ping continuously for 1 minute...")
+    log.info("Trying to ping continuously for 1 minute to ensure connection...")
     for num_tries in range(3):
         try:
             run_ping_test(ping_list)
@@ -268,6 +268,25 @@ def main(argv):
 
 
     ## read the packet loss % . Should always be <3% packet loss
+    log.info("\n")
+    log.info("Trying to ping continuously for 1 minute after controller upgrade...")
+    for num_tries in range(3):
+        try:
+            run_ping_test(ping_list)
+        except Exception as err:
+            log.exception(err)
+            log.info("Trying again in " + str(30 + 30*num_tries) + " seconds...\n")
+            time.sleep(30 + 30*num_tries)
+            if num_tries == 2:
+                log.info("-------------------- RESULT --------------------")
+                log.error("     Packet loss rate is over 0%")
+                log.error("     ping_test(): FAIL\n")
+                sys.exit(1)
+        else:
+            log.info("-------------------- RESULT --------------------")
+            log.info("      ping_test(): PASS\n")
+            break
+
 
 if __name__ == "__main__":
     main(sys.argv[1:]) # 0 is the program name in argv - take slice of args after prog
