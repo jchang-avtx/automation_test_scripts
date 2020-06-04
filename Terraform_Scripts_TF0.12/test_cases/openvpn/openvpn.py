@@ -62,6 +62,30 @@ def download_vpn_user(CID, hostname_url, ovpn_filename):
                 print("     chunk : 256" + str(type(chunk)))
                 output_file_stream.write(chunk)
 
+def run_ping_test(ping_list):
+    transmitter.destination = ping_list
+    # log.debug(transmitter.destination)
+    transmitter.count = 2
+
+    result = transmitter.ping()
+    string_dict = json.dumps(ping_parser.parse(result).as_dict())
+
+    log.debug(json.dumps(ping_parser.parse(result).as_dict(), indent = 4))
+    dict = json.loads(string_dict) # avoid messy handling of regex split of str
+    # print(stringdict)
+    # packet_loss_rate = re.split('"packet_loss_rate":', stringdict)
+    # print(packet_loss_rate[1].split(",")[0])
+
+    # log.debug(dict)
+    packet_loss_rate = dict["packet_loss_rate"]
+    # log.debug(packet_loss_rate)
+
+    if packet_loss_rate is None:
+        packet_loss_rate = 100.0
+
+    if packet_loss_rate > 0.0:
+        raise Exception("PingFail: " + str(packet_loss_rate))
+
 def main(argv):
     ping_list = argv[0]
     vpc_id = argv[1]
@@ -193,45 +217,22 @@ def main(argv):
     # can set for interval 10 second and specify packet count for total time
     # give option when setting up script for variable timing option
     ping_cmd = 'ping -c 3 ' + ping_list
-
-    transmitter.destination = ping_list
-    # log.debug(transmitter.destination)
-    transmitter.count = 2
-
     log.info("\n")
     log.info("Trying to ping continuously for 1 minute...")
     for num_tries in range(3):
         try:
-            result = transmitter.ping()
-            string_dict = json.dumps(ping_parser.parse(result).as_dict())
-
-            log.debug(json.dumps(ping_parser.parse(result).as_dict(), indent = 4))
-            dict = json.loads(string_dict) # avoid messy handling of regex split of str
-            # print(stringdict)
-            # packet_loss_rate = re.split('"packet_loss_rate":', stringdict)
-            # print(packet_loss_rate[1].split(",")[0])
-
-            # log.debug(dict)
-            packet_loss_rate = dict["packet_loss_rate"]
-            # log.debug(packet_loss_rate)
-
-            if packet_loss_rate is None:
-                packet_loss_rate = 100.0
-
-            if packet_loss_rate > 0.0:
-                log.debug("     packet_loss_rate : " + str(packet_loss_rate))
-                raise Exception("Packet loss rate is over 0%")
+            run_ping_test(ping_list)
         except Exception as err:
             log.exception(err)
             log.info("Trying again in " + str(30 + 30*num_tries) + " seconds...\n")
             time.sleep(30 + 30*num_tries)
             if num_tries == 2:
                 log.info("-------------------- RESULT --------------------")
+                log.error("     Packet loss rate is over 0%")
                 log.error("     ping_test(): FAIL\n")
                 sys.exit(1)
         else:
             log.info("-------------------- RESULT --------------------")
-            log.info("      packet_loss_rate : " + str(packet_loss_rate))
             log.info("      ping_test(): PASS\n")
             break
 
