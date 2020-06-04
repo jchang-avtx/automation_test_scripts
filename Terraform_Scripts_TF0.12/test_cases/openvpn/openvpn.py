@@ -86,6 +86,22 @@ def run_ping_test(ping_list):
     if packet_loss_rate > 0.0:
         raise Exception("PingFail: " + str(packet_loss_rate))
 
+def upgrade_controller(CID, api_endpoint_url):
+    data = {
+        "action": "upgrade",
+        "CID": CID,
+    }
+    upgrade_call = requests.post(
+        url = api_endpoint_url,
+        data = data,
+        verify = False
+    )
+
+    if "false" in str(upgrade_call.text.encode('utf8')):
+        raise Exception("UpgradeError: %s", str(upgrade_call.text.encode('utf8')))
+    else:
+        return upgrade_call.text.encode('utf8')
+
 def main(argv):
     ping_list = argv[0]
     vpc_id = argv[1]
@@ -241,27 +257,13 @@ def main(argv):
     log.info("\n")
     log.info("Upgrading Controller to latest...")
     try:
-        params = {
-            "action": "upgrade",
-            "CID": CID,
-        }
-        upgrade_call = requests.post(
-            url = api_endpoint_url,
-            params = params,
-            verify = False
-        )
-
-        if "false" in str(upgrade_call.text.encode('utf8')):
-            raise Exception("UpgradeError")
+        upgrade_controller(CID, api_endpoint_url)
     except Exception as err:
         log.exception(err)
         log.error("Unable to upgrade controller")
         sys.exit(1)
     else:
-        log.info("Outputting JSON response below...")
-        log.info("----------------------------------------")
-        log.info(upgrade_call.text.encode('utf8'))
-        log.info("----------------------------------------")
+        log.info("-------------------- RESULT --------------------")
         log.info("Successfully updated controller!\n")
 
 
