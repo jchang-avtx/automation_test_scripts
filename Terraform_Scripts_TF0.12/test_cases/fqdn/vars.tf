@@ -15,3 +15,6 @@ variable "aviatrix_fqdn_protocol" {
 variable "aviatrix_fqdn_port" {
   type = list(string)
 }
+variable "aviatrix_fqdn_action" {
+  type = list(string)
+}

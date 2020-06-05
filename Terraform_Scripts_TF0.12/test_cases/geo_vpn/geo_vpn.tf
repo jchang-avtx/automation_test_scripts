@@ -15,6 +15,10 @@ resource "aviatrix_vpc" "r53_vpc_1" {
   aviatrix_firenet_vpc  = false
 }
 
+data "aviatrix_vpc" "r53_vpc_1" {
+  name = aviatrix_vpc.r53_vpc_1.name
+}
+
 resource "aviatrix_gateway" "r53_gw_1" {
   cloud_type        = 1
   account_name      = "AWSAccess"
@@ -22,7 +26,7 @@ resource "aviatrix_gateway" "r53_gw_1" {
   vpc_id            = aviatrix_vpc.r53_vpc_1.vpc_id
   vpc_reg           = aviatrix_vpc.r53_vpc_1.region
   gw_size           = "t2.micro"
-  subnet            = aviatrix_vpc.r53_vpc_1.subnets.3.cidr
+  subnet            = data.aviatrix_vpc.r53_vpc_1.public_subnets.0.cidr
 
   single_az_ha      = false
   allocate_new_eip  = true
@@ -47,7 +51,7 @@ resource "aviatrix_gateway" "r53_gw_2" {
   vpc_id            = aviatrix_vpc.r53_vpc_1.vpc_id
   vpc_reg           = aviatrix_vpc.r53_vpc_1.region
   gw_size           = "t2.micro"
-  subnet            = aviatrix_vpc.r53_vpc_1.subnets.3.cidr
+  subnet            = data.aviatrix_vpc.r53_vpc_1.public_subnets.0.cidr
 
   single_az_ha      = false
   allocate_new_eip  = true
@@ -82,6 +86,10 @@ resource "aviatrix_vpc" "r53_vpc_3" {
   aviatrix_firenet_vpc  = false
 }
 
+data "aviatrix_vpc" "r53_vpc_3" {
+  name = aviatrix_vpc.r53_vpc_3.name
+}
+
 resource "aviatrix_gateway" "r53_gw_3" {
   cloud_type        = 1
   account_name      = "AWSAccess"
@@ -89,7 +97,7 @@ resource "aviatrix_gateway" "r53_gw_3" {
   vpc_id            = aviatrix_vpc.r53_vpc_3.vpc_id
   vpc_reg           = aviatrix_vpc.r53_vpc_3.region
   gw_size           = "t2.micro"
-  subnet            = aviatrix_vpc.r53_vpc_3.subnets.6.cidr
+  subnet            = data.aviatrix_vpc.r53_vpc_3.public_subnets.0.cidr
 
   single_az_ha      = false
   allocate_new_eip  = true
@@ -124,10 +132,21 @@ output "test_geo_vpn_id" {
 }
 
 ################################################################
-# GeoVPN user created under the DNS (not supported yet as of R2.14)
-# resource "aviatrix_vpn_user" "geo_vpn_user" {
-#   vpc_id = null
-#   gw_name = join(".", [aviatrix_geo_vpn.test_geo_vpn.service_name, aviatrix_geo_vpn.test_geo_vpn.domain_name])
-#   user_name = "geo-vpn-user"
-#   user_email = null
-# }
+# GeoVPN user created under the DNS (supported as of R2.15) (14085)
+resource "aviatrix_vpn_user" "geo_vpn_user" {
+  user_name     = "geo-vpn-user"
+  user_email    = null
+
+  vpc_id      = null
+  gw_name     = null
+  dns_name    = join(".", [aviatrix_geo_vpn.test_geo_vpn.service_name, aviatrix_geo_vpn.test_geo_vpn.domain_name]) # use reference
+
+  saml_endpoint = null
+
+  manage_user_attachment = true
+  profiles = null
+}
+
+output "geo_vpn_user_id" {
+  value = aviatrix_vpn_user.geo_vpn_user.id
+}

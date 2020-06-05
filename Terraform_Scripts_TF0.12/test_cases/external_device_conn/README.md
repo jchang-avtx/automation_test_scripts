@@ -33,5 +33,16 @@
                   -auto-approve
   terraform show
 
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=updateDxC.tfvars \
+                  -auto-approve
+  terraform show
+
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=updateStatic.tfvars \
+                  -var-file=updateDxC.tfvars \
+                  -auto-approve
+  terraform show
+
   terraform destroy -var-file=/path/provider_cred.tfvars -auto-approve
 ```

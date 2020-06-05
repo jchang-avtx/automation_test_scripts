@@ -1,0 +1,9 @@
+avx_aws_access_account_name = << Enter Aviatrix controller AWS access account name
+avx_vpn_cidr = "192.168.43.0/24" # or enter a custom VPN CIDR for the Aviatrix VPN gateway
+
+aws_region = << Enter AWS region >>
+aws_access_key = << Enter AWS access key ID >>
+aws_secret_key = << Enter AWS secret access key >>
+
+public_key = "~/example_ovpn_key.pub"
+private_key = "~/example_ovpn_key"

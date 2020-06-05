@@ -1,7 +1,7 @@
 """
-run_external_device_conn.py
+run_vpn_management.py
 
-Test case for Aviatrix External Device Connection Terraform resource/ use-case integrated with Transit Network
+Test case for VPN profile/user management use-case (Mantis 11363)
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -39,10 +39,8 @@ log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")
 log.info("Steps to perform:")
 log.info("      1. Set up environment variables/ credentials")
-log.info("      2. Create transit network and establish connection to external device")
-log.info("      3. Perform terraform import to identify deltas")
-log.info("      4. Perform update tests on external device conn's conn_type")
-log.info("      5. Tear down infrastructure\n")
+log.info("      2. Create VPN management infrastructure")
+log.info("      3. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")
@@ -86,45 +84,31 @@ for i in range(3):
         break
 
 
-try:
-    log.info("Verifying import functionality...")
-    tf.import_test("transit_external_device_conn", "ext_conn")
-except tf.subprocess.CalledProcessError as err:
-    log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     import_test(): FAIL\n")
-    sys.exit(1)
-else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      import_test(): PASS\n")
+log.info(str(os.path.split(os.getcwd())[1]).upper() + " will not test import functionality...")
+log.info("-------------------- RESULT --------------------")
+log.info("     import_test(): SKIPPED\n")
 
 
-try:
-    log.info("Verifying update functionality...")
-    log.debug("     updateStatic: Change connection type from BGP to static (ForceNew)...")
-    tf.update_test("updateStatic")
-    log.debug("     updateDxC: Change connection to use DirectConnect and change remote gateway IP to private IPs...")
-    tf.update_test("updateDxC")
-    log.debug("     updateStatic and updateDxC: Create static connection using DxC...")
-    tf.update_test("updateStatic", "updateDxC")
-except tf.subprocess.CalledProcessError as err:
-    log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     update_test(): FAIL\n")
-    sys.exit(1)
-else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      update_test(): PASS\n")
+log.info(str(os.path.split(os.getcwd())[1]).upper() + " will not test update functionality...")
+log.info("-------------------- RESULT --------------------")
+log.info("     update_test(): SKIPPED\n")
 
 
-try:
-    log.info("Verifying destroy functionality...")
-    tf.destroy_test()
-except tf.subprocess.CalledProcessError as err:
-    log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     destroy_test(): FAIL\n")
-    sys.exit(1)
-else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      destroy_test(): PASS\n")
+for i in range(3):
+    try:
+        log.info("Verifying destroy functionality...")
+        tf.destroy_target("gateway", "vpn-manage-gw-elb", timeout=180)
+        log.debug("Sleeping for 1 minute to wait for gateway clean-up...")
+        time.sleep(60)
+        log.debug("     Now running destroy_test() to finish clean-up...")
+        tf.destroy_test()
+    except tf.subprocess.CalledProcessError as err:
+        log.exception(err.stderr.decode())
+        if i == 2:
+            log.info("-------------------- RESULT --------------------")
+            log.error("     destroy_test(): FAIL\n")
+            sys.exit(1)
+    else:
+        log.info("-------------------- RESULT --------------------")
+        log.info("      destroy_test(): PASS\n")
+        sys.exit(0)
