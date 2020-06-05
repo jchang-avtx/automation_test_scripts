@@ -1,7 +1,7 @@
 # Splunk OpenVPN Regression Lab Setup
 
 ## Description
-This Terraform configuration creates 2 AWS VPCs, each with 1 Ubuntu instances in a public subnet and 1 in a private subnet, and sets up an Aviatrix VPN gateway within one of the VPCs. One of the VMs in the VPC use a Linux-based OpenVPN Client and make a VPN connection to the Aviatrix VPN gateway. Continuous pings will be sent from the client to a private VM in that VPN gateway's VPC. Verify no ping packet is lost during a controller upgrade.
+This Terraform configuration creates 2 AWS VPCs, each with 1 Ubuntu instances in a public subnet and 1 in a private subnet, and sets up an Aviatrix VPN gateway within one of the VPCs. One of the VMs in the VPC use a Linux-based OpenVPN Client and make a VPN connection to the Aviatrix VPN gateway. Pings will be sent from the client to a private VM in that VPN gateway's VPC. Verify no ping packet is lost before and after controller upgrade
 
 ## Prerequisites
 1. Create a public, private_key pair, and save the key pair such as in ~/Downloads/sshkey and ~/Downloads/sshkey.pub
@@ -25,6 +25,8 @@ This Terraform configuration creates 2 AWS VPCs, each with 1 Ubuntu instances in
   $ terraform init
   $ terraform plan
   $ terraform apply -auto-approve
-  $ terraform show
+```
+4. Run the following command to tear down the testbed
+```
   $ terraform destroy -auto-approve
 ```

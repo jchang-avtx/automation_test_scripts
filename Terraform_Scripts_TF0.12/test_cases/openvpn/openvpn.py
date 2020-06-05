@@ -65,7 +65,7 @@ def download_vpn_user(CID, hostname_url, ovpn_filename):
 def run_ping_test(ping_list):
     transmitter.destination = ping_list
     # log.debug(transmitter.destination)
-    transmitter.count = 2
+    transmitter.count = 60
 
     result = transmitter.ping()
     string_dict = json.dumps(ping_parser.parse(result).as_dict())
