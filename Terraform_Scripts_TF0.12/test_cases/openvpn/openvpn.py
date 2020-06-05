@@ -102,6 +102,12 @@ def upgrade_controller(CID, api_endpoint_url):
     else:
         return upgrade_call.text.encode('utf8')
 
+def terminate_openvpn():
+    cmd = "sudo killall openvpn"
+    subprocess.run(cmd, shell=True)
+    time.sleep(10)
+
+###############################################################################
 def main(argv):
     ping_list = argv[0]
     vpc_id = argv[1]
@@ -142,7 +148,6 @@ def main(argv):
         log.info("      vpc_id : %s", vpc_id)
         log.info("      ping_list is string\n")
 
-    ## REST command to login
     log.info("\n")
     log.info("Attempting to log in to Controller...")
     try:
@@ -166,9 +171,6 @@ def main(argv):
         log.info("----------------------------------------")
         log.info("Controller login successful!\n")
 
-
-    ## REST command to download .ovpn file
-    # 1. get VPN config file name
     log.info("\n")
     log.info("Requesting VPN config file name for the user...")
     for i in range(3):
@@ -189,8 +191,6 @@ def main(argv):
             log.info("Successfully requested VPN config!\n")
             break
 
-
-    # 2. download VPN config file
     log.info("\n")
     log.info("Downloading .ovpn file for the VPN user...")
     for i in range(3):
@@ -208,13 +208,12 @@ def main(argv):
             log.info("Successfully downloaded .ovpn file!\n")
             break
 
-
-    ## run OpenVPN client using .ovpn file
     log.info("\n")
     log.info("Running OpenVPN client to connect to ELB using downloaded .ovpn...")
     for i in range(3):
         try:
-            subprocess.run('echo HelloWorld', shell=True)
+            subprocess.Popen(['sudo', 'openvpn', '--config', ovpn_filename])
+            time.sleep(10)
         except Exception as err:
             log.exception(str(err))
             log.info("Trying to run OpenVPN client again in " + str(10 + 10*i) + " seconds...\n")
@@ -228,11 +227,8 @@ def main(argv):
             break
 
     ## send ping continuously
-    # ping_cmd = 'ping -c 48 -i 10 ' + ping_list[i] # ~ 8 mins
-
     # can set for interval 10 second and specify packet count for total time
     # give option when setting up script for variable timing option
-    # ping_cmd = 'ping -c 3 ' + ping_list
     log.info("\n")
     log.info("Trying to ping continuously for 1 minute to ensure connection...")
     for num_tries in range(3):
@@ -252,8 +248,6 @@ def main(argv):
             log.info("      ping_test(): PASS\n")
             break
 
-
-    ## run REST command to call controller upgrade process
     log.info("\n")
     log.info("Upgrading Controller to latest...")
     try:
@@ -265,7 +259,6 @@ def main(argv):
     else:
         log.info("-------------------- RESULT --------------------")
         log.info("Successfully updated controller!\n")
-
 
     ## read the packet loss % . Should always be <3% packet loss
     log.info("\n")
@@ -286,6 +279,17 @@ def main(argv):
             log.info("-------------------- RESULT --------------------")
             log.info("      ping_test(): PASS\n")
             break
+
+    log.info("\n")
+    log.info("Stopping OpenVPN connection...")
+    try:
+        terminate_openvpn()
+    except:
+        log.info("-------------------- RESULT --------------------")
+        log.exception("Failed to execute the command via SSH")
+    else:
+        log.info("-------------------- RESULT --------------------")
+        log.info("      terminate_openvpn(): PASS\n")
 
 
 if __name__ == "__main__":

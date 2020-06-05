@@ -40,7 +40,6 @@ resource "aviatrix_gateway" "splunk_avx_vpn_gw" {
   name_servers      = null
 }
 
-## TODO: add VPN user resource
 resource "aviatrix_vpn_user" "splunk_avx_vpn_user" {
   vpc_id        = module.aws_vpc_testbed.vpc_id[0]
   gw_name       = aviatrix_gateway.splunk_avx_vpn_gw.elb_name
@@ -48,7 +47,6 @@ resource "aviatrix_vpn_user" "splunk_avx_vpn_user" {
   user_email    = null
 }
 
-# WIP provisioners + .py
 resource "null_resource" "ping" {
   depends_on = [
     module.aws_vpc_testbed.instance_state,
@@ -111,4 +109,7 @@ resource "null_resource" "ping" {
   }
 
   # copy log file back to local machine
+  provisioner "local-exec" {
+    command = "scp -i ${var.private_key} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${var.ssh_user}@${module.aws_vpc_testbed.ubuntu_public_ip[1]}:~/openvpn.log ."
+  }
 }
