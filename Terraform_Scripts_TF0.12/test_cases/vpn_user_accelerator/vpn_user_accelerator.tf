@@ -2,9 +2,9 @@
 #   cloud_type      = 1
 #   account_name    = "AWSAccess"
 #   gw_name         = "vpnGWforELB"
-#   vpc_id          = "vpc-0086065966b807866"
+#   vpc_id          = "vpc-0086065966b807866" vpc-0a2cbaf68060350d9
 #   subnet          = "10.0.2.0/24"
-#   vpc_reg         = "us-east-1"
+#   vpc_reg         = "us-east-1" eu-west-1
 #   gw_size         = "t2.micro"
 #
 #   vpn_access      = true
