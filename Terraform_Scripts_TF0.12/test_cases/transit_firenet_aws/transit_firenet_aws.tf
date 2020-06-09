@@ -97,7 +97,7 @@ resource "aviatrix_site2cloud" "transit_firenet_s2c_spoke1_transit" {
   connection_name       = "transit-firenet-s2c-spoke1-transit"
   remote_gateway_type   = "generic"
   connection_type       = "unmapped"
-  tunnel_type           = "udp"
+  tunnel_type           = "policy"
   primary_cloud_gateway_name  = aviatrix_transit_gateway.aws_transit_firenet_gateway.gw_name
   local_subnet_cidr           = aviatrix_transit_gateway.aws_transit_firenet_gateway.subnet
   remote_gateway_ip           = aviatrix_spoke_gateway.transit_firenet_spoke_gateway_1.eip
