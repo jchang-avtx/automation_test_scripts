@@ -15,7 +15,6 @@
 ### Test case
 - verify AWS TGW built
 - verify AWS TGW Inter-region peering works
-- **NOTE:** will update and add full TGW build after- simple test for now
 
 
 ### Usage
