@@ -101,3 +101,24 @@ output "test_arm_vnet_id" {
 output "test_arm_firenet_vnet_id" {
   value = aviatrix_vpc.test_arm_firenet_vnet.id
 }
+
+############################################################
+## DATA SOURCE
+############################################################
+
+data "aviatrix_vpc" "d_test_aws_vpc"{
+  name = aviatrix_vpc.test_aws_vpc.name
+}
+
+data "aviatrix_vpc_tracker" "d_aws_vpc_tracker" {
+  cloud_type = 1
+  account_name = "AWSAccess"
+}
+
+output "d_test_aws_vpc_id" {
+  value = data.aviatrix_vpc.d_test_aws_vpc.id
+}
+
+output "d_aws_vpc_tracker_id" {
+  value = data.aviatrix_vpc_tracker.d_aws_vpc_tracker.id
+}
