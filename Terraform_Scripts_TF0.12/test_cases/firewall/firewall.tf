@@ -108,3 +108,22 @@ output "test_firewall_id" {
 output "test_firewall_icmp_id" {
   value = aviatrix_firewall.test_firewall_icmp.id
 }
+
+## Data source
+data "aviatrix_firewall" "d_test_firewall" {
+  gw_name = aviatrix_gateway.test_gateway["firewallGW1"].gw_name
+  depends_on = [aviatrix_firewall.test_firewall]
+}
+
+data "aviatrix_firewall" "d_test_firewall_icmp" {
+  gw_name = aviatrix_gateway.test_gateway["firewallGW2"].gw_name
+  depends_on = [aviatrix_firewall.test_firewall_icmp]
+}
+
+output "d_test_firewall_id" {
+  value = data.aviatrix_firewall.d_test_firewall.id
+}
+
+output "d_test_firewall_icmp_id" {
+  value = data.aviatrix_firewall.d_test_firewall_icmp.id
+}
