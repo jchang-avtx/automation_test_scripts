@@ -115,7 +115,7 @@ resource "aviatrix_firewall_instance" "firenet_instance" {
   vpc_id                  = aviatrix_vpc.aws_transit_firenet_vpc.vpc_id
   firenet_gw_name         = aviatrix_transit_gateway.aws_transit_firenet_gateway.gw_name
   firewall_name           = "transit-firenet-instance"
-  firewall_image          = "Palo Alto Networks VM-Series Next-Generation Firewall Bundle 1"
+  firewall_image          = "Palo Alto Networks VM-Series Next-Generation Firewall Bundle 1 [VM-300]"
   firewall_image_version  = "9.1.0-h3"
   firewall_size           = "m5.xlarge"
   management_subnet       = aviatrix_vpc.aws_transit_firenet_vpc.subnets.0.cidr

@@ -4,6 +4,10 @@ resource "aws_kms_key" "temp_cust_key" {
   deletion_window_in_days   = null # do not set this
   is_enabled                = var.aws_kms_key_status
   enable_key_rotation       = false
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_kms_alias" "temp_cust_key_alias" {
