@@ -125,8 +125,11 @@ resource "aviatrix_spoke_gateway" "gcp_custom_routes_spoke" {
   vpc_reg         = join("-", [aviatrix_vpc.gcp_custom_routes_vpc.subnets.0.region, "a"])
   gw_size         = "n1-standard-1"
   subnet          = aviatrix_vpc.gcp_custom_routes_vpc.subnets.0.cidr
+
   ha_zone         = join("-", [aviatrix_vpc.gcp_custom_routes_vpc.subnets.0.region, "b"])
   ha_gw_size      = "n1-standard-1"
+  ha_subnet       = aviatrix_vpc.gcp_custom_routes_vpc.subnets.0.cidr
+
   single_ip_snat  = false # cannot have SNAT enabled if you have HA-enabled
   # single_az_ha = "enabled" # used if not have HA-gw; not supported for Gcloud
   transit_gw      = null
