@@ -1,7 +1,7 @@
 ## Test case: stress test to verify high volume of firewall policy rules
 
 variable "max_rule" {
-  default = 100
+  default = 2
 }
 
 resource "random_integer" "src_ip1" {
@@ -64,8 +64,7 @@ output "stress_firewall_id" {
 
 ## Data source
 data "aviatrix_firewall" "d_stress_firewall" {
-  gw_name = aviatrix_gateway.test_gateway["firewallGW3"].gw_name
-  depends_on = [aviatrix_firewall.stress_firewall]
+  gw_name = aviatrix_firewall.stress_firewall.gw_name
 }
 
 output "d_stress_firewall_id" {
