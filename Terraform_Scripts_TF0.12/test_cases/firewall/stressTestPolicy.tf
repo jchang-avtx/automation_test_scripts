@@ -1,7 +1,7 @@
 ## Test case: stress test to verify high volume of firewall policy rules
 
 variable "max_rule" {
-  default = 2
+  default = 100
 }
 
 resource "random_integer" "src_ip1" {
