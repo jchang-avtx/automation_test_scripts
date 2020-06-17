@@ -9,8 +9,8 @@ resource "aviatrix_site2cloud" "s2c_test" {
 
   primary_cloud_gateway_name    = "avxPrimaryGwName"
   backup_gateway_name           = "avxPrimaryGwName-hagw"
-  remote_gateway_ip             = "34.232.45.155"
-  backup_remote_gateway_ip      = "3.92.103.18"
+  remote_gateway_ip             = "34.232.45.155" # released as of 16 jun 2020
+  backup_remote_gateway_ip      = "3.92.103.18" # released as of 16 jun 2020
 
   remote_subnet_cidr            = "10.202.0.0/16"
   local_subnet_cidr             = "10.123.0.0/16"
@@ -36,8 +36,8 @@ resource "aviatrix_site2cloud" "s2c_test2" {
 
   primary_cloud_gateway_name    = "onPremRemoteGW"
   backup_gateway_name           = "onPremRemoteGW-hagw"
-  remote_gateway_ip             = "34.236.72.194"
-  backup_remote_gateway_ip      = "18.204.25.144"
+  remote_gateway_ip             = "34.236.72.194" # released as of 16 jun 2020
+  backup_remote_gateway_ip      = "18.204.25.144" # released as of 16 jun 2020
 
   remote_subnet_cidr            = "10.123.0.0/16"
   local_subnet_cidr             = "10.202.0.0/16"
@@ -55,8 +55,8 @@ resource "aviatrix_site2cloud" "s2c_test3" {
 
   primary_cloud_gateway_name    = "gateway3"
   backup_gateway_name           = "gateway3-hagw"
-  remote_gateway_ip             = "34.232.45.155"
-  backup_remote_gateway_ip      = "3.92.103.18"
+  remote_gateway_ip             = "34.232.45.155" # released as of 16 jun 2020
+  backup_remote_gateway_ip      = "3.92.103.18" # released as of 16 jun 2020
 
   remote_subnet_cidr            = "10.202.0.0/16"
   local_subnet_cidr             = "77.77.77.192/28"
@@ -85,8 +85,8 @@ resource "aviatrix_site2cloud" "s2c_test4" {
 
   primary_cloud_gateway_name    = "onPremRemoteGW"
   backup_gateway_name           = "onPremRemoteGW-hagw"
-  remote_gateway_ip             = "52.22.209.119"
-  backup_remote_gateway_ip      = "3.211.14.238"
+  remote_gateway_ip             = "52.22.209.119" # released as of 16 jun 2020
+  backup_remote_gateway_ip      = "3.211.14.238" # released as of 16 jun 2020
 
 
   remote_subnet_cidr            = "77.77.77.192/28"

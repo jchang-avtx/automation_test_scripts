@@ -6,7 +6,7 @@ variable "gcp_ha_gw_size" {
 variable "gcp_ha_gw_zone" {
   default = null
 }
-variable "gcp_ha_subnet" {
+variable "gcp_ha_gw_subnet" {
   default = null
 }
 
