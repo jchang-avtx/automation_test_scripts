@@ -171,6 +171,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = true
   enable_active_active          = true
+  enable_ikev2                  = true
 
   ## mapped testing ##
   private_route_encryption      = var.custom_alg == true ? true : false
@@ -208,6 +209,7 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = true
   enable_active_active          = true
+  enable_ikev2                  = true
 
   lifecycle {
     ignore_changes = [pre_shared_key, backup_pre_shared_key]
