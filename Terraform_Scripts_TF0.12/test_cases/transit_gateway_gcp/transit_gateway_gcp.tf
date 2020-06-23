@@ -9,6 +9,7 @@ resource "aviatrix_transit_gateway" "gcp_transit_gateway" {
 
   ha_zone       = var.gcp_ha_gw_zone
   ha_gw_size    = var.gcp_ha_gw_size
+  ha_subnet     = var.gcp_ha_gw_subnet
 
   single_ip_snat= var.single_ip_snat
   single_az_ha  = var.single_az_ha

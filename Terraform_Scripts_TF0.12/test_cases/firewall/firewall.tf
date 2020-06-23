@@ -1,6 +1,6 @@
 variable "test_gateway" {
   description = "Map for test_gateways' parameters"
-  type = "map"
+  type = map
   default = {
     "firewallGW1" = "172.31.0.0/20"
     "firewallGW2" = "172.31.16.0/20"
@@ -107,4 +107,21 @@ output "test_firewall_id" {
 
 output "test_firewall_icmp_id" {
   value = aviatrix_firewall.test_firewall_icmp.id
+}
+
+## Data source
+data "aviatrix_firewall" "d_test_firewall" {
+  gw_name = aviatrix_firewall.test_firewall.gw_name
+}
+
+data "aviatrix_firewall" "d_test_firewall_icmp" {
+  gw_name = aviatrix_firewall.test_firewall_icmp.gw_name
+}
+
+output "d_test_firewall_id" {
+  value = data.aviatrix_firewall.d_test_firewall.id
+}
+
+output "d_test_firewall_icmp_id" {
+  value = data.aviatrix_firewall.d_test_firewall_icmp.id
 }

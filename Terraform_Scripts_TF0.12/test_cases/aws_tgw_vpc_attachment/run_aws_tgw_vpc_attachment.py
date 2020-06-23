@@ -142,10 +142,10 @@ else:
 
 try:
     log.info("Verifying update functionality...")
-    # log.debug("     updatePrefix: Update list of CIDRs for DxGW to advertise to remote (on-prem)...")
-    # tf.update_test("updatePrefix")
-    log.info("Skipping update for allowed_prefix")
-    log.info("      REASON: Mantis (13374) - fail to update allowed_prefix for DxC")
+    log.debug("     updatePrefix: Update list of CIDRs for DxGW to advertise to remote (on-prem)...")
+    tf.update_test("updatePrefix")
+    # log.info("Skipping update for allowed_prefix")
+    # log.info("      REASON: Mantis (13374) - fail to update allowed_prefix for DxC")
     log.debug("     updateLearnedCIDRApproval: Disable approval requirement for Learned CIDRs...")
     tf.update_test("updateLearnedCIDRApproval")
 except tf.subprocess.CalledProcessError as err:

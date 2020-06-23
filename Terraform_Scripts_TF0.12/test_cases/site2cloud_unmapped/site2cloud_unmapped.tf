@@ -154,7 +154,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   connection_name               = "s2c_test_conn_name"
   connection_type               = "unmapped"
   remote_gateway_type           = var.custom_alg == true ? "generic" : "avx"
-  tunnel_type                   = "udp"
+  tunnel_type                   = "policy"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_primary_gw.gw_name
@@ -171,6 +171,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = true
   enable_active_active          = true
+  enable_ikev2                  = true
 
   ## mapped testing ##
   private_route_encryption      = var.custom_alg == true ? true : false
@@ -191,7 +192,7 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   connection_name               = "s2c_test_conn_name_2"
   connection_type               = "unmapped"
   remote_gateway_type           = var.custom_alg == true ? "generic" : "avx"
-  tunnel_type                   = "udp"
+  tunnel_type                   = "policy"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_onprem_gw.gw_name
@@ -208,6 +209,7 @@ resource "aviatrix_site2cloud" "s2c_test2" {
   # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = true
   enable_active_active          = true
+  enable_ikev2                  = true
 
   lifecycle {
     ignore_changes = [pre_shared_key, backup_pre_shared_key]
@@ -220,7 +222,7 @@ resource "aviatrix_site2cloud" "s2c_test3" {
   connection_name               = "s2c_test_conn_name_3"
   connection_type               = var.custom_alg == true ? "mapped" : "unmapped"
   remote_gateway_type           = var.custom_alg == true ? "generic" : "avx"
-  tunnel_type                   = "udp"
+  tunnel_type                   = "policy"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_site3_gw.gw_name
@@ -245,7 +247,7 @@ resource "aviatrix_site2cloud" "s2c_test3" {
 
   # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = false
-  enable_active_active          = true
+  enable_active_active          = false
 
   depends_on                    = [aviatrix_site2cloud.s2c_test2]
 }
@@ -255,7 +257,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   connection_name               = "s2c_test_conn_name_4"
   connection_type               = var.custom_alg == true ? "mapped" : "unmapped"
   remote_gateway_type           = var.custom_alg == true ? "generic" : "avx"
-  tunnel_type                   = "udp"
+  tunnel_type                   = "policy"
   ha_enabled                    = true
 
   primary_cloud_gateway_name    = aviatrix_gateway.s2c_avx_primary_gw.gw_name
@@ -279,7 +281,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
 
   # ssl_server_pool               = "192.168.45.0/24"
   enable_dead_peer_detection    = false
-  enable_active_active          = true
+  enable_active_active          = false
 
   depends_on = [aviatrix_site2cloud.s2c_test3]
 }

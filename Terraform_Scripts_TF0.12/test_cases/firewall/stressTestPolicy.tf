@@ -61,3 +61,12 @@ resource "aviatrix_firewall" "stress_firewall" {
 output "stress_firewall_id" {
   value = aviatrix_firewall.stress_firewall.id
 }
+
+## Data source
+data "aviatrix_firewall" "d_stress_firewall" {
+  gw_name = aviatrix_firewall.stress_firewall.gw_name
+}
+
+output "d_stress_firewall_id" {
+  value = data.aviatrix_firewall.d_stress_firewall.id
+}

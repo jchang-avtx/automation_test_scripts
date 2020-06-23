@@ -119,14 +119,18 @@ else:
     log.info("      update_test(): PASS\n")
 
 
-try:
-    log.info("Verifying destroy functionality...")
-    tf.destroy_test()
-except tf.subprocess.CalledProcessError as err:
-    log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     destroy_test(): FAIL\n")
-    sys.exit(1)
-else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      destroy_test(): PASS\n")
+for i in range(3):
+    try:
+        log.info("Verifying destroy functionality...")
+        tf.destroy_test()
+    except tf.subprocess.CalledProcessError as err:
+        log.exception(err.stderr.decode())
+        time.sleep(60 + 60*i)
+        if i == 2:
+            log.info("-------------------- RESULT --------------------")
+            log.error("     destroy_test(): FAIL\n")
+            sys.exit(1)
+    else:
+        log.info("-------------------- RESULT --------------------")
+        log.info("      destroy_test(): PASS\n")
+        sys.exit(0)

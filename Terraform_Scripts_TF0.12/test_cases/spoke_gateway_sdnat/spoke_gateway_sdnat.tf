@@ -41,15 +41,15 @@ data "azurerm_route_table" "sdnat_spoke_arm_rtb" {
 }
 
 ## AWS
-resource "aviatrix_transit_gateway" "random_transit" {
+resource "aviatrix_transit_gateway" "sdnat_aws_transit" {
   cloud_type          = 1
   account_name        = "AWSAccess"
-  gw_name             = "random-transit"
+  gw_name             = "sdnat-aws-transit"
   vpc_id              = "vpc-0c32b9c3a144789ef"
   vpc_reg             = "us-east-1"
   gw_size             = "t2.micro"
   subnet              = "10.0.1.32/28"
-  enable_active_mesh  = false
+  enable_active_mesh  = true
 }
 
 resource "aviatrix_spoke_gateway" "sdnat_spoke_aws_gw" {
@@ -61,8 +61,8 @@ resource "aviatrix_spoke_gateway" "sdnat_spoke_aws_gw" {
   gw_size           = "t2.micro"
   subnet            = aviatrix_vpc.sdnat_spoke_aws_vpc.subnets.3.cidr
 
-  enable_active_mesh  = false # activemesh does not support DNAT
-  transit_gw          = aviatrix_transit_gateway.random_transit.gw_name
+  enable_active_mesh  = true # activemesh does not support DNAT (works as of 6.0 - 19 Jun 2020)
+  transit_gw          = aviatrix_transit_gateway.sdnat_aws_transit.gw_name
 
   # single_ip_snat       = true # disable AWS NAT instance before enabling; not supported w insane mode
   # snat_mode         = "custom" # deprecated in R2.10
@@ -76,7 +76,7 @@ resource "aviatrix_gateway_snat" "custom_snat_aws" {
     dst_port      = ""
     protocol      = "all"
     interface     = "eth0"
-    connection    = "None"
+    connection    = aviatrix_transit_gateway.sdnat_aws_transit.gw_name
     mark          = ""
     snat_ips      = "12.0.0.0"
     snat_port     = ""

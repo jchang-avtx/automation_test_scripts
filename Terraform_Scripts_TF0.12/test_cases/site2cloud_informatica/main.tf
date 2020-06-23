@@ -101,7 +101,7 @@ resource "aviatrix_gateway" "onPrem_backup" {
 #     remote_gateway_ip = aviatrix_gateway.onPrem.public_ip
 #     remote_gateway_type = "generic"
 #     remote_subnet_cidr = aviatrix_gateway.onPrem.subnet
-#     tunnel_type = "udp"
+#     tunnel_type = "policy"
 #     vpc_id = aviatrix_gateway.S2C_GW_Vir_Primary.vpc_id
 #     depends_on = [aviatrix_gateway.S2C_GW_Vir_Backup, aviatrix_gateway.S2C_GW_Vir_Primary]
 # }
@@ -111,7 +111,7 @@ resource "aviatrix_site2cloud" "test_s2c" {
   connection_name       = "cloud_to_onprem"
   connection_type       = "unmapped"
   remote_gateway_type   = "generic"
-  tunnel_type           = "udp"
+  tunnel_type           = "policy"
   ha_enabled            = true
 
   primary_cloud_gateway_name  = aviatrix_gateway.S2C_GW_Vir_Primary.gw_name
