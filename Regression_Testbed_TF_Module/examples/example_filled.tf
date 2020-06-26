@@ -196,10 +196,12 @@ module "testbed-basic" {
 #	resource_name_label 	= local.resource_name_label
 #  pub_hostnum						= local.pub_hostnum
 #  pri_hostnum           = local.pri_hostnum
-#  vnet_cidr             = ["10.20.0.0/16", "10.30.0.0/16"]
-#	pub_subnet_cidr       = ["10.20.1.0/24", "10.30.3.0/24"]
-#	pri_subnet_cidr       = ["10.20.2.0/24", "10.30.4.0/24"]
-#	public_key 						= local.public_key
+#  vnet_cidr             = ["10.20.0.0/16"]
+#  pub_subnet1_cidr      = ["10.20.1.0/24"]
+#  pub_subnet2_cidr      = ["10.20.2.0/24"]
+#  pri_subnet1_cidr      = ["10.20.3.0/24"]
+#  pri_subnet2_cidr      = ["10.20.4.0/24"]
+  #	public_key 						= local.public_key
 #}
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
