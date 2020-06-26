@@ -20,6 +20,8 @@ module "testbed-gcp" {
   pri_subnet            = ["10.30.0.0/24"]
   pub_instance_zone     = ["us-central1-a"]
   pri_instance_zone     = ["us-central1-b"]
+  pub_subnet_region     = "us-central1"
+  pri_subnet_region     = "us-central1"
   pub_hostnum           = 20
   pri_hostnum           = 40
   ssh_user              = "regression"
@@ -54,11 +56,11 @@ List of GCP zones to launch private instance.
 
 - **pub_subnet_region**
 
-Region of public subnet. Optional, use if you want to create in region different than the default region specified in provider.
+Region of public subnet.
 
 - **pri_subnet_region**
 
-Region of private subnet. Optional, use if you want to create in region different than the default region specified in provider.
+Region of private subnet.
 
 - **pub_hostnum**
 
