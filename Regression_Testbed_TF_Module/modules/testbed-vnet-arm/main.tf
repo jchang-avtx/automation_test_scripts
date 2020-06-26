@@ -25,9 +25,9 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 # ARM Private route table
-resource "azurerm_route_table" "rtb" {
+resource "azurerm_route_table" "pri_rtb" {
 	count 												= var.vnet_count != 0 ? 1 : 0
-	name 													= "${var.resource_name_label}-rtb"
+	name 													= "${var.resource_name_label}-pri-rtb"
 	location 											= azurerm_resource_group.rg[0].location
 	resource_group_name         	= azurerm_resource_group.rg[0].name
 	disable_bgp_route_propagation	= false
@@ -42,10 +42,16 @@ resource "azurerm_route_table" "rtb" {
 }
 
 ##### CHANGE
-resource "azurerm_subnet_route_table_association" "rtb_associate" {
+resource "azurerm_subnet_route_table_association" "pri_rtb_associate1" {
 	count 				 = var.vnet_count
 	subnet_id 		 = azurerm_subnet.private_subnet1[count.index].id
-	route_table_id = azurerm_route_table.rtb[0].id
+	route_table_id = azurerm_route_table.pri_rtb[0].id
+}
+
+resource "azurerm_subnet_route_table_association" "pri_rtb_associate2" {
+	count 				 = var.vnet_count
+	subnet_id 		 = azurerm_subnet.private_subnet2[count.index].id
+	route_table_id = azurerm_route_table.pri_rtb[0].id
 }
 
 # ARM subnet
@@ -54,7 +60,11 @@ resource "azurerm_subnet" "public_subnet1" {
 	name									= "${var.resource_name_label}-pub1-subnet${count.index}"
 	resource_group_name		= azurerm_resource_group.rg[0].name
 	virtual_network_name	= azurerm_virtual_network.vnet[count.index].name
-	address_prefix				= var.pub_subnet1cidr[count.index]
+	address_prefix				= var.pub_subnet1_cidr[count.index]
+
+	lifecycle {
+		ignore_changes = [route_table_id]
+	}
 }
 
 resource "azurerm_subnet" "public_subnet2" {
@@ -63,6 +73,10 @@ resource "azurerm_subnet" "public_subnet2" {
 	resource_group_name		= azurerm_resource_group.rg[0].name
 	virtual_network_name	= azurerm_virtual_network.vnet[count.index].name
 	address_prefix				= var.pub_subnet2_cidr[count.index]
+
+	lifecycle {
+		ignore_changes = [route_table_id]
+	}
 }
 
 resource "azurerm_subnet" "private_subnet1" {
@@ -71,6 +85,10 @@ resource "azurerm_subnet" "private_subnet1" {
 	resource_group_name		= azurerm_resource_group.rg[0].name
 	virtual_network_name	=	azurerm_virtual_network.vnet[count.index].name
 	address_prefix				=	var.pri_subnet1_cidr[count.index]
+
+	lifecycle {
+		ignore_changes = [route_table_id]
+	}
 }
 
 resource "azurerm_subnet" "private_subnet2" {
@@ -79,6 +97,10 @@ resource "azurerm_subnet" "private_subnet2" {
 	resource_group_name		= azurerm_resource_group.rg[0].name
 	virtual_network_name	=	azurerm_virtual_network.vnet[count.index].name
 	address_prefix				=	var.pri_subnet2_cidr[count.index]
+
+	lifecycle {
+		ignore_changes = [route_table_id]
+	}
 }
 
 # ARM Network SG
