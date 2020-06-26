@@ -26,8 +26,8 @@ resource "azurerm_virtual_network" "vnet" {
 
 # ARM Private route table
 resource "azurerm_route_table" "pri_rtb" {
-	count 												= var.vnet_count != 0 ? 1 : 0
-	name 													= "${var.resource_name_label}-pri-rtb"
+	count 												= var.vnet_count
+	name 													= "${var.resource_name_label}-pri-rtb${count.index}"
 	location 											= azurerm_resource_group.rg[0].location
 	resource_group_name         	= azurerm_resource_group.rg[0].name
 	disable_bgp_route_propagation	= false
@@ -45,19 +45,19 @@ resource "azurerm_route_table" "pri_rtb" {
 resource "azurerm_subnet_route_table_association" "pri_rtb_associate1" {
 	count 				 = var.vnet_count
 	subnet_id 		 = azurerm_subnet.private_subnet1[count.index].id
-	route_table_id = azurerm_route_table.pri_rtb[0].id
+	route_table_id = azurerm_route_table.pri_rtb[count.index].id
 }
 
 resource "azurerm_subnet_route_table_association" "pri_rtb_associate2" {
 	count 				 = var.vnet_count
 	subnet_id 		 = azurerm_subnet.private_subnet2[count.index].id
-	route_table_id = azurerm_route_table.pri_rtb[0].id
+	route_table_id = azurerm_route_table.pri_rtb[count.index].id
 }
 
 # ARM subnet
 resource "azurerm_subnet" "public_subnet1" {
 	count									= var.vnet_count
-	name									= "${var.resource_name_label}-pub1-subnet${count.index}"
+	name									= "${var.resource_name_label}-pub-subnet1-${count.index}"
 	resource_group_name		= azurerm_resource_group.rg[0].name
 	virtual_network_name	= azurerm_virtual_network.vnet[count.index].name
 	address_prefix				= var.pub_subnet1_cidr[count.index]
@@ -69,7 +69,7 @@ resource "azurerm_subnet" "public_subnet1" {
 
 resource "azurerm_subnet" "public_subnet2" {
 	count									= var.vnet_count
-	name									= "${var.resource_name_label}-pub2-subnet${count.index}"
+	name									= "${var.resource_name_label}-pub-subnet2-${count.index}"
 	resource_group_name		= azurerm_resource_group.rg[0].name
 	virtual_network_name	= azurerm_virtual_network.vnet[count.index].name
 	address_prefix				= var.pub_subnet2_cidr[count.index]
@@ -81,7 +81,7 @@ resource "azurerm_subnet" "public_subnet2" {
 
 resource "azurerm_subnet" "private_subnet1" {
 	count									= var.vnet_count
-	name									= "${var.resource_name_label}-pri1-subnet${count.index}"
+	name									= "${var.resource_name_label}-pri-subnet1-${count.index}"
 	resource_group_name		= azurerm_resource_group.rg[0].name
 	virtual_network_name	=	azurerm_virtual_network.vnet[count.index].name
 	address_prefix				=	var.pri_subnet1_cidr[count.index]
@@ -93,7 +93,7 @@ resource "azurerm_subnet" "private_subnet1" {
 
 resource "azurerm_subnet" "private_subnet2" {
 	count									= var.vnet_count
-	name									= "${var.resource_name_label}-pri2-subnet${count.index}"
+	name									= "${var.resource_name_label}-pri-subnet2-${count.index}"
 	resource_group_name		= azurerm_resource_group.rg[0].name
 	virtual_network_name	=	azurerm_virtual_network.vnet[count.index].name
 	address_prefix				=	var.pri_subnet2_cidr[count.index]
@@ -106,7 +106,7 @@ resource "azurerm_subnet" "private_subnet2" {
 # ARM Network SG
 resource "azurerm_network_security_group" "network_sg" {
 	count 							= var.vnet_count
-	name								= "${var.resource_name_label}-pub-network-sg"
+	name								= "${var.resource_name_label}-pub-network-sg${count.index}"
 	resource_group_name	= azurerm_resource_group.rg[0].name
 	location						= azurerm_resource_group.rg[0].location
 
