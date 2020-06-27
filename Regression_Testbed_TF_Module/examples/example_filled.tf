@@ -207,6 +207,7 @@ module "testbed-basic" {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Google Cloud Project VPC
 # - VPCs with Ubuntu instances in specified region
+# - Providing 'region' variable in the provider block is optional
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #provider "google" {
 #  credentials = file("")
@@ -222,6 +223,8 @@ module "testbed-basic" {
 #  pri_subnet            = "10.80.60.0/24"
 #  pub_instance_zone     = "us-central1-a"
 #  pri_instance_zone     = "us-central1-b"
+#  pub_subnet_region     = "us-central1"
+#  pri_subnet_region     = "us-central1"
 #  pub_hostnum           = local.pub_hostnum
 #	pri_hostnum           = local.pri_hostnum
 #	public_key 						= local.public_key

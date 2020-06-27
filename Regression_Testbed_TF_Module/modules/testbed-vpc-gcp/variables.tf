@@ -31,14 +31,12 @@ variable "pri_instance_zone" {
 
 variable "pub_subnet_region" {
   type        = string
-  description = "Region of public subnet. Optional"
-  default     = null
+  description = "Region of public subnet."
 }
 
 variable "pri_subnet_region" {
   type        = string
-  description = "Region of private subnet. Optional"
-  default     = null
+  description = "Region of private subnet."
 }
 
 variable "pub_hostnum" {
