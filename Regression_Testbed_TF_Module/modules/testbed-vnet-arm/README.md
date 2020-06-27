@@ -37,7 +37,7 @@ The number of vnets to create in the given arm region.
 
 - **resource_name_label**
 
-The label for the resource name.
+The label for the resource name. Resource name label can not include these characters: \` ~ ! @ # $ % ^ & * ( ) = + _ [ ] { } \\ | ; : ' \" , < > / ?
 
 - **pub_hostnum**
 

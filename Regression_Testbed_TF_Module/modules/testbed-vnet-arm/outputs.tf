@@ -10,15 +10,19 @@ output "vnet_name" {
 
 output "subnet_name" {
 	value	= concat(
-		azurerm_subnet.public_subnet[*].name,
-		azurerm_subnet.private_subnet[*].name
+		azurerm_subnet.public_subnet1[*].name,
+		azurerm_subnet.public_subnet2[*].name,
+		azurerm_subnet.private_subnet1[*].name,
+		azurerm_subnet.private_subnet2[*].name
 	)
 }
 
 output "subnet_cidr" {
 	value	= concat(
-		azurerm_subnet.public_subnet[*].address_prefix,
-		azurerm_subnet.private_subnet[*].address_prefix
+		azurerm_subnet.public_subnet1[*].address_prefix,
+		azurerm_subnet.public_subnet2[*].address_prefix,
+		azurerm_subnet.private_subnet1[*].address_prefix,
+		azurerm_subnet.private_subnet2[*].address_prefix
 	)
 }
 
