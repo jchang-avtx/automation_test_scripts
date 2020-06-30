@@ -234,7 +234,7 @@ resource "aviatrix_site2cloud" "s2c_test3" {
   local_subnet_cidr             = aviatrix_gateway.s2c_avx_site3_gw.subnet
 
   ## mapped testing ##
-  remote_subnet_virtual         = var.custom_alg == true ? aviatrix_gateway.s2c_avx_primary_gw.subnet : null
+  remote_subnet_virtual         = var.custom_alg == true ? "156.2.0.0/20" : null
   local_subnet_virtual          = var.custom_alg == true ? "100.1.0.0/20" : null
 
   custom_algorithms             = var.custom_alg

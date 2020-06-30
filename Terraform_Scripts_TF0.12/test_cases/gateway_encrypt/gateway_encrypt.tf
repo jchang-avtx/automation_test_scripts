@@ -10,8 +10,16 @@ resource "aws_kms_key" "temp_cust_key" {
   }
 }
 
+resource "random_pet" "temp_cust_key_pet" {
+  seperator = "_"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "aws_kms_alias" "temp_cust_key_alias" {
-  name            = "alias/temp_cust_key"
+  name            = "alias/temp_cust_key_${random_pet.temp_cust_key_pet.id}"
   target_key_id   = aws_kms_key.temp_cust_key.id
 
   lifecycle {
