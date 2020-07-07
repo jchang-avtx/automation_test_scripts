@@ -51,7 +51,7 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
   tgw_name                          = "test-aws-tgw"
   account_name                      = aviatrix_transit_gateway.tgw_transit_gw.account_name
   region                            = aviatrix_transit_gateway.tgw_transit_gw.vpc_reg
-  aws_side_as_number                = 65412
+  aws_side_as_number                = 4294967294 # 65412
   # attached_aviatrix_transit_gateway = [aviatrix_transit_gateway.tgw_transit_gw.gw_name]
 
   security_domains {
