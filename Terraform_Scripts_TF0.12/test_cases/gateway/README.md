@@ -1,4 +1,10 @@
 ## aviatrix_gateway
+- will include regular gateway operations
+
+### Gateway Periodic Ping feature
+- introduced in 5.3
+- https://docs.aviatrix.com/HowTos/periodic_ping.html?highlight=continuous%20ping#periodic-ping
+- mostly used in Site2Cloud configurations
 
 ---
 
@@ -40,6 +46,10 @@
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \
                   -var-file=enableDNSServer.tfvars \
+                  -auto-approve
+  terraform show
+  terraform apply -var-file=/path/provider_cred.tfvars \
+                  -var-file=updatePingInterval.tfvars \
                   -auto-approve
   terraform show
 
