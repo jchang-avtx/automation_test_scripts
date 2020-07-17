@@ -25,7 +25,7 @@ def create_verify(varfile=None, timeout=None, varval=None):
 def import_test(resource, name, varfile=None, varval=None):
     resource_name = 'aviatrix_' + resource + '.' + name
     output_id = '"$(terraform output ' + name + '_id)"'
-    if (varfile == None) and (varval=None):
+    if (varfile == None) and (varval == None):
         subprocess.run(['terraform', 'state', 'rm', resource_name], check=True, capture_output=True)
         subprocess.run('terraform import ' + resource_name + ' ' + output_id, shell=True, check=True, capture_output=True)
         subprocess.run('terraform plan', shell=True, check=True)
