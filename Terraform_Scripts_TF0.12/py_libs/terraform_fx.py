@@ -30,6 +30,12 @@ def import_test(resource, name, varfile=None, varval=None):
         subprocess.run('terraform import ' + resource_name + ' ' + output_id, shell=True, check=True, capture_output=True)
         subprocess.run('terraform plan', shell=True, check=True)
         subprocess.run('terraform show', shell=True, check=True, capture_output=True)
+    elif (varfile) and (varval == None):
+        var_arg = '-var-file=' + varfile + '.tfvars'
+        subprocess.run(['terraform', 'state', 'rm', resource_name], check=True, capture_output=True)
+        subprocess.run('terraform import ' + var_arg + ' ' + resource_name + ' ' + output_id, shell=True, check=True, capture_output=True)
+        subprocess.run(['terraform', 'plan', var_arg], check=True)
+        subprocess.run('terraform show', shell=True, check=True, capture_output=True)
     elif (varfile) and (varval):
         var_arg = '-var-file=' + varfile + '.tfvars'
         subprocess.run(['terraform', 'state', 'rm', resource_name], check=True, capture_output=True)
