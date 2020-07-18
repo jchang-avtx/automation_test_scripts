@@ -29,7 +29,7 @@ resource aviatrix_vpc aws_gw_vpc_2 {
   aviatrix_firenet_vpc  = false
   cidr                  = join(".", [random_integer.vpc2_cidr_int[0].result, random_integer.vpc2_cidr_int[1].result, random_integer.vpc2_cidr_int[2].result, "0/24"])
   cloud_type            = 1
-  name                  = "aws-gw-vpc-1"
+  name                  = "aws-gw-vpc-2"
   region                = "us-east-2"
 }
 
@@ -54,7 +54,7 @@ resource aviatrix_gateway aws_gw_test_1 {
   vpc_id              = aviatrix_vpc.aws_gw_vpc_1.vpc_id
   vpc_reg             = aviatrix_vpc.aws_gw_vpc_1.region
   gw_size             = var.aws_instance_size
-  subnet              = aviatrix_vpc.aws_gw_vpc_1.subnets.6.cidr
+  subnet              = aviatrix_vpc.aws_gw_vpc_1.subnets.4.cidr
 
   tag_list            = var.aws_gateway_tag_list
   single_ip_snat      = var.single_ip_snat
@@ -62,7 +62,7 @@ resource aviatrix_gateway aws_gw_test_1 {
   allocate_new_eip    = false
   eip                 = aws_eip.eip_aws_gw_test_1.public_ip
 
-  peering_ha_subnet   = aviatrix_vpc.aws_gw_vpc_1.subnets.7.cidr
+  peering_ha_subnet   = aviatrix_vpc.aws_gw_vpc_1.subnets.5.cidr
   peering_ha_gw_size  = var.aws_ha_gw_size
   peering_ha_eip      = aws_eip.eip_aws_gw_test_1_ha.public_ip
 
@@ -76,14 +76,14 @@ resource aviatrix_gateway aws_gw_test_2 {
   vpc_id              = aviatrix_vpc.aws_gw_vpc_2.vpc_id
   vpc_reg             = aviatrix_vpc.aws_gw_vpc_2.region
   gw_size             = "t2.micro"
-  subnet              = aviatrix_vpc.aws_gw_vpc_2.subnets.6.cidr
+  subnet              = aviatrix_vpc.aws_gw_vpc_2.subnets.4.cidr
 
   tag_list            = var.aws_gateway_tag_list
   single_ip_snat      = var.single_ip_snat
 
   allocate_new_eip    = true
 
-  peering_ha_subnet   = aviatrix_vpc.aws_gw_vpc_2.subnets.7.cidr
+  peering_ha_subnet   = aviatrix_vpc.aws_gw_vpc_2.subnets.5.cidr
   peering_ha_gw_size  = var.aws_ha_gw_size
 
   enable_vpc_dns_server = var.enable_vpc_dns_server
