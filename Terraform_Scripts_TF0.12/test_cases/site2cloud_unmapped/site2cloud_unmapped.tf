@@ -269,7 +269,7 @@ resource "aviatrix_site2cloud" "s2c_test4" {
   local_subnet_cidr             = aviatrix_gateway.s2c_avx_onprem_gw.subnet
 
   remote_subnet_virtual         = var.custom_alg == true ? "100.1.0.0/20" : null
-  local_subnet_virtual          = var.custom_alg == true ? aviatrix_gateway.s2c_avx_onprem_gw.subnet : null
+  local_subnet_virtual          = var.custom_alg == true ? "121.3.0.0/20" : null
 
   custom_algorithms             = var.custom_alg
   phase_1_authentication        = var.custom_alg == true ? "SHA-384" : null

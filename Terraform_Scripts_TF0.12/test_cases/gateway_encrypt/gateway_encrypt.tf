@@ -11,7 +11,7 @@ resource "aws_kms_key" "temp_cust_key" {
 }
 
 resource "random_pet" "temp_cust_key_pet" {
-  seperator = "_"
+  separator = "_"
 
   lifecycle {
     prevent_destroy = true

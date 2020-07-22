@@ -16,6 +16,10 @@ resource "aviatrix_vpc" "arm_transit_gw_vnet" {
   region                = "Central US"
 }
 
+data aviatrix_vpc arm_transit_gw_vnet {
+  name = aviatrix_vpc.arm_transit_gw_vnet.name
+}
+
 resource "aviatrix_transit_gateway" "arm_transit_gw" {
   cloud_type          = 8
   account_name        = "AzureAccess"
@@ -23,9 +27,9 @@ resource "aviatrix_transit_gateway" "arm_transit_gw" {
   vpc_id              = aviatrix_vpc.arm_transit_gw_vnet.vpc_id
   vpc_reg             = aviatrix_vpc.arm_transit_gw_vnet.region
   gw_size             = "Standard_B1s"
-  subnet              = aviatrix_vpc.arm_transit_gw_vnet.subnets.0.cidr
+  subnet              = data.aviatrix_vpc.arm_transit_gw_vnet.public_subnets.0.cidr
 
-  ha_subnet           = aviatrix_vpc.arm_transit_gw_vnet.subnets.2.cidr
+  ha_subnet           = data.aviatrix_vpc.arm_transit_gw_vnet.public_subnets.1.cidr
   ha_gw_size          = "Standard_B1s"
   single_ip_snat      = false
 
