@@ -43,8 +43,9 @@ resource "aviatrix_transit_gateway" "test_transit_gw1" {
   gw_size           = "t2.micro"
   subnet            = aviatrix_vpc.aws_transit_gw_vpc_1.subnets.4.cidr
 
-  enable_hybrid_connection = false
-  connected_transit = true
+  enable_hybrid_connection  = false
+  connected_transit         = true
+  enable_active_mesh        = false # (16300) TGW peering needs to handle non-active mesh test case
 }
 
 resource "aviatrix_transit_gateway" "test_transit_gw2" {
@@ -59,6 +60,7 @@ resource "aviatrix_transit_gateway" "test_transit_gw2" {
 
   enable_hybrid_connection  = false
   connected_transit         = true
+  enable_active_mesh        = false # (16300) TGW peering needs to handle non-active mesh test case
 }
 
 resource "aviatrix_transit_gateway_peering" "test_transit_gw_peering" {
