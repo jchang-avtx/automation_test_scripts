@@ -117,7 +117,7 @@ log.info("     update_test(): SKIPPED\n")
 for i in range(3):
     try:
         log.info("Verifying destroy functionality...")
-        tf.destroy_test(timeout=300)
+        tf.destroy_test(timeout=600)
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
         time.sleep(60 + 60*i)
