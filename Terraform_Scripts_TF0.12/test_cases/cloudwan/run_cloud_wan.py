@@ -80,7 +80,7 @@ for i in range(3):
         if i == 2:
             log.info("-------------------- RESULT --------------------")
             log.error("     CloudWAN infrastructure: FAIL\n")
-            break
+            sys.exit(1)
     else:
         log.info("-------------------- RESULT --------------------")
         log.info("      CloudWAN infrastructure: PASS\n")
@@ -90,16 +90,16 @@ for i in range(3):
 for j in range(3):
     try:
         log.debug("     transit gateway attachment status : true...")
-        tf.create_verify(varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred.tfvars", varval="avx_transit_att_status=true")
+        tf.create_verify(varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="avx_transit_att_status=true")
         log.debug("Verifying import funcionality...")
-        tf.import_test("branch_router_transit_gateway_attachment", "csr_transit_att", varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred.tfvars", varval="avx_transit_att_status=true")
+        tf.import_test("branch_router_transit_gateway_attachment", "csr_transit_att", varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="avx_transit_att_status=true")
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
         time.sleep(60 + 60*i)
         if j == 2:
             log.info("-------------------- RESULT --------------------")
             log.error("     transit gateway attachment: FAIL\n")
-            break
+            sys.exit(1)
     else:
         log.info("-------------------- RESULT --------------------")
         log.info("      transit gateway attachment: PASS\n")
@@ -109,16 +109,16 @@ for j in range(3):
 for k in range(3):
     try:
         log.debug("     TGW attachment status : true...")
-        tf.create_verify(varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred.tfvars", varval="aws_tgw_att_status=true")
+        tf.create_verify(varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="aws_tgw_att_status=true")
         log.debug("Verifying import functionality...")
-        tf.import_test("branch_router_aws_tgw_attachment", "csr_tgw_att", varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred.tfvars", varval="aws_tgw_att_status=true")
+        tf.import_test("branch_router_aws_tgw_attachment", "csr_tgw_att", varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="aws_tgw_att_status=true")
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
         time.sleep(60 + 60*i)
         if k == 2:
             log.info("-------------------- RESULT --------------------")
             log.error("     TGW attachment: FAIL\n")
-            break
+            sys.exit(1)
     else:
         log.info("-------------------- RESULT --------------------")
         log.info("      TGW attachment: PASS\n")
@@ -128,16 +128,16 @@ for k in range(3):
 for l in range(3):
     try:
         log.debug("     Virtual WAN attachment status : true...")
-        tf.create_verify(varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred.tfvars", varval="azure_virtual_wan_att_status=true")
+        tf.create_verify(varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="azure_virtual_wan_att_status=true")
         log.debug("Verifying import functionality...")
-        tf.import_test("branch_router_virtual_wan_attachment", "csr_virtual_wan_att", varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred.tfvars", varval="azure_virtual_wan_att_status=true")
+        tf.import_test("branch_router_virtual_wan_attachment", "csr_virtual_wan_att", varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="azure_virtual_wan_att_status=true")
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
         time.sleep(60 + 60*i)
         if l == 2:
             log.info("-------------------- RESULT --------------------")
             log.error("     Virtual WAN attachment: FAIL\n")
-            break
+            sys.exit(1)
     else:
         log.info("-------------------- RESULT --------------------")
         log.info("      Virtual WAN attachment: PASS\n")
