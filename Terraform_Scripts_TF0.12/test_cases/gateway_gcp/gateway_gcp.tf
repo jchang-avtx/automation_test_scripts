@@ -1,3 +1,11 @@
+resource google_compute_address gcloud_gw_ip {
+  name = "gcloud-gw-ip"
+}
+
+resource google_compute_address gcloud_ha_gw_ip {
+  name = "gcloud-ha-gw-ip"
+}
+
 resource "aviatrix_gateway" "gcloud_gw" {
   cloud_type      = 4
   account_name    = "GCPAccess"
@@ -11,7 +19,10 @@ resource "aviatrix_gateway" "gcloud_gw" {
   peering_ha_subnet   = var.gcp_ha_gw_subnet
   peering_ha_zone     = var.gcp_ha_gw_zone
 
-  allocate_new_eip = true
+  # Mantis 15989: GCP supports allocating EIP
+  allocate_new_eip = false
+  eip              = google_compute_address.gcloud_gw_ip.address
+  peering_ha_eip   = var.enable_ha == true ? google_compute_address.gcloud_ha_gw_ip.address : null
 }
 
 output "gcloud_gw_id" {

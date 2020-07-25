@@ -1,3 +1,8 @@
+variable "enable_ha" {
+  default = false
+  description = "GCP gateway's HA status"
+}
+
 variable "gcp_ha_gw_size" {
   default = null
 }
