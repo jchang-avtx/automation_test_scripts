@@ -73,8 +73,11 @@ resource "aviatrix_gateway" "design_arm_gw" {
   gw_name       = "design-arm-gw"
   vpc_id        = aviatrix_vpc.design_arm_vpc.vpc_id
   vpc_reg       = aviatrix_vpc.design_arm_vpc.region
-  gw_size       = "Standard_B1s"
+  gw_size       = "Standard_B1ms"
   subnet        = aviatrix_vpc.design_arm_vpc.subnets.0.cidr
+
+  peering_ha_gw_size = "Standard_B1ms"
+  peering_ha_subnet = aviatrix_vpc.design_arm_vpc.subnets.1.cidr
 }
 
 #################################################

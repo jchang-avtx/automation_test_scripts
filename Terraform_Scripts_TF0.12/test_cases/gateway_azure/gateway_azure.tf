@@ -22,7 +22,7 @@ resource "aviatrix_gateway" "azure_gw" {
   gw_name         = "azure-gw"
   vpc_id          = aviatrix_vpc.arm_gw_vnet_1.vpc_id
   vpc_reg         = aviatrix_vpc.arm_gw_vnet_1.region
-  gw_size         = "Standard_B1s"
+  gw_size         = "Standard_B1ms"
   subnet          = aviatrix_vpc.arm_gw_vnet_1.subnets.0.cidr
 
   single_ip_snat  = true # do not enable if using peering_ha

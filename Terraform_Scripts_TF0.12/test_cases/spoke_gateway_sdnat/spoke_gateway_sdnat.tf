@@ -61,6 +61,9 @@ resource "aviatrix_spoke_gateway" "sdnat_spoke_aws_gw" {
   gw_size           = "t2.micro"
   subnet            = aviatrix_vpc.sdnat_spoke_aws_vpc.subnets.3.cidr
 
+  ha_gw_size        = "t2.micro"
+  ha_subnet         = aviatrix_vpc.sdnat_spoke_aws_vpc.subnets.4.cidr
+
   enable_active_mesh  = true # activemesh does not support DNAT (works as of 6.0 - 19 Jun 2020)
   transit_gw          = aviatrix_transit_gateway.sdnat_aws_transit.gw_name
 
@@ -132,7 +135,7 @@ resource "aviatrix_spoke_gateway" "sdnat_spoke_arm_gw" {
   gw_name         = "sdnat-spoke-arm-gw"
   vpc_id          = aviatrix_vpc.sdnat_spoke_arm_vpc.vpc_id
   vpc_reg         = aviatrix_vpc.sdnat_spoke_arm_vpc.region
-  gw_size         = "Standard_B1s"
+  gw_size         = "Standard_B1ms"
   subnet          = aviatrix_vpc.sdnat_spoke_arm_vpc.subnets.0.cidr
 
   # single_ip_snat     = true # deprecated in R2.10

@@ -26,11 +26,11 @@ resource "aviatrix_transit_gateway" "arm_transit_gw" {
   gw_name             = "arm-transit-gw"
   vpc_id              = aviatrix_vpc.arm_transit_gw_vnet.vpc_id
   vpc_reg             = aviatrix_vpc.arm_transit_gw_vnet.region
-  gw_size             = "Standard_B1s"
+  gw_size             = "Standard_B1ms"
   subnet              = data.aviatrix_vpc.arm_transit_gw_vnet.public_subnets.0.cidr
 
   ha_subnet           = data.aviatrix_vpc.arm_transit_gw_vnet.public_subnets.1.cidr
-  ha_gw_size          = "Standard_B1s"
+  ha_gw_size          = "Standard_B1ms"
   single_ip_snat      = false
 
   enable_hybrid_connection  = false
