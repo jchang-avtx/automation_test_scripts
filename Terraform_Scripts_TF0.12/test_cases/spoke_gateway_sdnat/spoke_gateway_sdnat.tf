@@ -72,6 +72,8 @@ resource "aviatrix_spoke_gateway" "sdnat_spoke_aws_gw" {
 }
 resource "aviatrix_gateway_snat" "custom_snat_aws" {
   gw_name = aviatrix_spoke_gateway.sdnat_spoke_aws_gw.gw_name
+  sync_to_ha = true
+
   snat_policy {
     src_cidr      = "10.0.0.0/24"
     src_port      = ""
@@ -101,6 +103,8 @@ resource "aviatrix_gateway_snat" "custom_snat_aws" {
 }
 resource "aviatrix_gateway_dnat" "custom_dnat_aws" {
   gw_name = aviatrix_spoke_gateway.sdnat_spoke_aws_gw.gw_name
+  sync_to_ha = true
+
   dnat_policy {
     src_cidr      = "16.0.0.0/24"
     src_port      = ""

@@ -85,6 +85,8 @@ resource "aviatrix_gateway" "design_arm_gw" {
 #################################################
 resource "aviatrix_gateway_snat" "design_aws_snat" {
   gw_name = aviatrix_gateway.design_aws_gw.gw_name
+  sync_to_ha = null
+
   snat_policy {
     src_cidr      = "10.0.0.0/24"
     src_port      = ""
@@ -102,6 +104,8 @@ resource "aviatrix_gateway_snat" "design_aws_snat" {
 
 resource "aviatrix_gateway_dnat" "design_aws_dnat" {
   gw_name = aviatrix_gateway.design_aws_gw.gw_name
+  sync_to_ha = null
+
   dnat_policy {
     src_cidr      = "10.9.5.0/24"
     src_port      = ""
@@ -148,6 +152,8 @@ resource "aviatrix_gateway_dnat" "design_aws_dnat" {
 #################################################
 resource "aviatrix_gateway_snat" "design_arm_snat" {
   gw_name = aviatrix_gateway.design_arm_gw.gw_name
+  sync_to_ha = true
+
   snat_policy {
     src_cidr      = "10.0.0.0/24"
     src_port      = ""
@@ -165,6 +171,8 @@ resource "aviatrix_gateway_snat" "design_arm_snat" {
 
 resource "aviatrix_gateway_dnat" "design_arm_dnat" {
   gw_name = aviatrix_gateway.design_arm_gw.gw_name
+  sync_to_ha = true
+
   dnat_policy {
     src_cidr      = "16.0.0.0/24"
     src_port      = ""
