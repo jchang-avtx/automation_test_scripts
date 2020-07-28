@@ -1,12 +1,12 @@
 # Manage Aviatrix spoke_gateway (Azure)
 
-resource "random_integer" "vnet1_cidr_int" {
+resource random_integer vnet1_cidr_int {
   count = 3
   min = 1
   max = 126
 }
 
-resource "aviatrix_vpc" "arm_transit_gw_vnet" {
+resource aviatrix_vpc arm_transit_gw_vnet {
   account_name          = "AzureAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -20,7 +20,7 @@ data aviatrix_vpc arm_transit_gw_vnet {
   name = aviatrix_vpc.arm_transit_gw_vnet.name
 }
 
-resource "aviatrix_transit_gateway" "arm_transit_gw" {
+resource aviatrix_transit_gateway arm_transit_gw {
   cloud_type          = 8
   account_name        = "AzureAccess"
   gw_name             = "arm-transit-gw"
@@ -38,7 +38,7 @@ resource "aviatrix_transit_gateway" "arm_transit_gw" {
   enable_active_mesh        = false
 }
 
-resource "aviatrix_spoke_gateway" "arm_spoke_gw" {
+resource aviatrix_spoke_gateway arm_spoke_gw {
   cloud_type        = 8
   account_name      = "AzureAccess"
   gw_name           = "arm-spoke-gw"
@@ -60,6 +60,6 @@ resource "aviatrix_spoke_gateway" "arm_spoke_gw" {
   depends_on        = [aviatrix_transit_gateway.arm_transit_gw]
 }
 
-output "arm_spoke_gw_id" {
+output arm_spoke_gw_id {
   value = aviatrix_spoke_gateway.arm_spoke_gw.id
 }

@@ -1,16 +1,16 @@
-resource "random_integer" "vpc1_cidr_int" {
+resource random_integer vpc1_cidr_int {
   count = 3
   min = 1
   max = 126
 }
 
-resource "random_integer" "vpc2_cidr_int" {
+resource random_integer vpc2_cidr_int {
   count = 3
   min = 1
   max = 126
 }
 
-resource "aviatrix_vpc" "sdnat_spoke_aws_vpc" {
+resource aviatrix_vpc sdnat_spoke_aws_vpc {
   cloud_type              = 1
   account_name            = "AWSAccess"
   region                  = "us-east-2"
@@ -20,7 +20,7 @@ resource "aviatrix_vpc" "sdnat_spoke_aws_vpc" {
   aviatrix_firenet_vpc    = false
 }
 
-resource "aviatrix_vpc" "sdnat_spoke_arm_vpc" {
+resource aviatrix_vpc sdnat_spoke_arm_vpc {
   cloud_type              = 8
   account_name            = "AzureAccess"
   region                  = "Central US"
@@ -30,18 +30,18 @@ resource "aviatrix_vpc" "sdnat_spoke_arm_vpc" {
   aviatrix_firenet_vpc    = false
 }
 
-data "aws_route_table" "sdnat_spoke_aws_rtb" {
+data aws_route_table sdnat_spoke_aws_rtb {
   vpc_id      = aviatrix_vpc.sdnat_spoke_aws_vpc.vpc_id
   subnet_id   = aviatrix_vpc.sdnat_spoke_aws_vpc.subnets.3.subnet_id
 }
 
-data "azurerm_route_table" "sdnat_spoke_arm_rtb" {
+data azurerm_route_table sdnat_spoke_arm_rtb {
   name                  = join("-", [aviatrix_vpc.sdnat_spoke_arm_vpc.name, "rtb-app"])
   resource_group_name   = element(split(":", aviatrix_vpc.sdnat_spoke_arm_vpc.vpc_id),1)
 }
 
 ## AWS
-resource "aviatrix_transit_gateway" "sdnat_aws_transit" {
+resource aviatrix_transit_gateway sdnat_aws_transit {
   cloud_type          = 1
   account_name        = "AWSAccess"
   gw_name             = "sdnat-aws-transit"
@@ -52,7 +52,7 @@ resource "aviatrix_transit_gateway" "sdnat_aws_transit" {
   enable_active_mesh  = true
 }
 
-resource "aviatrix_spoke_gateway" "sdnat_spoke_aws_gw" {
+resource aviatrix_spoke_gateway sdnat_spoke_aws_gw {
   cloud_type        = 1
   account_name      = "AWSAccess"
   gw_name           = "sdnat-spoke-aws-gw"
@@ -70,7 +70,7 @@ resource "aviatrix_spoke_gateway" "sdnat_spoke_aws_gw" {
   # single_ip_snat       = true # disable AWS NAT instance before enabling; not supported w insane mode
   # snat_mode         = "custom" # deprecated in R2.10
 }
-resource "aviatrix_gateway_snat" "custom_snat_aws" {
+resource aviatrix_gateway_snat custom_snat_aws {
   gw_name = aviatrix_spoke_gateway.sdnat_spoke_aws_gw.gw_name
   sync_to_ha = true
 
@@ -101,7 +101,7 @@ resource "aviatrix_gateway_snat" "custom_snat_aws" {
     exclude_rtb   = data.aws_route_table.sdnat_spoke_aws_rtb.id
   }
 }
-resource "aviatrix_gateway_dnat" "custom_dnat_aws" {
+resource aviatrix_gateway_dnat custom_dnat_aws {
   gw_name = aviatrix_spoke_gateway.sdnat_spoke_aws_gw.gw_name
   sync_to_ha = true
 
@@ -133,7 +133,7 @@ resource "aviatrix_gateway_dnat" "custom_dnat_aws" {
   }
 }
 
-resource "aviatrix_spoke_gateway" "sdnat_spoke_arm_gw" {
+resource aviatrix_spoke_gateway sdnat_spoke_arm_gw {
   cloud_type      = 8
   account_name    = "AzureAccess"
   gw_name         = "sdnat-spoke-arm-gw"
@@ -145,7 +145,7 @@ resource "aviatrix_spoke_gateway" "sdnat_spoke_arm_gw" {
   # single_ip_snat     = true # deprecated in R2.10
   # snat_mode       = "custom"
 }
-resource "aviatrix_gateway_snat" "custom_snat_arm" {
+resource aviatrix_gateway_snat custom_snat_arm {
   gw_name = aviatrix_spoke_gateway.sdnat_spoke_arm_gw.gw_name
   snat_policy {
     src_cidr      = "10.0.0.0/24"
@@ -174,7 +174,7 @@ resource "aviatrix_gateway_snat" "custom_snat_arm" {
     exclude_rtb   = join(":", [data.azurerm_route_table.sdnat_spoke_arm_rtb.name, data.azurerm_route_table.sdnat_spoke_arm_rtb.resource_group_name])
   }
 }
-resource "aviatrix_gateway_dnat" "custom_dnat_arm" {
+resource aviatrix_gateway_dnat custom_dnat_arm {
   gw_name = aviatrix_spoke_gateway.sdnat_spoke_arm_gw.gw_name
   dnat_policy {
     src_cidr      = "16.0.0.0/24"
@@ -205,16 +205,16 @@ resource "aviatrix_gateway_dnat" "custom_dnat_arm" {
 }
 
 ## Outputs
-output "custom_snat_aws_id" {
+output custom_snat_aws_id {
   value = aviatrix_gateway_snat.custom_snat_aws.id
 }
-output "custom_snat_arm_id" {
+output custom_snat_arm_id {
   value = aviatrix_gateway_snat.custom_snat_arm.id
 }
 
-output "custom_dnat_aws_id" {
+output custom_dnat_aws_id {
   value = aviatrix_gateway_dnat.custom_dnat_aws.id
 }
-output "custom_dnat_arm_id" {
+output custom_dnat_arm_id {
   value = aviatrix_gateway_dnat.custom_dnat_arm.id
 }

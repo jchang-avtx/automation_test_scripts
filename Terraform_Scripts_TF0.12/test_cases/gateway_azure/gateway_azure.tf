@@ -1,12 +1,12 @@
 ## Create Azure Gateway
 
-resource "random_integer" "vnet1_cidr_int" {
+resource random_integer vnet1_cidr_int {
   count = 3
   min = 1
   max = 126
 }
 
-resource "aviatrix_vpc" "arm_gw_vnet_1" {
+resource aviatrix_vpc arm_gw_vnet_1 {
   account_name          = "AzureAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -16,7 +16,7 @@ resource "aviatrix_vpc" "arm_gw_vnet_1" {
   region                = "Central US"
 }
 
-resource "aviatrix_gateway" "azure_gw" {
+resource aviatrix_gateway azure_gw {
   cloud_type      = 8
   account_name    = "AzureAccess"
   gw_name         = "azure-gw"
@@ -37,6 +37,6 @@ resource "aviatrix_gateway" "azure_gw" {
   max_vpn_conn    = 100
 }
 
-output "azure_gw_id" {
+output azure_gw_id {
   value = aviatrix_gateway.azure_gw.id
 }

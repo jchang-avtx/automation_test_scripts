@@ -6,7 +6,7 @@ resource google_compute_address gcloud_ha_gw_ip {
   name = "gcloud-ha-gw-ip"
 }
 
-resource "aviatrix_gateway" "gcloud_gw" {
+resource aviatrix_gateway gcloud_gw {
   cloud_type      = 4
   account_name    = "GCPAccess"
   gw_name         = "gcloud-gw"
@@ -25,6 +25,6 @@ resource "aviatrix_gateway" "gcloud_gw" {
   peering_ha_eip   = var.enable_ha == true ? google_compute_address.gcloud_ha_gw_ip.address : null
 }
 
-output "gcloud_gw_id" {
+output gcloud_gw_id {
   value = aviatrix_gateway.gcloud_gw.id
 }
