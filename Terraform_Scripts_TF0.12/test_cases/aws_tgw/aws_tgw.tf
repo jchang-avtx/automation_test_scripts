@@ -28,6 +28,10 @@ resource "aviatrix_transit_gateway" "tgw_transit_gw" {
   enable_hybrid_connection    = true
   connected_transit           = false
   enable_active_mesh          = false
+
+  # lifecycle {
+  #   ignore_changes = [local_as_number] # to be managed by vgw_conn (R2.16 - 6.1)
+  # }
 }
 
 resource "aws_vpn_gateway" "eu_tgw_vgw" {
