@@ -36,7 +36,7 @@ data aws_route_table sdnat_spoke_aws_rtb {
 }
 
 data azurerm_route_table sdnat_spoke_arm_rtb {
-  name                  = join("-", [aviatrix_vpc.sdnat_spoke_arm_vpc.name, "rtb-app"])
+  name                  = join("-", [aviatrix_vpc.sdnat_spoke_arm_vpc.name, "Public-subnet-1-rtb"])
   resource_group_name   = element(split(":", aviatrix_vpc.sdnat_spoke_arm_vpc.vpc_id),1)
 }
 
