@@ -2,7 +2,7 @@
 ## CLOSED : ha-gw incorrectly set up. the infrastructure/ setup for failover is incorrect
 
 # aviatrix_gateway.S2C_GW_Vir_Backup:
-resource "aviatrix_gateway" "S2C_GW_Vir_Backup" {
+resource aviatrix_gateway S2C_GW_Vir_Backup {
   account_name            = "AWSAccess"
   allocate_new_eip        = true
   cloud_type              = 1
@@ -26,7 +26,7 @@ resource "aviatrix_gateway" "S2C_GW_Vir_Backup" {
 }
 
 # aviatrix_gateway.S2C_GW_Vir_Primary:
-resource "aviatrix_gateway" "S2C_GW_Vir_Primary" {
+resource aviatrix_gateway S2C_GW_Vir_Primary {
   account_name            = "AWSAccess"
   allocate_new_eip        = true
   cloud_type              = 1
@@ -49,7 +49,7 @@ resource "aviatrix_gateway" "S2C_GW_Vir_Primary" {
   vpn_cidr                = "192.168.43.0/24"
 }
 
-resource "aviatrix_gateway" "onPrem" {
+resource aviatrix_gateway onPrem {
   account_name            = "AWSAccess"
   allocate_new_eip        = true
   cloud_type              = 1
@@ -68,7 +68,7 @@ resource "aviatrix_gateway" "onPrem" {
   vpn_access              = false
 }
 
-resource "aviatrix_gateway" "onPrem_backup" {
+resource aviatrix_gateway onPrem_backup {
   account_name            = "AWSAccess"
   allocate_new_eip        = true
   cloud_type              = 1
@@ -88,7 +88,7 @@ resource "aviatrix_gateway" "onPrem_backup" {
 }
 
 # aviatrix_site2cloud.test_s2c:
-# resource "aviatrix_site2cloud" "test_s2c" {
+# resource aviatrix_site2cloud test_s2c {
 #     # backup_pre_shared_key = "backupkey"
 #     connection_name = "cloud_to_onprem"
 #     connection_type = "unmapped"
@@ -106,7 +106,7 @@ resource "aviatrix_gateway" "onPrem_backup" {
 #     depends_on = [aviatrix_gateway.S2C_GW_Vir_Backup, aviatrix_gateway.S2C_GW_Vir_Primary]
 # }
 
-resource "aviatrix_site2cloud" "test_s2c" {
+resource aviatrix_site2cloud test_s2c {
   vpc_id = aviatrix_gateway.S2C_GW_Vir_Primary.vpc_id
   connection_name       = "cloud_to_onprem"
   connection_type       = "unmapped"
@@ -134,6 +134,6 @@ resource "aviatrix_site2cloud" "test_s2c" {
   phase_2_encryption            = "3DES"
 }
 
-output "test_s2c_id" {
+output test_s2c_id {
   value = aviatrix_site2cloud.test_s2c.id
 }
