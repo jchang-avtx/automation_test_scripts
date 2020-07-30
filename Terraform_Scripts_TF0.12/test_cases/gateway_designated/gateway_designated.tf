@@ -113,7 +113,7 @@ resource aviatrix_gateway_dnat design_aws_dnat {
     dst_port      = ""
     protocol      = "all"
     interface     = "eth0"
-    connection    = ""
+    connection    = "None"
     mark          = ""
     dnat_ips      = "10.3.3.100" # IP within VPC subnet
     dnat_port     = "" #
@@ -126,7 +126,7 @@ resource aviatrix_gateway_dnat design_aws_dnat {
     dst_port      = ""
     protocol      = "all"
     interface     = "eth0"
-    connection    = ""
+    connection    = "None"
     mark          = ""
     dnat_ips      = "10.3.3.100" # IP within VPC subnet
     dnat_port     = "" #
