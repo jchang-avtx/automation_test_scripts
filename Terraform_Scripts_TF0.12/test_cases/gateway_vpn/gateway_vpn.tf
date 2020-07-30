@@ -79,7 +79,7 @@ resource "aviatrix_gateway" "vpn_gw_2_under_elb" {
   allocate_new_eip  = true
 
   vpn_access        = true
-  vpn_cidr          = "192.168.45.0/24" # must be non-overlapping CIDR
+  vpn_cidr          = "192.168.46.0/24" # must be non-overlapping CIDR
   vpn_protocol      = "UDP"
   enable_elb        = true
   enable_vpn_nat    = var.aviatrix_vpn_nat
@@ -109,7 +109,7 @@ resource "aviatrix_gateway" "vpn_gw_3_no_elb" {
   allocate_new_eip  = true
 
   vpn_access        = true
-  vpn_cidr          = "192.168.43.0/24"
+  vpn_cidr          = "192.168.47.0/24"
   enable_elb        = false
   enable_vpn_nat    = var.aviatrix_vpn_nat
 
