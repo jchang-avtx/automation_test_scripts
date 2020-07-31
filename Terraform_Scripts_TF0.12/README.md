@@ -7,7 +7,7 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
 - **Note:** Current scripts are updated for R2.0+
 
 ---
-**STATUS:** Updated for UserConnect 5.4, Terraform R2.14
+**STATUS:** Updated for UserConnect 6.1, Terraform R2.16
 
 ---
 
@@ -36,6 +36,7 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
     * **Note:** Name of the local Jenkins credentials does not matter, but must be referenced properly under the global ``environment { ... }`` block in the ***Jenkinsfile***
   * AWS requires ``AWS_ACCESS_KEY_ID`` and ``AWS_SECRET_ACCESS_KEY`` to be exported
   * ARM requires ``ARM_CLIENT_ID``, ``ARM_CLIENT_SECRET``, ``ARM_SUBSCRIPTION_ID``, ``ARM_TENANT_ID`` to be exported
+  * GCP requires ``GOOGLE_CREDENTIALS`` (secret file), ``GOOGLE_PROJECT`` to be exported
 3. Credentials for the Aviatrix Controllers that regression will be running on must be set as environment variables under the Jenkins Global Properties:
   * Can be accessed by: **Jenkins -> Manage Jenkins -> Configure System -> Global Properties -> Environment variables**
   * Set ``AVIATRIX_CONTROLLER_IP``, ``AVIATRIX_USERNAME``, ``AVIATRIX_PASSWORD`` with placeholder values
@@ -105,19 +106,11 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
                       "testemail4@gmail.com"]
     ```
 6. **gateway_gcp**, **spoke_gateway_gcp**, **transit_gateway_gcp** test stages require pre-existing GCP VPC Networks with the following configurations, due to a limitation of 5 VPC Networks globally per Google account
-  * *gcptestvpc* - This was created with the GCP Console's VPC Network tool
-    * us-central1 - 10.128.0.0/20 - starting CIDR
-    * europe-west1 - 10.132.0.0/20
-    * us-west1 - 10.138.0.0/20
-    * asia-east1 - 10.140.0.0/20
-    * us-east1 - 10.142.0.0/20
-    * asia-northeast1 - 10.146.0.0/20
-    * asia-southeast1 - 10.148.0.0/20
-    * us-east4 - 10.150.0.0/20
-    * ...
   * *gcpspokevpc* - created using Aviatrix Controller VPC Tool
     * us-west2 - 172.23.0.0/16
     * europe-west1 - 172.24.0.0/16
   * *gcptransitvpc* - created using Aviatrix Controller VPC Tool
     * us-central1 - 172.20.0.0/16
     * us-east4 - 172.21.0.0/16
+7. **Cloud WAN** test stage requires Azure Hub to be created, along with its respective VPN gateway
+  - cannot be created/integrated into Terraform due to extreme long wait-time for status up
