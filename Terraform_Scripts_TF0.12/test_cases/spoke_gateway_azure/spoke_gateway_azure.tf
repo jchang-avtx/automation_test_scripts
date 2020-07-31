@@ -6,30 +6,30 @@ resource random_integer vnet1_cidr_int {
   max = 126
 }
 
-resource aviatrix_vpc arm_transit_gw_vnet {
+resource aviatrix_vpc arm_spoke_trans_gw_vnet {
   account_name          = "AzureAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
   cidr                  = join(".", [random_integer.vnet1_cidr_int[0].result, random_integer.vnet1_cidr_int[1].result, random_integer.vnet1_cidr_int[2].result, "0/24"])
   cloud_type            = 8
-  name                  = "arm-transit-gw-vnet"
+  name                  = "arm-sopke-trans-gw-vnet"
   region                = "Central US"
 }
 
-data aviatrix_vpc arm_transit_gw_vnet {
-  name = aviatrix_vpc.arm_transit_gw_vnet.name
+data aviatrix_vpc arm_spoke_trans_gw_vnet {
+  name = aviatrix_vpc.arm_spoke_trans_gw_vnet.name
 }
 
 resource aviatrix_transit_gateway arm_transit_gw {
   cloud_type          = 8
   account_name        = "AzureAccess"
   gw_name             = "arm-transit-gw"
-  vpc_id              = aviatrix_vpc.arm_transit_gw_vnet.vpc_id
-  vpc_reg             = aviatrix_vpc.arm_transit_gw_vnet.region
+  vpc_id              = aviatrix_vpc.arm_spoke_trans_gw_vnet.vpc_id
+  vpc_reg             = aviatrix_vpc.arm_spoke_trans_gw_vnet.region
   gw_size             = "Standard_B1ms"
-  subnet              = data.aviatrix_vpc.arm_transit_gw_vnet.public_subnets.0.cidr
+  subnet              = data.aviatrix_vpc.arm_spoke_trans_gw_vnet.public_subnets.0.cidr
 
-  ha_subnet           = data.aviatrix_vpc.arm_transit_gw_vnet.public_subnets.1.cidr
+  ha_subnet           = data.aviatrix_vpc.arm_spoke_trans_gw_vnet.public_subnets.1.cidr
   ha_gw_size          = "Standard_B1ms"
   single_ip_snat      = false
 
