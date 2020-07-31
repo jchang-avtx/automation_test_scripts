@@ -103,7 +103,7 @@ resource aviatrix_fqdn fqdn_tag_1 {
 }
 
 resource aviatrix_fqdn_pass_through fqdn_ignore {
-  gw_name = aviatrix_gateway.fqdn_gw_1.gw_name
+  gw_name = var.aviatrix_fqdn_gateway == "fqdn-gw-1" ? aviatrix_gateway.fqdn_gw_1.gw_name : aviatrix_gateway.fqdn_gw_2.gw_name
   pass_through_cidrs = var.pass_thru_list
 
   depends_on = [aviatrix_fqdn.fqdn_tag_1]
