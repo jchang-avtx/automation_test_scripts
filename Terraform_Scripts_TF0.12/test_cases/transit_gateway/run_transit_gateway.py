@@ -117,6 +117,10 @@ try:
     tf.update_test("updateExcludeAdvertiseRoutes")
     log.debug("     updateLearnedCIDRApproval: Disable approval requirement for Learned CIDRs...")
     tf.update_test("updateLearnedCIDRApproval")
+    log.debug("     updateBGP: Update the BGP-related parameters BGP ECMP and polling time...")
+    tf.update_test("updateBGP")
+    log.debug("     updateAS: Update AS-related parameters local ASN and prepending AS path list...")
+    tf.update_test("updateAS")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
