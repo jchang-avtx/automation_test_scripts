@@ -24,10 +24,10 @@ resource aviatrix_transit_gateway azure_transit_gw {
   vpc_reg             = aviatrix_vpc.azure_transit_gw_vnet.region
   gw_size             = var.arm_gw_size
   # subnet              = "10.2.0.0/24" # non-insane
-  subnet              = join(".", [random_integer.vnet1_cidr_int[0].result, random_integer.vnet1_cidr_int[1].result, "64.0/26"]) # "10.2.2.0/26"
+  subnet              = join(".", [random_integer.vnet1_cidr_int[0].result, random_integer.vnet1_cidr_int[1].result, "80.0/26"]) # "10.2.2.0/26"
 
   # ha_subnet           = "10.2.0.0/24" # non-insane
-  ha_subnet           = join(".", [random_integer.vnet1_cidr_int[0].result, random_integer.vnet1_cidr_int[1].result, "64.64/26"]) # "10.2.2.64/26"
+  ha_subnet           = join(".", [random_integer.vnet1_cidr_int[0].result, random_integer.vnet1_cidr_int[1].result, "80.64/26"]) # "10.2.2.64/26"
   ha_gw_size          = var.arm_ha_gw_size
   single_ip_snat      = false # insane mode does not support SNAT
   single_az_ha        = var.single_az_ha
