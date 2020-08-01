@@ -107,15 +107,19 @@ else:
 
 log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
 log.info("Testing support of update functionality of ELB/ GeoVPN settings - Mantis (13570)... ")
-try:
-    log.debug("     updateVPN: Updating the ELB/ GeoVPN settings by updating all ELB's VPN settings simultaneously...")
-    tf.update_test("updateVPN")
-except tf.subprocess.CalledProcessError as err:
-    log.exception(err.stderr.decode())
-    return_result("update_test", False)
-    sys.exit(1)
-else:
-    return_result("update_test", True)
+for i in range(3):
+    try:
+        log.debug("     updateVPN: Updating the ELB/ GeoVPN settings by updating all ELB's VPN settings simultaneously...")
+        tf.update_test("updateVPN")
+    except tf.subprocess.CalledProcessError as err:
+        log.exception(err.stderr.decode())
+        time.sleep(60 + 60*i)
+        if i == 2:
+            return_result("update_test", False)
+            sys.exit(1)
+    else:
+        return_result("update_test", True)
+        break
 
 
 log.info("Verifying destroy functionality...")
