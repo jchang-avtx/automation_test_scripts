@@ -77,6 +77,7 @@ resource "aviatrix_vgw_conn" "test_vgw_conn" {
 #Add SpokeVPC dst cidr 10.0.0.0/16 route to OnPremVPC public subnet route table; Use VGW as gateway
 data "aws_subnet" "onprem_public" {
   cidr_block = module.aws-vpc.subnet_cidr[4]
+  depends_on  = [aviatrix_transit_gateway.AVX-Transit-GW]
 }
 data "aws_route_table" "onprem_public" {
   subnet_id   = data.aws_subnet.onprem_public.id
@@ -91,6 +92,7 @@ resource "aws_route" "onprem_public" {
 #Add SpokeVPC dst cidr 10.0.0.0/16 route to OnPremVPC private subnet route table; Use VGW as gateway
 data "aws_subnet" "onprem_private" {
   cidr_block = module.aws-vpc.subnet_cidr[14]
+  depends_on  = [aviatrix_transit_gateway.AVX-Transit-GW]
 }
 data "aws_route_table" "onprem_private" {
   subnet_id   = data.aws_subnet.onprem_private.id
