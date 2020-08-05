@@ -51,7 +51,7 @@ def main(argv):
       f.write('Executed cmd >>>>> '+cmd+'\n')
       f.write('Number of Tries: '+str(num_of_tries)+'\n')
       f.write(subprocess.getoutput('date')+'  :Will try again. Sleeping now ...\n')
-      time.sleep(num_of_tries*60)
+      time.sleep(num_of_tries*30)
     else:
       result = 'FAIL'
       i += 1
