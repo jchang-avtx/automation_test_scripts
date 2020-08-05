@@ -33,7 +33,7 @@ logging.basicConfig(level=LOGLEVEL,
                     ])
 log = logging.getLogger()
 
-secret_path = "/var/lib/tf-secrets/account_awsgov/"
+secret_path = "/var/lib/jenkins/tf-secrets/account_awsgov/"
 cred_file = "awsgov_acc_cred"
 cred_path = secret_path + cred_file
 

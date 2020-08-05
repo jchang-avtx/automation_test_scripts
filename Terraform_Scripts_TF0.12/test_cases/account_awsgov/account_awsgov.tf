@@ -1,4 +1,4 @@
-resource "aviatrix_account" "aws_gov_root_1" {
+resource aviatrix_account aws_gov_root_1 {
   account_name            = "aws-gov-root-1"
   cloud_type              = 256
   awsgov_account_number   = var.awsgov_account_num
@@ -10,6 +10,6 @@ resource "aviatrix_account" "aws_gov_root_1" {
   }
 }
 
-output "aws_gov_root_1_id" {
+output aws_gov_root_1_id {
   value = aviatrix_account.aws_gov_root_1.id
 }
