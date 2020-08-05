@@ -93,10 +93,10 @@ resource "aviatrix_transit_external_device_conn" "ext_conn" {
   connection_name     = "ext-conn"
   vpc_id              = aviatrix_vpc.ext_conn_transit_vpc.vpc_id
   gw_name             = aviatrix_transit_gateway.ext_conn_transit_gw.gw_name
-  bgp_local_as_num    = var.conn_type == "bgp" ? 65000 : null
+  bgp_local_as_num    = var.conn_type == "bgp" ? 65535 : null # 65000
 
   remote_gateway_ip     = var.dxc_status == true ? aviatrix_gateway.ext_conn_on_prem_router.private_ip : aviatrix_gateway.ext_conn_on_prem_router.eip
-  bgp_remote_as_num     = var.conn_type == "bgp" ? 65001 : null
+  bgp_remote_as_num     = var.conn_type == "bgp" ? 4294967294 : null # 65001
 
   remote_subnet         = var.conn_type == "static" ? aviatrix_gateway.ext_conn_on_prem_router.subnet : null
   direct_connect        = var.dxc_status # if true, must specify private IP for router/ remote IP
@@ -115,7 +115,7 @@ resource "aviatrix_transit_external_device_conn" "ext_conn" {
   ha_enabled = true
   backup_direct_connect       = var.dxc_status == true ? true : false
   backup_remote_gateway_ip    = var.dxc_status == true ? aviatrix_gateway.ext_conn_on_prem_router.peering_ha_private_ip : aviatrix_gateway.ext_conn_on_prem_router.peering_ha_eip
-  backup_bgp_remote_as_num    = var.conn_type == "bgp" ? 65001 : null # must match primary remote ASN , only for bgp
+  backup_bgp_remote_as_num    = var.conn_type == "bgp" ? 4294967294 : null # must match primary remote ASN , only for bgp ; 65001
   backup_pre_shared_key       = "abc-123"
   backup_local_tunnel_cidr    = "172.17.12.2/30,172.17.12.6/30"
   backup_remote_tunnel_cidr   = "172.17.12.1/30,172.17.12.5/30"

@@ -1,18 +1,18 @@
 ## Creates and manages a FQDN filter for Aviatrix gateway
 
-resource "random_integer" "vpc1_cidr_int" {
+resource random_integer vpc1_cidr_int {
   count = 3
   min = 1
   max = 126
 }
 
-resource "random_integer" "vpc2_cidr_int" {
+resource random_integer vpc2_cidr_int {
   count = 3
   min = 1
   max = 126
 }
 
-resource "aviatrix_vpc" "fqdn_vpc_1" {
+resource aviatrix_vpc fqdn_vpc_1 {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -22,7 +22,7 @@ resource "aviatrix_vpc" "fqdn_vpc_1" {
   region                = "us-east-1"
 }
 
-resource "aviatrix_vpc" "fqdn_vpc_2" {
+resource aviatrix_vpc fqdn_vpc_2 {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -32,7 +32,7 @@ resource "aviatrix_vpc" "fqdn_vpc_2" {
   region                = "us-east-1"
 }
 
-resource "aviatrix_gateway" "fqdn_gw_1" {
+resource aviatrix_gateway fqdn_gw_1 {
   cloud_type    = 1
   account_name  = "AWSAccess"
   gw_name       = "fqdn-gw-1"
@@ -48,7 +48,7 @@ resource "aviatrix_gateway" "fqdn_gw_1" {
   }
 }
 
-resource "aviatrix_gateway" "fqdn_gw_2" {
+resource aviatrix_gateway fqdn_gw_2 {
   cloud_type    = 1
   account_name  = "AWSAccess"
   gw_name       = "fqdn-gw-2"
@@ -64,7 +64,7 @@ resource "aviatrix_gateway" "fqdn_gw_2" {
   }
 }
 
-resource "aviatrix_fqdn" "fqdn_tag_1" {
+resource aviatrix_fqdn fqdn_tag_1 {
   fqdn_tag      = var.aviatrix_fqdn_tag
   fqdn_enabled  = var.aviatrix_fqdn_status
   fqdn_mode     = var.aviatrix_fqdn_mode
@@ -102,6 +102,17 @@ resource "aviatrix_fqdn" "fqdn_tag_1" {
   depends_on = [aviatrix_gateway.fqdn_gw_1, aviatrix_gateway.fqdn_gw_2]
 }
 
-output "fqdn_tag_1_id" {
+resource aviatrix_fqdn_pass_through fqdn_ignore {
+  gw_name = var.aviatrix_fqdn_gateway == "fqdn-gw-1" ? aviatrix_gateway.fqdn_gw_1.gw_name : aviatrix_gateway.fqdn_gw_2.gw_name
+  pass_through_cidrs = var.pass_thru_list
+
+  depends_on = [aviatrix_fqdn.fqdn_tag_1]
+}
+
+output fqdn_tag_1_id {
   value = aviatrix_fqdn.fqdn_tag_1.id
+}
+
+output fqdn_ignore_id {
+  value = aviatrix_fqdn_pass_through.fqdn_ignore.id
 }

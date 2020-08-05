@@ -1,6 +1,6 @@
 ## initial creation
 
-aviatrix_vpn_cidr = "192.168.44.0/24"
+aviatrix_vpn_cidr = "192.168.50.0/24"
 aviatrix_vpn_max_conn = 100
 aviatrix_vpn_nat = true
 

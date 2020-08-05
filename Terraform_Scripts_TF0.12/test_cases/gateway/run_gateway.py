@@ -107,6 +107,8 @@ try:
     tf.update_test("updateHAGWSize")
     log.debug("     enableDNSServer: Enabling feature to remove the default DNS server, in favor of VPC DNS server configured in VPC DHCP option...")
     tf.update_test("enableDNSServer")
+    log.debug("     updatePingInterval: Updating ping interval for gateway periodic ping...")
+    tf.update_test("updatePingInterval")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

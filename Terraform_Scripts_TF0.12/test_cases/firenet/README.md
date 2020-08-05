@@ -42,6 +42,7 @@
   - 1 with HA
   - 1 without HA
 - 1 FQDN gateway
+- 1 FQDN resource (rules)
 - 3 FireNet firewall instances
   - 1 for primary
   - 1 for HA

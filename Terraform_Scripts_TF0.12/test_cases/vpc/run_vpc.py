@@ -71,7 +71,7 @@ else:
 for i in range(3):
     try:
         log.info("Creating infrastructure...")
-        tf.create_verify(timeout=600)
+        tf.create_verify()
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
         time.sleep(60 + 60*i)
@@ -117,7 +117,7 @@ log.info("     update_test(): SKIPPED\n")
 for i in range(3):
     try:
         log.info("Verifying destroy functionality...")
-        tf.destroy_test(timeout=300)
+        tf.destroy_test(timeout=1200)
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
         time.sleep(60 + 60*i)

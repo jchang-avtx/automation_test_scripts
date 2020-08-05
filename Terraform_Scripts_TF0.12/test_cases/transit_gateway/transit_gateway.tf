@@ -1,10 +1,10 @@
-resource "random_integer" "vpc1_cidr_int" {
+resource random_integer vpc1_cidr_int {
   count = 2
   min = 1
   max = 126
 }
 
-resource "aviatrix_vpc" "insane_transit_gw_vpc" {
+resource aviatrix_vpc insane_transit_gw_vpc {
   cloud_type            = 1
   account_name          = "AWSAccess"
   region                = "us-east-1"
@@ -14,7 +14,7 @@ resource "aviatrix_vpc" "insane_transit_gw_vpc" {
   aviatrix_firenet_vpc  = false
 }
 
-resource "aviatrix_transit_gateway" "insane_transit_gw" {
+resource aviatrix_transit_gateway insane_transit_gw {
   cloud_type          = 1
   account_name        = "AWSAccess"
   gw_name             = "insaneTransitGW1"
@@ -37,15 +37,20 @@ resource "aviatrix_transit_gateway" "insane_transit_gw" {
 
   enable_hybrid_connection  = var.tgw_enable_hybrid
   connected_transit         = var.tgw_enable_connected_transit
-  enable_active_mesh        = false
+  enable_active_mesh        = true
   enable_vpc_dns_server     = var.enable_vpc_dns_server
   enable_learned_cidrs_approval = var.enable_learned_cidrs_approval
 
   customized_spoke_vpc_routes       = var.custom_spoke_vpc_routes
   filtered_spoke_vpc_routes         = var.filter_spoke_vpc_routes
   excluded_advertised_spoke_routes  = var.exclude_advertise_spoke_routes
+
+  bgp_ecmp            = var.bgp_ecmp_status
+  bgp_polling_time    = var.bgp_polling_time
+  local_as_number     = var.local_asn
+  prepend_as_path     = var.prepend_as_path_list
 }
 
-output "insane_transit_gw_id" {
+output insane_transit_gw_id {
   value = aviatrix_transit_gateway.insane_transit_gw.id
 }

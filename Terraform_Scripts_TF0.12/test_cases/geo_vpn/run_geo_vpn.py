@@ -33,6 +33,18 @@ logging.basicConfig(level=LOGLEVEL,
                     ])
 log = logging.getLogger()
 
+def return_result(test, result):
+    """
+    test is string ; result is string
+    if result == true is PASS
+    if result == false is FALSE
+    """
+    log.info("-------------------- RESULT --------------------")
+    if result:
+        log.info("     " + test + "(): " + "PASS\n")
+    else:
+        log.error("     " + test + "(): " + "FAIL\n")
+
 log.info("\n")
 log.info("============================================================")
 log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
@@ -73,12 +85,10 @@ try:
     tf.create_verify()
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     create_verify(): FAIL\n")
+    return_result("create_verify", False)
     sys.exit(1)
 else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      create_verify(): PASS\n")
+    return_result("create_verify", True)
 
 
 try:
@@ -89,49 +99,70 @@ try:
     tf.import_test("vpn_user", "geo_vpn_user")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     import_test(): FAIL\n")
+    return_result("import_test", False)
     sys.exit(1)
 else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      import_test(): PASS\n")
+    return_result("import_test", True)
 
 
 log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
 log.info("Testing support of update functionality of ELB/ GeoVPN settings - Mantis (13570)... ")
-try:
-    log.debug("     updateVPN: Updating the ELB/ GeoVPN settings by updating all ELB's VPN settings simultaneously...")
-    tf.update_test("updateVPN")
-except tf.subprocess.CalledProcessError as err:
-    log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.info("     update_test(): FAIL\n")
-    sys.exit(1)
-else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      update_test(): PASS\n")
-
-
 for i in range(3):
     try:
-        log.info("Verifying destroy functionality...")
+        log.debug("     updateVPN: Updating the ELB/ GeoVPN settings by updating all ELB's VPN settings simultaneously...")
+        tf.update_test("updateVPN")
+    except tf.subprocess.CalledProcessError as err:
+        log.exception(err.stderr.decode())
+        time.sleep(60 + 60*i)
+        if i == 2:
+            return_result("update_test", False)
+            sys.exit(1)
+    else:
+        return_result("update_test", True)
+        break
+
+
+log.info("Verifying destroy functionality...")
+for i in range(3):
+    try:
         log.debug("     destroy_target() one of the ELB gateway first...") # Mantis (13255)
         tf.destroy_target("gateway", "r53_gw_3")
+    except tf.subprocess.CalledProcessError as err:
+        log.exception(err.stderr.decode())
+        time.sleep(60 + 60*i)
+        if i == 2:
+            return_result("destroy_test", False)
+            sys.exit(1)
+    else:
         log.debug("Sleeping for 1 minute to wait for gateway clean-up...")
         time.sleep(60)
+        break
+
+for j in range(3):
+    try:
         log.debug("     destroy_target() the other ELB gateway...")
         tf.destroy_target("gateway", "r53_gw_1")
+    except tf.subprocess.CalledProcessError as err:
+        log.exception(err.stderr.decode())
+        time.sleep(60 + 60*j)
+        if j == 2:
+            return_result("destroy_test", False)
+            sys.exit(1)
+    else:
         log.debug("Sleeping for 1 minute...")
         time.sleep(60)
+        break
+
+for k in range(3):
+    try:
         log.debug("     Now running destroy_test() to finish clean-up...")
         tf.destroy_test()
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
-        if i == 2:
-            log.info("-------------------- RESULT --------------------")
-            log.error("     destroy_test(): FAIL\n")
+        time.sleep(60 + 60*k)
+        if k == 2:
+            return_result("destroy_test", False)
             sys.exit(1)
     else:
-        log.info("-------------------- RESULT --------------------")
-        log.info("      destroy_test(): PASS\n")
+        return_result("destroy_test", True)
         sys.exit(0)

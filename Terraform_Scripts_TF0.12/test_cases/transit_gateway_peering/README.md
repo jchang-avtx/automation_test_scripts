@@ -2,6 +2,13 @@
 
 ---
 
+### Topology
+- TGW
+- TGW VPN conn
+- 2 Transit gateways
+- 1 of the transit gw attached to the TGW
+- Transit gateway peering (exclude the VPN conn + CIDRs) (14894)
+
 ### Usage
 ```
   terraform init

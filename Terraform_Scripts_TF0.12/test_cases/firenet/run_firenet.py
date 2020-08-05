@@ -86,7 +86,7 @@ try:
     log.debug("      Importing firewall_instance for regular transit-gw solution...")
     tf.import_test("firewall_instance", "firenet_instance")
     log.debug("      Importing firewall_instance in different region...")
-    tf.import_test("firewall_instance", "firenet_instance3")
+    tf.import_test("firewall_instance", "fqdn_firenet_instance")
     log.debug("      Importing firenet with instance associated for regular transit solution...")
     tf.import_test("firenet", "firenet")
     log.debug("      Importing firenet with instance associated for FQDN solution...")

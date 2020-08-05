@@ -5,3 +5,8 @@ variable "aws_gateway_tag_list" {
 }
 variable "single_ip_snat" {}
 variable "enable_vpc_dns_server" {}
+
+variable "ping_interval" {
+  type = number
+  default = 60
+}

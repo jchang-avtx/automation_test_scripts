@@ -1,4 +1,5 @@
 ## Test case 1: Update HAGW size and Zone; testing creating GW and updating HA attributes to create
+enable_ha = true
 
 gcp_ha_gw_size = "n1-standard-1"
 gcp_ha_gw_subnet = "10.168.0.0/20"

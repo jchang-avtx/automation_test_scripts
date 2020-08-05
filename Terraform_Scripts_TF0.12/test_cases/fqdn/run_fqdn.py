@@ -88,7 +88,11 @@ for i in range(3):
 
 try:
     log.info("Verifying import functionality...")
+    log.debug("     FQDN tag: testing import for FQDN resource...")
     tf.import_test("fqdn", "fqdn_tag_1")
+    log.debug("     FQDN PassThru: testing FQDN pass through resource...")
+    tf.import_test("fqdn_pass_through", "fqdn_ignore")
+
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -117,6 +121,8 @@ try:
     tf.update_test("switchGW")
     log.debug("     switchSourceIP: Updating which source IP in the VPC is qualified for a specific tag...")
     tf.update_test("switchSourceIP")
+    log.debug("     updatePassThru: Updating CIDR list allowed to ignore FQDN tag...")
+    tf.update_test("updatePassThru")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

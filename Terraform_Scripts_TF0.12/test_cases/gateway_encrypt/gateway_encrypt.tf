@@ -10,9 +10,21 @@ resource "aws_kms_key" "temp_cust_key" {
   }
 }
 
+resource "random_pet" "temp_cust_key_pet" {
+  separator = "_"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "aws_kms_alias" "temp_cust_key_alias" {
-  name            = "alias/temp_cust_key"
+  name            = "alias/temp_cust_key_${random_pet.temp_cust_key_pet.id}"
   target_key_id   = aws_kms_key.temp_cust_key.id
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "random_integer" "vpc1_cidr_int" {
@@ -55,7 +67,7 @@ resource "aviatrix_gateway" "aws_ebs_encrypt_gw" {
   vpc_reg                 = aviatrix_vpc.transit_encrypt_vpc.region
   gw_size                 = "t2.micro"
   subnet                  = aviatrix_vpc.transit_encrypt_vpc.subnets.4.cidr
-  single_az_ha            = false
+  single_az_ha            = true
   enable_encrypt_volume   = true
   customer_managed_keys   = aws_kms_key.temp_cust_key.id
 
@@ -72,6 +84,7 @@ resource "aviatrix_transit_gateway" "aws_ebs_encrypt_transit" {
   vpc_reg                 = aviatrix_gateway.aws_ebs_encrypt_gw.vpc_reg
   gw_size                 = "t2.micro"
   subnet                  = aviatrix_vpc.transit_encrypt_vpc.subnets.5.cidr
+  single_az_ha            = true
   enable_encrypt_volume   = true
   customer_managed_keys   = aws_kms_key.temp_cust_key.id
 
@@ -88,6 +101,7 @@ resource "aviatrix_spoke_gateway" "aws_ebs_encrypt_spoke" {
   vpc_reg                 = aviatrix_vpc.spoke_encrypt_vpc.region
   gw_size                 = "t2.micro"
   subnet                  = aviatrix_vpc.spoke_encrypt_vpc.subnets.4.cidr
+  single_az_ha            = true
   enable_encrypt_volume   = true
   customer_managed_keys   = aws_kms_key.temp_cust_key.id
 
