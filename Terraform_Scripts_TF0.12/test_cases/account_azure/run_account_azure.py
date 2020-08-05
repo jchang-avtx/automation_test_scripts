@@ -33,7 +33,7 @@ logging.basicConfig(level=LOGLEVEL,
                     ])
 log = logging.getLogger()
 
-secret_path = "/var/lib/tf-secrets/account_azure/"
+secret_path = "/var/lib/jenkins/tf-secrets/account_azure/"
 cred_file = "azure_acc_cred"
 cred_file2 = "switchApp_cred"
 cred_path = secret_path + cred_file
