@@ -35,6 +35,25 @@ logging.basicConfig(level=LOGLEVEL,
                     ])
 log = logging.getLogger()
 
+# secret_path == filepath where secrets are stored locally
+# cred_file == variable file (without the file extension) that contains credentials/secrets
+secret_path = "/var/lib/tf-secrets/test_case/"
+cred_file = "test_case_cred"
+cred_path = secret_path + cred_file
+
+# may use to refactor multi-try loops
+def return_result(test, result):
+    """
+    test is string ; result is string
+    if result == true is PASS
+    if result == false is FALSE
+    """
+    log.info("-------------------- RESULT --------------------")
+    if result:
+        log.info("     " + test + "(): " + "PASS\n")
+    else:
+        log.error("     " + test + "(): " + "FAIL\n")
+
 log.info("============================================================")
 log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
 log.info("============================================================")

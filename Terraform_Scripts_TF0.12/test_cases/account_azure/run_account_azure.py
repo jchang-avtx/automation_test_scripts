@@ -33,6 +33,12 @@ logging.basicConfig(level=LOGLEVEL,
                     ])
 log = logging.getLogger()
 
+secret_path = "/var/lib/tf-secrets/account_azure/"
+cred_file = "azure_acc_cred"
+cred_file2 = "switchApp_cred"
+cred_path = secret_path + cred_file
+cred_path2 = secret_path + cred_file2
+
 log.info("\n")
 log.info("============================================================")
 log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
@@ -70,7 +76,7 @@ else:
 
 try:
     log.info("Creating infrastructure...")
-    tf.create_verify("azure_acc_cred")
+    tf.create_verify(varfile=cred_path)
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -83,7 +89,7 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("account", "azure_access_account_1", "azure_acc_cred")
+    tf.import_test("account", "azure_access_account_1", varfile=cred_path)
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -97,7 +103,7 @@ else:
 try:
     log.info("Verifying update functionality...")
     log.debug("     switchApp: Switching Azure credentials to another Azure account...")
-    tf.update_test("switchApp_cred")
+    tf.update_test(varfile=cred_path2)
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -110,7 +116,7 @@ else:
 
 try:
     log.info("Verifying destroy functionality...")
-    tf.destroy_test("switchApp_cred")
+    tf.destroy_test(varfile=cred_path2)
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
