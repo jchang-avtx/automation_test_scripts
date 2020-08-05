@@ -33,6 +33,12 @@ logging.basicConfig(level=LOGLEVEL,
                     ])
 log = logging.getLogger()
 
+secret_path = "/var/lib/jenkins/tf-secrets/account_gcp/"
+cred_file = "gcloud_acc_cred"
+cred_file2 = "switchProj_cred"
+cred_path = secret_path + cred_file
+cred_path2 = secret_path + cred_file2
+
 log.info("\n")
 log.info("============================================================")
 log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
@@ -70,7 +76,7 @@ else:
 
 try:
     log.info("Creating infrastructure...")
-    tf.create_verify("gcloud_acc_cred")
+    tf.create_verify(varfile=cred_path)
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -83,7 +89,7 @@ else:
 
 try:
     log.info("Verifying import functionality...")
-    tf.import_test("account", "gcp_access_account_1", "gcloud_acc_cred")
+    tf.import_test("account", "gcp_access_account_1", varfile=cred_path)
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -97,9 +103,9 @@ else:
 try:
     log.info("Verifying update functionality...")
     log.debug("      switchProj_cred: Switching GCP credentials to another GCP account...")
-    tf.update_test("switchProj_cred")
+    tf.update_test(varfile=cred_path2)
     log.debug("     gcloud_acc_cred: Switching GCP credentials back to original...")
-    tf.update_test("gcloud_acc_cred")
+    tf.update_test(varfile=cred_path)
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -112,7 +118,7 @@ else:
 
 try:
     log.info("Verifying destroy functionality...")
-    tf.destroy_test("gcloud_acc_cred")
+    tf.destroy_test(varfile=cred_path)
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
