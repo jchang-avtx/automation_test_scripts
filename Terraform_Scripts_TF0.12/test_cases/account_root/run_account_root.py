@@ -33,6 +33,10 @@ logging.basicConfig(level=LOGLEVEL,
                     ])
 log = logging.getLogger()
 
+secret_path = "/var/lib/jenkins/tf-secrets/account_root/"
+cred_file = "aws_root_acc_cred"
+cred_path = secret_path + cred_file
+
 log.info("\n")
 log.info("============================================================")
 log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
@@ -70,7 +74,7 @@ else:
 
 try:
     log.info("Creating infrastructure...")
-    tf.create_verify("aws_root_acc_cred")
+    tf.create_verify(varfile=cred_path)
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
@@ -93,7 +97,7 @@ log.info("     update_test(): SKIPPED\n")
 
 try:
     log.info("Verifying destroy functionality...")
-    tf.destroy_test("aws_root_acc_cred")
+    tf.destroy_test(varfile=cred_path)
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
