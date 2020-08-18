@@ -1,11 +1,11 @@
 # 1 GW + ELB, another GW under the same VPC (and ELB)
-resource "random_integer" "vpc1_cidr_int" {
+resource random_integer vpc1_cidr_int {
   count = 2
   min = 1
   max = 126
 }
 
-resource "aviatrix_vpc" "r53_vpc_1" {
+resource aviatrix_vpc r53_vpc_1 {
   cloud_type            = 1
   account_name          = "AWSAccess"
   region                = "us-east-2"
@@ -15,18 +15,14 @@ resource "aviatrix_vpc" "r53_vpc_1" {
   aviatrix_firenet_vpc  = false
 }
 
-data "aviatrix_vpc" "r53_vpc_1" {
-  name = aviatrix_vpc.r53_vpc_1.name
-}
-
-resource "aviatrix_gateway" "r53_gw_1" {
+resource aviatrix_gateway r53_gw_1 {
   cloud_type        = 1
   account_name      = "AWSAccess"
   gw_name           = "r53-gw-1"
   vpc_id            = aviatrix_vpc.r53_vpc_1.vpc_id
   vpc_reg           = aviatrix_vpc.r53_vpc_1.region
   gw_size           = "t2.micro"
-  subnet            = data.aviatrix_vpc.r53_vpc_1.public_subnets.0.cidr
+  subnet            = aviatrix_vpc.r53_vpc_1.public_subnets.0.cidr
 
   single_az_ha      = false
   allocate_new_eip  = true
@@ -44,14 +40,14 @@ resource "aviatrix_gateway" "r53_gw_1" {
   name_servers      = var.vpn_split_tunnel_name_servers_list
 }
 
-resource "aviatrix_gateway" "r53_gw_2" {
+resource aviatrix_gateway r53_gw_2 {
   cloud_type        = 1
   account_name      = "AWSAccess"
   gw_name           = "r53-gw-2"
   vpc_id            = aviatrix_vpc.r53_vpc_1.vpc_id
   vpc_reg           = aviatrix_vpc.r53_vpc_1.region
   gw_size           = "t2.micro"
-  subnet            = data.aviatrix_vpc.r53_vpc_1.public_subnets.0.cidr
+  subnet            = aviatrix_vpc.r53_vpc_1.public_subnets.0.cidr
 
   single_az_ha      = false
   allocate_new_eip  = true
@@ -70,13 +66,13 @@ resource "aviatrix_gateway" "r53_gw_2" {
 }
 
 ################################################################
-resource "random_integer" "vpc3_cidr_int" {
+resource random_integer vpc3_cidr_int {
   count = 2
   min = 1
   max = 126
 }
 
-resource "aviatrix_vpc" "r53_vpc_3" {
+resource aviatrix_vpc r53_vpc_3 {
   cloud_type            = 1
   account_name          = "AWSAccess"
   region                = "us-east-1"
@@ -86,18 +82,14 @@ resource "aviatrix_vpc" "r53_vpc_3" {
   aviatrix_firenet_vpc  = false
 }
 
-data "aviatrix_vpc" "r53_vpc_3" {
-  name = aviatrix_vpc.r53_vpc_3.name
-}
-
-resource "aviatrix_gateway" "r53_gw_3" {
+resource aviatrix_gateway r53_gw_3 {
   cloud_type        = 1
   account_name      = "AWSAccess"
   gw_name           = "r53-gw-3"
   vpc_id            = aviatrix_vpc.r53_vpc_3.vpc_id
   vpc_reg           = aviatrix_vpc.r53_vpc_3.region
   gw_size           = "t2.micro"
-  subnet            = data.aviatrix_vpc.r53_vpc_3.public_subnets.0.cidr
+  subnet            = aviatrix_vpc.r53_vpc_3.public_subnets.0.cidr
 
   single_az_ha      = false
   allocate_new_eip  = true
@@ -116,7 +108,7 @@ resource "aviatrix_gateway" "r53_gw_3" {
 }
 
 ################################################################
-resource "aviatrix_geo_vpn" "test_geo_vpn" {
+resource aviatrix_geo_vpn test_geo_vpn {
   account_name    = "AWSAccess"
   cloud_type      = 1
   domain_name     = "avxr53testing.com"
@@ -127,13 +119,13 @@ resource "aviatrix_geo_vpn" "test_geo_vpn" {
   ]
 }
 
-output "test_geo_vpn_id" {
+output test_geo_vpn_id {
   value = aviatrix_geo_vpn.test_geo_vpn.id
 }
 
 ################################################################
 # GeoVPN user created under the DNS (supported as of R2.15) (14085)
-resource "aviatrix_vpn_user" "geo_vpn_user" {
+resource aviatrix_vpn_user geo_vpn_user {
   user_name     = "geo-vpn-user"
   user_email    = null
 
@@ -147,6 +139,6 @@ resource "aviatrix_vpn_user" "geo_vpn_user" {
   profiles = null
 }
 
-output "geo_vpn_user_id" {
+output geo_vpn_user_id {
   value = aviatrix_vpn_user.geo_vpn_user.id
 }

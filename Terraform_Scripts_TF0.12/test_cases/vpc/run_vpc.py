@@ -71,7 +71,7 @@ else:
 for i in range(3):
     try:
         log.info("Creating infrastructure...")
-        tf.create_verify()
+        tf.create_verify(timeout=1200)
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
         time.sleep(60 + 60*i)

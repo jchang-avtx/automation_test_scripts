@@ -1,12 +1,12 @@
 ######################################################################
 # INFRASTRUCTURE | MANTIS 11363
 ######################################################################
-resource "random_integer" "vpc1_cidr_int" {
+resource random_integer vpc1_cidr_int {
   count = 3
   min = 1
   max = 126
 }
-resource "aviatrix_vpc" "vpn_manage_vpc" {
+resource aviatrix_vpc vpn_manage_vpc {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -15,10 +15,7 @@ resource "aviatrix_vpc" "vpn_manage_vpc" {
   name                  = "vpn-manage-vpc"
   region                = "us-east-2"
 }
-data "aviatrix_vpc" "vpn_manage_vpc_data" {
-  name = aviatrix_vpc.vpn_manage_vpc.name
-}
-resource "aviatrix_gateway" "vpn_manage_gw" {
+resource aviatrix_gateway vpn_manage_gw {
   cloud_type        = 1
   account_name      = "AWSAccess"
   gw_name           = "vpn-manage-gw"
@@ -26,7 +23,7 @@ resource "aviatrix_gateway" "vpn_manage_gw" {
   vpc_id            = aviatrix_vpc.vpn_manage_vpc.vpc_id
   vpc_reg           = aviatrix_vpc.vpn_manage_vpc.region
   gw_size           = "t2.micro"
-  subnet            = data.aviatrix_vpc.vpn_manage_vpc_data.public_subnets.0.cidr
+  subnet            = aviatrix_vpc.vpn_manage_vpc.public_subnets.0.cidr
 
   vpn_access        = true
   saml_enabled      = false # if true, must specify SAML endpoint in vpn user
@@ -42,7 +39,7 @@ resource "aviatrix_gateway" "vpn_manage_gw" {
 ######################################################################
 # USERS
 ######################################################################
-resource "aviatrix_vpn_user" "vpn_manage_user_1" {
+resource aviatrix_vpn_user vpn_manage_user_1 {
   vpc_id            = aviatrix_gateway.vpn_manage_gw.vpc_id
   gw_name           = aviatrix_gateway.vpn_manage_gw.elb_name
   user_name         = "vpn-manage-user-1"
@@ -55,7 +52,7 @@ resource "aviatrix_vpn_user" "vpn_manage_user_1" {
     aviatrix_vpn_profile.vpn_manage_profile_3.name
   ]
 }
-resource "aviatrix_vpn_user" "vpn_manage_user_2" {
+resource aviatrix_vpn_user vpn_manage_user_2 {
   vpc_id            = aviatrix_gateway.vpn_manage_gw.vpc_id
   gw_name           = aviatrix_gateway.vpn_manage_gw.elb_name
   user_name         = "vpn-manage-user-2"
@@ -69,7 +66,7 @@ resource "aviatrix_vpn_user" "vpn_manage_user_2" {
 ######################################################################
 # PROFILES
 ######################################################################
-resource "aviatrix_vpn_profile" "vpn_manage_profile_1" {
+resource aviatrix_vpn_profile vpn_manage_profile_1 {
   name            = "vpn-manage-profile-1"
   base_rule       = "deny_all"
 
@@ -100,7 +97,7 @@ resource "aviatrix_vpn_profile" "vpn_manage_profile_1" {
     target    = "13.0.0.0/32"
   }
 }
-resource "aviatrix_vpn_profile" "vpn_manage_profile_2" {
+resource aviatrix_vpn_profile vpn_manage_profile_2 {
   name            = "vpn-manage-profile-2"
   base_rule       = "allow_all"
 
@@ -126,7 +123,7 @@ resource "aviatrix_vpn_profile" "vpn_manage_profile_2" {
     target    = "16.0.0.0/32"
   }
 }
-resource "aviatrix_vpn_profile" "vpn_manage_profile_3" {
+resource aviatrix_vpn_profile vpn_manage_profile_3 {
   name            = "vpn-manage-profile-3"
   base_rule       = "deny_all"
 
@@ -136,18 +133,18 @@ resource "aviatrix_vpn_profile" "vpn_manage_profile_3" {
 ######################################################################
 # OUTPUTS
 ######################################################################
-output "vpn_manage_user_1_id" {
+output vpn_manage_user_1_id {
   value = aviatrix_vpn_user.vpn_manage_user_1.id
 }
-output "vpn_manage_user_2_id" {
+output vpn_manage_user_2_id {
   value = aviatrix_vpn_user.vpn_manage_user_2.id
 }
-output "vpn_manage_profile_1_id" {
+output vpn_manage_profile_1_id {
   value = aviatrix_vpn_profile.vpn_manage_profile_1.id
 }
-output "vpn_manage_profile_2_id" {
+output vpn_manage_profile_2_id {
   value = aviatrix_vpn_profile.vpn_manage_profile_2.id
 }
-output "vpn_manage_profile_3_id" {
+output vpn_manage_profile_3_id {
   value = aviatrix_vpn_profile.vpn_manage_profile_3.id
 }

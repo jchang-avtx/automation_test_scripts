@@ -2,7 +2,7 @@
 ############################################################
 # AWS
 ############################################################
-resource "aviatrix_vpc" "test_aws_vpc" {
+resource aviatrix_vpc test_aws_vpc {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -12,7 +12,7 @@ resource "aviatrix_vpc" "test_aws_vpc" {
   region                = "us-west-1"
 }
 
-resource "aviatrix_vpc" "test_aws_transit_vpc" {
+resource aviatrix_vpc test_aws_transit_vpc {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = true
   aviatrix_firenet_vpc  = false
@@ -22,7 +22,7 @@ resource "aviatrix_vpc" "test_aws_transit_vpc" {
   region                = "us-east-1"
 }
 
-resource "aviatrix_vpc" "test_aws_firenet_vpc" {
+resource aviatrix_vpc test_aws_firenet_vpc {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = true
@@ -35,7 +35,7 @@ resource "aviatrix_vpc" "test_aws_firenet_vpc" {
 # ############################################################
 # # GCP
 # ############################################################
-resource "aviatrix_vpc" "test_gcp_vpc" {
+resource aviatrix_vpc test_gcp_vpc {
   account_name          = "GCPAccess"
   cloud_type            = 4
   name                  = "test-gcp-vpc"
@@ -54,7 +54,7 @@ resource "aviatrix_vpc" "test_gcp_vpc" {
 ############################################################
 # ARM
 ############################################################
-resource "aviatrix_vpc" "test_arm_vnet" {
+resource aviatrix_vpc test_arm_vnet {
   account_name          = "AzureAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -64,7 +64,7 @@ resource "aviatrix_vpc" "test_arm_vnet" {
   region                = "Central US"
 }
 
-resource "aviatrix_vpc" "test_arm_firenet_vnet" {
+resource aviatrix_vpc test_arm_firenet_vnet {
   account_name          = "AzureAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = true
@@ -78,27 +78,27 @@ resource "aviatrix_vpc" "test_arm_firenet_vnet" {
 ## OUTPUTS
 ############################################################
 
-output "test_aws_vpc_id" {
+output test_aws_vpc_id {
   value = aviatrix_vpc.test_aws_vpc.id
 }
 
-output "test_aws_transit_vpc_id" {
+output test_aws_transit_vpc_id {
   value = aviatrix_vpc.test_aws_transit_vpc.id
 }
 
-output "test_aws_firenet_vpc_id" {
+output test_aws_firenet_vpc_id {
   value = aviatrix_vpc.test_aws_firenet_vpc.id
 }
 
-output "test_gcp_vpc_id" {
+output test_gcp_vpc_id {
   value = aviatrix_vpc.test_gcp_vpc.id
 }
 
-output "test_arm_vnet_id" {
+output test_arm_vnet_id {
   value = aviatrix_vpc.test_arm_vnet.id
 }
 
-output "test_arm_firenet_vnet_id" {
+output test_arm_firenet_vnet_id {
   value = aviatrix_vpc.test_arm_firenet_vnet.id
 }
 
@@ -106,19 +106,19 @@ output "test_arm_firenet_vnet_id" {
 ## DATA SOURCE
 ############################################################
 
-data "aviatrix_vpc" "d_test_aws_vpc"{
+data aviatrix_vpc d_test_aws_vpc{
   name = aviatrix_vpc.test_aws_vpc.name
 }
 
-data "aviatrix_vpc_tracker" "d_aws_vpc_tracker" {
+data aviatrix_vpc_tracker d_aws_vpc_tracker {
   cloud_type = 1
   account_name = "AWSAccess"
 }
 
-output "d_test_aws_vpc_id" {
+output d_test_aws_vpc_id {
   value = data.aviatrix_vpc.d_test_aws_vpc.id
 }
 
-output "d_aws_vpc_tracker_id" {
+output d_aws_vpc_tracker_id {
   value = data.aviatrix_vpc_tracker.d_aws_vpc_tracker.id
 }
