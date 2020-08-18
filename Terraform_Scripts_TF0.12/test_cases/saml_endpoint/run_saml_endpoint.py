@@ -42,7 +42,8 @@ log.info("      1. Set up environment variables/ credentials")
 log.info("      2. Create 2 SAML endpoints (text and custom)")
 log.info("      3. Create 2 SAML login endpoints (profile_attribute and controller)")
 log.info("      4. Perform terraform import to identify deltas")
-log.info("      5. Tear down infrastructure\n")
+log.info("      5. Perform update tests on text, custom and login SAMl endpoints")
+log.info("      6. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")
@@ -102,9 +103,24 @@ else:
     log.info("      import_test(): PASS\n")
 
 
-log.info(str(os.path.split(os.getcwd())[1]).upper() + " does not support update functionality...")
-log.info("-------------------- RESULT --------------------")
-log.info("     update_test(): SKIPPED\n")
+try:
+    log.info("Verifying update functionality...")
+    log.debug("     updateIDPmetadata: Update text SAMl endpoint's IDP metadata...")
+    tf.update_test("updateIDPmetadata")
+    log.debug("     updateEntityID: Update custom SAML endpoint's entity ID...")
+    tf.update_test("updateEntityID")
+    log.debug("     updateAccess: Update login SAML endpoint's 'access set by' option to 'controller'...")
+    tf.update_test("updateAccess")
+    log.debug("     updateRBAC: Update login SAML endpoint's RBAC group's access allowance...")
+    tf.update_test("updateRBAC")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     update_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      update_test(): PASS\n")
 
 
 try:
