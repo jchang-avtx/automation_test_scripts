@@ -92,6 +92,8 @@ try:
     tf.import_test("fqdn", "fqdn_tag_1")
     log.debug("     FQDN PassThru: testing FQDN pass through resource...")
     tf.import_test("fqdn_pass_through", "fqdn_ignore")
+    log.debug("     FQDN tag rules: testing import for separate FQDN rules...")
+    tf.import_test("fqdn_tag_rule", "fqdn_tag_2_r1")
 
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
