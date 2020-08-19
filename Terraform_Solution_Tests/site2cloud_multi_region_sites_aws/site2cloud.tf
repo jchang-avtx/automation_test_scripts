@@ -29,6 +29,7 @@ resource "aviatrix_vpc" "aws_site_vpc" {
 
 data "aviatrix_vpc" "aws_cloud_vpc" {
   name       = aviatrix_vpc.aws_cloud_vpc.name
+  depends_on = [aviatrix_vpc.aws_cloud_vpc]
 }
 
 # Create Aviatrix gateway in Cloud VPC
@@ -45,6 +46,7 @@ resource "aviatrix_gateway" "aws_cloud_gw" {
 data "aviatrix_vpc" "aws_site_vpc" {
   count      = length(var.aws_site_region)
   name       = aviatrix_vpc.aws_site_vpc[count.index].name
+  depends_on = [aviatrix_vpc.aws_site_vpc]
 }
 
 #Create Aviatrix gateway in Site VPCs
