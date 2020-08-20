@@ -90,6 +90,8 @@ try:
     tf.import_test("firewall", "test_firewall_icmp")
     log.debug("     Importing stateful firewall used for stress testing...")
     tf.import_test("firewall", "stress_firewall")
+    log.debug("     Importing separate stateful firewall policy...")
+    tf.import_test("firewall_policy", "test_firewall_p1")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")
