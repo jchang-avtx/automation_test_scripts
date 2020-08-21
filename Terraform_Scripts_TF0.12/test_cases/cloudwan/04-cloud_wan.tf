@@ -1,4 +1,4 @@
-resource time_sleep wait_2_min {
+resource time_sleep wait_5_min {
   create_duration = "2m"
 
   depends_on = [
@@ -7,7 +7,7 @@ resource time_sleep wait_2_min {
 }
 
 resource aviatrix_device_registration csr_branch_router {
-  name = "csr-branch-1"
+  name = "csr-branch-router"
   public_ip = aws_eip.csr_eip_1.public_ip
   username = "ec2-user"
   key_file = var.branch_router_key
@@ -34,7 +34,7 @@ resource aviatrix_device_registration csr_branch_router {
     ignore_changes = [key_file]
   }
   depends_on = [
-    time_sleep.wait_2_min
+    time_sleep.wait_5_min
   ]
 }
 
