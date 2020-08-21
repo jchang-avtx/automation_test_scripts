@@ -33,6 +33,10 @@ logging.basicConfig(level=LOGLEVEL,
                     ])
 log = logging.getLogger()
 
+secret_path = "/var/lib/jenkins/tf-secrets/cloudwan/"
+cred_file = "cloudwan_cred"
+cred_path = secret_path + cred_file
+
 log.info("\n")
 log.info("============================================================")
 log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
@@ -73,7 +77,7 @@ else:
 for i in range(3):
     try:
         log.info("Creating infrastructure...")
-        tf.create_verify()
+        tf.create_verify(varfile=cred_path)
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
         time.sleep(60 + 60*i)
@@ -90,12 +94,12 @@ for i in range(3):
 for j in range(3):
     try:
         log.debug("     transit gateway attachment status : true...")
-        tf.create_verify(varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="avx_transit_att_status=true")
+        tf.create_verify(varfile=cred_path, varval="avx_transit_att_status=true")
         log.debug("Verifying import funcionality...")
-        tf.import_test("branch_router_transit_gateway_attachment", "csr_transit_att", varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="avx_transit_att_status=true")
+        tf.import_test("device_transit_gateway_attachment", "csr_transit_att", varfile=cred_path, varval="avx_transit_att_status=true")
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
-        time.sleep(60 + 60*i)
+        time.sleep(60 + 60*j)
         if j == 2:
             log.info("-------------------- RESULT --------------------")
             log.error("     transit gateway attachment: FAIL\n")
@@ -109,12 +113,12 @@ for j in range(3):
 for k in range(3):
     try:
         log.debug("     TGW attachment status : true...")
-        tf.create_verify(varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="aws_tgw_att_status=true")
+        tf.create_verify(varfile=cred_path, varval="aws_tgw_att_status=true")
         log.debug("Verifying import functionality...")
-        tf.import_test("branch_router_aws_tgw_attachment", "csr_tgw_att", varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="aws_tgw_att_status=true")
+        tf.import_test("device_aws_tgw_attachment", "csr_tgw_att", varfile=cred_path, varval="aws_tgw_att_status=true")
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
-        time.sleep(60 + 60*i)
+        time.sleep(60 + 60*k)
         if k == 2:
             log.info("-------------------- RESULT --------------------")
             log.error("     TGW attachment: FAIL\n")
@@ -128,12 +132,12 @@ for k in range(3):
 for l in range(3):
     try:
         log.debug("     Virtual WAN attachment status : true...")
-        tf.create_verify(varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="azure_virtual_wan_att_status=true")
+        tf.create_verify(varfile=cred_path, varval="azure_virtual_wan_att_status=true")
         log.debug("Verifying import functionality...")
-        tf.import_test("branch_router_virtual_wan_attachment", "csr_virtual_wan_att", varfile="/var/lib/jenkins/tf-secrets/cloudwan/cloudwan_cred", varval="azure_virtual_wan_att_status=true")
+        tf.import_test("device_virtual_wan_attachment", "csr_virtual_wan_att", varfile=cred_path, varval="azure_virtual_wan_att_status=true")
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
-        time.sleep(60 + 60*i)
+        time.sleep(60 + 60*l)
         if l == 2:
             log.info("-------------------- RESULT --------------------")
             log.error("     Virtual WAN attachment: FAIL\n")
@@ -147,10 +151,10 @@ for l in range(3):
 for m in range(3):
     try:
         log.info("Verifying destroy functionality...")
-        tf.destroy_test()
+        tf.destroy_test(varfile=cred_path)
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
-        time.sleep(60 + 60*i)
+        time.sleep(60 + 60*m)
         if m == 2:
             log.info("-------------------- RESULT --------------------")
             log.error("     destroy_test(): FAIL\n")

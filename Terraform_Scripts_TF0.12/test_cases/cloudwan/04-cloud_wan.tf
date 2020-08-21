@@ -6,7 +6,7 @@ resource time_sleep wait_2_min {
   ]
 }
 
-resource aviatrix_branch_router_registration csr_branch_router {
+resource aviatrix_device_registration csr_branch_router {
   name = "csr-branch-1"
   public_ip = aws_eip.csr_eip_1.public_ip
   username = "ec2-user"
@@ -39,9 +39,9 @@ resource aviatrix_branch_router_registration csr_branch_router {
 }
 
 # set up HA branch to allow WAN interface discovery (EDIT: removed support in 6.1)
-resource aviatrix_branch_router_tag csr_branch_router_warn_tag {
+resource aviatrix_device_tag csr_branch_router_warn_tag {
   name = "csr-branch-router-warn-tag"
-  branch_router_names = [aviatrix_branch_router_registration.csr_branch_router.name]
+  device_names = [aviatrix_device_registration.csr_branch_router.name]
   # config = "interface GigabitEthernet2 \n no shut \n ip address dhcp"
   config = "logging buffered warnings"
 }
@@ -50,12 +50,12 @@ resource time_sleep wait_2_min_tag_commit {
   create_duration = "2m"
 
   depends_on = [
-    aviatrix_branch_router_tag.csr_branch_router_warn_tag
+    aviatrix_device_tag.csr_branch_router_warn_tag
   ]
 }
 
-resource aviatrix_branch_router_interface_config csr_wan_discovery {
-  branch_router_name = aviatrix_branch_router_registration.csr_branch_router.name
+resource aviatrix_device_interface_config csr_wan_discovery {
+  device_name = aviatrix_device_registration.csr_branch_router.name
   wan_primary_interface = "GigabitEthernet1"
   wan_primary_interface_public_ip = aws_eip.csr_eip_1.public_ip # CSR perspective = Private IP of the ENI
 
@@ -69,14 +69,14 @@ resource aviatrix_branch_router_interface_config csr_wan_discovery {
 }
 
 ## attach branch to cloud
-resource aviatrix_branch_router_transit_gateway_attachment csr_transit_att {
+resource aviatrix_device_transit_gateway_attachment csr_transit_att {
   count = var.avx_transit_att_status ? 1 : 0
 
-  branch_name = aviatrix_branch_router_registration.csr_branch_router.name
+  device_name = aviatrix_device_registration.csr_branch_router.name
   transit_gateway_name = aviatrix_transit_gateway.csr_transit_gw[0].gw_name
   connection_name = "csr-transit-conn"
   transit_gateway_bgp_asn = 65000
-  branch_router_bgp_asn = 65001
+  device_bgp_asn = 65001
 
   # algorithms
   phase1_authentication = "SHA-512"
@@ -101,17 +101,17 @@ resource aviatrix_branch_router_transit_gateway_attachment csr_transit_att {
     ignore_changes = [pre_shared_key]
   }
 
-  depends_on = [aviatrix_branch_router_interface_config.csr_wan_discovery]
+  depends_on = [aviatrix_device_interface_config.csr_wan_discovery]
 }
 
-resource aviatrix_branch_router_aws_tgw_attachment csr_tgw_att {
+resource aviatrix_device_aws_tgw_attachment csr_tgw_att {
   count = var.aws_tgw_att_status ? 1 : 0
 
   connection_name = "csr-tgw-conn"
-  branch_name = aviatrix_branch_router_registration.csr_branch_router.name
+  device_name = aviatrix_device_registration.csr_branch_router.name
   aws_tgw_name = aviatrix_aws_tgw.csr_aws_tgw[0].tgw_name
-  branch_router_bgp_asn = 65001
+  device_bgp_asn = 65001
   security_domain_name = "Default_Domain"
 
-  depends_on = [aviatrix_branch_router_interface_config.csr_wan_discovery]
+  depends_on = [aviatrix_device_interface_config.csr_wan_discovery]
 }
