@@ -91,7 +91,7 @@ resource "aviatrix_site2cloud" "s2c_test" {
   connection_name               = "s2c_test_conn_name"
   connection_type               = "unmapped"
   remote_gateway_type           = "aws"
-  tunnel_type                   = "udp"
+  tunnel_type                   = "route"
   ha_enabled                    = false
   primary_cloud_gateway_name    = aviatrix_gateway.AVX-GW.gw_name
   remote_gateway_ip             = aws_vpn_connection.main.tunnel1_address

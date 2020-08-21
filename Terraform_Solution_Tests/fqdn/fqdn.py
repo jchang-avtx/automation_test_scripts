@@ -53,10 +53,14 @@ def main(argv):
   for i in range(len(domain)):
     num_of_tries = 0
     if port[i] in ['443','80','ping','all']:
+      if port[i] in ['443']:
+          url = 'https://'
+      elif port[i] in ['80']:
+          url = 'http://' 
       if domain[i].startswith('*'):
-          url = 'https://www.' + domain[i].lstrip('*.')
+          url = url + 'www.' + domain[i].lstrip('*.')
       else:
-          url = 'https://' + domain[i]
+          url = url + domain[i]
       if port[i] in ['443','80'] and proto[i] in ['tcp','https']:
           cmd = 'wget -t 1 -T 3 ' + url
       elif proto[i] in ['icmp','all']:
