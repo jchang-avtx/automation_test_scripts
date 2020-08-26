@@ -1,5 +1,5 @@
-resource time_sleep wait_5_min {
-  create_duration = "2m"
+resource time_sleep wait_10_min_after_csr {
+  create_duration = "10m"
 
   depends_on = [
     aws_instance.csr_instance_1
@@ -34,7 +34,15 @@ resource aviatrix_device_registration csr_branch_router {
     ignore_changes = [key_file]
   }
   depends_on = [
-    time_sleep.wait_5_min
+    time_sleep.wait_10_min_after_csr
+  ]
+}
+
+resource time_sleep wait_2_min_before_tag {
+  create_duration = "2m"
+
+  depends_on = [
+    aviatrix_device_registration.csr_branch_router
   ]
 }
 
@@ -44,9 +52,13 @@ resource aviatrix_device_tag csr_branch_router_warn_tag {
   device_names = [aviatrix_device_registration.csr_branch_router.name]
   # config = "interface GigabitEthernet2 \n no shut \n ip address dhcp"
   config = "logging buffered warnings"
+
+  depends_on = [
+    time_sleep.wait_2_min_before_tag
+  ]
 }
 
-resource time_sleep wait_2_min_tag_commit {
+resource time_sleep wait_2_min_after_tag {
   create_duration = "2m"
 
   depends_on = [
@@ -64,7 +76,7 @@ resource aviatrix_device_interface_config csr_wan_discovery {
   # wan_backup_interface_public_ip = aws_eip.csr_eip_2.public_ip
 
   depends_on = [
-    time_sleep.wait_2_min_tag_commit
+    time_sleep.wait_2_min_after_tag
   ]
 }
 
