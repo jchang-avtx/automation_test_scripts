@@ -6,10 +6,16 @@ resource aviatrix_vpc test_aws_vpc {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
-  cidr                  = "11.11.11.11/24"
+  cidr                  = "11.11.11.0/24"
   cloud_type            = 1
   name                  = "test-aws-vpc"
   region                = "us-west-1"
+
+  # Mantis 16646: advanced option for AWS and Azure
+  # us-west 1 = 2
+  # us-east 1 = 6
+  subnet_size = 28 # 17-28 (the /# of the CIDR) based on size of available
+  num_of_subnet_pairs = 2 # cannot exceed number of AZs in region
 }
 
 resource aviatrix_vpc test_aws_transit_vpc {
@@ -62,6 +68,9 @@ resource aviatrix_vpc test_arm_vnet {
   cloud_type            = 8
   name                  = "test-arm-vnet"
   region                = "Central US"
+
+  subnet_size = 26
+  num_of_subnet_pairs = 1
 }
 
 resource aviatrix_vpc test_arm_firenet_vnet {
