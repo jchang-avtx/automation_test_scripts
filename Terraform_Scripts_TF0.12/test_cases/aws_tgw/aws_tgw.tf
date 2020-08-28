@@ -1,12 +1,12 @@
 ## Manages the AWS TGW (Orchestrator)
 
-resource "random_integer" "vpc1_cidr_int" {
+resource random_integer vpc1_cidr_int {
   count = 2
   min = 1
   max = 126
 }
 
-resource "aviatrix_vpc" "aws_transit_gw_vpc" {
+resource aviatrix_vpc aws_transit_gw_vpc {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = true
   aviatrix_firenet_vpc  = false
@@ -16,7 +16,7 @@ resource "aviatrix_vpc" "aws_transit_gw_vpc" {
   region                = "eu-central-1"
 }
 
-resource "aviatrix_transit_gateway" "tgw_transit_gw" {
+resource aviatrix_transit_gateway tgw_transit_gw {
   cloud_type                  = 1
   account_name                = "AWSAccess"
   gw_name                     = "tgw-transit-gw"
@@ -34,14 +34,14 @@ resource "aviatrix_transit_gateway" "tgw_transit_gw" {
   # }
 }
 
-resource "aws_vpn_gateway" "eu_tgw_vgw" {
+resource aws_vpn_gateway eu_tgw_vgw {
   tags = {
     Name = "eu-tgw-vgw"
   }
   amazon_side_asn = 64512
 }
 
-resource "aviatrix_vgw_conn" "tgw_vgw_conn" {
+resource aviatrix_vgw_conn tgw_vgw_conn {
   conn_name             = "tgw-vgw-conn"
   gw_name               = aviatrix_transit_gateway.tgw_transit_gw.gw_name
   vpc_id                = aviatrix_transit_gateway.tgw_transit_gw.vpc_id
@@ -51,7 +51,7 @@ resource "aviatrix_vgw_conn" "tgw_vgw_conn" {
   bgp_local_as_num      = 65001
 }
 
-resource "aviatrix_aws_tgw" "test_aws_tgw" {
+resource aviatrix_aws_tgw test_aws_tgw {
   tgw_name                          = "test-aws-tgw"
   account_name                      = aviatrix_transit_gateway.tgw_transit_gw.account_name
   region                            = aviatrix_transit_gateway.tgw_transit_gw.vpc_reg
@@ -101,10 +101,11 @@ resource "aviatrix_aws_tgw" "test_aws_tgw" {
 
   manage_vpc_attachment = true
   manage_transit_gateway_attachment = false
+  enable_multicast = true # Mantis (16802) R2.17 - U6.2
   depends_on            = ["aviatrix_vgw_conn.tgw_vgw_conn"]
 }
 
-resource "aviatrix_aws_tgw_transit_gateway_attachment" "tgw_transit_att" {
+resource aviatrix_aws_tgw_transit_gateway_attachment tgw_transit_att {
   tgw_name                = aviatrix_aws_tgw.test_aws_tgw.tgw_name
   region                  = aviatrix_aws_tgw.test_aws_tgw.region
   vpc_account_name        = aviatrix_aws_tgw.test_aws_tgw.account_name
@@ -114,7 +115,7 @@ resource "aviatrix_aws_tgw_transit_gateway_attachment" "tgw_transit_att" {
 
 ## AWS_TGW_VPN_CONN
 # Dynamic connection
-resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn1" {
+resource aviatrix_aws_tgw_vpn_conn test_aws_tgw_vpn_conn1 {
   tgw_name             = aviatrix_aws_tgw.test_aws_tgw.tgw_name
   route_domain_name    = "Default_Domain"
   connection_name      = "tgw_vpn_conn1"
@@ -136,7 +137,7 @@ resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn1" {
 }
 
 # Static connection
-resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn2" {
+resource aviatrix_aws_tgw_vpn_conn test_aws_tgw_vpn_conn2 {
   tgw_name             = aviatrix_aws_tgw.test_aws_tgw.tgw_name
   route_domain_name    = "Default_Domain"
   connection_name      = "tgw_vpn_conn2"
@@ -148,18 +149,18 @@ resource "aviatrix_aws_tgw_vpn_conn" "test_aws_tgw_vpn_conn2" {
 }
 
 ## OUTPUTS
-output "test_aws_tgw_id" {
+output test_aws_tgw_id {
   value = aviatrix_aws_tgw.test_aws_tgw.id
 }
 
-output "tgw_transit_att_id" {
+output tgw_transit_att_id {
   value = aviatrix_aws_tgw_transit_gateway_attachment.tgw_transit_att.id
 }
 
-output "test_aws_tgw_vpn_conn1_id" {
+output test_aws_tgw_vpn_conn1_id {
   value = aviatrix_aws_tgw_vpn_conn.test_aws_tgw_vpn_conn1.id
 }
 
-output "test_aws_tgw_vpn_conn2_id" {
+output test_aws_tgw_vpn_conn2_id {
   value = aviatrix_aws_tgw_vpn_conn.test_aws_tgw_vpn_conn2.id
 }

@@ -2,6 +2,16 @@
 
 ---
 
+### Test cases
+- multicasted TGW
+- swap connected Security Domains
+- update custom routes
+- swap between connected VPCs
+- check local route propagation
+- manage transit gateway attachments separately
+- integrated TGW VPN conn testing + learned CIDR approval switch
+
+
 ### Usage
 ```
   terraform init
