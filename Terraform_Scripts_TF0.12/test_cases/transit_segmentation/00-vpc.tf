@@ -45,3 +45,20 @@ resource aviatrix_vpc arm_segment_spoke_vnet {
   name = "arm-segment-spoke-vnet"
   cidr = "45.109.0.0/16"
 }
+
+resource aviatrix_vpc gcp_segment_vpc {
+  count = var.enable_gcp ? 1 : 0
+  cloud_type = 4
+  account_name = "GCPAccess"
+  name = "gcp-segment-vpc"
+  subnets {
+    name = "us-east1-subnet"
+    region = "us-east1"
+    cidr = "172.30.0.0/16"
+  }
+  subnets {
+    name = "asia-east1-subnet"
+    region = "asia-east1"
+    cidr = "172.31.0.0/16"
+  }
+}

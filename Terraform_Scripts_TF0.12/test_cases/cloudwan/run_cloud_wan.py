@@ -95,7 +95,7 @@ for j in range(3):
     try:
         log.debug("     transit gateway attachment status : true...")
         tf.create_verify(varfile=cred_path, varval="avx_transit_att_status=true")
-        log.debug("Verifying import funcionality...")
+        log.debug("Verifying import functionality...")
         tf.import_test("device_transit_gateway_attachment", "csr_transit_att", varfile=cred_path, varval="avx_transit_att_status=true")
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())

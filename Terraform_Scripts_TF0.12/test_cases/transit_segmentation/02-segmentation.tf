@@ -41,6 +41,28 @@ resource aviatrix_transit_gateway_peering aws_arm_transit_peer {
   transit_gateway_name2 = aviatrix_transit_gateway.arm_segment_transit_gw[0].gw_name
 }
 
+## GCP
+resource aviatrix_transit_gateway gcp_segment_transit_gw {
+  count = var.enable_gcp ? 1 : 0
+  cloud_type = 4
+  account_name = "GCPAccess"
+  gw_name = "segment-transit-gw-${random_pet.pet_transit_gw[2].id}"
+  vpc_id = aviatrix_vpc.gcp_segment_vpc[0].vpc_id
+  vpc_reg = "${aviatrix_vpc.gcp_segment_vpc[0].subnets.0.region}-b"
+  gw_size = "n1-standard-1"
+  subnet = aviatrix_vpc.gcp_segment_vpc[0].subnets.0.cidr
+
+  connected_transit = true
+  enable_active_mesh = true # must be enabled for segmentation
+  enable_segmentation = true
+}
+
+resource aviatrix_transit_gateway_peering gcp_aws_transit_peer {
+  count = var.enable_gcp ? 1 : 0
+  transit_gateway_name1 = aviatrix_transit_gateway.gcp_segment_transit_gw[0].gw_name
+  transit_gateway_name2 = aviatrix_transit_gateway.aws_segment_transit_gw.gw_name
+}
+
 ###############################################################################
 ## Segmentation
 
@@ -74,4 +96,11 @@ resource aviatrix_segmentation_security_domain_association arm_spoke_blue_associ
   transit_gateway_name = aviatrix_transit_gateway.arm_segment_transit_gw[0].gw_name
   security_domain_name = aviatrix_segmentation_security_domain.segment_dom_blue.id
   attachment_name = aviatrix_spoke_gateway.arm_segment_spoke_gw[0].gw_name
+}
+
+resource aviatrix_segmentation_security_domain_association gcp_spoke_green_associate {
+  count = var.enable_gcp ? 1 : 0
+  transit_gateway_name = aviatrix_transit_gateway.gcp_segment_transit_gw[0].gw_name
+  security_domain_name = aviatrix_segmentation_security_domain.segment_dom_green.id
+  attachment_name = aviatrix_spoke_gateway.gcp_segment_spoke_gw[0].gw_name
 }
