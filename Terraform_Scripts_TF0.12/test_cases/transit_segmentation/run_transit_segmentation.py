@@ -158,6 +158,21 @@ for l in range(3):
 
 for m in range(3):
     try:
+        log.debug("GCP status : true...")
+        tf.create_verify(varval="enable_gcp=true")
+    except tf.subprocess.CalledProcessError as err:
+        log.exception(err.stderr.decode())
+        time.sleep(60 + 60*m)
+        if m == 2:
+            return_result("GCP_create_verify", False)
+            sys.exit(1)
+    else:
+        return_result("GCP_create_verify", True)
+        break
+
+
+for n in range(3):
+    try:
         log.debug("Verifying import functionality for GCP...")
         log.debug("     Importing GCP transit gateway...")
         tf.import_test("transit_gateway", "gcp_segment_transit_gw", varval="enable_gcp=true")
@@ -167,8 +182,8 @@ for m in range(3):
         tf.import_test("segmentation_security_domain_association", "gcp_spoke_green_associate", varval="enable_gcp=true")
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
-        time.sleep(60 + 60*m)
-        if m == 2:
+        time.sleep(60 + 60*n)
+        if n == 2:
             return_result("GCP_import_test", False)
             sys.exit(1)
     else:
@@ -176,14 +191,14 @@ for m in range(3):
         break
 
 
-for n in range(3):
+for o in range(3):
     try:
         log.info("Verifying destroy functionality...")
         tf.destroy_test()
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
-        time.sleep(60 + 60*n)
-        if m == 2:
+        time.sleep(60 + 60*o)
+        if o == 2:
             return_result("destroy_test", False)
             sys.exit(1)
     else:
