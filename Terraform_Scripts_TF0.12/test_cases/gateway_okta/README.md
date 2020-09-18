@@ -1,4 +1,10 @@
-## aviatrix_gateway (vpn Okta)
+## aviatrix_gateway (VPN Okta)
+
+### Test cases
+**Note:** For AWS and AWS GovCloud VPN gateways
+- update Okta URL
+- update Okta token
+- update Okta username suffix
 
 ---
 

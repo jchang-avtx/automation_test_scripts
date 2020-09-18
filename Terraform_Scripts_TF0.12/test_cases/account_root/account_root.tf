@@ -1,6 +1,6 @@
 # Terraform regression for creating account (3.4 and onwards)
 
-resource "aviatrix_account" "aws_root_access_account" {
+resource aviatrix_account aws_root_access_account {
   count              = 2
   cloud_type         = 1
   account_name       = join("-", ["ROOT-access-account", count.index])

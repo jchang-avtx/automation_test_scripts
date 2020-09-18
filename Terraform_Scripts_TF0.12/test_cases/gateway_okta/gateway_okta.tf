@@ -1,11 +1,12 @@
 ## For regression: Test case: test vpn gateway (okta)
 
-resource "random_integer" "vpc1_cidr_int" {
-  count = 3
+resource random_integer vpc1_cidr_int {
+  count = var.enable_gov ? 0 : 3
   min = 1
   max = 126
 }
-resource "aviatrix_vpc" "aws_okta_vpc" {
+resource aviatrix_vpc aws_okta_vpc {
+  count = var.enable_gov ? 0 : 1
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -15,14 +16,15 @@ resource "aviatrix_vpc" "aws_okta_vpc" {
   region                = "us-west-1"
 }
 
-resource "aviatrix_gateway" "aws_okta_gw" {
+resource aviatrix_gateway aws_okta_gw {
+  count = var.enable_gov ? 0 : 1
   cloud_type              = 1
   account_name            = "AWSAccess"
   gw_name                 = "aws-okta-gw"
-  vpc_id                  = aviatrix_vpc.aws_okta_vpc.vpc_id
-  vpc_reg                 = aviatrix_vpc.aws_okta_vpc.region
+  vpc_id                  = aviatrix_vpc.aws_okta_vpc[0].vpc_id
+  vpc_reg                 = aviatrix_vpc.aws_okta_vpc[0].region
   gw_size                 = "t2.micro"
-  subnet                  = aviatrix_vpc.aws_okta_vpc.subnets.2.cidr
+  subnet                  = aviatrix_vpc.aws_okta_vpc[0].subnets.2.cidr
 
   vpn_access              = true
   max_vpn_conn            = 100
@@ -40,6 +42,6 @@ resource "aviatrix_gateway" "aws_okta_gw" {
   allocate_new_eip        = true
 }
 
-output "aws_okta_gw_id" {
-  value = aviatrix_gateway.aws_okta_gw.id
+output aws_okta_gw_id {
+  value = var.enable_gov ? null : aviatrix_gateway.aws_okta_gw[0].id
 }

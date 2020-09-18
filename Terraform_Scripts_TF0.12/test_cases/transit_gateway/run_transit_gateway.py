@@ -142,3 +142,104 @@ except tf.subprocess.CalledProcessError as err:
 else:
     log.info("-------------------- RESULT --------------------")
     log.info("      destroy_test(): PASS\n")
+
+
+time.sleep(60)
+log.info("Continuing to AWS GovCloud testing...")
+log.info("\n")
+log.info("============================================================")
+log.debug("RUNNING STAGE: AWS GOVCLOUD TRANSIT GATEWAY")
+log.info("============================================================")
+
+try:
+    log.info("Setting AWS GovCloud environment...")
+    aws_gov_access_key = os.environ["aws_gov_access_key"]
+    aws_gov_secret_key = os.environ["aws_gov_secret_key"]
+    log.info("Setting new variable values as follows...")
+    log.debug("     aws_gov_access_key: %s", aws_gov_access_key)
+    log.debug("     aws_gov_secret_key: %s", aws_gov_secret_key)
+    os.environ["AWS_ACCESS_KEY_ID"] = aws_gov_access_key
+    os.environ["AWS_SECRET_ACCESS_KEY"] = aws_gov_secret_key
+except Exception as err:
+    log.exception(str(err))
+    log.info("-------------------- RESULT --------------------")
+    log.error("     Failed to properly set AWS GovCloud environment credentials!")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      Set AWS GovCloud environment credentials: PASS\n")
+
+
+try:
+    log.info("Creating infrastructure...")
+    tf.create_verify(varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     AWS_GovCloud_create_verify(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      AWS_GovCloud_create_verify(): PASS\n")
+
+
+try:
+    log.info("Verifying import functionality...")
+    tf.import_test("transit_gateway", "gov_insane_transit_gw", varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     AWS_GovCloud_import_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      AWS_GovCloud_import_test(): PASS\n")
+
+
+try:
+    log.info("Verifying update functionality...")
+    log.debug("     enableSingleAZHA: Enabling single AZHA feature...")
+    tf.create_verify(varfile="enableSingleAZHA", varval="enable_gov=true")
+    log.debug("     switchConnectedTransit: Disabling spokes from running traffic to other spokes via transit gateway...")
+    tf.create_verify(varfile="switchConnectedTransit", varval="enable_gov=true")
+    log.debug("     disableHybrid: Disabling transit gateway from being used in AWS TGW solution...")
+    tf.create_verify(varfile="disableHybrid", varval="enable_gov=true")
+    log.debug("     updateGWSize: Updating gateway's size...")
+    tf.create_verify(varfile="updateGWSize", varval="enable_gov=true")
+    log.debug("     updateHAGWSize: Updating HA gateway's size...")
+    tf.create_verify(varfile="updateHAGWSize", varval="enable_gov=true")
+    log.debug("     enableDNSServer: Enabling feature to remove the default DNS server, in favor of VPC DNS server configured in VPC DHCP option...")
+    tf.create_verify(varfile="enableDNSServer", varval="enable_gov=true")
+    log.debug("     updateCustomRoutes: Updating list of CIDRs to propagate to for spoke VPC...")
+    tf.create_verify(varfile="updateCustomRoutes", varval="enable_gov=true")
+    log.debug("     updateFilterRoutes: Updating list of unwanted CIDRs to filter on-prem to spoke VPC...")
+    tf.create_verify(varfile="updateFilterRoutes", varval="enable_gov=true")
+    log.debug("     updateExcludeAdvertiseRoutes: Updating list of VPC CIDRs to exclude from being advertised to on-prem...")
+    tf.create_verify(varfile="updateExcludeAdvertiseRoutes", varval="enable_gov=true")
+    log.debug("     updateLearnedCIDRApproval: Disable approval requirement for Learned CIDRs...")
+    tf.create_verify(varfile="updateLearnedCIDRApproval", varval="enable_gov=true")
+    log.debug("     updateBGP: Update the BGP-related parameters BGP ECMP and polling time...")
+    tf.create_verify(varfile="updateBGP", varval="enable_gov=true")
+    log.debug("     updateAS: Update AS-related parameters local ASN and prepending AS path list...")
+    tf.create_verify(varfile="updateAS", varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     AWS_GovCloud_update_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      AWS_GovCloud_update_test(): PASS\n")
+
+
+try:
+    log.info("Verifying destroy functionality...")
+    tf.destroy_test(varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     AWS_GovCloud_destroy_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      AWS_GovCloud_destroy_test(): PASS\n")

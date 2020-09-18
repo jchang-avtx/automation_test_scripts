@@ -1,5 +1,14 @@
 ## aviatrix_spoke_gateway
 
+### Test cases
+**Note:** For AWS and AWS GovCloud spoke gateways
+- update which transit gateway to attach to
+- update ActiveMesh and detach in same step
+- reattach the transit
+- update spoke gateway size
+- update spoke HA gateway size
+- enable DNS Server feature
+
 ---
 
 ### Usage

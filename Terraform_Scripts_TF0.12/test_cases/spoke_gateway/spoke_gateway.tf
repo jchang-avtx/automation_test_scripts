@@ -3,34 +3,37 @@
 #################################################
 # Infrastructure
 #################################################
-resource "random_integer" "vpc1_cidr_int" {
-  count = 2
+resource random_integer vpc1_cidr_int {
+  count = var.enable_gov ? 0 : 2
   min = 1
   max = 126
 }
-resource "random_integer" "vpc2_cidr_int" {
-  count = 2
+resource random_integer vpc2_cidr_int {
+  count = var.enable_gov ? 0 : 2
   min = 1
   max = 126
 }
-resource "random_integer" "vpc3_cidr_int" {
-  count = 2
+resource random_integer vpc3_cidr_int {
+  count = var.enable_gov ? 0 : 2
   min = 1
   max = 126
 }
 
-resource "aws_eip" "eip_aws_spoke_gateway" {
+resource aws_eip eip_aws_spoke_gateway {
+  count = var.enable_gov ? 0 : 1
   lifecycle {
     ignore_changes = [tags]
   }
 }
-resource "aws_eip" "eip_aws_spoke_gateway_ha" {
+resource aws_eip eip_aws_spoke_gateway_ha {
+  count = var.enable_gov ? 0 : 1
   lifecycle {
     ignore_changes = [tags]
   }
 }
 
-resource "aviatrix_vpc" "aws_transit_vpc_1" {
+resource aviatrix_vpc aws_transit_vpc_1 {
+  count = var.enable_gov ? 0 : 1
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = true
   aviatrix_firenet_vpc  = false
@@ -39,7 +42,8 @@ resource "aviatrix_vpc" "aws_transit_vpc_1" {
   name                  = "aws-transit-vpc-1"
   region                = "us-east-1"
 }
-resource "aviatrix_vpc" "aws_transit_vpc_2" {
+resource aviatrix_vpc aws_transit_vpc_2 {
+  count = var.enable_gov ? 0 : 1
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = true
   aviatrix_firenet_vpc  = false
@@ -48,7 +52,8 @@ resource "aviatrix_vpc" "aws_transit_vpc_2" {
   name                  = "aws-transit-vpc-2"
   region                = "us-west-1"
 }
-resource "aviatrix_vpc" "aws_spoke_vpc_1" {
+resource aviatrix_vpc aws_spoke_vpc_1 {
+  count = var.enable_gov ? 0 : 1
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -61,16 +66,17 @@ resource "aviatrix_vpc" "aws_spoke_vpc_1" {
 #################################################
 # Transit Network
 #################################################
-resource "aviatrix_transit_gateway" "spoke_transit_gateway_1" {
+resource aviatrix_transit_gateway spoke_transit_gateway_1 {
+  count = var.enable_gov ? 0 : 1
   cloud_type      = 1
   account_name    = "AWSAccess"
   gw_name         = "spoke-transit-gateway-1"
-  vpc_id          = aviatrix_vpc.aws_transit_vpc_1.vpc_id
-  vpc_reg         = aviatrix_vpc.aws_transit_vpc_1.region
+  vpc_id          = aviatrix_vpc.aws_transit_vpc_1[0].vpc_id
+  vpc_reg         = aviatrix_vpc.aws_transit_vpc_1[0].region
   gw_size         = "t2.micro"
-  subnet          = aviatrix_vpc.aws_transit_vpc_1.subnets.4.cidr
+  subnet          = aviatrix_vpc.aws_transit_vpc_1[0].subnets.4.cidr
 
-  ha_subnet       = aviatrix_vpc.aws_transit_vpc_1.subnets.5.cidr
+  ha_subnet       = aviatrix_vpc.aws_transit_vpc_1[0].subnets.5.cidr
   ha_gw_size      = "t2.micro"
 
   enable_hybrid_connection  = false
@@ -79,16 +85,17 @@ resource "aviatrix_transit_gateway" "spoke_transit_gateway_1" {
 }
 
 ## Create a 2nd transitGW to test "updateTransitGW.tfvars test case"
-resource "aviatrix_transit_gateway" "spoke_transit_gateway_2" {
+resource aviatrix_transit_gateway spoke_transit_gateway_2 {
+  count = var.enable_gov ? 0 : 1
   cloud_type      = 1
   account_name    = "AWSAccess"
   gw_name         = "spoke-transit-gateway-2"
-  vpc_id          = aviatrix_vpc.aws_transit_vpc_2.vpc_id
-  vpc_reg         = aviatrix_vpc.aws_transit_vpc_2.region
+  vpc_id          = aviatrix_vpc.aws_transit_vpc_2[0].vpc_id
+  vpc_reg         = aviatrix_vpc.aws_transit_vpc_2[0].region
   gw_size         = "t2.micro"
-  subnet          = aviatrix_vpc.aws_transit_vpc_2.subnets.4.cidr
+  subnet          = aviatrix_vpc.aws_transit_vpc_2[0].subnets.4.cidr
 
-  ha_subnet       = aviatrix_vpc.aws_transit_vpc_2.subnets.5.cidr
+  ha_subnet       = aviatrix_vpc.aws_transit_vpc_2[0].subnets.5.cidr
   ha_gw_size      = "t2.micro"
 
   enable_hybrid_connection  = false
@@ -96,29 +103,30 @@ resource "aviatrix_transit_gateway" "spoke_transit_gateway_2" {
   enable_active_mesh        = true
 }
 
-resource "aviatrix_spoke_gateway" "aws_spoke_gateway" {
+resource aviatrix_spoke_gateway aws_spoke_gateway {
+  count = var.enable_gov ? 0 : 1
   cloud_type        = 1
   account_name      = "AWSAccess"
   gw_name           = "aws-spoke-gateway"
-  vpc_id            = aviatrix_vpc.aws_spoke_vpc_1.vpc_id
-  vpc_reg           = aviatrix_vpc.aws_spoke_vpc_1.region
+  vpc_id            = aviatrix_vpc.aws_spoke_vpc_1[0].vpc_id
+  vpc_reg           = aviatrix_vpc.aws_spoke_vpc_1[0].region
   gw_size           = var.gw_size
 
   insane_mode       = true
   insane_mode_az    = "us-east-1a"
-  subnet            = join(".", [random_integer.vpc3_cidr_int[0].result, random_integer.vpc3_cidr_int[1].result, "2.0/26"])
+  subnet            = join(".", [random_integer.vpc3_cidr_int[0].result, random_integer.vpc3_cidr_int[1].result, "0.0/26"])
   # subnet            = "172.0.0.0/24" # non-insane
 
   ha_insane_mode_az = "us-east-1b"
-  ha_subnet         = join(".", [random_integer.vpc3_cidr_int[0].result, random_integer.vpc3_cidr_int[1].result, "2.64/26"])
+  ha_subnet         = join(".", [random_integer.vpc3_cidr_int[0].result, random_integer.vpc3_cidr_int[1].result, "0.64/26"])
   # ha_subnet         = "172.0.1.0/24" # non-insane
   ha_gw_size        = var.aviatrix_ha_gw_size
   single_ip_snat    = false
   enable_active_mesh= var.active_mesh
 
   allocate_new_eip  = false
-  eip               = aws_eip.eip_aws_spoke_gateway.public_ip
-  ha_eip            = aws_eip.eip_aws_spoke_gateway_ha.public_ip
+  eip               = aws_eip.eip_aws_spoke_gateway[0].public_ip
+  ha_eip            = aws_eip.eip_aws_spoke_gateway_ha[0].public_ip
 
   transit_gw        = var.aviatrix_transit_gw
   tag_list          = ["k1:v1", "k2:v2"]
@@ -129,6 +137,6 @@ resource "aviatrix_spoke_gateway" "aws_spoke_gateway" {
 #################################################
 # Output
 #################################################
-output "aws_spoke_gateway_id" {
-  value = aviatrix_spoke_gateway.aws_spoke_gateway.id
+output aws_spoke_gateway_id {
+  value = var.enable_gov ? null : aviatrix_spoke_gateway.aws_spoke_gateway[0].id
 }

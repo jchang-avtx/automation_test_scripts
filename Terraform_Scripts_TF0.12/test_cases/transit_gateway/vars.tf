@@ -1,3 +1,9 @@
+variable enable_gov {
+  type = bool
+  default = false
+  description = "Enable to create AWS GovCloud test case"
+}
+
 variable gw_size {}
 
 ## HA-related parameters

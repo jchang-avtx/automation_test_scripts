@@ -1,4 +1,19 @@
-## aviatrix_gateway (vpn SAML)
+## aviatrix_gateway (VPN SAML)
+
+### Test cases
+- (Will repeat below for AWS GovCloud)
+- updating VPN CIDRs
+- updating search domains
+- updating additional CIDRs
+- updating name servers
+- updating Single AZ HA mode
+- updating Split Tunnel feature
+- updating maximum allowed VPN connections
+- updating VPN NAT status
+
+- VPN GW with ELB
+- multiple GWs under ELB
+- VPN GW with no ELB in same region
 
 ---
 
