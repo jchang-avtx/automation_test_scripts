@@ -7,7 +7,7 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
 - **Note:** Current scripts are updated for R2.0+
 
 ---
-**STATUS:** Updated for UserConnect 6.1, Terraform R2.16
+**STATUS:** Updated for UserConnect 6.1.1309, Terraform R2.16.3
 
 ---
 
@@ -67,6 +67,24 @@ Automation scripts for Aviatrix provider regression testing, updated for Terrafo
       ```
         Name    = email_recipient
         Value   = admin@example.com
+      ```
+5. Set GOPATH in same Environment variables sections:
+  * Can be accessed by: **Jenkins -> Manage Jenkins -> Configure System -> Global Properties -> Environment variables**
+    * **Example:**
+      ```
+        Name    = GOPATH
+        Value   = /var/lib/jenkins/go
+      ```
+6. In order to set up multiple AWS Cloud credentials, handle the main AWS account credential as shown in Step 2, and set additional account credentials in the same manner as described in Step 3 for environment variables.
+  * One such use case is used for testing AWS GovCloud variants of AWS test cases
+  * **DO NOT** overwrite the already exported credentials: ``AWS_ACCESS_KEY_ID`` and ``AWS_SECRET_ACCESS_KEY``
+  * Set legible names and use the ***.py*** files in test cases to handle the transitive switch of values as seen for Controller credentials
+    * **Example:**
+      ```
+        Name    = aws_gov_access_key
+        Value   = abc123def456
+        Name    = aws_gov_secret_key
+        Value   = jkl789xyz123
       ```
 
 ### Infrastructure/ File Structure
