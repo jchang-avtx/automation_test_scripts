@@ -10,3 +10,9 @@ variable ping_interval {
   type = number
   default = 60
 }
+
+variable enable_gov {
+  type = bool
+  default = false
+  description = "Enable to create AWS GovCloud test case"
+}

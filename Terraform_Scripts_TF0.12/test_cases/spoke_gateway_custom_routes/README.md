@@ -1,6 +1,10 @@
 ## aviatrix_spoke_gateway (customized routes)
 
-Tests customized spoke VPC routes, filtered spoke VPC routes, and included advertise spoke routes on all cloud_types
+### Test cases
+**Note:**  All test cases on all cloud_types, except OCI due to non-official support for
+- update customized spoke VPC routes
+- update filtered spoke VPC routes
+- update included advertise spoke routes
 
 ---
 

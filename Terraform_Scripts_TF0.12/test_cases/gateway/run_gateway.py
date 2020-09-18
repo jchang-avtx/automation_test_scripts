@@ -33,6 +33,18 @@ logging.basicConfig(level=LOGLEVEL,
                     ])
 log = logging.getLogger()
 
+def return_result(test, result):
+    """
+    test is string ; result is string
+    if result == true is PASS
+    if result == false is FALSE
+    """
+    log.info("-------------------- RESULT --------------------")
+    if result:
+        log.info("     " + test + "(): " + "PASS\n")
+    else:
+        log.error("     " + test + "(): " + "FAIL\n")
+
 log.info("\n")
 log.info("============================================================")
 log.debug("RUNNING STAGE: " + str(os.path.split(os.getcwd())[1]).upper())
@@ -74,12 +86,10 @@ try:
     tf.create_verify()
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     create_verify(): FAIL\n")
+    return_result("create_verify", False)
     sys.exit(1)
 else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      create_verify(): PASS\n")
+    return_result("create_verify", True)
 
 
 try:
@@ -87,12 +97,10 @@ try:
     tf.import_test("gateway", "aws_gw_test_1")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     import_test(): FAIL\n")
+    return_result("import_test", False)
     sys.exit(1)
 else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      import_test(): PASS\n")
+    return_result("import_test", True)
 
 
 try:
@@ -111,12 +119,10 @@ try:
     tf.update_test("updatePingInterval")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     update_test(): FAIL\n")
+    return_result("update_test", False)
     sys.exit(1)
 else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      update_test(): PASS\n")
+    return_result("update_test", True)
 
 
 try:
@@ -124,9 +130,87 @@ try:
     tf.destroy_test()
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
+    return_result("destroy_test", False)
+    sys.exit(1)
+else:
+    return_result("destroy_test", True)
+
+
+log.info("Continuing to AWS GovCloud testing...")
+log.info("\n")
+log.info("============================================================")
+log.debug("RUNNING STAGE: AWS GOVCLOUD GATEWAY")
+log.info("============================================================")
+
+try:
+    log.info("Setting AWS GovCloud environment...")
+    aws_gov_access_key = os.environ["aws_gov_access_key"]
+    aws_gov_secret_key = os.environ["aws_gov_secret_key"]
+    log.info("Setting new variable values as follows...")
+    log.debug("     aws_gov_access_key: %s", aws_gov_access_key)
+    log.debug("     aws_gov_secret_key: %s", aws_gov_secret_key)
+    os.environ["AWS_ACCESS_KEY_ID"] = aws_gov_access_key
+    os.environ["AWS_SECRET_ACCESS_KEY"] = aws_gov_secret_key
+except Exception as err:
+    log.exception(str(err))
     log.info("-------------------- RESULT --------------------")
-    log.error("     destroy_test(): FAIL\n")
+    log.error("     Failed to properly set AWS GovCloud environment credentials!")
     sys.exit(1)
 else:
     log.info("-------------------- RESULT --------------------")
-    log.info("      destroy_test(): PASS\n")
+    log.info("      Set AWS GovCloud environment credentials: PASS\n")
+
+
+try:
+    log.info("Verifying AWS GovCloud infrastructure...")
+    tf.create_verify(varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    return_result("AWS_GovCloud_create_verify", False)
+    sys.exit(1)
+else:
+    return_result("AWS_GovCloud_create_verify", True)
+
+
+try:
+    log.info("Verifying import functionality...")
+    tf.import_test("gateway", "aws_gov_gw_test_1", varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    return_result("AWS_GovCloud_import_test", False)
+    sys.exit(1)
+else:
+    return_result("AWS_GovCloud_import_test", True)
+
+
+try:
+    log.info("Verifying update functionality...")
+    log.debug("     disableSNAT: Disabling single IP SNAT...")
+    tf.create_verify(varfile="disableSNAT", varval="enable_gov=true")
+    log.debug("     updateTagList: Updating gateway's tags...")
+    tf.create_verify(varfile="updateTagList", varval="enable_gov=true")
+    log.debug("     updateGWSize: Updating gateway's size...")
+    tf.create_verify(varfile="updateGWSize", varval="enable_gov=true")
+    log.debug("     updateHAGWSize: Updating HA gateway's size...")
+    tf.create_verify(varfile="updateHAGWSize", varval="enable_gov=true")
+    log.debug("     enableDNSServer: Enabling feature to remove the default DNS server, in favor of VPC DNS server configured in VPC DHCP option...")
+    tf.create_verify(varfile="enableDNSServer", varval="enable_gov=true")
+    log.debug("     updatePingInterval: Updating ping interval for gateway periodic ping...")
+    tf.create_verify(varfile="updatePingInterval", varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    return_result("AWS_GovCloud_update_test", False)
+    sys.exit(1)
+else:
+    return_result("AWS_GovCloud_update_test", True)
+
+
+try:
+    log.info("Verifying destroy functionality...")
+    tf.destroy_test(varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    return_result("AWS_GovCloud_destroy_test", False)
+    sys.exit(1)
+else:
+    return_result("AWS_GovCloud_destroy_test", True)

@@ -3,19 +3,6 @@
 ### Notes
 - action must be Base Policy unless Protocol is tcp (port 443) or https
 
-### Test case
-- verify create, read, import update, destroy FQDN and related resources
-- update domain names
-- update port options
-- update protocols
-- update actions
-- update mode of FQDN
-- update status (enable/disable)
-- switch gateway attachment for FQDN tag
-- switch source IP filters
-- enable FQDN pass through feature
-- verify management of FQDN rules through separate resource
-
 ---
 
 ### Usage
@@ -43,10 +30,6 @@
                   -auto-approve
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=switchActions.tfvars \
-                  -auto-approve
-  terraform show
-  terraform apply -var-file=/path/provider_cred.tfvars \
                   -var-file=switchMode.tfvars \
                   -auto-approve
   terraform show
@@ -60,10 +43,6 @@
   terraform show
   terraform apply -var-file=/path/provider_cred.tfvars \
                   -var-file=switchSourceIP.tfvars \
-                  -auto-approve
-  terraform show
-  terraform apply -var-file=/path/provider_cred.tfvars \
-                  -var-file=updatePassThru.tfvars \
                   -auto-approve
   terraform show
 

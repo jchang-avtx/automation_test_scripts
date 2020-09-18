@@ -2,21 +2,6 @@
 
 ---
 
-### Infrastructure
-- pre-existing VPC
-- 3 gateways to be built within different subnets
-- firewall1
-- firewall2 testing ICMP test cases
-- firewall3 for stress testing rules (100 rules)
-
-### Test Cases
-- create, refresh, import, update, destroy firewall
-- firewall data source
-- verify update to handle empty port input with ICMP protocol
-- verify 100 rule firewall without any issues (stress test)
-- import case for separate firewall policy resource
-
-
 ### Usage
 ```
   terraform init

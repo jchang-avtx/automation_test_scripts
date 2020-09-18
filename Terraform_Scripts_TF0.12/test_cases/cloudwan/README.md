@@ -32,4 +32,3 @@ Source: https://docs.aviatrix.com/HowTos/cloud_wan_workflow_azure_vwan.html
 ---
 Verified on both 6.0-patch and 6.1
 **Note:** R2.16 should only be used with 6.1+
-Verified on 6.2 - released R2.17

@@ -1,5 +1,14 @@
 ## aviatrix_transit_gateway (insane)
 
+### Test cases
+**Note:** For AWS and AWS GovCloud transit gateways
+- enable Single AZ HA
+- enable Connected Transit
+- disable Hybrid connection
+- update transit gateway size
+- update transit HA gateway size
+- enable DNS Server feature
+
 ---
 
 ### Usage

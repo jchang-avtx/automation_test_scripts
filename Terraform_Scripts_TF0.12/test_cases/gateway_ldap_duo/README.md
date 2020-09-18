@@ -1,4 +1,16 @@
-## aviatrix_gateway (vpn LDAP, Duo)
+## aviatrix_gateway (VPN LDAP, Duo)
+
+### Test cases
+**Note:** For AWS and AWS GovCloud VPN gateways
+- update Duo Integration key
+- update Duo Secret Key
+- update Duo API Host name
+- update Duo Push Mode
+- update LDAP server
+- update LDAP Bind DN
+- update LDAP password
+- update LDAP Base DN
+- update LDAP Username Attribute
 
 ---
 

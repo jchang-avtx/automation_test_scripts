@@ -20,18 +20,18 @@ resource aviatrix_vpc design_aws_vpc {
 # Mantis 13505 : DNAT resource creation fails due to existing SNAT policy (incorrect arg reference)
 resource aws_subnet design_vpc_subnet_13505 {
   availability_zone     = join("", [aviatrix_vpc.design_aws_vpc.region, "a"])
-  cidr_block            = "10.3.96.0/24" # avoid overlap in AZs
+  cidr_block            = "10.3.5.0/24"
   vpc_id                = aviatrix_vpc.design_aws_vpc.vpc_id
 }
 
 data aws_route_table design_rtb {
   vpc_id      = aviatrix_vpc.design_aws_vpc.vpc_id
-  subnet_id   = aviatrix_vpc.design_aws_vpc.public_subnets.0.subnet_id
+  subnet_id   = aviatrix_vpc.design_aws_vpc.subnets.3.subnet_id
 }
 
 data aws_route_table design_rtb_13505 {
   vpc_id      = aviatrix_vpc.design_aws_vpc.vpc_id
-  subnet_id   = aviatrix_vpc.design_aws_vpc.public_subnets.1.subnet_id
+  subnet_id   = aviatrix_vpc.design_aws_vpc.subnets.4.subnet_id
 }
 
 resource aws_route_table_association design_rtb_assoc_13505 {
@@ -46,7 +46,7 @@ resource aviatrix_gateway design_aws_gw {
   vpc_id        = aviatrix_vpc.design_aws_vpc.vpc_id
   vpc_reg       = aviatrix_vpc.design_aws_vpc.region
   gw_size       = "t2.micro"
-  subnet        = aws_subnet.design_vpc_subnet_13505.cidr_block
+  subnet        = aviatrix_vpc.design_aws_vpc.subnets.3.cidr
 
   enable_designated_gateway           = true
   additional_cidrs_designated_gateway = var.additional_cidrs

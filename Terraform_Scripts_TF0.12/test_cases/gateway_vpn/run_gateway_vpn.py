@@ -1,7 +1,7 @@
 """
 run_gateway_vpn.py
 
-Test case for gateway (AWS VPN SAML) Terraform resource/ use-case
+Test case for gateway (AWS (Gov) VPN SAML) Terraform resource/ use-case
 
 - note various placeholders that must be updated:
     - filepath for terraform_fx.py
@@ -32,6 +32,18 @@ logging.basicConfig(level=LOGLEVEL,
                         logging.StreamHandler()
                     ])
 log = logging.getLogger()
+
+def return_result(test, result):
+    """
+    test is string ; result is string
+    if result == true is PASS
+    if result == false is FALSE
+    """
+    log.info("-------------------- RESULT --------------------")
+    if result:
+        log.info("     " + test + "(): " + "PASS\n")
+    else:
+        log.error("     " + test + "(): " + "FAIL\n")
 
 log.info("\n")
 log.info("============================================================")
@@ -74,12 +86,10 @@ try:
     tf.create_verify()
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     create_verify(): FAIL\n")
+    return_result("create_verify", False)
     sys.exit(1)
 else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      create_verify(): PASS\n")
+    return_result("create_verify", True)
 
 
 try:
@@ -87,12 +97,10 @@ try:
     tf.import_test("gateway", "vpn_gw_1_under_elb")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     import_test(): FAIL\n")
+    return_result("import_test", False)
     sys.exit(1)
 else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      import_test(): PASS\n")
+    return_result("import_test", True)
 
 
 try:
@@ -115,12 +123,10 @@ try:
     tf.update_test("disableVPNNAT")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
-    log.info("-------------------- RESULT --------------------")
-    log.error("     update_test(): FAIL\n")
+    return_result("update_test", False)
     sys.exit(1)
 else:
-    log.info("-------------------- RESULT --------------------")
-    log.info("      update_test(): PASS\n")
+    return_result("update_test", True)
 
 
 for i in range(3):
@@ -135,10 +141,80 @@ for i in range(3):
     except tf.subprocess.CalledProcessError as err:
         log.exception(err.stderr.decode())
         if i == 2:
-            log.info("-------------------- RESULT --------------------")
-            log.error("     destroy_test(): FAIL\n")
+            return_result("destroy_test", False)
             sys.exit(1)
     else:
-        log.info("-------------------- RESULT --------------------")
-        log.info("      destroy_test(): PASS\n")
+        return_result("destroy_test", True)
+
+
+log.info("Continuing to AWS GovCloud testing...")
+log.info("\n")
+log.info("============================================================")
+log.debug("RUNNING STAGE: AWS GOVCLOUD GATEWAY")
+log.info("============================================================")
+
+try:
+    log.info("Creating infrastructure...")
+    tf.create_verify(varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    return_result("AWS_GovCloud_create_verify", False)
+    sys.exit(1)
+else:
+    return_result("AWS_GovCloud_create_verify", True)
+
+
+try:
+    log.info("Verifying import functionality...")
+    tf.import_test("gateway", "gov_vpn_gw_1_under_elb", varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    return_result("AWS_GovCloud_import_test", False)
+    sys.exit(1)
+else:
+    return_result("AWS_GovCloud_import_test", True)
+
+
+try:
+    log.info("Verifying update functionality...")
+    log.debug("     updateVPNCIDR: Updating the VPN CIDR for uses of accidental overlap with home network...")
+    tf.create_verify(varfile="updateVPNCIDR", varval="enable_gov=true")
+    log.debug("     updateSearchDomain: Updating list of domain names that will use the NameServers when specific name not in destination...")
+    tf.create_verify(varfile="updateSearchDomain", varval="enable_gov=true")
+    log.debug("     updateCIDRs: Updating list of destination CIDR ranges that will also go through the VPN tunnel...")
+    tf.create_verify(varfile="updateCIDRs", varval="enable_gov=true")
+    log.debug("     updateNameServers: Updating the list of DNS servers that VPN gateway will use to resolve domain names...")
+    tf.create_verify(varfile="updateNameServers", varval="enable_gov=true")
+    log.debug("     disableSingleAZHA: Disabling Single AZ HA option of the gateway...")
+    tf.create_verify(varfile="disableSingleAZHA", varval="enable_gov=true")
+    log.debug("     disableSplitTunnel: Disabling split_tunnel and all consequent attributes...")
+    tf.create_verify(varfile="disableSplitTunnel", varval="enable_gov=true")
+    log.debug("     updateMaxConn: Updating the maximum number of VPN users allowed to be connected to the gateway...")
+    tf.create_verify(varfile="updateMaxConn", varval="enable_gov=true")
+    log.debug("     disableVPNNAT: Disables VPN connection from using NAT when traffic leaves the gateway...")
+    tf.create_verify(varfile="disableVPNNAT", varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    return_result("AWS_GovCloud_update_test", False)
+    sys.exit(1)
+else:
+    return_result("AWS_GovCloud_update_test", True)
+
+
+for i in range(3):
+    try:
+        log.info("Verifying destroy functionality...")
+        log.debug("     destroy_target() the ELB gateway first...") # Mantis (13255)
+        tf.destroy_target("gateway", "gov_vpn_gw_1_under_elb", varval="enable_gov=true")
+        log.debug("Sleeping for 2 minutes to wait for gateway clean-up...")
+        time.sleep(120)
+        log.debug("     Now running destroy_test() to finish clean-up...")
+        tf.destroy_test()
+    except tf.subprocess.CalledProcessError as err:
+        log.exception(err.stderr.decode())
+        if i == 2:
+            return_result("AWS_GovCloud_destroy_test", False)
+            sys.exit(1)
+    else:
+        return_result("AWS_GovCloud_destroy_test", True)
         sys.exit(0)

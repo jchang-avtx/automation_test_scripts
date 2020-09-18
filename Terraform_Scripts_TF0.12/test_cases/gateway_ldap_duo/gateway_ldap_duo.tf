@@ -1,11 +1,12 @@
 ## For regression: Test case: test vpn gateway
 
-resource "random_integer" "vpc1_cidr_int" {
-  count = 3
+resource random_integer vpc1_cidr_int {
+  count = var.enable_gov ? 0 : 3
   min = 1
   max = 126
 }
-resource "aviatrix_vpc" "aws_ldap_duo_vpc" {
+resource aviatrix_vpc aws_ldap_duo_vpc {
+  count = var.enable_gov ? 0 : 1
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
@@ -15,14 +16,15 @@ resource "aviatrix_vpc" "aws_ldap_duo_vpc" {
   region                = "us-east-1"
 }
 
-resource "aviatrix_gateway" "aws_ldap_duo_gw" {
+resource aviatrix_gateway aws_ldap_duo_gw {
+  count = var.enable_gov ? 0 : 1
   cloud_type              = 1
   account_name            = "AWSAccess"
   gw_name                 = "aws-ldap-duo-gw"
-  vpc_id                  = aviatrix_vpc.aws_ldap_duo_vpc.vpc_id
-  vpc_reg                 = aviatrix_vpc.aws_ldap_duo_vpc.region
+  vpc_id                  = aviatrix_vpc.aws_ldap_duo_vpc[0].vpc_id
+  vpc_reg                 = aviatrix_vpc.aws_ldap_duo_vpc[0].region
   gw_size                 = "t2.micro"
-  subnet                  = aviatrix_vpc.aws_ldap_duo_vpc.subnets.6.cidr
+  subnet                  = aviatrix_vpc.aws_ldap_duo_vpc[0].subnets.6.cidr
 
   vpn_access              = true
   max_vpn_conn            = 100
@@ -48,6 +50,6 @@ resource "aviatrix_gateway" "aws_ldap_duo_gw" {
   allocate_new_eip        = true
 }
 
-output "aws_ldap_duo_gw_id" {
-  value = aviatrix_gateway.aws_ldap_duo_gw.id
+output aws_ldap_duo_gw_id {
+  value = var.enable_gov ? null : aviatrix_gateway.aws_ldap_duo_gw[0].id
 }

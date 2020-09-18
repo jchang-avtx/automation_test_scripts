@@ -42,7 +42,8 @@ log.info("      1. Set up environment variables/ credentials")
 log.info("      2. Create AWS gateway (Okta)")
 log.info("      3. Perform terraform import to identify deltas")
 log.info("      4. Perform update tests")
-log.info("      5. Tear down infrastructure\n")
+log.info("      5. Repeat tests for AWS GovCloud")
+log.info("      6. Tear down infrastructure\n")
 
 try:
     log.info("Setting environment...")
@@ -132,4 +133,74 @@ for i in range(3):
     else:
         log.info("-------------------- RESULT --------------------")
         log.info("      destroy_test(): PASS\n")
+
+
+log.info("Continuing to AWS GovCloud testing...")
+log.info("\n")
+log.info("============================================================")
+log.debug("RUNNING STAGE: AWS GOVCLOUD OKTA GATEWAY")
+log.info("============================================================")
+try:
+    log.info("Creating infrastructure...")
+    tf.create_verify(varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     AWS_GovCloud_create_verify(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      AWS_GovCloud_create_verify(): PASS\n")
+
+
+try:
+    log.info("Verifying import functionality...")
+    log.debug("     Importing the AWS (Okta) gateway...")
+    tf.import_test("gateway", "aws_gov_okta_gw", varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     AWS_GovCloud_import_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      AWS_GovCloud_import_test(): PASS\n")
+
+
+try:
+    log.info("Verifying update functionality...")
+    log.debug("     updateURL: Updating the Okta URL...")
+    tf.create_verify(varfile="updateURL", varval="enable_gov=true")
+    log.debug("     updateToken: Updating the Okta Token...")
+    tf.create_verify(varfile="updateToken", varval="enable_gov=true")
+    log.debug("     updateUsernameSuffix: Updating the Okta username suffix...")
+    tf.create_verify(varfile="updateUsernameSuffix", varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     AWS_GovCloud_update_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      AWS_GovCloud_update_test(): PASS\n")
+
+
+for i in range(3):
+    try:
+        log.info("Verifying destroy functionality...")
+        log.debug("     destroy_target() the ELB gateway first...") # Mantis (13255)
+        tf.destroy_target("gateway", "aws_gov_okta_gw", varval="enable_gov=true")
+        log.debug("Sleeping for 3 minutes to wait for gateway clean-up...")
+        time.sleep(180)
+        log.debug("     Now running destroy_test() to finish clean-up...")
+        tf.destroy_test(varval="enable_gov=true")
+    except tf.subprocess.CalledProcessError as err:
+        log.exception(err.stderr.decode())
+        if i == 2:
+            log.info("-------------------- RESULT --------------------")
+            log.error("     AWS_GovCloud_destroy_test(): FAIL\n")
+            sys.exit(1)
+    else:
+        log.info("-------------------- RESULT --------------------")
+        log.info("      AWS_GovCloud_destroy_test(): PASS\n")
         sys.exit(0)

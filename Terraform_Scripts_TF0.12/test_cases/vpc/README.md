@@ -2,14 +2,6 @@
 
 ---
 
-### Test case
-- AWS VPC (regular, transit, firenet)
-  - advanced features introduced in 6.1
-- Azure VNet (regular, firenet)
-  - advanced features introduced in 6.1
-- GCP VPC
-
-
 ### Usage
 ```
   terraform init

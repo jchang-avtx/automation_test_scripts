@@ -1,3 +1,9 @@
+variable enable_gov {
+  type = bool
+  default = false
+  description = "Enable to create AWS GovCloud test case"
+}
+
 ## TGW-related
 variable security_domain_name_list {
   type = list(string)

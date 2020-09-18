@@ -1,5 +1,10 @@
 ## aviatrix_vgw_conn
 
+### Test cases
+**Note:** Advertising transit CIDRs have been moved to be managed to transit_gateway from vgw_conn
+- toggle CIDR advertisement and specify specific CIDRs
+- AWS, Azure, GCP cloud test cases 
+
 ---
 
 ### Usage

@@ -2,3 +2,5 @@
 
 aviatrix_transit_gw = null
 active_mesh         = false
+
+gov_attach_transit_gw = null

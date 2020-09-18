@@ -6,16 +6,10 @@ resource aviatrix_vpc test_aws_vpc {
   account_name          = "AWSAccess"
   aviatrix_transit_vpc  = false
   aviatrix_firenet_vpc  = false
-  cidr                  = "11.11.11.0/24"
+  cidr                  = "11.11.11.11/24"
   cloud_type            = 1
   name                  = "test-aws-vpc"
   region                = "us-west-1"
-
-  # Mantis 16646: advanced option for AWS and Azure
-  # us-west 1 = 2
-  # us-east 1 = 6
-  subnet_size = 28 # 17-28 (the /# of the CIDR) based on size of available
-  num_of_subnet_pairs = 2 # cannot exceed number of AZs in region
 }
 
 resource aviatrix_vpc test_aws_transit_vpc {
@@ -68,9 +62,6 @@ resource aviatrix_vpc test_arm_vnet {
   cloud_type            = 8
   name                  = "test-arm-vnet"
   region                = "Central US"
-
-  subnet_size = 26
-  num_of_subnet_pairs = 1
 }
 
 resource aviatrix_vpc test_arm_firenet_vnet {
@@ -81,6 +72,39 @@ resource aviatrix_vpc test_arm_firenet_vnet {
   cloud_type            = 8
   name                  = "test-arm-firenet-vnet"
   region                = "Central US"
+}
+
+############################################################
+## AWS GovCloud
+############################################################
+resource aviatrix_vpc test_aws_gov_vpc {
+  account_name          = "AWSGovRoot"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = false
+  cidr                  = "29.11.72.0/24"
+  cloud_type            = 256
+  name                  = "test-aws-gov-vpc"
+  region                = "us-gov-west-1"
+}
+
+resource aviatrix_vpc test_aws_gov_transit_vpc {
+  account_name          = "AWSGovRoot"
+  aviatrix_transit_vpc  = true
+  aviatrix_firenet_vpc  = false
+  cidr                  = "78.96.56.0/23"
+  cloud_type            = 256
+  name                  = "test-aws-gov-transit-vpc"
+  region                = "us-gov-east-1"
+}
+
+resource aviatrix_vpc test_aws_gov_firenet_vpc {
+  account_name          = "AWSGovRoot"
+  aviatrix_transit_vpc  = false
+  aviatrix_firenet_vpc  = true
+  cidr                  = "125.47.115.0/24"
+  cloud_type            = 256
+  name                  = "test-aws-gov-firenet-vpc"
+  region                = "us-gov-east-1"
 }
 
 ############################################################
@@ -109,6 +133,18 @@ output test_arm_vnet_id {
 
 output test_arm_firenet_vnet_id {
   value = aviatrix_vpc.test_arm_firenet_vnet.id
+}
+
+output test_aws_gov_vpc_id {
+  value = aviatrix_vpc.test_aws_gov_vpc.id
+}
+
+output test_aws_gov_transit_vpc_id {
+  value = aviatrix_vpc.test_aws_gov_transit_vpc.id
+}
+
+output test_aws_gov_firenet_vpc_id {
+  value = aviatrix_vpc.test_aws_gov_firenet_vpc.id
 }
 
 ############################################################

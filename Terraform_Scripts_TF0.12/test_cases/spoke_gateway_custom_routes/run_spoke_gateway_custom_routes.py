@@ -90,8 +90,8 @@ try:
     tf.import_test("spoke_gateway", "arm_custom_routes_spoke")
     log.debug("     Importing GCP spoke...")
     tf.import_test("spoke_gateway", "gcp_custom_routes_spoke")
-    log.debug("     Importing OCI spoke...")
-    tf.import_test("spoke_gateway", "oci_custom_routes_spoke")
+    # log.debug("     Importing OCI spoke...")
+    # tf.import_test("spoke_gateway", "oci_custom_routes_spoke")
 except tf.subprocess.CalledProcessError as err:
     log.exception(err.stderr.decode())
     log.info("-------------------- RESULT --------------------")

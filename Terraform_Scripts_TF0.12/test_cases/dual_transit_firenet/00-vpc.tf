@@ -7,6 +7,7 @@ resource aviatrix_vpc on_prem_vpc {
 }
 
 resource aviatrix_vpc transit_firenet_vpc {
+  count = var.enable_aws ? 1 : 0
   cloud_type = 1
   account_name = "AWSAccess"
   region = "us-east-1"
@@ -17,6 +18,7 @@ resource aviatrix_vpc transit_firenet_vpc {
 }
 
 resource aviatrix_vpc egress_firenet_vpc {
+  count = var.enable_aws ? 1 : 0
   cloud_type = 1
   account_name = "AWSAccess"
   region = "us-west-1"
@@ -27,6 +29,7 @@ resource aviatrix_vpc egress_firenet_vpc {
 }
 
 resource aviatrix_vpc dual_firenet_spoke_vpc_1 {
+  count = var.enable_aws ? 1 : 0
   cloud_type = 1
   account_name = "AWSAccess"
   region = "eu-central-1"
@@ -35,6 +38,7 @@ resource aviatrix_vpc dual_firenet_spoke_vpc_1 {
 }
 
 resource aviatrix_vpc dual_firenet_spoke_vpc_2 {
+  count = var.enable_aws ? 1 : 0
   cloud_type = 1
   account_name = "AWSAccess"
   region = "eu-west-1"

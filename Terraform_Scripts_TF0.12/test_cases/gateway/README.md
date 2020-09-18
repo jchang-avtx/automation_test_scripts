@@ -1,5 +1,9 @@
 ## aviatrix_gateway
+
+### Test cases
 - will include regular gateway operations
+- AWS GovCloud support now included as of R2.16.3
+  - set `-var enable_gov=true`
 
 ### Gateway Periodic Ping feature
 - introduced in 5.3

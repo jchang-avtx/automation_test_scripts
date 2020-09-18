@@ -135,3 +135,94 @@ except tf.subprocess.CalledProcessError as err:
 else:
     log.info("-------------------- RESULT --------------------")
     log.info("      destroy_test(): PASS\n")
+
+
+time.sleep(60)
+log.info("Continuing to AWS GovCloud testing...")
+log.info("\n")
+log.info("============================================================")
+log.debug("RUNNING STAGE: AWS GOVCLOUD SPOKE GATEWAY")
+log.info("============================================================")
+
+try:
+    log.info("Setting AWS GovCloud environment...")
+    aws_gov_access_key = os.environ["aws_gov_access_key"]
+    aws_gov_secret_key = os.environ["aws_gov_secret_key"]
+    log.info("Setting new variable values as follows...")
+    log.debug("     aws_gov_access_key: %s", aws_gov_access_key)
+    log.debug("     aws_gov_secret_key: %s", aws_gov_secret_key)
+    os.environ["AWS_ACCESS_KEY_ID"] = aws_gov_access_key
+    os.environ["AWS_SECRET_ACCESS_KEY"] = aws_gov_secret_key
+except Exception as err:
+    log.exception(str(err))
+    log.info("-------------------- RESULT --------------------")
+    log.error("     Failed to properly set AWS GovCloud environment credentials!")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      Set AWS GovCloud environment credentials: PASS\n")
+
+
+try:
+    log.info("Creating infrastructure...")
+    tf.create_verify(varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     AWS_GovCloud_create_verify(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      AWS_GovCloud_create_verify(): PASS\n")
+
+
+try:
+    log.info("Verifying import functionality...")
+    tf.import_test("spoke_gateway", "aws_gov_spoke_gateway", varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     AWS_GovCloud_import_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      AWS_GovCloud_import_test(): PASS\n")
+
+
+try:
+    log.info("Verifying update functionality...")
+    log.debug("Sleeping for 2 minutes to wait for infrastructure to be up...")
+    time.sleep(120)
+    log.debug("     updateTransitGW: Updating to switch transit gateway to attach to the spoke...")
+    tf.create_verify(varfile="updateTransitGW", varval="enable_gov=true")
+    log.debug("     detachActive: (Mantis 13210) detach spoke and disable Active Mesh in one step...")
+    tf.create_verify(varfile="detachActive", varval="enable_gov=true")
+    log.debug("     updateTransitGW: Re-attaching spoke to transit with correct Active Mesh setting...")
+    tf.create_verify(varfile="updateTransitGW", varval="enable_gov=true")
+    log.debug("     updateGWSize: Updating spoke gateway's size...")
+    tf.create_verify(varfile="updateGWSize", varval="enable_gov=true")
+    log.debug("     updateHAGWSize: Updating HA spoke gateway's size...")
+    tf.create_verify(varfile="updateHAGWSize", varval="enable_gov=true")
+    log.debug("     enableDNSServer: Enabling feature to remove the default DNS server, in favor of VPC DNS server configured in VPC DHCP option...")
+    tf.create_verify(varfile="enableDNSServer", varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     AWS_GovCloud_update_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      AWS_GovCloud_update_test(): PASS\n")
+
+
+try:
+    log.info("Verifying destroy functionality...")
+    tf.destroy_test(varval="enable_gov=true")
+except tf.subprocess.CalledProcessError as err:
+    log.exception(err.stderr.decode())
+    log.info("-------------------- RESULT --------------------")
+    log.error("     AWS_GovCloud_destroy_test(): FAIL\n")
+    sys.exit(1)
+else:
+    log.info("-------------------- RESULT --------------------")
+    log.info("      AWS_GovCloud_destroy_test(): PASS\n")

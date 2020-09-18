@@ -24,3 +24,4 @@
 ---
 - **NOTE:** VMs (ubuntu) must be launched in private subnets
 - **Source:** [Link](https://docs.aviatrix.com/_images/dual_transit.png)
+- Source : Mantis 16570
